@@ -1,0 +1,51 @@
+{
+  "name": "ssm/wordpress-starter",
+  "type": "wordpress-theme",
+  "license": "MIT",
+  "description": "WordPress starter theme based on the Sage framework",
+  "keywords": [
+    "wordpress"
+  ],
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/"
+    }
+  },
+  "require": {
+    "php": ">=8.1",
+    "roots/acorn": "^v3.3.1",
+    "ssm/core": "dev-master",
+    "ssm/static-boilerplate": "dev-master",
+    "ssm/theme-boilerplate": "dev-master"
+  },
+  "require-dev": {
+    "laravel/pint": "^1.13"
+  },
+  "suggest": {
+    "log1x/sage-directives": "A collection of useful Blade directives for WordPress and Sage (^1.0).",
+    "log1x/sage-svg": "A useful SVG directive for inlining SVG's within Blade views (^1.0)."
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "preferred-install": "dist",
+    "sort-packages": true
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "scripts": {
+    "post-autoload-dump": [
+      "Roots\\Acorn\\ComposerScripts::postAutoloadDump"
+    ]
+  },
+  "extra": {
+    "acorn": {
+      "providers": [
+        "App\\Providers\\ThemeServiceProvider"
+      ]
+    },
+    "installer-paths": {
+      "theme-boilerplate/": ["ssm/theme-boilerplate"],
+      "static/": ["ssm/static-boilerplate"]
+    }
+  }
+}

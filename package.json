@@ -1,0 +1,56 @@
+{
+  "name": "sage",
+  "private": true,
+  "browserslist": [
+    "extends @roots/browserslist-config"
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "bud dev --dashboard --hot",
+    "build": "bud build --dashboard",
+    "static-install": "yarn --cwd ./static install",
+    "static-build": "yarn --cwd ./static build",
+    "static-staging-build": "yarn --cwd ./static staging-build",
+    "static-start": "yarn --cwd ./static start",
+    "static-copy": "run-p static-copy:*",
+    "static-copy:styles": "ncp ./static/src/assets/styles ./resources/styles",
+    "static-copy:scripts": "ncp ./static/src/assets/scripts ./resources/scripts/client",
+    "static-copy:fonts": "ncp ./static/src/assets/fonts ./resources/fonts",
+    "static-copy:video": "ncp ./static/src/assets/video ./resources/video",
+    "static-copy:images": "ncp ./static/src/assets/images ./resources/images",
+    "clean-assets": "rimraf \"resources/scripts/app.js resources/fonts/* resources/styles/{*,!editor.scss} resources/video/* resources/images/*\""
+  },
+  "devDependencies": {
+    "@roots/bud": "6.20.0",
+    "@roots/bud-eslint": "^6.20.0",
+    "@roots/bud-sass": "^6.20.0",
+    "@roots/eslint-config": "^6.20.0",
+    "@roots/sage": "6.20.0",
+    "@svgr/webpack": "^8.1.0",
+    "@wordpress/api-fetch": "^6.31.0",
+    "@wordpress/blob": "^3.42.0",
+    "@wordpress/block-editor": "^12.14.0",
+    "@wordpress/block-library": "^8.10.0",
+    "@wordpress/blocks": "^12.10.0",
+    "@wordpress/components": "^24.0.0",
+    "@wordpress/compose": "^6.22.0",
+    "@wordpress/core-data": "^6.11.0",
+    "@wordpress/data": "^9.3.0",
+    "@wordpress/dom-ready": "^3.33.0",
+    "@wordpress/edit-post": "^7.11.0",
+    "@wordpress/element": "^5.10.0",
+    "@wordpress/hooks": "^3.33.0",
+    "@wordpress/plugins": "^6.2.0",
+    "@wordpress/url": "^3.34.0",
+    "bud-wp-editor-query": "^0.0.4",
+    "cross-env": "^7.0.3",
+    "ncp": "^2.0.0",
+    "npm-run-all": "^4.1.5"
+  },
+  "dependencies": {
+    "classnames": "^2.3.2"
+  }
+}

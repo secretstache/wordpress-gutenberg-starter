@@ -1,0 +1,127 @@
+[
+  {
+    "name": "Advanced Custom Fields PRO",
+    "slug": "advanced-custom-fields-pro",
+    "source": "https://www.secretstache.com/required-plugins/advanced-custom-fields-pro.zip",
+    "required": true,
+    "force_activation": true
+  },
+  {
+    "name": "Advanced Custom Fields: Extended PRO",
+    "slug": "advanced-custom-fields-extended-pro",
+    "source": "https://www.secretstache.com/required-plugins/acf-extended-pro.zip",
+    "required": true,
+    "force_activation": true
+  },
+  {
+    "name": "Advanced Custom Fields: Get nav menus",
+    "slug": "acf-get-nav-menus",
+    "source": "https://www.secretstache.com/required-plugins/acf-get-nav-menus.zip",
+    "required": false,
+    "force_activation": false
+  },
+  {
+    "name": "Admin Menu Editor Pro",
+    "slug": "admin-menu-editor-pro",
+    "source": "https://www.secretstache.com/required-plugins/admin-menu-editor-pro.zip",
+    "required": false,
+    "force_activation": false
+  },
+  {
+    "name": "Advanced Custom Fields: Gravityforms Add-on",
+    "slug": "acf-gravityforms-add-on",
+    "required": false,
+    "force_activation": false
+  },
+  {
+    "name": "Customizer Remove All Parts",
+    "slug": "customizer-remove-all-parts",
+    "source": "https://www.secretstache.com/required-plugins/customizer-remove-all-parts.zip",
+    "required": false,
+    "force_activation": false
+  },
+  {
+    "name": "Disable Comments",
+    "slug": "disable-comments",
+    "required": true,
+    "force_activation": true
+  },
+  {
+    "name": "FacetWP",
+    "slug": "facetwp",
+    "source": "https://www.secretstache.com/required-plugins/facetwp.zip",
+    "required": true,
+    "force_activation": true
+  },
+  {
+    "name": "Gravity Forms",
+    "slug": "gravityforms",
+    "source": "https://www.secretstache.com/required-plugins/gravityforms.zip",
+    "required": false,
+    "force_activation": false
+  },
+  {
+    "name": "Image Processing Queue",
+    "slug": "image-processing-queue",
+    "required": true,
+    "force_activation": true
+  },
+  {
+    "name": "Roots/Soil",
+    "slug": "roots-soil",
+    "source": "https://www.secretstache.com/required-plugins/roots-soil.zip",
+    "required": true,
+    "force_activation": true
+  },
+  {
+    "name": "Safe SVG",
+    "slug": "safe-svg",
+    "required": true,
+    "force_activation": true
+  },
+  {
+    "name": "SearchWP",
+    "slug": "searchwp",
+    "source": "https://www.secretstache.com/required-plugins/searchwp4.zip",
+    "required": false,
+    "force_activation": false
+  },
+  {
+    "name": "User Switcher",
+    "slug": "userswitcher",
+    "required": false,
+    "force_activation": false
+  },
+  {
+    "name": "Yoast SEO",
+    "slug": "wordpress-seo",
+    "required": false,
+    "force_activation": false
+  },
+  {
+    "name": "Query Monitor",
+    "slug": "query-monitor",
+    "required": false,
+    "force_activation": false
+  },
+  {
+    "name": "WP Rocket",
+    "slug": "wp-rocket",
+    "source": "https://www.secretstache.com/required-plugins/wp-rocket.zip",
+    "required": false,
+    "force_activation": false
+  },
+  {
+    "name": "WP Migrate DB Pro",
+    "slug": "wp-migrate-db-pro",
+    "source": "https://www.secretstache.com/required-plugins/wp-migrate-db-pro.zip",
+    "required": false,
+    "force_activation": false
+  },
+  {
+    "name": "ACF to REST API",
+    "slug": "acf-to-rest-api",
+    "required": true,
+    "force_activation": false
+  }
+]
