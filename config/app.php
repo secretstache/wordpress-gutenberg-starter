@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Facade;
+use Roots\Acorn\ServiceProvider;
 
 use function Roots\env;
 
@@ -17,7 +18,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Acorn'),
+    'name' => env( 'APP_NAME', 'Acorn' ),
 
     /*
     |--------------------------------------------------------------------------
@@ -30,7 +31,7 @@ return [
     |
     */
 
-    'env' => defined('WP_ENV') ? WP_ENV : env('WP_ENV', 'production'),
+    'env' => defined( 'WP_ENV' ) ? WP_ENV : env( 'WP_ENV', 'production' ),
 
     /*
     |--------------------------------------------------------------------------
@@ -56,7 +57,9 @@ return [
     |
     */
 
-    'url' => env('APP_URL', home_url()),
+    'url' => env( 'APP_URL', home_url() ),
+
+    'asset_url' => env( 'ASSET_URL' ),
 
     /*
     |--------------------------------------------------------------------------
@@ -69,7 +72,7 @@ return [
     |
     */
 
-    'timezone' => get_option('timezone_string', 'UTC'),
+    'timezone' => get_option( 'timezone_string' ) ?: 'UTC',
 
     /*
     |--------------------------------------------------------------------------
@@ -121,7 +124,7 @@ return [
     |
     */
 
-    'key' => env('APP_KEY'),
+    'key' => env( 'APP_KEY' ),
 
     'cipher' => 'AES-256-CBC',
 
@@ -140,7 +143,7 @@ return [
 
     'maintenance' => [
         'driver' => 'file',
-        // 'store'  => 'redis',
+        // 'store' => 'redis',
     ],
 
     /*
@@ -154,43 +157,18 @@ return [
     |
     */
 
-    'providers' => [
-
+    'providers' => ServiceProvider::defaultProviders()->merge( [
         /*
-         * Framework Service Providers...
+         * Package Service Providers...
          */
-        Illuminate\Auth\AuthServiceProvider::class,
-        Illuminate\Broadcasting\BroadcastServiceProvider::class,
-        Illuminate\Bus\BusServiceProvider::class,
-        Illuminate\Cache\CacheServiceProvider::class,
-        Illuminate\Cookie\CookieServiceProvider::class,
-        Illuminate\Database\DatabaseServiceProvider::class,
-        Illuminate\Encryption\EncryptionServiceProvider::class,
-        Illuminate\Hashing\HashServiceProvider::class,
-        Illuminate\Mail\MailServiceProvider::class,
-        Illuminate\Notifications\NotificationServiceProvider::class,
-        Illuminate\Pagination\PaginationServiceProvider::class,
-        Illuminate\Pipeline\PipelineServiceProvider::class,
-        Illuminate\Queue\QueueServiceProvider::class,
-        Illuminate\Redis\RedisServiceProvider::class,
-        Illuminate\Routing\RoutingServiceProvider::class,
-        Illuminate\Auth\Passwords\PasswordResetServiceProvider::class,
-        Illuminate\Session\SessionServiceProvider::class,
-        Illuminate\Translation\TranslationServiceProvider::class,
-        Illuminate\Validation\ValidationServiceProvider::class,
-        Roots\Acorn\Assets\AssetsServiceProvider::class,
-        Roots\Acorn\Filesystem\FilesystemServiceProvider::class,
-        Roots\Acorn\Providers\AcornServiceProvider::class,
-        Roots\Acorn\Providers\RouteServiceProvider::class,
-        Roots\Acorn\View\ViewServiceProvider::class,
+
         /*
          * Application Service Providers...
          */
         App\Providers\ThemeServiceProvider::class,
         App\Providers\TgmServiceProvider::class,
         SSM\Console\SetupServiceProvider::class,
-
-    ],
+    ] )->toArray(),
 
     /*
     |--------------------------------------------------------------------------
@@ -203,9 +181,9 @@ return [
     |
     */
 
-    'aliases' => Facade::defaultAliases()->merge([
-        // 'ExampleClass' => App\Example\ExampleClass::class,
-    ])->toArray(),
+    'aliases' => Facade::defaultAliases()->merge( [
+        // 'Example' => App\Facades\Example::class,
+    ] )->toArray(),
 
     'preflight' => true,
 ];
