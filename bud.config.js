@@ -25,7 +25,7 @@ export default async (app) => {
         .entry('admin', [ '@styles/admin' ])
         .assets([ 'images' ]);
 
-    app.setPublicPath('/wp-content/themes/vto2023/public/');
+    app.setPublicPath('/wp-content/themes/sage/public/');
 
     app
         .setUrl('http://localhost:3000')
