@@ -25,7 +25,7 @@ class ComposerScripts
         if (!empty($repositoryUrl)) {
             $io->write("Setting the repository: $repositoryUrl");
 
-            // Initialize Git, add remote, and perform other tasks
+            // Initialize Git
             self::initializeGitRepository($repositoryUrl, $io);
         } else {
             $io->write('No repository URL provided, skipping Git setup.');
@@ -106,7 +106,7 @@ class ComposerScripts
 
     public static function installPackages(IOInterface $io)
     {
-        $io->write("<comment>Install npm dependencies.<comment>");
+        $io->write("<comment>Install npm dependencies...<comment>");
 
         self::runCommand([
             'yarn',
