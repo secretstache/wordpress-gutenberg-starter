@@ -23,7 +23,7 @@ class ComposerScripts
 
         // Continue only if the URL is provided
         if (!empty($repositoryUrl)) {
-            $io->write("Setting up your Sage project with repository: $repositoryUrl");
+            $io->write("Setting the repository: $repositoryUrl");
 
             // Initialize Git, add remote, and perform other tasks
             self::initializeGitRepository($repositoryUrl, $io);
