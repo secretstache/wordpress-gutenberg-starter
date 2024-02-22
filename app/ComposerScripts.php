@@ -47,7 +47,7 @@ class ComposerScripts
             'static'
         ], $io);
 
-        $io->write("<success>Static boilerplate setup complete.</success>");
+        $io->write("<info>Static boilerplate setup complete.</info>");
     }
 
     public static function setupThemeBoilerplate(Event $event)
