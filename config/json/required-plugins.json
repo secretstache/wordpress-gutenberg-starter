@@ -67,13 +67,6 @@
     "force_activation": true
   },
   {
-    "name": "Roots/Soil",
-    "slug": "roots-soil",
-    "source": "https://www.secretstache.com/required-plugins/roots-soil.zip",
-    "required": true,
-    "force_activation": true
-  },
-  {
     "name": "Safe SVG",
     "slug": "safe-svg",
     "required": true,

@@ -15,12 +15,11 @@
     "php": ">=8.1",
     "roots/acorn": "^4.0",
     "roots/acorn-prettify": "*",
-    "ssm/core": "dev-master",
-    "ssm/static-boilerplate": "dev-master",
-    "ssm/theme-boilerplate": "dev-master"
+    "ssm/core": "dev-prepare-release-3.2.0"
   },
   "require-dev": {
-    "laravel/pint": "^1.13"
+    "laravel/pint": "^1.13",
+    "symfony/process": "^6.4"
   },
   "suggest": {
     "log1x/sage-directives": "A collection of useful Blade directives for WordPress and Sage (^1.0)."
@@ -36,8 +35,14 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "scripts": {
-    "post-autoload-dump": [
-      "Roots\\Acorn\\ComposerScripts::postAutoloadDump"
+    "post-create-project-cmd": [
+      "App\\ComposerScripts::postCreateProject"
+    ],
+    "setup-theme-boilerplate": [
+      "App\\ComposerScripts::setupThemeBoilerplate"
+    ],
+    "setup-static-boilerplate": [
+      "App\\ComposerScripts::setupStaticBoilerplate"
     ]
   },
   "extra": {
@@ -45,10 +50,6 @@
       "providers": [
         "App\\Providers\\ThemeServiceProvider"
       ]
-    },
-    "installer-paths": {
-      "theme-boilerplate/": ["ssm/theme-boilerplate"],
-      "static/": ["ssm/static-boilerplate"]
     }
   }
 }
