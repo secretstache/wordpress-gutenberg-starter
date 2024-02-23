@@ -118,7 +118,7 @@ class ComposerScripts
 
     public static function buildAssets(IOInterface $io)
     {
-        $io->write("<info>Build assets.</info>");
+        $io->write("<comment>Build assets...</comment>");
 
         self::runCommand([
             'yarn',
