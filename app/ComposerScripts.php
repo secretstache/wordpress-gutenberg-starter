@@ -14,24 +14,17 @@ class ComposerScripts
         $io = $event->getIO();
         $io->write('<comment>Setting up your Sage project...</comment>');
 
-        // Call setup methods for theme and static boilerplates
-        self::setupStaticBoilerplate($event);
         self::setupThemeBoilerplate($event);
-
-        // Prompt the user for the repository URL
-        $repositoryUrl = $io->ask('<question>Please enter the Git repository URL:</question> ');
-
-        // Continue only if the URL is provided
-        if (!empty($repositoryUrl)) {
-            $io->write("Setting the repository: $repositoryUrl");
-
-            // Initialize Git
-            self::initializeGitRepository($repositoryUrl, $io);
-        } else {
-            $io->write('No repository URL provided, skipping Git setup.');
-        }
-
+        self::setupStaticBoilerplate($event);
         self::installPackages($io);
+
+        $projectName = $io->ask('<question>Please enter the Project Name (for README.md): </question>', 'WordPress Starter');
+        $repositoryUrl = $io->ask('<question>Please enter the Git repository URL: </question>', 'https://github.com/secretstache/wordpress-starter');
+
+        self::updateReadme($io, $projectName, $repositoryUrl);
+
+        self::initializeGitRepository($repositoryUrl, $io);
+
         self::buildAssets($io);
     }
 
@@ -72,7 +65,7 @@ class ComposerScripts
         $io->write("<info>Theme boilerplate setup complete.</info>");
     }
 
-    private static function initializeGitRepository(String $repositoryUrl, IOInterface $io)
+    private static function initializeGitRepository(string $repositoryUrl, IOInterface $io)
     {
         $io->write("<comment>Init repository...<comment>");
 
@@ -126,6 +119,36 @@ class ComposerScripts
         ], $io);
 
         $io->write("<info>Success.</info>");
+    }
+
+    public static function updateReadme(IOInterface $io, string $projectName, string $repositoryUrl)
+    {
+        $readmePath = './README.md';
+
+        try {
+            if (!file_exists($readmePath)) {
+                throw new \Exception("README.md file does not exist.");
+            }
+
+            $readmeContent = file_get_contents($readmePath);
+            if ($readmeContent === false) {
+                throw new \Exception("Unable to read README.md content.");
+            }
+
+            // Replace placeholders with actual values
+            $readmeContent = str_replace('PROJECT_NAME', $projectName, $readmeContent);
+            $readmeContent = str_replace('REPOSITORY_URL', $repositoryUrl, $readmeContent);
+
+            // Attempt to write the updated README.md content
+            if (file_put_contents($readmePath, $readmeContent) === false) {
+                throw new \Exception("Failed to write updates to README.md.");
+            }
+
+            $io->write('<info>README.md has been updated.</info>');
+
+        } catch (\Exception $e) {
+            $io->write('<error>' . $e->getMessage() . '</error>');
+        }
     }
 
     private static function runCommand(array $command, $io)

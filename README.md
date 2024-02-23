@@ -1,6 +1,6 @@
-# Wordpress Theme Starter
+# PROJECT_NAME
 
-**NAME** is a custom theme created for NAME built on top of [Sage](https://roots.io/sage/). It contains both *functional* and *presentable* layers, *implements* custom admin and public experience, *builds* assets and views, *uses* [Blade templating engine](https://laravel.com/docs/5.7/blade) to render front-end and *provides* an ability to do more.
+**PROJECT_NAME** is a custom theme created for PROJECT_NAME built on top of [Sage](https://roots.io/sage/). It contains both *functional* and *presentable* layers, *implements* custom admin and public experience, *builds* assets and views, *uses* [Blade templating engine](https://laravel.com/docs/5.7/blade) to render front-end and *provides* an ability to do more.
 
 ## Main Concepts
 
@@ -16,9 +16,9 @@
 ## Installation
 
 1. **Clone** the repository to */wp-content/themes/*
-- git clone https://github.com/secretstache/wordpress-starter
+- git clone REPOSITORY_URL
 2. **cd** to theme’s folder
-3. **Run** *composer update && composer install - ignore warnings*
+3. **Run** *composer install - ignore warnings*
 4. **Run** *yarn install*
 6. **Run** *yarn build*
 7. **Activate** the theme
