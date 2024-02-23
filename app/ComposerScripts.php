@@ -136,6 +136,7 @@ class ComposerScripts
             $io->write("<info>Executed: " . implode(" ", $command) . "</info>");
         } catch (ProcessFailedException $exception) {
             $io->write("<error>Error executing " . implode(" ", $command) . ": " . $exception->getMessage() . "</error>");
+            die;
         }
     }
 }
