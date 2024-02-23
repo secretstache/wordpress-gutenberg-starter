@@ -28,7 +28,14 @@ class ComposerScripts
         self::setupStaticBoilerplate($event);
 
         self::updateReadme($io, $themeName, $companyName, $repositoryUrl);
-        self::updateThemeInfo($io, $themeName, $agencyName, $agencyUrl, $textDomain);
+        self::updateThemeInfo(
+            $io,
+            $themeName,
+            $companyName,
+            $agencyName,
+            $agencyUrl,
+            $textDomain
+        );
 
         self::initializeGitRepository($repositoryUrl, $io);
 
@@ -159,10 +166,11 @@ class ComposerScripts
                 throw new \Exception("Unable to read README.md content.");
             }
 
-            // Replace placeholders with actual values
-            $readmeContent = str_replace('THEME_NAME', $themeName, $readmeContent);
-            $readmeContent = str_replace('COMPANY_NAME', $companyName, $readmeContent);
-            $readmeContent = str_replace('REPOSITORY_URL', $repositoryUrl, $readmeContent);
+            $search = ['THEME_NAME', 'COMPANY_NAME', 'REPOSITORY_URL'];
+            $replace = [$themeName, $companyName, $repositoryUrl];
+
+            // Replace all placeholders with actual values in a single call
+            $readmeContent = str_replace($search, $replace, $readmeContent);
 
             // Attempt to write the updated README.md content
             if (file_put_contents($readmePath, $readmeContent) === false) {
@@ -179,6 +187,7 @@ class ComposerScripts
     private static function updateThemeInfo(
         IOInterface $io,
         string $themeName,
+        string $companyName,
         string $agencyName,
         string $agencyUrl,
         string $textDomain
@@ -195,11 +204,11 @@ class ComposerScripts
                 throw new \Exception("Unable to read style.css content.");
             }
 
-            // Replace placeholders with actual values
-            $themeInfoContent = str_replace('THEME_NAME', $themeName, $themeInfoContent);
-            $themeInfoContent = str_replace('AGENCY_NAME', $agencyName, $themeInfoContent);
-            $themeInfoContent = str_replace('AGENCY_URL', $agencyUrl, $themeInfoContent);
-            $themeInfoContent = str_replace('TEXT_DOMAIN', $textDomain, $themeInfoContent);
+            $search = ['THEME_NAME', 'COMPANY_NAME', 'AGENCY_NAME', 'AGENCY_URL', 'TEXT_DOMAIN'];
+            $replace = [$themeName, $companyName, $agencyName, $agencyUrl, $textDomain];
+
+            // Replace all placeholders with actual values in a single call
+            $themeInfoContent = str_replace($search, $replace, $themeInfoContent);
 
             // Attempt to write the updated README.md content
             if (file_put_contents($themeInfoPath, $themeInfoContent) === false) {
@@ -218,7 +227,7 @@ class ComposerScripts
         $process = new Process($command);
         try {
             $process->mustRun();
-            $io->write("<info>Executed: " . implode(" ", $command) . "</info>");
+            //$io->write("<info>Executed: " . implode(" ", $command) . "</info>");
         } catch (ProcessFailedException $exception) {
             $io->write("<error>Error executing " . implode(" ", $command) . ": " . $exception->getMessage() . "</error>");
             die;
