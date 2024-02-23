@@ -64,36 +64,6 @@ collect(['setup', 'filters', 'core', 'scripts', 'ssm'])
         }
     });
 
-function ssm_restrict_block_types( $allowed_blocks, $block_editor_context ) {
-    $restrictedBlocks = [
-
-    ];
-
-    if ( isset($block_editor_context->post) ) {
-        $post_type = $block_editor_context->post->post_type;
-
-        if ( $post_type === 'post' || $post_type === 'page' ) {
-            // If allowed_blocks is boolean true (all blocks are allowed), then fetch all registered blocks
-            if ( $allowed_blocks === true ) {
-                $allowed_blocks = array_keys( \WP_Block_Type_Registry::get_instance()->get_all_registered() );
-            }
-
-            foreach ( $allowed_blocks as $key => $value ) {
-                if ( in_array($value, $restrictedBlocks) ) {
-                    unset( $allowed_blocks[$key] );
-                }
-            }
-
-            return array_values( $allowed_blocks );
-        }
-    }
-
-    return $allowed_blocks;
-}
-
-add_filter( 'allowed_block_types_all', 'ssm_restrict_block_types', 10, 2 );
-
-
 /**
  * Boot SSM Core
  */
