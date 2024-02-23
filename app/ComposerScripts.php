@@ -55,23 +55,14 @@ class ComposerScripts
             'static'
         ], $io);
 
-        self::runCommand([
-            'cd',
-            './static'
-        ], $io);
-
+        // Remove the .git directory
         self::runCommand([
             'rm',
             '-rf',
-            './.git'
+            './static/.git'
         ], $io);
 
-        self::runCommand([
-            'cd',
-            '../',
-        ], $io);
-
-        $io->write("<info>Static boilerplate setup complete.</info>");
+        $io->write("<info>Complete.</info>");
     }
 
     public static function setupThemeBoilerplate(Event $event)
@@ -93,7 +84,7 @@ class ComposerScripts
 
         self::runCommand(['wp', 'acorn', 'ssm:setup'], $io);
 
-        $io->write("<info>Theme boilerplate setup complete.</info>");
+        $io->write("<info>Complete.</info>");
     }
 
     private static function initializeGitRepository(string $repositoryUrl, IOInterface $io)
@@ -111,7 +102,7 @@ class ComposerScripts
 
         self::runCommand(['git', 'branch', '-M', 'master'], $io);
 
-        $io->write("<comment>Create a static branch based on master...<comment>");
+        $io->write("<comment>Create a static branch...<comment>");
         self::runCommand(['git', 'checkout', '-b', 'static'], $io);
 
         // It's important to push the 'master' branch before switching away from it, especially if it's the first push.
@@ -125,7 +116,7 @@ class ComposerScripts
         $io->write("<comment>Switching back to master branch...<comment>");
         self::runCommand(['git', 'checkout', 'master'], $io);
 
-        $io->write("<info>Success.</info>");
+        $io->write("<info>Complete.</info>");
     }
 
     private static function installPackages(IOInterface $io)
@@ -137,7 +128,7 @@ class ComposerScripts
             'install',
         ], $io);
 
-        $io->write("<info>Success.</info>");
+        $io->write("<info>Complete.</info>");
     }
 
     private static function buildAssets(IOInterface $io)
@@ -149,12 +140,14 @@ class ComposerScripts
             'build',
         ], $io);
 
-        $io->write("<info>Success.</info>");
+        $io->write("<info>Complete.</info>");
     }
 
     private static function updateReadme(IOInterface $io, string $themeName, string $companyName, string $repositoryUrl)
     {
         $readmePath = './README.md';
+
+        $io->write('<comment>Updating README.md ...</comment>');
 
         try {
             if (!file_exists($readmePath)) {
@@ -177,7 +170,7 @@ class ComposerScripts
                 throw new \Exception("Failed to write updates to README.md.");
             }
 
-            $io->write('<info>README.md has been updated.</info>');
+            $io->write("<info>Complete.</info>");
 
         } catch (\Exception $e) {
             $io->write('<error>' . $e->getMessage() . '</error>');
@@ -193,6 +186,8 @@ class ComposerScripts
         string $textDomain
     ) {
         $themeInfoPath = './style.css';
+
+        $io->write('<comment>Updating style.css ...</comment>');
 
         try {
             if (!file_exists($themeInfoPath)) {
@@ -215,7 +210,7 @@ class ComposerScripts
                 throw new \Exception("Failed to write updates to README.md.");
             }
 
-            $io->write('<info>style.css has been updated.</info>');
+            $io->write("<info>Complete.</info>");
 
         } catch (\Exception $e) {
             $io->write('<error>' . $e->getMessage() . '</error>');
