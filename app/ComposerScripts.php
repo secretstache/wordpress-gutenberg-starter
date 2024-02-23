@@ -97,7 +97,7 @@ class ComposerScripts
         $io->write("<info>Success.</info>");
     }
 
-    public static function installPackages(IOInterface $io)
+    private static function installPackages(IOInterface $io)
     {
         $io->write("<comment>Install npm dependencies...<comment>");
 
@@ -109,7 +109,7 @@ class ComposerScripts
         $io->write("<info>Success.</info>");
     }
 
-    public static function buildAssets(IOInterface $io)
+    private static function buildAssets(IOInterface $io)
     {
         $io->write("<comment>Build assets...</comment>");
 
@@ -121,7 +121,7 @@ class ComposerScripts
         $io->write("<info>Success.</info>");
     }
 
-    public static function updateReadme(IOInterface $io, string $projectName, string $repositoryUrl)
+    private static function updateReadme(IOInterface $io, string $projectName, string $repositoryUrl)
     {
         $readmePath = './README.md';
 
