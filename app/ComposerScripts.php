@@ -12,19 +12,26 @@ class ComposerScripts
     public static function postCreateProject(Event $event)
     {
         $io = $event->getIO();
-        $io->write('<comment>Setting up your Sage project...</comment>');
+
+        $themeName = $io->ask('<question>Please enter the Theme Name: </question>', 'Wordpress Starter');
+        $clientName = $io->ask('<question>Please enter the Client Name: </question>', 'Secret Stache Media');
+        $agencyName = $io->ask('<question>Please enter the Agency Name: </question>', 'Secret Stache Media');
+        $agencyUrl = $io->ask('<question>Please enter the Agency URL: </question>', 'https://secretstache.com/');
+        $textDomain = $io->ask('<question>Please enter the Text Domain: </question>', 'ssm');
+
+        $repositoryUrl = $io->ask('<question>Please enter the Git repository URL: </question>', 'https://github.com/secretstache/wordpress-starter');
+
+        $io->write('<comment>Setting up your project...</comment>');
 
         self::setupThemeBoilerplate($event);
         self::setupStaticBoilerplate($event);
-        self::installPackages($io);
 
-        $projectName = $io->ask('<question>Please enter the Project Name (for README.md): </question>', 'WordPress Starter');
-        $repositoryUrl = $io->ask('<question>Please enter the Git repository URL: </question>', 'https://github.com/secretstache/wordpress-starter');
-
-        self::updateReadme($io, $projectName, $repositoryUrl);
+        self::updateReadme($io, $themeName, $clientName, $repositoryUrl);
+        self::updateThemeInfo($io, $themeName, $agencyName, $agencyUrl, $textDomain);
 
         self::initializeGitRepository($repositoryUrl, $io);
 
+        self::installPackages($io);
         self::buildAssets($io);
     }
 
@@ -121,7 +128,7 @@ class ComposerScripts
         $io->write("<info>Success.</info>");
     }
 
-    private static function updateReadme(IOInterface $io, string $projectName, string $repositoryUrl)
+    private static function updateReadme(IOInterface $io, string $themeName, string $clientName, string $repositoryUrl)
     {
         $readmePath = './README.md';
 
@@ -136,7 +143,8 @@ class ComposerScripts
             }
 
             // Replace placeholders with actual values
-            $readmeContent = str_replace('PROJECT_NAME', $projectName, $readmeContent);
+            $readmeContent = str_replace('THEME_NAME', $themeName, $readmeContent);
+            $readmeContent = str_replace('CLIENT_NAME', $clientName, $readmeContent);
             $readmeContent = str_replace('REPOSITORY_URL', $repositoryUrl, $readmeContent);
 
             // Attempt to write the updated README.md content
@@ -145,6 +153,43 @@ class ComposerScripts
             }
 
             $io->write('<info>README.md has been updated.</info>');
+
+        } catch (\Exception $e) {
+            $io->write('<error>' . $e->getMessage() . '</error>');
+        }
+    }
+
+    private static function updateThemeInfo(
+        IOInterface $io,
+        string $themeName,
+        string $agencyName,
+        string $agencyUrl,
+        string $textDomain
+    ) {
+        $themeInfoPath = './style.css';
+
+        try {
+            if (!file_exists($themeInfoPath)) {
+                throw new \Exception("style.css file does not exist.");
+            }
+
+            $themeInfoContent = file_get_contents($themeInfoPath);
+            if ($themeInfoContent === false) {
+                throw new \Exception("Unable to read style.css content.");
+            }
+
+            // Replace placeholders with actual values
+            $themeInfoContent = str_replace('THEME_NAME', $themeName, $themeInfoContent);
+            $themeInfoContent = str_replace('AGENCY_NAME', $agencyName, $themeInfoContent);
+            $themeInfoContent = str_replace('AGENCY_URL', $agencyUrl, $themeInfoContent);
+            $themeInfoContent = str_replace('TEXT_DOMAIN', $textDomain, $themeInfoContent);
+
+            // Attempt to write the updated README.md content
+            if (file_put_contents($themeInfoPath, $themeInfoContent) === false) {
+                throw new \Exception("Failed to write updates to README.md.");
+            }
+
+            $io->write('<info>style.css has been updated.</info>');
 
         } catch (\Exception $e) {
             $io->write('<error>' . $e->getMessage() . '</error>');

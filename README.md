@@ -1,6 +1,6 @@
-# PROJECT_NAME
+# THEME_NAME
 
-**PROJECT_NAME** is a custom theme created for PROJECT_NAME built on top of [Sage](https://roots.io/sage/). It contains both *functional* and *presentable* layers, *implements* custom admin and public experience, *builds* assets and views, *uses* [Blade templating engine](https://laravel.com/docs/5.7/blade) to render front-end and *provides* an ability to do more.
+**THEME_NAME** is a custom theme created for CLIENT_NAME built on top of [Sage](https://roots.io/sage/). It contains both *functional* and *presentable* layers, *implements* custom admin and public experience, *builds* assets and views, *uses* [Blade templating engine](https://laravel.com/docs/5.7/blade) to render front-end and *provides* an ability to do more.
 
 ## Main Concepts
 
