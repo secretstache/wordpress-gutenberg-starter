@@ -47,6 +47,12 @@ class ComposerScripts
             'static'
         ], $io);
 
+        self::runCommand([
+            'rm',
+            '-rf',
+            './.git'
+        ], $io);
+
         $io->write("<info>Static boilerplate setup complete.</info>");
     }
 
