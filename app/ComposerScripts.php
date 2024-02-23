@@ -14,7 +14,8 @@ class ComposerScripts
         $io = $event->getIO();
 
         $themeName = $io->ask('<question>Please enter the Theme Name: </question>', 'Wordpress Starter');
-        $clientName = $io->ask('<question>Please enter the Client Name: </question>', 'Secret Stache Media');
+        $companyName = $io->ask('<question>Please enter the Company Name: </question>', 'Secret Stache Media');
+
         $agencyName = $io->ask('<question>Please enter the Agency Name: </question>', 'Secret Stache Media');
         $agencyUrl = $io->ask('<question>Please enter the Agency URL: </question>', 'https://secretstache.com/');
         $textDomain = $io->ask('<question>Please enter the Text Domain: </question>', 'ssm');
@@ -26,7 +27,7 @@ class ComposerScripts
         self::setupThemeBoilerplate($event);
         self::setupStaticBoilerplate($event);
 
-        self::updateReadme($io, $themeName, $clientName, $repositoryUrl);
+        self::updateReadme($io, $themeName, $companyName, $repositoryUrl);
         self::updateThemeInfo($io, $themeName, $agencyName, $agencyUrl, $textDomain);
 
         self::initializeGitRepository($repositoryUrl, $io);
@@ -48,9 +49,19 @@ class ComposerScripts
         ], $io);
 
         self::runCommand([
+            'cd',
+            './static'
+        ], $io);
+
+        self::runCommand([
             'rm',
             '-rf',
             './.git'
+        ], $io);
+
+        self::runCommand([
+            'cd',
+            '../',
         ], $io);
 
         $io->write("<info>Static boilerplate setup complete.</info>");
@@ -134,7 +145,7 @@ class ComposerScripts
         $io->write("<info>Success.</info>");
     }
 
-    private static function updateReadme(IOInterface $io, string $themeName, string $clientName, string $repositoryUrl)
+    private static function updateReadme(IOInterface $io, string $themeName, string $companyName, string $repositoryUrl)
     {
         $readmePath = './README.md';
 
@@ -150,7 +161,7 @@ class ComposerScripts
 
             // Replace placeholders with actual values
             $readmeContent = str_replace('THEME_NAME', $themeName, $readmeContent);
-            $readmeContent = str_replace('CLIENT_NAME', $clientName, $readmeContent);
+            $readmeContent = str_replace('COMPANY_NAME', $companyName, $readmeContent);
             $readmeContent = str_replace('REPOSITORY_URL', $repositoryUrl, $readmeContent);
 
             // Attempt to write the updated README.md content
