@@ -13,6 +13,12 @@ class ComposerScripts
     {
         $io = $event->getIO();
 
+        // Get the current working directory, which should be the project directory
+        $projectDirectory = getcwd();
+
+        // Extract the last part of the path as the directory name
+        $themePublicPathName = basename($projectDirectory); // e.g. ssm2023, amd2024
+
         $themeName = $io->ask('<question>Please enter the Theme Name: </question>', 'Wordpress Starter');
         $companyName = $io->ask('<question>Please enter the Company Name: </question>', 'Secret Stache Media');
 
@@ -28,6 +34,7 @@ class ComposerScripts
         self::setupStaticBoilerplate($event);
 
         self::updateReadme($io, $themeName, $companyName, $repositoryUrl);
+
         self::updateThemeInfo(
             $io,
             $themeName,
@@ -36,6 +43,8 @@ class ComposerScripts
             $agencyUrl,
             $textDomain
         );
+
+        self::updateThemePublicPathName($io, $themePublicPathName);
 
         self::initializeGitRepository($repositoryUrl, $io);
 
@@ -93,27 +102,21 @@ class ComposerScripts
 
         self::runCommand(['git', 'init'], $io);
 
-        $io->write("<comment>Add remote origin...<comment>");
         self::runCommand(['git', 'remote', 'add', 'origin', $repositoryUrl], $io);
 
-        $io->write("<comment>Commit Changes...<comment>");
         self::runCommand(['git', 'add', '.'], $io);
         self::runCommand(['git', 'commit', '-m', 'Initial commit'], $io);
 
         self::runCommand(['git', 'branch', '-M', 'master'], $io);
 
-        $io->write("<comment>Create a static branch...<comment>");
         self::runCommand(['git', 'checkout', '-b', 'static'], $io);
 
         // It's important to push the 'master' branch before switching away from it, especially if it's the first push.
-        $io->write("<comment>Push master to the repository...<comment>");
         self::runCommand(['git', 'push', '-u', 'origin', 'master'], $io);
 
         // After pushing 'master', you're now on 'static' and can push it as well.
-        $io->write("<comment>Push static to the repository...<comment>");
         self::runCommand(['git', 'push', '-u', 'origin', 'static'], $io);
 
-        $io->write("<comment>Switching back to master branch...<comment>");
         self::runCommand(['git', 'checkout', 'master'], $io);
 
         $io->write("<info>Complete.</info>");
@@ -145,17 +148,17 @@ class ComposerScripts
 
     private static function updateReadme(IOInterface $io, string $themeName, string $companyName, string $repositoryUrl)
     {
-        $readmePath = './README.md';
+        $filePath = './README.md';
 
-        $io->write('<comment>Updating README.md ...</comment>');
+        $io->write('<comment>Updating README.md...</comment>');
 
         try {
-            if (!file_exists($readmePath)) {
+            if (!file_exists($filePath)) {
                 throw new \Exception("README.md file does not exist.");
             }
 
-            $readmeContent = file_get_contents($readmePath);
-            if ($readmeContent === false) {
+            $fileContent = file_get_contents($filePath);
+            if ($fileContent === false) {
                 throw new \Exception("Unable to read README.md content.");
             }
 
@@ -163,10 +166,10 @@ class ComposerScripts
             $replace = [$themeName, $companyName, $repositoryUrl];
 
             // Replace all placeholders with actual values in a single call
-            $readmeContent = str_replace($search, $replace, $readmeContent);
+            $fileContent = str_replace($search, $replace, $fileContent);
 
             // Attempt to write the updated README.md content
-            if (file_put_contents($readmePath, $readmeContent) === false) {
+            if (file_put_contents($filePath, $fileContent) === false) {
                 throw new \Exception("Failed to write updates to README.md.");
             }
 
@@ -185,17 +188,17 @@ class ComposerScripts
         string $agencyUrl,
         string $textDomain
     ) {
-        $themeInfoPath = './style.css';
+        $filePath = './style.css';
 
-        $io->write('<comment>Updating style.css ...</comment>');
+        $io->write('<comment>Updating style.css...</comment>');
 
         try {
-            if (!file_exists($themeInfoPath)) {
+            if (!file_exists($filePath)) {
                 throw new \Exception("style.css file does not exist.");
             }
 
-            $themeInfoContent = file_get_contents($themeInfoPath);
-            if ($themeInfoContent === false) {
+            $fileContent = file_get_contents($filePath);
+            if ($fileContent === false) {
                 throw new \Exception("Unable to read style.css content.");
             }
 
@@ -203,11 +206,45 @@ class ComposerScripts
             $replace = [$themeName, $companyName, $agencyName, $agencyUrl, $textDomain];
 
             // Replace all placeholders with actual values in a single call
-            $themeInfoContent = str_replace($search, $replace, $themeInfoContent);
+            $fileContent = str_replace($search, $replace, $fileContent);
 
             // Attempt to write the updated README.md content
-            if (file_put_contents($themeInfoPath, $themeInfoContent) === false) {
+            if (file_put_contents($filePath, $fileContent) === false) {
                 throw new \Exception("Failed to write updates to README.md.");
+            }
+
+            $io->write("<info>Complete.</info>");
+
+        } catch (\Exception $e) {
+            $io->write('<error>' . $e->getMessage() . '</error>');
+        }
+    }
+
+    private static function updateThemePublicPathName(IOInterface $io, string $themePublicPathName)
+    {
+        $filePath = './bud.config.js';
+
+        $io->write('<comment>Updating bud.config.js...</comment>');
+
+        try {
+            if (!file_exists($filePath)) {
+                throw new \Exception("bud.config.js file does not exist.");
+            }
+
+            $fileContent = file_get_contents($filePath);
+            if ($fileContent === false) {
+                throw new \Exception("Unable to read bud.config.js content.");
+            }
+
+            $search = ['THEME_PUBLIC_PATH_NAME'];
+            $replace = [$themePublicPathName];
+
+            // Replace all placeholders with actual values in a single call
+            $fileContent = str_replace($search, $replace, $fileContent);
+
+            // Attempt to write the updated README.md content
+            if (file_put_contents($filePath, $fileContent) === false) {
+                throw new \Exception("Failed to write updates to bud.config.js");
             }
 
             $io->write("<info>Complete.</info>");
