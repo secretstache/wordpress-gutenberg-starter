@@ -26,7 +26,7 @@ class ComposerScripts
         $agencyUrl = $io->ask('<question>Please enter the Agency URL: </question>', 'https://secretstache.com/');
         $textDomain = $io->ask('<question>Please enter the Text Domain: </question>', 'ssm');
 
-        $repositoryUrl = $io->ask('<question>Please enter the Git repository URL: </question>', 'https://github.com/secretstache/wordpress-starter');
+        $repositoryUrl = $io->ask('<question>Please enter the Git repository URL: </question>', '');
 
         $io->write('<comment>Setting up your project...</comment>');
 
