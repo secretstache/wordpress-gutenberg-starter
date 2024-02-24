@@ -152,7 +152,7 @@ class ComposerScripts
         self::runCommand([
             'yarn',
             'build',
-        ], $io);
+        ], $io, 360);
 
         $io->write("<info>Complete.</info>");
     }
@@ -265,9 +265,11 @@ class ComposerScripts
         }
     }
 
-    private static function runCommand(array $command, $io)
+    private static function runCommand(array $command, IOInterface $io, $timeoutInSeconds = 60)
     {
         $process = new Process($command);
+        $process->setTimeout($timeoutInSeconds);
+
         try {
             $process->mustRun();
             //$io->write("<info>Executed: " . implode(" ", $command) . "</info>");
