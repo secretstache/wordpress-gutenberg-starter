@@ -105,6 +105,17 @@ class ComposerScripts
         self::runCommand(['git', 'remote', 'add', 'origin', $repositoryUrl], $io);
 
         self::runCommand(['git', 'add', '.'], $io);
+
+        // Path to the .gitignore file within the cache directory
+        $cacheGitIgnorePath = './storage/framework/cache/.gitignore';
+
+        // Check if the ./storage/framework/cache/.gitignore file exists, and add it to Git
+        if (file_exists($cacheGitIgnorePath)) {
+            self::runCommand(['git', 'add', $cacheGitIgnorePath], $io);
+        } else {
+            $io->write('<error>Cache .gitignore file does not exist, unable to ensure cache directory is tracked.</error>');
+        }
+
         self::runCommand(['git', 'commit', '-m', 'Initial commit'], $io);
 
         self::runCommand(['git', 'branch', '-M', 'master'], $io);
