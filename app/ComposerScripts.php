@@ -111,7 +111,7 @@ class ComposerScripts
 
         // Check if the ./storage/framework/cache/.gitignore file exists, and add it to Git
         if (file_exists($cacheGitIgnorePath)) {
-            self::runCommand(['git', 'add', $cacheGitIgnorePath], $io);
+            self::runCommand(['git', 'add', '-f', $cacheGitIgnorePath], $io);
         } else {
             $io->write('<error>Cache .gitignore file does not exist, unable to ensure cache directory is tracked.</error>');
         }
