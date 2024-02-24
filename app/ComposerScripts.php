@@ -124,7 +124,7 @@ class ComposerScripts
 
     private static function installPackages(IOInterface $io)
     {
-        $io->write("<comment>Install npm dependencies...<comment>");
+        $io->write("<comment>Installing npm dependencies...<comment>");
 
         self::runCommand([
             'yarn',
@@ -136,7 +136,7 @@ class ComposerScripts
 
     private static function buildAssets(IOInterface $io)
     {
-        $io->write("<comment>Build assets...</comment>");
+        $io->write("<comment>Building assets...</comment>");
 
         self::runCommand([
             'yarn',
