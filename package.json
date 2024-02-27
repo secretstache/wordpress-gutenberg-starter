@@ -10,7 +10,7 @@
   "type": "module",
   "scripts": {
     "dev": "bud dev --dashboard --hot",
-    "build": "bud build --dashboard",
+    "build": "bud build --dashboard --no-browserslist-update",
     "static-install": "yarn --cwd ./static install",
     "static-build": "yarn --cwd ./static build",
     "static-staging-build": "yarn --cwd ./static staging-build",
