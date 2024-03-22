@@ -72,6 +72,7 @@ $core->setup();
 
 add_filter('upload_mimes', function ($mimes) {
     $mimes['json'] = 'text/plain';
+    $mimes['lottie'] = 'application/json';
 
     return $mimes;
 });

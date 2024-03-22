@@ -34,7 +34,6 @@ export default async (app) => {
 
     app.eslint
         .extends([ '@roots/eslint-config' ])
-        .setRules({ 'no-console': 'error' })
         .setFailOnError(false)
         .setFailOnWarning(false);
 
