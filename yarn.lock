@@ -4560,13 +4560,6 @@ browserslist@^4.0.0, browserslist@^4.14.5, browserslist@^4.22.1, browserslist@^4
     node-releases "^2.0.14"
     update-browserslist-db "^1.0.13"
 
-bud-wp-editor-query@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/bud-wp-editor-query/-/bud-wp-editor-query-0.0.4.tgz#4c3a7d9630ed42b036c1a0672568f109e0b4178e"
-  integrity sha512-MzLW7RpOq3Qx+p4wFbp8JL8TidJ5JYvBl6dB0jNtKNgEEfOyOkZjlnQAHQmpm1ZrLBqsN1jUkYjt+Q7nskLTNw==
-  dependencies:
-    css-mediaquery "^0.1.2"
-
 buffer-from@^1.0.0:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/buffer-from/-/buffer-from-1.1.2.tgz#2b146a6fd72e80b4f55d255f35ed59a3a9a41bd5"
@@ -5057,11 +5050,6 @@ css-loader@6.8.1:
     postcss-modules-values "^4.0.0"
     postcss-value-parser "^4.2.0"
     semver "^7.3.8"
-
-css-mediaquery@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/css-mediaquery/-/css-mediaquery-0.1.2.tgz#6a2c37344928618631c54bd33cedd301da18bea0"
-  integrity sha512-COtn4EROW5dBGlE/4PiKnh6rZpAPxDeFLaEEwt4i10jpDMFt2EhQGS79QmmrO+iKCHv0PU/HrOWEhijFd1x99Q==
 
 css-minimizer-webpack-plugin@5.0.1:
   version "5.0.1"
