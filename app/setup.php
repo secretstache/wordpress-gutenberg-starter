@@ -113,11 +113,3 @@ add_action('after_setup_theme', function () {
         'style',
     ]);
 }, 20);
-
-/**
- * ssm-core removes these features but we still need them
- */
-add_action( 'admin_init', function () {
-    add_post_type_support( "page", "editor" );
-    add_post_type_support( "page", "thumbnail" );
-}, 99);
