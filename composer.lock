@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d09a34d1ad2cdd0fc373df245b98ae68",
+    "content-hash": "08fbdd5726a3bc62c65c5c85ebab83e3",
     "packages": [
         {
             "name": "brick/math",
@@ -3301,21 +3301,21 @@
             "time": "2019-01-28T09:46:14+00:00"
         },
         {
-            "name": "ssm/core",
-            "version": "dev-prepare-release-3.2.0",
+            "name": "secretstache/wordpress-core",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/secretstache/ssm-core.git",
-                "reference": "cf5137a26bbd02788d291176963069ccd4d301f5"
+                "url": "https://github.com/secretstache/wordpress-core.git",
+                "reference": "16fcd16f81c2e732f5cb0ff8315d5f088a7d8026"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/secretstache/ssm-core/zipball/cf5137a26bbd02788d291176963069ccd4d301f5",
-                "reference": "cf5137a26bbd02788d291176963069ccd4d301f5",
+                "url": "https://api.github.com/repos/secretstache/wordpress-core/zipball/16fcd16f81c2e732f5cb0ff8315d5f088a7d8026",
+                "reference": "16fcd16f81c2e732f5cb0ff8315d5f088a7d8026",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.1"
+                "php": ">=8.1"
             },
             "type": "package",
             "autoload": {
@@ -3344,10 +3344,10 @@
             "description": "A collection of modules to implement custom admin and public WordPress customization for SSM projects",
             "homepage": "https://www.secretstache.com/",
             "support": {
-                "issues": "https://github.com/secretstache/ssm-core/issues",
-                "source": "https://github.com/secretstache/ssm-core/tree/prepare-release-3.2.0"
+                "issues": "https://github.com/secretstache/wordpress-core/issues",
+                "source": "https://github.com/secretstache/wordpress-core/tree/v1.0.2"
             },
-            "time": "2024-02-22T20:24:55+00:00"
+            "time": "2024-04-10T14:39:16+00:00"
         },
         {
             "name": "stoutlogic/acf-builder",
@@ -5556,9 +5556,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "ssm/core": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
