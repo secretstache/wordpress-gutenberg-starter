@@ -1,5 +1,5 @@
 {
-  "name": "ssm/wordpress-starter",
+  "name": "secretstache/wordpress-starter",
   "type": "wordpress-theme",
   "license": "MIT",
   "description": "WordPress starter theme based on the Sage framework",
