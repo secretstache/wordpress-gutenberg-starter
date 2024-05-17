@@ -44,35 +44,47 @@ class Gutenberg extends Composer
 
         $args = [
             'post_type'      => ( $data['data_source'] && $data['data_source'] !== 'posts' && $data['data_source'] !== 'resources' ) ? $data['prefix'] . '_' . $data['data_source'] : 'post',
-            'posts_per_page' => $data['number_posts'],
-            'post__not_in'   => $data['excluded_posts'],
+            'posts_per_page' => $data['number_posts'] ?? -1,
+            'post__not_in'   => $data['excluded_posts'] ?? [],
             'status'         => 'publish',
             'fields' 	     => 'ids',
         ];
-
-        $posts = [];
     
-        if ( $data['query'] == 'latest' || $data['query'] == 'all' ) {
+        if ( $data['query'] == 'latest_by_' . str_replace( $data['prefix'] . '_' . $data['data_source'] . '_', '', $data['taxonomy_name'] ) && $data['selected_terms'] ) {
     
-            $posts = get_posts($args);
-    
-        } elseif ( $data['query'] == 'latest_by_' . str_replace( $data['prefix'] . '_', '', $data['taxonomy_name'] ) && $data['selected_terms']) {
-    
-            $args['tax_query'] =  [
-                [
-                    'taxonomy' => $data['taxonomy_name'],
-                    'field'    => 'term_id',
-                    'terms'    => $data['selected_terms'],
+            $taxonomy_args = [
+                'tax_query' => [ 
+                    [
+                        'taxonomy' => $data['taxonomy_name'],
+                        'field'    => 'term_id',
+                        'terms'    => $data['selected_terms'],
+                    ]
                 ]
             ];
-    
-            $posts = get_posts($args);
+
+            $args = array_merge(
+                $args,
+                $taxonomy_args
+            );
+  
     
         } elseif ($data['query'] == 'curated' && !empty( $data['curated_posts'] ) ) {
+
+            $post_in = array_column($data['curated_posts'], 'value');
     
-            $posts = array_column($data['curated_posts'], 'value');
+            $curated_args = [
+                'post__in'      => $post_in,
+                'orderby'       => 'post__in'
+            ];
+    
+            $args = array_merge(
+                $args,
+                $curated_args
+            );
     
         }
+
+        $posts = get_posts($args);
         
         return $posts;
       

@@ -19,7 +19,7 @@ class ContentFeed extends Block
             'data_source'       => $data_source, 
             'query'             => $query, 
             'number_posts'      => $number_posts, 
-            'taxonomy_name'     => 'category', 
+            'taxonomy_name'     => $data_source == 'resources' ? 'category' : 'ssm_news_category', 
             'selected_terms'    => $categories, 
             'curated_posts'     => $curated_posts, 
             'prefix'            => 'ssm'

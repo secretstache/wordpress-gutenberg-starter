@@ -13,6 +13,7 @@ export const POST_TYPES = {
     NEWS: 'ssm_news',
     RESOURCES: 'posts',
     RESOURCES_CATEGORIES: 'category',
+    NEWS_CATEGORIES: 'ssm_news_category',
 };
 
 export const QUERY_TYPES = {

@@ -51,7 +51,8 @@ export const edit = ({ attributes, setAttributes }) => {
     };
 
     const categoriesOptions = useSelect((select) => {
-        const categories = select('core').getEntityRecords('taxonomy', 'category', { per_page: -1 });
+        const taxonomySlug = dataSource === DATA_SOURCES.NEWS ? POST_TYPES.NEWS_CATEGORIES : POST_TYPES.RESOURCES_CATEGORIES;
+        const categories = select('core').getEntityRecords('taxonomy', taxonomySlug, { per_page: -1 });
 
         return categories?.map((category) => {
             const tempElement = document.createElement('div');
@@ -62,7 +63,7 @@ export const edit = ({ attributes, setAttributes }) => {
                 label: tempElement.textContent || tempElement.innerText || '',
             };
         });
-    }, []);
+    }, [dataSource, queryType]);
 
     const {
         postsToShow,
@@ -146,20 +147,24 @@ export const edit = ({ attributes, setAttributes }) => {
 
                     <Divider margin={2} />
 
+                    { 
+                        // Query Radio
+                    }
+
                     <RadioControl
                         label="Query"
                         selected={queryType}
                         options={[
                             { label: 'Latest', value: QUERY_TYPES.LATEST },
-                            ...(
-                                dataSource === DATA_SOURCES.RESOURCES
-                                    ? [{ label: 'Latest by Category', value: QUERY_TYPES.LATEST_BY_CATEGORY }]
-                                    : []
-                            ),
+                            { label: 'Latest by Category', value: QUERY_TYPES.LATEST_BY_CATEGORY },    
                             { label: 'Curated', value: QUERY_TYPES.CURATED },
                         ]}
                         onChange={(queryType) => setAttributes({ queryType })}
                     />
+
+                    {
+                        //Curated posts selects
+                    }
 
                     {
                         isNews && queryType === QUERY_TYPES.CURATED && (
@@ -198,6 +203,10 @@ export const edit = ({ attributes, setAttributes }) => {
                     }
 
                     {
+                        //Taxonomy selects
+                    }
+
+                    {
                         isResources && queryType === QUERY_TYPES.LATEST_BY_CATEGORY && (
                             <>
                                 <Divider margin={2} />
@@ -214,6 +223,29 @@ export const edit = ({ attributes, setAttributes }) => {
                                 </BaseControl>
                             </>
                         )
+                    }
+
+                    {
+                        isNews && queryType === QUERY_TYPES.LATEST_BY_CATEGORY && (
+                            <>
+                                <Divider margin={2} />
+
+                                <BaseControl label="Categories to Show">
+                                    <Select
+                                        isMulti
+                                        options={categoriesOptions}
+                                        value={selectedCategories?.map(id => categoriesOptions?.find(option => option.value === id))}
+                                        onChange={(newSelectedCategories) => onCategoriesChange(newSelectedCategories)}
+                                        className="react-select-container"
+                                        classNamePrefix="react-select"
+                                    />
+                                </BaseControl>
+                            </>
+                        )
+                    }
+
+                    {
+                        //Number of posts control
                     }
 
                     {
@@ -265,14 +297,6 @@ export const edit = ({ attributes, setAttributes }) => {
                                             {postsToShow?.map((post) => {
                                                 const link = post?.link || '#';
 
-                                                const featuredImage = post?._embedded?.['wp:featuredmedia']?.[0];
-                                                const imageUrl = featuredImage?.source_url;
-                                                const imageAlt = featuredImage?.title?.rendered;
-
-                        
-
-                                                const isVideo = post?.resource_categories?.some((category) => category.slug === 'webinars-videos');
-
                                                 return (
                                                     <div key={post.id} className="splide__slide">
                                                         <a
@@ -282,25 +306,13 @@ export const edit = ({ attributes, setAttributes }) => {
                                                             rel="noreferrer"
                                                             className="wp-block-ssm-content-feed__item"
                                                         >
-                                                            <div className={classNames(`wp-block-ssm-content-feed__${isVideo ? 'video' : 'image'}`, {
-                                                                'has-video-player': isVideo,
-                                                            })}>
-                                                                <img src={imageUrl} alt={imageAlt}/>
-                                                            </div>
+                                                           
 
                                                             <div className="wp-block-ssm-content-feed__content">
                                                                 <h5
                                                                     className="wp-block-ssm-content-feed__title"
                                                                     dangerouslySetInnerHTML={{ __html: post?.title?.rendered }}
                                                                 />
-
-                                                                {isResources && (
-                                                                    <ul className="wp-block-ssm-content-feed__category-list">
-                                                                        {post.resource_categories?.map((category) => (
-                                                                            <li key={category.id}>{category.name}</li>
-                                                                        ))}
-                                                                    </ul>
-                                                                )}
                                                             </div>
                                                         </a>
                                                     </div>
