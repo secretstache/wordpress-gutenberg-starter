@@ -1,0 +1,67 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "title": "Content Feed",
+  "description": "",
+  "name": "ssm/content-feed",
+  "keywords": [
+    "content",
+    "feed",
+    "cf"
+  ],
+  "category": "media",
+  "example": {},
+  "icon": "columns",
+  "supports": {
+    "spacing": {
+      "margin": true
+    }
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": ""
+    },
+    "dataSource": {
+      "type": "string",
+      "enum": [
+        "news",
+        "resources"
+      ],
+      "default": "news"
+    },
+    "queryType": {
+      "type": "string",
+      "enum": [
+        "latest",
+        "latest_by_category",
+        "curated"
+      ],
+      "default": "latest"
+    },
+    "numberOfPosts": {
+      "type": "number",
+      "default": 5
+    },
+    "curatedPosts": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number"
+          },
+          "label": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "selectedCategories": {
+      "type": "array",
+      "default": []
+    }
+  },
+  "render": "index"
+}

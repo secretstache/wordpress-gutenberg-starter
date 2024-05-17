@@ -17,7 +17,7 @@ class Block
 
     private function setMetadata(): void
     {
-        $this->blockMetadataPath = get_theme_file_path("/resources/scripts/blocks/{$this->folderName}/block.json");;
+        $this->blockMetadataPath = get_theme_file_path("/resources/scripts/editor/blocks/{$this->folderName}/block.json");;
 
         if (file_exists($this->blockMetadataPath)) {
             $this->blockMetadata = json_decode(file_get_contents($this->blockMetadataPath), true);
