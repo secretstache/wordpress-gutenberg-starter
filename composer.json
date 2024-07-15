@@ -17,7 +17,8 @@
     "roots/acorn-prettify": "^1.0.0",
     "secretstache/wordpress-core": "^1.0.0",
     "johnbillion/extended-cpts": "^4.3",
-    "stoutlogic/acf-builder": "^1.9"
+    "stoutlogic/acf-builder": "^1.9",
+    "log1x/navi": "*"
   },
   "require-dev": {
     "laravel/pint": "^1.13",
