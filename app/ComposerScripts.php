@@ -32,9 +32,11 @@ class ComposerScripts
         $repositoryUrl = '';
 
         if ($isInitGit) {
-            $repositoryUrl = $io->ask('<question>Repository URL:</question> ', '');
+            $isPushToGit = $io->askConfirmation('<question>Push to the remote repository at the end?[y/N]:</question> ', false);
 
-            $isPushToGit = $io->askConfirmation('<question>Push to the repository at the end?[y/N]:</question> ', false);
+            if ($isPushToGit) {
+                $repositoryUrl = $io->ask('<question>Remote repository URL:</question> ', '');
+            }
         }
 
         $io->write('<comment>Setting up your project...</comment>');
