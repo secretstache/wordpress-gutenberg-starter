@@ -165,7 +165,7 @@ class ComposerScripts
         $io->write("<info>Complete.</info>");
     }
 
-    private static function updateReadme(IOInterface $io, string $themeName, string $companyName, string $repositoryUrl)
+    private static function updateReadme(IOInterface $io, string $themeName, string $companyName, string $repositoryUrl = '')
     {
         $filePath = './README.md';
 
@@ -181,8 +181,13 @@ class ComposerScripts
                 throw new \Exception("Unable to read README.md content.");
             }
 
-            $search = ['THEME_NAME', 'COMPANY_NAME', 'REPOSITORY_URL'];
-            $replace = [$themeName, $companyName, $repositoryUrl];
+            $search = ['THEME_NAME', 'COMPANY_NAME'];
+            $replace = [$themeName, $companyName];
+
+            if ($repositoryUrl) {
+                $search[] = 'REPOSITORY_URL';
+                $replace[] = $repositoryUrl;
+            }
 
             // Replace all placeholders with actual values in a single call
             $fileContent = str_replace($search, $replace, $fileContent);
