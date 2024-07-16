@@ -41,9 +41,6 @@
     "post-create-project-cmd": [
       "App\\ComposerScripts::postCreateProject"
     ],
-    "setup-theme-boilerplate": [
-      "App\\ComposerScripts::setupThemeBoilerplate"
-    ],
     "setup-static-boilerplate": [
       "App\\ComposerScripts::setupStaticBoilerplate"
     ]

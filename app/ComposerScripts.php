@@ -19,18 +19,24 @@ class ComposerScripts
         // Extract the last part of the path as the directory name
         $themePublicPathName = basename($projectDirectory); // e.g. ssm2023, amd2024
 
-        $themeName = $io->ask('<question>Please enter the Theme Name: </question>', 'Wordpress Starter');
-        $companyName = $io->ask('<question>Please enter the Company Name: </question>', 'Secret Stache Media');
+        $themeName = $io->ask('<question>Theme Name: </question>', 'Wordpress Starter');
+        $companyName = $io->ask('<question>Company Name: </question>', 'Secret Stache Media');
 
-        $agencyName = $io->ask('<question>Please enter the Agency Name: </question>', 'Secret Stache Media');
-        $agencyUrl = $io->ask('<question>Please enter the Agency URL: </question>', 'https://secretstache.com/');
-        $textDomain = $io->ask('<question>Please enter the Text Domain: </question>', 'ssm');
+        $agencyName = $io->ask('<question>Agency Name: </question>', 'Secret Stache Media');
+        $agencyUrl = $io->ask('<question>Agency URL: </question>', 'https://secretstache.com/');
+        $textDomain = $io->ask('<question>Text Domain: </question>', 'ssm');
 
-        $repositoryUrl = $io->ask('<question>Please enter the Git repository URL: </question>', '');
+        $isInitGit = $io->askConfirmation('<question>Init Git repository?[y/N]: </question>', true);
+        $isPushToGit = false;
+
+        if ($isInitGit) {
+            $repositoryUrl = $io->ask('<question>Repository URL: </question>', '');
+
+            $isPushToGit = $io->askConfirmation('<question>Push to the repository at the end?[y/N]: </question>', false);
+        }
 
         $io->write('<comment>Setting up your project...</comment>');
 
-        self::setupThemeBoilerplate($event);
         self::setupStaticBoilerplate($event);
 
         self::updateReadme($io, $themeName, $companyName, $repositoryUrl);
@@ -46,10 +52,18 @@ class ComposerScripts
 
         self::updateThemePublicPathName($io, $themePublicPathName);
 
-        self::initializeGitRepository($repositoryUrl, $io);
+        self::installNpmDependencies($io);
+        self::installComposerDependencies($io);
 
-        self::installPackages($io);
         self::buildAssets($io);
+
+        if ($isInitGit) {
+            self::initializeGitRepository($repositoryUrl, $io);
+
+            if ($isPushToGit) {
+                self::pushGitRepository($repositoryUrl, $io);
+            }
+        }
     }
 
     public static function setupStaticBoilerplate(Event $event)
@@ -74,35 +88,11 @@ class ComposerScripts
         $io->write("<info>Complete.</info>");
     }
 
-    public static function setupThemeBoilerplate(Event $event)
-    {
-        $io = $event->getIO();
-
-        $io->write("<comment>Cloning the ssm-theme-boilerplate repository...<comment>");
-
-        self::runCommand([
-            'git',
-            'clone',
-            '-b',
-            'prepare-release-3.2.0', // Use the actual branch name
-            'https://github.com/secretstache/ssm-theme-boilerplate',
-            'theme-boilerplate'
-        ], $io);
-
-        $io->write("<comment>Running wp acorn ssm:setup...<comment>");
-
-        self::runCommand(['wp', 'acorn', 'ssm:setup'], $io);
-
-        $io->write("<info>Complete.</info>");
-    }
-
     private static function initializeGitRepository(string $repositoryUrl, IOInterface $io)
     {
         $io->write("<comment>Init repository...<comment>");
 
         self::runCommand(['git', 'init'], $io);
-
-        self::runCommand(['git', 'remote', 'add', 'origin', $repositoryUrl], $io);
 
         self::runCommand(['git', 'add', '.'], $io);
 
@@ -122,6 +112,15 @@ class ComposerScripts
 
         self::runCommand(['git', 'checkout', '-b', 'static'], $io);
 
+        self::runCommand(['git', 'checkout', 'master'], $io);
+
+        $io->write("<info>Complete.</info>");
+    }
+
+    private static function pushGitRepository(string $repositoryUrl, IOInterface $io)
+    {
+        $io->write("<comment>Push to the repository...<comment>");
+
         // It's important to push the 'master' branch before switching away from it, especially if it's the first push.
         self::runCommand(['git', 'push', '-u', 'origin', 'master'], $io);
 
@@ -133,7 +132,7 @@ class ComposerScripts
         $io->write("<info>Complete.</info>");
     }
 
-    private static function installPackages(IOInterface $io)
+    private static function installNpmDependencies(IOInterface $io)
     {
         $io->write("<comment>Installing npm dependencies...<comment>");
 
@@ -141,6 +140,15 @@ class ComposerScripts
             'yarn',
             'install',
         ], $io);
+
+        $io->write("<info>Complete.</info>");
+    }
+
+    private static function installComposerDependencies(IOInterface $io)
+    {
+        $io->write("<comment>Installing composer dependencies...<comment>");
+
+        self::runCommand(['composer', 'install'], $io);
 
         $io->write("<info>Complete.</info>");
     }
