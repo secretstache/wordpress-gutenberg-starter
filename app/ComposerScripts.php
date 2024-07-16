@@ -19,20 +19,22 @@ class ComposerScripts
         // Extract the last part of the path as the directory name
         $themePublicPathName = basename($projectDirectory); // e.g. ssm2023, amd2024
 
-        $themeName = $io->ask('<question>Theme Name: </question>', 'Wordpress Starter');
-        $companyName = $io->ask('<question>Company Name: </question>', 'Secret Stache Media');
+        $themeName = $io->ask('<question>Theme Name:</question> ', 'Wordpress Starter');
+        $companyName = $io->ask('<question>Company Name:</question> ', 'Secret Stache Media');
 
-        $agencyName = $io->ask('<question>Agency Name: </question>', 'Secret Stache Media');
-        $agencyUrl = $io->ask('<question>Agency URL: </question>', 'https://secretstache.com/');
-        $textDomain = $io->ask('<question>Text Domain: </question>', 'ssm');
+        $agencyName = $io->ask('<question>Agency Name:</question> ', 'Secret Stache Media');
+        $agencyUrl = $io->ask('<question>Agency URL:</question> ', 'https://secretstache.com/');
+        $textDomain = $io->ask('<question>Text Domain:</question> ', 'ssm');
 
-        $isInitGit = $io->askConfirmation('<question>Init Git repository?[y/N]: </question>', true);
+        $isInitGit = $io->askConfirmation('<question>Init Git repository?[Y/n]:</question> ', true);
         $isPushToGit = false;
 
-        if ($isInitGit) {
-            $repositoryUrl = $io->ask('<question>Repository URL: </question>', '');
+        $repositoryUrl = '';
 
-            $isPushToGit = $io->askConfirmation('<question>Push to the repository at the end?[y/N]: </question>', false);
+        if ($isInitGit) {
+            $repositoryUrl = $io->ask('<question>Repository URL:</question> ', '');
+
+            $isPushToGit = $io->askConfirmation('<question>Push to the repository at the end?[y/N]:</question> ', false);
         }
 
         $io->write('<comment>Setting up your project...</comment>');
