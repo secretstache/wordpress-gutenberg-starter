@@ -62,7 +62,7 @@ class ComposerScripts
         self::buildAssets($io);
 
         if ($isInitGit) {
-            self::initializeGitRepository($repositoryUrl, $io);
+            self::initializeGitRepository($io);
 
             if ($isPushToGit) {
                 self::pushGitRepository($repositoryUrl, $io);
@@ -92,7 +92,7 @@ class ComposerScripts
         $io->write("<info>Complete.</info>");
     }
 
-    private static function initializeGitRepository(string $repositoryUrl, IOInterface $io)
+    private static function initializeGitRepository(IOInterface $io)
     {
         $io->write("<comment>Init repository...<comment>");
 
@@ -124,6 +124,8 @@ class ComposerScripts
     private static function pushGitRepository(string $repositoryUrl, IOInterface $io)
     {
         $io->write("<comment>Push to the repository...<comment>");
+
+        self::runCommand(['git', 'remote', 'add', 'origin', $repositoryUrl], $io);
 
         // It's important to push the 'master' branch before switching away from it, especially if it's the first push.
         self::runCommand(['git', 'push', '-u', 'origin', 'master'], $io);
