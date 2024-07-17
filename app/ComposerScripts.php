@@ -145,7 +145,7 @@ class ComposerScripts
         self::runCommand([
             'yarn',
             'install',
-        ], $io);
+        ], $io, 180);
 
         $io->write("<info>Complete.</info>");
     }
@@ -154,7 +154,7 @@ class ComposerScripts
     {
         $io->write("<comment>Installing composer dependencies...<comment>");
 
-        self::runCommand(['composer', 'install'], $io);
+        self::runCommand(['composer', 'install'], $io, 180);
 
         $io->write("<info>Complete.</info>");
     }
