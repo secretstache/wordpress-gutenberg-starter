@@ -39,6 +39,7 @@
   "prefer-stable": true,
   "scripts": {
     "post-create-project-cmd": [
+      "Composer\\Config::disableProcessTimeout",
       "App\\ComposerScripts::postCreateProject"
     ],
     "setup-static-boilerplate": [

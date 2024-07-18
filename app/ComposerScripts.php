@@ -291,10 +291,11 @@ class ComposerScripts
 
         try {
             $process->mustRun();
-            //$io->write("<info>Executed: " . implode(" ", $command) . "</info>");
         } catch (ProcessFailedException $exception) {
             $io->write("<error>Error executing " . implode(" ", $command) . ": " . $exception->getMessage() . "</error>");
-            die;
+            throw $exception;
+        } catch (\Exception $exception) {
+            $io->write("<error>Process interrupted: " . $exception->getMessage() . "</error>");
         }
     }
 }
