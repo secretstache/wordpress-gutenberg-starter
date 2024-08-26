@@ -1,0 +1,70 @@
+{# DropdownMenu macro #}
+{%- macro menu(props) -%}
+    {% from "macros/common.njk" import menu %}
+
+    <ul class="{{ props.menuClass }}"{% if props.attributes %} {{ props.attributes | safe }}{% endif %}>
+
+        {% for link in props.nav %}
+
+            <li>
+
+                {% set linkClasses = ([
+                    'peer',
+                    props.linkClass if  props.linkClass,
+                    props.currentlinkClass if props.currentPage == link.url and props.currentlinkClass
+                ]) | toClassNames %}
+
+                {% set linkAttributes = ([
+                    'aria-current="page"' if  props.currentPage == link.url,
+                    'aria-expanded="false"' if link.submenu
+                ]) | toClassNames %}
+
+                <a href="{{ root }}{{ link.url }}" class="{{ linkClasses }}"{{ linkAttributes | safe }}>{{ link.name }}</a>
+
+                {%if link.submenu %}
+                    {{ menu({
+                        nav: link.submenu,
+                        currentPage: props.currentPage,
+                        menuClass: props.submenuClass,
+                        linkClass: props.submenuLinkClass,
+                        currentlinkClass: props.submenuCurrentlinkClass
+                    }) }}
+
+                {% endif %}
+
+            </li>
+
+        {% endfor -%}
+
+    </ul>
+
+{%- endmacro -%}
+
+{# Modal macro #}
+{%- macro modal(props) -%}
+
+    <div class="modal{%if props.class %}{{ props.class }}{% endif %}" id="{{ props.id }}" tabindex="-1">
+
+        <div class="modal__wrapper">
+
+            <div class="modal__content">
+
+                <div class="modal__header">
+
+                    <button type="button" class="modal__close-btn" data-dismiss="modal" aria-label="Close"></button>
+
+                </div>
+
+                <div class="modal__body">
+
+                    {% if caller %}{{ caller()  }}{% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+{%- endmacro -%}

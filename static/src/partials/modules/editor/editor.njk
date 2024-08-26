@@ -1,0 +1,24 @@
+/**
+* @param {string} class
+* @param {string} content
+*/
+
+{% macro render( props ) %}
+
+    <div class="module text-editor{%if props.class %} {{ props.class }}{% endif %}">
+
+        {% if props.innerContent %}
+
+            {% include props.innerContent %}
+
+        {% endif %}
+
+        {% if caller %}
+
+            {{ caller() | safe }}
+
+        {% endif %}
+
+    </div>
+
+{% endmacro %}

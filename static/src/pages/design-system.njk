@@ -1,0 +1,165 @@
+---
+title: Home
+---
+
+{% extends "design-system/library.njk" %}
+
+{% set backgrounds = ["black", "red"] %}
+
+{% set colors = ["black", "red"] %}
+
+
+{% set alignmentJustify = {
+  'align-left': 'justify-content: flex-start;',
+  'align-right': 'justify-content: flex-end;',
+  'align-center': 'justify-content: center;',
+  'align-justify' : 'justify-content: space-between;',
+  'align-spaced': 'justify-content: space-around;',
+  'align-self-left': 'justify-self: flex-start;',
+  'align-self-right': 'justify-self: flex-end;',
+  'align-self-center': 'justify-self: center;',
+  'align-self-justify' : 'justify-self: space-between;',
+  'align-self-spaced': 'justify-self: space-around;'
+} %}
+
+{% set alignmentVertical = {
+  'align-top': 'align-items: flex-start;',
+  'align-bottom': 'align-items: flex-end;',
+  'align-middle': 'align-items: center;',
+  'align-stretch' : 'align-items: stretch;',
+  'align-self-top': 'align-self: flex-start;',
+  'align-self-bottom': 'align-self: flex-end;',
+  'align-self-middle': 'align-self: center;',
+  'align-self-stretch' : 'align-self: stretch;'
+} %}
+
+
+{% set TextAlignment = ["left", "right", "center", "justify"] %}
+
+{% set breakpoints = ['small', 'medium', 'large'] %}
+
+{% set spacings = {
+  '0': '0',
+  '1': '4',
+  '2': '8',
+  '3': '12',
+  '4': '16',
+  '5': '20',
+  '6': '24',
+  '7': '28',
+  '8': '32',
+  '9': '36',
+  '10': '40',
+  '11': '44',
+  '12': '48',
+  '14': '56',
+  '16': '64',
+  '20': '80',
+  '24': '96',
+  '28': '112',
+  '32': '128',
+  '36': '144',
+  '40': '160',
+  '44': '176',
+  '48': '192',
+  '52': '208',
+  '56': '224',
+  '60': '240',
+  '64': '256',
+  '72': '288',
+  '80': '320',
+  '96': '384'
+} %}
+
+{% set visibilityClasses = {
+  'hide': 'display: none;',
+  'show-for-sr': 'clip: rect(0, 0, 0, 0) !important;position: absolute !important;border: 0 !important;padding: 0 !important;width: 1px !important;height: 1px !important;overflow: hidden !important;'
+} %}
+
+
+{% block content %}
+
+  <div class="ds-page" style="padding-left: 0;padding-right: 0;">
+
+    <div class="grid-container">
+
+      <h2 class="ds-block-title">Backgrounds</h2>
+
+      <table class="ds-classes-table">
+        <thead>
+        <tr>
+          <th>Color</th>
+          <th width="30%">Class</th>
+          <th>Css variable</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        {% for background in backgrounds %}
+          <tr class="ds-background">
+            <td>
+              <div class="ds-background__color bg-{{ background }}"></div>
+            </td>
+            <td>bg-{{ background }}</td>
+            <td>
+              var(--{{ background }})</td>
+          </tr>
+        {% endfor %}
+
+        </tbody>
+      </table>
+
+      <h2 class="ds-block-title">Colors</h2>
+
+      <table class="ds-classes-table">
+        <thead>
+        <tr>
+          <th>Color</th>
+          <th>Css variable</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        {% for color in colors %}
+          <tr class="ds-background">
+            <td>
+              <div class="ds-background__color" style="background: var(--{{ color }})"></div>
+            </td>
+            <td>
+              var(--{{ color }})</td>
+          </tr>
+        {% endfor %}
+
+        </tbody>
+      </table>
+
+
+      <h2 class="ds-block-title">Typography</h2>
+
+      <div class="ds-typography">
+
+        <h1 class="has-h-1-large-font-size">h1 large heading</h1>
+        <h1>h1 heading</h1>
+        <h2>h2 heading</h2>
+        <h3>h3 heading</h3>
+        <h4>h4 heading</h4>
+        <h5>h5 heading</h5>
+        <h6>h6 heading</h6>
+
+        <p><a href="">Default text. Lorem ipsum dolor sit amet</a>, consectetur adipisicing elit. Ab architecto consectetur cumque deleniti dolorem explicabo facere hic inventore libero maxime, numquam pariatur porro repellendus saepe tempore vel voluptatem voluptatibus, voluptatum!</p>
+
+        <p class="has-body-large-font-size"><a href="">Large text. Lorem ipsum dolor sit amet</a>, consectetur adipisicing elit. Ab architecto consectetur cumque deleniti dolorem explicabo facere hic inventore libero maxime, numquam pariatur porro repellendus saepe tempore vel voluptatem voluptatibus, voluptatum!</p>
+
+        <p class="has-body-medium-font-size"><a href="">Medium text. Lorem ipsum dolor sit amet</a>, consectetur adipisicing elit. Ab architecto consectetur cumque deleniti dolorem explicabo facere hic inventore libero maxime, numquam pariatur porro repellendus saepe tempore vel voluptatem voluptatibus, voluptatum!</p>
+
+        <p class="has-body-small-font-size"><a href="">Small text. Lorem ipsum dolor sit amet</a>, consectetur adipisicing elit. Ab architecto consectetur cumque deleniti dolorem explicabo facere hic inventore libero maxime, numquam pariatur porro repellendus saepe tempore vel voluptatem voluptatibus, voluptatum!</p>
+
+        <p class="has-body-tiny-font-size"><a href="">Tiny text. Lorem ipsum dolor sit amet</a>, consectetur adipisicing elit. Ab architecto consectetur cumque deleniti dolorem explicabo facere hic inventore libero maxime, numquam pariatur porro repellendus saepe tempore vel voluptatem voluptatibus, voluptatum!</p>
+      </div>
+
+    </div>
+
+  </div>
+{% endblock %}

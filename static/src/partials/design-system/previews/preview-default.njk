@@ -1,0 +1,14 @@
+{%  if component.type == 'module' %}
+
+<div class="grid-container" style="padding-top: 20px; padding-bottom: 20px;">
+
+    {% endif %}
+
+    {{ comp | safe }}
+
+
+    {%  if component.type == 'module' %}
+
+</div>
+
+{% endif %}

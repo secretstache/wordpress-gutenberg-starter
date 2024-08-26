@@ -1,0 +1,5 @@
+# Ignore artifacts:
+static/dist
+
+# Ignore files:
+resources/scripts/client/libs/

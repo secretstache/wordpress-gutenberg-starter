@@ -1,0 +1,70 @@
+{% macro block(name, params) %}
+    {%- from "../blocks/" + name + "/" + name + ".njk" import render -%}
+
+    {%- if caller -%}
+        {%- call render( params ) %}{{ caller() }}{% endcall -%}
+    {%- else -%}
+        {{- render( params ) -}}
+    {%- endif -%}
+
+{% endmacro %}
+
+{% macro column(props) %}
+
+    {#    /**#}
+    {#    * @param {string} class#}
+    {#    * @param {string} style#}
+    {#    * @param {string} color#}
+    {#    * @param {string} background#}
+    {#    * @param {string} fontSize#}
+    {#    * @param {string} contentWidth#}
+    {#    * @param {string} contentAlign - left, center, right#}
+    {#    * @param {string} width#}
+    {#    * @param {boolean} verticalAlign - center | top | bottom#}
+    {#    * @param {string} id#}
+    {#    * @param {string} customStyle#}
+    {#    */#}
+
+    {% if props.contentWidth %}
+        {% set uid = uid() %}
+    {% endif %}
+
+    {% set classes = ([
+        props.class if props.class,
+        'has-text-color has-' + props.color + '-color' if props.color,
+        'has-background has-' + props.background + '-background-color' if props.background,
+        'has-' + props.fontSize + '-font-size' if props.fontSize,
+        'wp-container-'+ uid if props.contentWidth,
+        'has-content-justification-' + props.contentAlign if props.contentAlign,
+        'is-vertically-aligned-' + props.verticalAlign if props.verticalAlign,
+        'is-style-' + props.customStyle if props.customStyle
+
+    ]) | toClassNames %}
+
+    {% set styles = ([
+        props.style if props.style,
+        'flex-basis:' + props.width if props.width
+    ]) | toStyleString | safe %}
+
+    {%  set id = ' id="' + props.id + '"' if props.id %}
+
+    <div class="wp-block-column{{ classes }}"{{ styles }}{{ id }}>
+
+        {% if caller %}{{ caller() | safe }}{% endif %}
+
+        {% if props.contentWidth %}
+
+            <!--for static purpose only -->
+            <style>
+                .wp-container-{{ uid }}.wp-container-{{ uid }} > :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
+                    max-width: {{ props.contentWidth }};
+                    margin-left: {% if props.contentAlign === 'left' %}0{% else %}auto{% endif %} !important;
+                    margin-right: {% if props.contentAlign === 'right' %}0{% else %}auto{% endif %} !important;
+                }
+            </style>
+
+        {% endif %}
+
+    </div>
+
+{% endmacro %}

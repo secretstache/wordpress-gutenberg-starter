@@ -1,0 +1,21 @@
+{% extends "design-system/layout.njk" %}
+
+{% block inner %}
+
+    <div class="ds">
+
+        <div class="ds__body">
+
+            {% include "./sidebar.njk" %}
+
+            <main class="ds__main">
+
+                {% block content %}{% endblock %}
+
+            </main>
+
+        </div>
+
+    </div>
+
+{% endblock %}

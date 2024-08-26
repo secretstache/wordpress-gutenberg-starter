@@ -1,0 +1,47 @@
+.alignleft,
+.alignright,
+.alignnone,
+.aligncenter {
+    --image-spacing: 2rem;
+    display: block;
+    float: none;
+    margin-right: auto;
+    margin-left: auto;
+    height: auto;
+
+    @include breakpoint(small only) {
+        + p,
+        p + & {
+            margin-top: var(--p-margin);
+        }
+    }
+}
+
+.alignnone,
+.aligncenter {
+    + p,
+    p + & {
+        margin-top: var(--p-margin);
+    }
+}
+
+@include breakpoint(medium) {
+    .alignleft {
+        float: left;
+        margin-top: var(--image-spacing);
+        margin-right: var(--image-spacing);
+        margin-bottom: var(--image-spacing);
+    }
+
+    .alignright {
+        float: right;
+        margin-top: var(--image-spacing);
+        margin-bottom: var(--image-spacing);
+        margin-left: var(--image-spacing);
+    }
+
+    .alignnone {
+        margin-right: 0;
+        margin-left: 0;
+    }
+}

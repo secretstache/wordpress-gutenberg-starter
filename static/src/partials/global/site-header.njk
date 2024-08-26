@@ -1,0 +1,34 @@
+{% from 'macros/common.njk' import menu %}
+
+<header class="site-header">
+
+    <div class="grid-container">
+
+        <div class="grid-x align-justify align-middle">
+
+            <div class="site-header__brand cell shrink" role="banner">
+
+                {% include 'global/brand.njk' %}
+
+            </div>
+
+            <div class="cell shrink">
+
+                <nav class="site-header__navigation show-for-large" aria-label="Main DropdownMenu">
+                    {{ menu({
+                        nav: navigation.main,
+                        menuClass: 'menu is-dropdown',
+                        attributes: 'role="menubar"',
+                        currentPage: page.url
+                    }) }}
+                </nav>
+
+                {% include 'global/hamburger.njk' %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>

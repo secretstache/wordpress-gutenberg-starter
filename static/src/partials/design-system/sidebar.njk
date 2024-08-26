@@ -1,0 +1,216 @@
+<nav class="ds__sidebar">
+
+    <h1 class="ds-title">
+
+        <a href="{{ root }}/">DS</a>
+
+    </h1>
+
+    <button class="ds-hamburger">
+        <svg class="ds-hamburger__bars" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+        <svg class="ds-hamburger__close" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+    </button>
+
+    <ul role="list" class="ds-menu">
+
+        <li class="lvl1">
+
+            <a href="{{ root }}/design-system/" class="ds-link{% if page.url == '/design-system/' %} ds-link--active{% endif %}">Base styles & utilities</a>
+
+        </li>
+
+        {% for lvl1 in components.menu %}
+
+            {% set lvl1Classes = [] %}
+
+            {% if lvl1.children | length %}
+
+                {% set lvl1Classes = (lvl1Classes.push('is-parent-item'), lvl1Classes) %}
+
+                {% for lvl2 in lvl1.children %}
+
+                    {% if page.url == lvl2.url %}
+
+                        {% set lvl1Classes = (lvl1Classes.push('is-active'), lvl1Classes) %}
+
+                    {% endif %}
+
+                    {% if lvl2.children | length %}
+
+                        {% for lvl3 in lvl2.children %}
+
+                            {% if page.url == lvl3.url %}
+
+                                {% set lvl1Classes = (lvl1Classes.push('is-active'), lvl1Classes) %}
+
+                            {% endif %}
+
+                        {% endfor %}
+
+                    {% endif %}
+
+                {% endfor %}
+
+            {% endif %}
+
+            <li class="lvl1 {{ lvl1Classes | join(" ") }}">
+
+                <a class="ds-link{% if page.url == lvl1.url %} ds-link--active{% endif %}" href="{{ root }}{{ lvl1.url }}">
+
+                    {% if lvl1.children | length %}
+
+                        <svg viewBox="0 -0.5 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <path d="M6.113,15.495 C5.531,16.076 4.01,16.395 4.01,14.494 L4.01,1.506 C4.01,-0.333 5.531,-0.076 6.113,0.506 L12.557,6.948 C13.137,7.529 13.137,8.47 12.557,9.052 L6.113,15.495 L6.113,15.495 Z" fill="currentColor" class="si-glyph-fill"> </path> </g></svg>
+
+                    {% endif %}
+
+                    {{ lvl1.title }}
+
+                </a>
+
+                {% if lvl1.children | length %}
+
+                    <ul role="list" class="ds-menu__submenu">
+
+                        {% for lvl2 in lvl1.children %}
+
+                            {% set lvl2Classes = [] %}
+
+                            {% if lvl2.children | length %}
+
+                                {% set lvl2Classes = (lvl2Classes.push('is-parent-item'), lvl2Classes) %}
+
+                                {% if page.url == lvl2.url %}
+
+                                    {% set lvl2Classes = (lvl2Classes.push('is-active'), lvl2Classes) %}
+
+                                {% endif %}
+
+                                {% for lvl3 in lvl2.children %}
+
+                                    {% if page.url == lvl3.url %}
+
+                                        {% set lvl2Classes = (lvl2Classes.push('is-active'), lvl2Classes) %}
+
+                                    {% endif %}
+
+                                {% endfor %}
+
+                            {% endif %}
+
+                            <li class="lvl2 {{ lvl2Classes | join(" ") }}">
+
+                                <a class="ds-link{% if page.url == lvl2.url %} ds-link--active{% endif %}" href="{{ root }}{{ lvl2.url }}">
+
+                                    {{ lvl2.title }}
+
+                                    {% if lvl2.children | length %}
+
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+
+                                    {% endif %}
+
+                                </a>
+
+                                {% if lvl2.children | length %}
+
+                                    <ul role="list" class="ds-menu__submenu">
+
+                                        <li class="lvl3 is-default-link">
+
+                                            <a class="ds-link{% if page.url == lvl2.url %} ds-link--active{% endif %}" href="{{ root }}{{ lvl2.url }}">
+
+                                                {% if lvl2.defaultTitle %}
+
+                                                    {{ lvl2.defaultTitle }}
+
+                                                {% else %}
+
+                                                    Default
+
+                                                {% endif %}
+
+                                            </a>
+
+                                        </li>
+
+                                        {% for lvl3 in lvl2.children %}
+
+                                            <li class="lvl3">
+
+                                                <a class="ds-link{% if page.url == lvl3.url %} ds-link--active{% endif %}" href="{{ root }}{{ lvl3.url }}">
+                                                    {{ lvl3.title }}
+                                                </a>
+
+                                            </li>
+
+                                        {% endfor %}
+
+                                    </ul>
+
+                                {% endif %}
+
+                            </li>
+
+                        {% endfor %}
+
+                    </ul>
+
+                {% endif %}
+
+            </li>
+
+        {% endfor %}
+
+        <li class="lvl1 is-parent-item">
+
+            <a href="#" class="ds-link">
+
+                <svg viewBox="0 -0.5 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <path d="M6.113,15.495 C5.531,16.076 4.01,16.395 4.01,14.494 L4.01,1.506 C4.01,-0.333 5.531,-0.076 6.113,0.506 L12.557,6.948 C13.137,7.529 13.137,8.47 12.557,9.052 L6.113,15.495 L6.113,15.495 Z" fill="currentColor" class="si-glyph-fill"> </path> </g></svg>
+
+                Pages
+
+            </a>
+
+            <ul role="list" class="ds-menu__submenu">
+
+                {%- for page in collections.page | sortByTitle -%}
+
+                    <li class="lvl2">
+
+                        <a href="{{ root }}{{ page.url }}" class="ds-link" target="_blank">
+
+                            {{ page.data.title }}
+
+                        </a>
+
+                    </li>
+
+                {%- endfor -%}
+
+            </ul>
+
+        </li>
+
+    </ul>
+
+    {% if page.url != '/design-system/' %}
+
+        <ol class="ds-tabs-nav">
+            <li><a class="ds-tabs-nav__link is-active" href="#demo">Demo</a></li>
+            <li><a class="ds-tabs-nav__link" href="#code-tab">HTML</a></li>
+            <li><a class="ds-tabs-nav__link" href="#context-tab">.njk & context</a></li>
+            <li><a class="ds-tabs-nav__link" href="#options-tab">Options</a></li>
+        </ol>
+
+
+        <ul id="viewpr-list" class="viewports-sizes"></ul>
+
+        <a class="ds-full-screen" target="_blank" href="{{ root }}/design-system/{{ component.type }}/full/{{ component.slug }}">Full Screen ↗</a>
+
+    {% endif %}
+
+</nav>

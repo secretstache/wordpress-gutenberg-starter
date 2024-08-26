@@ -1,0 +1,26 @@
+.wp-block-pullquote {
+    display: block;
+    margin: 0;
+    font-style: normal;
+    text-align: center;
+
+    blockquote {
+        margin: 0;
+        text-align: left;
+    }
+
+    p {
+        display: inline-block;
+        font-weight: 200;
+        font-size: var(--h2-font-size);
+        line-height: 122.5%;
+    }
+
+    cite {
+        display: block;
+        margin-top: var(--spacing-4);
+        font-style: normal;
+        font-weight: 900;
+        font-size: var(--h5-font-size);
+    }
+}

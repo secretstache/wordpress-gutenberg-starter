@@ -1,0 +1,150 @@
+{% macro columns(props) %}
+    {#    /**#}
+    {#    * @param {string} align -  top, bottom, middle, stretch #}
+    {#    * @param {string} justify -  left, right , center, justify, spaced #}
+    {#    * @param {string} width #}
+    {#    * @param {string} containerAlign - left, center, right #}
+    {#    * @param {string} class #}
+    {#    */#}
+
+    {% set classes = ([
+        props.class if props.class,
+        'align-' + props.align if props.align,
+        'align-' + props.justify if props.justify,
+        'container-width-' + props.width if props.width,
+        'container-align-' + props.containerAlign if props.containerAlign
+    ]) | toClassNames %}
+
+    <div class="grid-x{{ classes }}">
+
+        {% if caller %}{{ caller() | safe }}{% endif %}
+
+    </div>
+{% endmacro %}
+
+
+{% macro column(props) %}
+    {% set classes = ([
+        'medium-' + props.width if props.width,
+        'small-order-' + props.order if props.order,
+        props.class if props.class
+    ]) | toClassNames %}
+
+    <div class="cell{{ classes }}">
+
+        <div class="cell__inner">
+            {% if caller %}
+                {{ caller() | safe }}
+            {% endif %}
+        </div>
+    </div>
+
+{% endmacro %}
+
+
+{% macro module(name, props) %}
+    {%- from "../modules/" + name + "/" + name + ".njk" import render -%}
+
+    {%- if caller -%}
+        {%- call render( props ) %}{{ caller() }}{% endcall -%}
+    {%- else -%}
+        {{- render( props ) -}}
+    {%- endif -%}
+{% endmacro %}
+
+
+{%- macro template(name, props) -%}
+    {#    /**#}
+    {#    * @param {string} class#}
+    {#    * @param {string} id#}
+    {#    * @param {object} templateHeader - { headline: 'string', preheadline: 'string', icon: 'string', subheadline: 'string', class: 'string', headers: 'array' }#}
+    {#    * @param {string} bg - { image | video | color }#}
+    {#    */#}
+
+    {%- from "../templates/" + name + "/" + name + ".njk" import render -%}
+
+    {% set classes = ([
+        'template-' + name,
+        'bg-'+ props.bg.color if props.bg.color,
+        'bg-image' if props.bg.image,
+        'bg-video' if props.bg.video,
+        props.class if props.class
+    ]) | toClassNames %}
+
+    {% set templateHeader = props.templateHeader %}
+
+    {%  set id = ' id="' + props.id + '"' if props.id %}
+
+    <section class="content-block{{ classes }}"{{ id }}>
+
+        {% if templateHeader %}
+
+            {% set classes = ([
+                templateHeader.class if templateHeader.class
+            ]) | toClassNames %}
+
+            <header class="template-header{{ classes }}">
+
+                <div class="grid-container">
+                    {% if templateHeader.preheadline %}
+                        <p class="template-header__preheadline">{{ templateHeader.preheadline | safe }}</p>
+                    {% endif %}
+
+                    {% set headlineTag = templateHeader.tag if templateHeader.tag else 'h2' %}
+
+                    {% if templateHeader.headline %}
+                    <{{ headlineTag }} class="template-header__headline">
+                        {{ templateHeader.headline | safe }}
+                    </{{ headlineTag }}>
+                    {% endif %}
+
+                    {% if templateHeader.description %}
+                        <p class="template-header__description">{{ templateHeader.description | safe }}</p>
+                    {% endif %}
+
+                    {#  ...or array of headers#}
+                    {% for header in templateHeader.headers %}
+                        {% set headerTag = header.tag if header.tag else 'h2' %}
+
+                        {% set classes = ([
+                            header.class if header.class,
+                            header.size if header.size
+                        ]) | toClassNames %}
+
+
+                        <{{ headerTag }}{% if classes %} class="{{ classes }}"{% endif %}>{{ header.text | safe }}</{{ headerTag }}>
+                    {% endfor %}
+                </div>
+
+            </header>
+        {% endif %}
+
+        {% if props.bg.image or props.bg.video %}
+            <div class="bg-container">
+                <div class="overlay"></div>
+
+                {% if props.bg.image %}
+
+                    <img class="lazy-load" data-src="{{ root }}{{ props.bg.image }}" alt="">
+
+                {% endif %}
+
+                {% if props.bg.video %}
+
+                    <video class="lazy-load"{% if props.bg.poster %} data-poster="{{ root }}{{ props.bg.poster }}"{% endif %} muted playsinline autoplay loop preload="none">
+                        <source data-src="{{ root }}{{ props.bg.video }}" type="video/mp4">
+                    </video>
+
+                {% endif %}
+            </div>
+
+        {% endif %}
+
+        {%- if caller -%}
+            {%- call render( props ) %}{{ caller() }}{% endcall -%}
+        {%- else -%}
+            {{- render( props ) -}}
+        {%- endif -%}
+
+    </section>
+{%- endmacro -%}

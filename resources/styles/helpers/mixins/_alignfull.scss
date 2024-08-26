@@ -1,0 +1,10 @@
+@mixin alignfull($paddings: true) {
+    margin-right: var(--content-padding-negative) !important;
+    margin-left: var(--content-padding-negative) !important;
+    max-width: var(--content-width-full) !important;
+
+    @if $paddings != false {
+        padding-right: var(--content-padding);
+        padding-left: var(--content-padding);
+    }
+}

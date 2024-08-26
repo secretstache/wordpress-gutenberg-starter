@@ -1,0 +1,23 @@
+.site-header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: var(--site-header-z-index);
+    background: var(--site-header-bg);
+    padding: rem-calc(20 0);
+    width: 100%;
+
+    &__brand {
+        img {
+            width: rem-calc(200);
+        }
+    }
+
+    &__navigation {
+        .menu {
+            a {
+                color: var(--body-color);
+            }
+        }
+    }
+}

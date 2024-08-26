@@ -1,0 +1,68 @@
+.offcanvas {
+    display: flex;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    flex-direction: column;
+    transform: translateX(-100%);
+    visibility: hidden;
+    z-index: var(--offcanvas-z-index);
+    transition: transform var(--tr) ease-in-out;
+    outline: 0;
+    background-clip: padding-box;
+    background-color: var(--offcanvas-bg);
+    width: var(--offcanvas-width);
+    max-width: 100%;
+    color: var(--offcanvas-color);
+
+    --link-color: var(--offcanvas-color);
+    --link-hover-color: var(--offcanvas-color);
+
+    &__close-btn {
+        position: absolute;
+        top: rem-calc(10);
+        right: rem-calc(10);
+        cursor: pointer;
+        color: var(--offcanvas-color);
+        font-size: rem-calc(20);
+    }
+
+    &__inner {
+        padding: rem-calc(30 0);
+        overflow-y: auto;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        & {
+            transition: none;
+        }
+    }
+
+    &.showing,
+    &.hiding,
+    &.show {
+        visibility: visible;
+    }
+
+    &.showing,
+    &.show:not(.hiding) {
+        transform: none;
+    }
+}
+
+.offcanvas-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    z-index: 1040;
+    transition: opacity var(--tr);
+    background-color: #000;
+    width: 100vw;
+    height: 100vh;
+
+    &.show {
+        opacity: 0.5;
+    }
+}

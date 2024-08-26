@@ -1,0 +1,33 @@
+.wp-block-heading {
+    mark {
+        background: none;
+    }
+
+    &.is-style-h1 {
+        @include typo("h1");
+    }
+
+    &.is-style-h2 {
+        @include typo("h2");
+    }
+
+    &.is-style-h3 {
+        @include typo("h3");
+    }
+
+    &.is-style-h4 {
+        @include typo("h4");
+    }
+
+    &.is-style-h5 {
+        @include typo("h5");
+    }
+
+    &.is-style-h6 {
+        @include typo("h6");
+    }
+
+    &.has-background {
+        padding: var(--spacing-3);
+    }
+}

@@ -1,0 +1,23 @@
+/**
+* @param {string} class
+* @param {Array} columns
+*/
+
+
+{% macro render( props ) %}
+
+    {% from "macros/default.njk" import columns, column, module, template %}
+
+    <div class="grid-container">
+
+        {% if props.innerContent %}
+
+            {% include props.innerContent %}
+
+        {% endif %}
+
+        {% if caller %}{{ caller()  }}{% endif %}
+
+    </div>
+
+{% endmacro %}

@@ -1,0 +1,17 @@
+{% highlight "js" %}
+{% if component.isContainer %}
+{% brace 'call' %} call {{ component.type }}("{{ component.name }}"{% if component.context %}, {% endif%}{{ component.context | console | safe }}) {% endbrace %}
+{% if component.containerContext %}
+{% set fileUrl = component.type + 's/' + component.name + '/context/' + component.containerContext + '.njk' %}
+
+{% rawCodeSnippet fileUrl %}
+
+{% endif %}
+{% brace 'call' %} endcall {% endbrace %}
+
+{% else %}
+
+{% brace %} {{ component.type }}("{{ component.name }}", {{ component.context | console | safe }}) {% endbrace %}
+
+{% endif %}
+{% endhighlight %}

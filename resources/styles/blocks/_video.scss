@@ -1,0 +1,71 @@
+.wp-block-video,
+.wp-block-embed {
+    display: block;
+    position: relative;
+    margin: 0;
+
+    video {
+        display: block;
+        aspect-ratio: 16 / 9;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .plyr {
+        &__poster {
+            background-size: cover;
+        }
+
+        &__controls {
+            transform: translateY(100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        &--playing {
+            .plyr__controls {
+                transform: translateY(0);
+                opacity: 1;
+                pointer-events: all;
+            }
+
+            &::after {
+                opacity: 0;
+            }
+        }
+    }
+
+    .entry-content-asset {
+        width: 100%;
+    }
+
+    &:not(.has-controls) {
+        .plyr__controls {
+            display: none !important;
+        }
+    }
+
+    &.wp-block-embed {
+        &:not(.has-controls) {
+            .plyr__controls {
+                display: flex !important;
+            }
+        }
+    }
+}
+
+.wp-block-embed__wrapper {
+    position: relative;
+    margin-bottom: 1rem;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+
+    iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+}

@@ -1,0 +1,27 @@
+/**
+* @param {string} class
+* @param {string} style
+* @param {string} background
+* @param {string} align - full | wide
+* @param {string} id
+* @param {string} customStyle
+* @param {string} gradient
+*/
+
+{% macro render(props) %}
+
+    {% set classes = ([
+        props.class if props.class,
+        'has-background has-' + props.background + '-background-color has-text-color has-' + props.background + '-color' if props.background,
+        'has-background has-' + props.gradient + '-gradient-background' if props.gradient,
+        'align' + props.align if props.align,
+        'is-style-' + props.customStyle if props.customStyle
+    ]) | toClassNames %}
+
+    {% set styles = ([props.style if props.style]) | toStyleString | safe %}
+
+    {% set id = ' id="' + props.id + '"' if props.id %}
+
+    <hr class="wp-block-separator{{ classes }}"{{ styles }}{{ id }}>
+
+{% endmacro %}

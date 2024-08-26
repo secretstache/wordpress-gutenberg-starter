@@ -1,0 +1,187 @@
+/* stylelint-disable */
+body {
+    margin: 0;
+    --wp--style--global--content-size: var(--content-width);
+    --wp--style--global--wide-size: var(--content-width-wide);
+    --wp--preset--font-family--primary-font: var(--primary-font);
+    --wp--preset--font-family--secondary-font: var(--secondary-font);
+
+    --wp--preset--font-size--h-1: var(--font-size-h1);
+    --wp--preset--font-size--h-2: var(--font-size-h2);
+    --wp--preset--font-size--h-3: var(--font-size-h3);
+    --wp--preset--font-size--h-4: var(--font-size-h4);
+    --wp--preset--font-size--h-5: var(--font-size-h5);
+    --wp--preset--font-size--h-6: var(--font-size-h6);
+    --wp--preset--font-size--h-7: var(--font-size-h7);
+
+    @each $prop, $value in $palette {
+        --wp--preset--color--#{$prop}: var(--#{$prop});
+    }
+
+    @each $prop, $value in $spacing {
+        --wp--preset--spacing--#{$prop}: var(--spacing-#{$prop});
+    }
+}
+
+h1 {
+    font-size: var(--wp--preset--font-size--h-1);
+}
+
+h2 {
+    font-size: var(--wp--preset--font-size--h-2);
+}
+
+h3 {
+    font-size: var(--wp--preset--font-size--h-3);
+}
+
+h4 {
+    font-size: var(--wp--preset--font-size--h-4);
+}
+
+h5 {
+    font-size: var(--wp--preset--font-size--h-5);
+}
+
+h6 {
+    font-size: var(--wp--preset--font-size--h-6);
+}
+
+.has-body-font-font-family {
+    font-family: var(--wp--preset--font-family--primary-font) !important;
+}
+
+.has-h-1-large-font-size,
+h1.has-h-1-large-font-size,
+h2.has-h-1-large-font-size,
+h3.has-h-1-large-font-size,
+h4.has-h-1-large-font-size,
+h5.has-h-1-large-font-size,
+h6.has-h-1-large-font-size {
+    font-size: var(--wp--preset--font-size--h-1-large) !important;
+}
+
+.has-h-1-font-size,
+h1.has-h-1-font-size,
+h2.has-h-1-font-size,
+h3.has-h-1-font-size,
+h4.has-h-1-font-size,
+h5.has-h-1-font-size,
+h6.has-h-1-font-size {
+    font-size: var(--wp--preset--font-size--h-1) !important;
+}
+.has-h-2-font-size,
+h1.has-h-2-font-size,
+h2.has-h-2-font-size,
+h3.has-h-2-font-size,
+h4.has-h-2-font-size,
+h5.has-h-2-font-size,
+h6.has-h-2-font-size {
+    font-size: var(--wp--preset--font-size--h-2) !important;
+}
+
+.has-h-3-font-size,
+h1.has-h-3-font-size,
+h2.has-h-3-font-size,
+h3.has-h-3-font-size,
+h4.has-h-3-font-size,
+h5.has-h-3-font-size,
+h6.has-h-3-font-size {
+    font-size: var(--wp--preset--font-size--h-3) !important;
+}
+
+.has-h-4-font-size,
+h1.has-h-4-font-size,
+h2.has-h-4-font-size,
+h3.has-h-4-font-size,
+h4.has-h-4-font-size,
+h5.has-h-4-font-size,
+h6.has-h-4-font-size {
+    font-size: var(--wp--preset--font-size--h-4) !important;
+}
+.has-h-5-font-size,
+h1.has-h-5-font-size,
+h2.has-h-5-font-size,
+h3.has-h-5-font-size,
+h4.has-h-5-font-size,
+h5.has-h-5-font-size,
+h6.has-h-5-font-size {
+    font-size: var(--wp--preset--font-size--h-5) !important;
+}
+
+.has-h-6-font-size,
+h1.has-h-6-font-size,
+h2.has-h-6-font-size,
+h3.has-h-6-font-size,
+h4.has-h-6-font-size,
+h5.has-h-6-font-size,
+h6.has-h-6-font-size {
+    font-size: var(--wp--preset--font-size--h-6) !important;
+}
+
+.has-h-7-font-size,
+h1.has-h-7-font-size,
+h2.has-h-7-font-size,
+h3.has-h-7-font-size,
+h4.has-h-7-font-size,
+h5.has-h-7-font-size,
+h6.has-h-7-font-size {
+    font-size: var(--wp--preset--font-size--h-7) !important;
+}
+
+.has-text-align-center {
+    text-align: center;
+}
+
+.has-text-align-left {
+    text-align: left;
+}
+
+.has-text-align-right {
+    text-align: right;
+}
+
+.items-justified-left {
+    justify-content: flex-start;
+}
+
+.items-justified-center {
+    justify-content: center;
+}
+
+.items-justified-right {
+    justify-content: flex-end;
+}
+
+.items-justified-space-between {
+    justify-content: space-between;
+}
+
+@each $prop, $value in $palette {
+    .has-#{$prop}-background-color {
+        background-color: var(--wp--preset--color--#{$prop}) !important;
+    }
+}
+
+@each $prop, $value in $palette {
+    .has-#{$prop}-color {
+        color: var(--wp--preset--color--#{$prop}) !important;
+    }
+}
+
+html :where([style*="border-left-color"]) {
+    border-left-style: solid;
+}
+
+html :where([style*="border-right-color"]) {
+    border-right-style: solid;
+}
+
+html :where([style*="border-top-color"]) {
+    border-top-style: solid;
+}
+
+html :where([style*="border-bottom-color"]) {
+    border-bottom-style: solid;
+}
+/* stylelint-enable */

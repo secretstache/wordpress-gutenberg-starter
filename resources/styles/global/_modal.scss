@@ -1,0 +1,128 @@
+.modal {
+    --modal-margin: 2rem;
+
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    z-index: var(--modal-z-index);
+    transition: opacity 0.15s linear;
+    outline: 0;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    &__wrapper {
+        display: flex;
+        position: relative;
+        align-items: center;
+        transform: scale(0.8);
+        transition: transform 0.3s;
+        margin: var(--modal-margin) var(--content-padding);
+        margin-right: auto;
+        margin-left: auto;
+        width: auto;
+        max-width: rem-calc(1230);
+        min-height: calc(100% - var(--modal-margin) * 2);
+        pointer-events: none;
+    }
+
+    &__content {
+        position: relative;
+        outline: none;
+        padding: rem-calc(112 40 160);
+        width: 100%;
+        pointer-events: none;
+    }
+
+    &__header,
+    &__body {
+        position: relative;
+        z-index: 20;
+    }
+
+    &__body {
+        margin-right: auto;
+        margin-left: auto;
+        max-width: rem-calc(1000);
+    }
+
+    &__header {
+        display: flex;
+        position: absolute;
+        top: rem-calc(64);
+        left: 50%;
+        align-items: center;
+        transform: translateX(-50%);
+        margin-right: auto;
+        margin-left: auto;
+        padding: 0 var(--content-padding);
+        width: 100%;
+    }
+
+    &__close-btn {
+        mask-image: svg-uri('<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 16.9126 16.9126" style="enable-background:new 0 0 16.9126 16.9126;" xml:space="preserve"><rect x="-2.0025" y="6.9565" transform="matrix(0.7071 -0.7071 0.7071 0.7071 -3.5026 8.4565)" style="fill:#212121;" width="20.918" height="2.9997"/><rect x="6.9565" y="-2.0025" transform="matrix(0.7071 -0.7071 0.7071 0.7071 -3.5029 8.4566)" style="fill:#212121;" width="2.9997" height="20.918"/></svg>');
+        mask-repeat: no-repeat;
+        cursor: pointer;
+        margin-left: auto;
+        background: var(--black);
+        width: rem-calc(16);
+        height: rem-calc(16);
+        pointer-events: all;
+        font-size: 0;
+    }
+
+    &__headline {
+        @include typo("h3");
+        margin-bottom: rem-calc(84);
+    }
+
+    &.show {
+        opacity: 1;
+
+        .modal__wrapper {
+            transform: none;
+        }
+
+        .modal__content {
+            pointer-events: all;
+        }
+    }
+
+    .tablet {
+        --tablet-border-color: var(--inverse);
+        --tablet-sublayer-color: rgb(243 239 231 / 16%);
+    }
+
+    .module.form {
+        --input-border-color: var(--inverse);
+    }
+
+    .button {
+        &.outlined,
+        &.arrow,
+        &.simple {
+            --button-color: var(--inverse);
+            --button-border: var(--button-color);
+            --button-arrow-color: var(--button-color);
+        }
+    }
+}
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    z-index: var(--modal-backdrop-z-index);
+    transition: opacity 0.15s;
+    background-color: var(--black);
+    width: 100vw;
+    height: 100vh;
+
+    &.show {
+        opacity: 0.55;
+    }
+}

@@ -1,0 +1,16 @@
+{% call block("columns") %}
+
+  {% call column({
+  }) %}
+
+    {{ block("heading", {
+      "level": 2,
+      "fontSize": "h1-large",
+      "textAlign": "center",
+      "content": "Heading h1"
+    }) }}
+
+
+  {% endcall %}
+
+{% endcall %}

@@ -1,0 +1,11 @@
+{% from 'macros/common.njk' import menu %}
+<footer class="site-footer" role="contentinfo">
+    <div class="grid-container text-center">
+        <nav class="site-footer__nav" aria-label="Secondary navigation">
+            {{ menu({
+                nav: navigation.footer,
+                menuClass: "menu"
+            }) }}
+        </nav>
+    </div>
+</footer>

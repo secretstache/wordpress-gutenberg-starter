@@ -1,0 +1,114 @@
+/**
+* @param {string} class
+* @param {string} style
+* @param {object} overlay
+* @param {string} color
+* @param {string} fontSize
+* @param {string} position - top-left, top-center, top-right, center-center, bottom-left, bottom-center, bottom-right
+* @param {string} minHeight
+* @param {string} id
+* @param {string} align - full | left | right | center | wide
+* @param {string} customStyle
+*/
+
+{% macro render( props ) %}
+
+    {% set classes = ([
+        props.class if props.class,
+        'has-text-color has-' + props.color + '-color' if props.color,
+        'has-' + props.fontSize + '-font-size' if props.fontSize,
+        'has-custom-content-position is-position-' + props.position if props.position,
+        'align-' + props.align if props.align,
+        'is-style-' + props.customStyle if props.customStyle
+    ]) | toClassNames %}
+
+    {% set styles = ([
+        props.style if props.style,
+        'min-height:' + props.minHeight if props.minHeight
+    ]) | toStyleString | safe %}
+
+    {%  set id = ' id="' + props.id + '"' if props.id %}
+
+    <div class="wp-block-cover{{ classes }}"{{ styles }}{{ id }}>
+
+        {% if props.bg.overlay %}
+
+            {% set overlayClasses = ([
+                'wp-block-cover__background',
+                'has-background-dim has-background-dim-' + props.bg.overlay.opacity if props.bg.overlay.opacity >= 0 else 'has-background-dim-100',
+                'has-' + props.bg.overlay.color + '-background-color' if props.bg.overlay.color,
+                'wp-block-cover__gradient-background' + props.bg.overlay.gradient if props.bg.overlay.gradient
+            ]) | toClassNames %}
+
+            {% set overlayStyle = (' style="background:'+ props.bg.overlay.gradient + '"' if props.bg.overlay.gradient) | safe %}
+
+            <span aria-hidden="true" class="{{ overlayClasses }}"{{ overlayStyle }}></span>
+
+        {% endif %}
+
+
+        {% if props.bg.media %}
+
+            {% if props.bg.media.video %}
+
+                {% if not props.bg.overlay %}
+
+                    <span aria-hidden="true" class="wp-block-cover__background has-background-dim"></span>
+
+                {% endif %}
+
+                <video class="wp-block-cover__video-background intrinsic-ignore" autoplay="" muted="" loop="" playsinline="" src="{{ root }}{{ props.bg.media.video }}" data-object-fit="cover"></video>
+
+            {% else %}
+
+                {% if props.bg.media.image %}
+
+                    {% if props.bg.media.isFixed %}
+
+                        <div role="img" class="wp-block-cover__image-background has-parallax" style="background-position:50% 50%;background-image:url({{ root }}{{ props.bg.media.image }})"></div>
+
+                    {% else %}
+
+                        <img class="wp-block-cover__image-background" alt="" src="{{ root }}{{ props.bg.media.image }}">
+
+                    {% endif %}
+
+                {% endif %}
+
+            {% endif %}
+
+        {% endif %}
+
+
+        {% if props.contentWidth %}
+            {% set uid = uid() %}
+        {% endif %}
+
+        <div class="wp-block-cover__inner-container{% if props.contentWidth %} wp-container-{{ uid }}{% endif %}">
+
+            {% if caller %}{{ caller()  }}{% endif %}
+
+            {% if props.innerContent %}
+
+                {% include props.innerContent %}
+
+            {% endif %}
+
+            {% if props.contentWidth %}
+
+                <!--for static purpose only -->
+                <style>
+                    .wp-container-{{ uid }}.wp-container-{{ uid }} > :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
+                        max-width: {{ props.contentWidth }}px;
+                        margin-left: {% if props.contentAlign === 'left' %}0{% else %}auto{% endif %} !important;
+                        margin-right: {% if props.contentAlign === 'right' %}0{% else %}auto{% endif %} !important;
+                    }
+                </style>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+{% endmacro %}

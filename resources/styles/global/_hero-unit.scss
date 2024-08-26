@@ -1,0 +1,14 @@
+section.hero-unit {
+    position: relative;
+
+    .grid-container {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+    }
+
+    &.bg-image,
+    &.bg-video {
+        color: var(--inverse);
+    }
+}

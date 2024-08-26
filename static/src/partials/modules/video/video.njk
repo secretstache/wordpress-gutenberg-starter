@@ -1,0 +1,50 @@
+/**
+* @param {string} class
+* @param {string} type - iframe
+* @param {string} poster
+* @param {string} src
+* @param {string} attributes - loop autoplay muted
+* @param {string} preload - none | metadata | auto
+*/
+
+{% macro render( props ) %}
+
+    <div class="module video{%if props.class %} {{ props.class }}{% endif %}">
+        {% set tech = 'html5' %}
+
+        {% if props.type === 'youtube' %}
+            {% set tech = 'youtube'%}
+        {% endif %}
+
+        <div class="video__responsive-wrapper">
+
+            {% if props.type === 'iframe' %}
+
+                <iframe
+                        src="{{ props.src }}"
+                        allowfullscreen
+                        allowtransparency
+                        allow="autoplay"
+                ></iframe>
+
+            {% else %}
+
+                <video
+                        src="{{ root }}{{ props.src }}"
+                        preload="{% if props.preload %}{{ props.preload }}{% else %}none{% endif %}"
+                        {% if props.poster %} poster="{{ root }}{{ props.poster }}"{% endif %}
+                        {%if props.attributes %} {{ props.attributes | safe }}{% endif %}
+                >
+                    <p>
+                    To view this video please enable JavaScript, and consider upgrading to a
+                    web browser that supports HTML5 video
+                    </p>
+                </video>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+{% endmacro %}

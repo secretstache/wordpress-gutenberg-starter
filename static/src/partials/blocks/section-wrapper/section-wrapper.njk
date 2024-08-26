@@ -1,0 +1,133 @@
+/**
+* @param {string} class
+* @param {string} style
+* @param {string} color
+* @param {object} bg - color | media (image, video) | lottie
+* @param {string} id
+* @param {string} align - full | wide
+* @param {string} customStyle
+*/
+
+{% macro render( props ) %}
+
+  {% from "macros/blocks.njk" import column, block %}
+
+  {% set classes = ([
+    props.class if props.class,
+    'align' + props.align if props.align,
+    'is-style-' + props.customStyle if props.customStyle,
+    'has-background' if props.bg,
+    'spacing-mt-' + props.spacing.mt  if props.spacing.mt,
+    'spacing-mb-' + props.spacing.mb if props.spacing.mb,
+    'spacing-pt-' + props.spacing.pt  if props.spacing.pt,
+    'spacing-pb-' + props.spacing.pb if props.spacing.pb,
+    'spacing-mt-mobile-' + props.spacing.mobile.mt  if props.spacing.mobile.mt,
+    'spacing-mb-mobile-' + props.spacing.mobile.mb if props.spacing.mobile.mb,
+    'spacing-pt-mobile-' + props.spacing.mobile.pt  if props.spacing.mobile.pt,
+    'spacing-pb-mobile-' + props.spacing.mobile.pb if props.spacing.mobile.pb,
+    'animate-bg-color' if props.animateBgColor
+  ]) | toClassNames %}
+
+  {% set styles = ([
+    props.style if props.style
+  ]) | toStyleString | safe %}
+
+  {%  set id = ' id="' + props.id + '"' if props.id %}
+
+  <div class="wp-block-ssm-section-wrapper{{ classes }}"{{ styles }}{{ id }}>
+
+    {% if props.bg %}
+
+        {% set colorName =  'has-' + props.bg.color + '-background-color' %}
+
+        {% set bgClasses = ([
+          'has-media' if props.bg.media,
+          colorName if props.bg.color,
+          'has-overlay' if props.bg.media.overlay,
+          'has-' + props.bg.media.overlay + '-overlay' if props.bg.media.overlay,
+          'has-crescent-top-' + props.crescent.top if props.crescent.top,
+          'has-crescent-bottom-' + props.crescent.bottom if props.crescent.bottom,
+          'fit-' + props.bg.media.fit if props.bg.media.fit,
+          'position-' + props.bg.media.position if props.bg.media.position
+        ]) | toClassNames %}
+
+          <div class="wp-block-ssm-section-wrapper__background{{ bgClasses }}"{% if props.animateBgColor %} data-bg-color="{{ colorName }}"{% endif %}>
+
+            {% if props.angle.top == 'right' %}
+              <div class="wp-block-ssm-section-wrapper__angle-top-right">
+                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="1440px" height="60px" viewBox="0 0 1440 60" style="enable-background:new 0 0 1440 60;" preserveAspectRatio="none">
+                  <path fill="#7692AB" d="M0,60L1440,0v60H0L0,60z"/>
+                  <path fill="#BACFFC" d="M0,60l1440-40v40H0L0,60z"/>
+                </svg>
+              </div>
+            {% endif %}
+
+            {% if props.angle.top == 'left' %}
+              <div class="wp-block-ssm-section-wrapper__angle-top-left">
+                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="1440px" height="60px" viewBox="0 0 1440 60" style="enable-background:new 0 0 1440 60;" preserveAspectRatio="none">
+                  <path fill="#7692AB" d="M1440,60H0L0,0L1440,60L1440,60z"/>
+                  <path fill="#BACFFC" d="M1440,60H0l0-40L1440,60L1440,60z"/>
+                </svg>
+              </div>
+            {% endif %}
+
+            {% if props.angle.bottom == 'left' %}
+              <div class="wp-block-ssm-section-wrapper__angle-bottom-left">
+                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="1440px" height="60px" viewBox="0 0 1440 60" style="enable-background:new 0 0 1440 60;" preserveAspectRatio="none">
+                  <path fill="#7692AB" d="M1440,0L0,60L0,0L1440,0L1440,0z"/>
+                  <path fill="#BACFFC" d="M1440,0L0,40L0,0L1440,0L1440,0z"/>
+                </svg>
+              </div>
+            {% endif %}
+
+            {% if props.angle.bottom == 'right' %}
+              <div class="wp-block-ssm-section-wrapper__angle-bottom-right">
+                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="1440px" height="60px" viewBox="0 0 1440 60" style="enable-background:new 0 0 1440 60;" preserveAspectRatio="none">
+                  <path fill="#7692AB" d="M0,0l1440,0v60L0,0L0,0z"/>
+                  <path fill="#BACFFC" d="M0,0l1440,0v40L0,0L0,0z"/>
+                </svg>
+              </div>
+            {% endif %}
+
+            {% if props.bg.media.image %}
+
+              <img alt="" src="{{ root }}{{ props.bg.media.image }}">
+
+              {% elif props.bg.media.video %}
+
+              <video src="{{ root }}{{ props.bg.media.video }}" autoplay playsinline muted loop></video>
+
+              {% elif props.bg.media.animation %}
+
+              <lottie-player
+                autoplay
+                loop
+                mode="normal"
+                preserveAspectRatio="xMidYMid slice"
+                src="https://lottie.host/85ae39f1-6726-4318-a56e-b5c7a0790826/v5rXMGNWmU.json"
+              >
+              </lottie-player>
+
+            {% endif %}
+
+          </div>
+
+    {% endif %}
+
+    <div class="wp-block-ssm-section-wrapper__content">
+
+      {% if props.innerContent %}
+
+        {% include props.innerContent %}
+
+      {% else %}
+
+        {% if caller %}{{ caller()  }}{% endif %}
+
+      {% endif %}
+
+    </div>
+
+  </div>
+
+{% endmacro %}

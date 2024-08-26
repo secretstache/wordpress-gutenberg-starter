@@ -1,0 +1,23 @@
+---
+layout: empty
+pagination:
+    data: components.components
+    size: 1
+    alias: component
+permalink: "design-system/{{ component.type }}/full/{{ component.slug }}/"
+title: 'Components'
+renderData:
+    title: "{{ component.title }}"
+---
+
+{% block inner %}
+
+    {% set comp %}
+
+        {% include 'design-system/demo.njk' %}
+
+    {% endset %}
+
+    {% include "design-system/previews/preview-default.njk"  %}
+
+{% endblock %}

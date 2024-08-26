@@ -1,0 +1,16 @@
+<div class="ds-full-view">
+    {%  if component.type == 'module' %}
+
+    <div class="grid-container">
+
+    {% endif %}
+
+        {{ comp | safe }}
+
+
+    {%  if component.type == 'module' %}
+
+    </div>
+
+    {% endif %}
+</div>

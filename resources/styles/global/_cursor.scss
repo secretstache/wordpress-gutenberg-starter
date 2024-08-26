@@ -1,0 +1,19 @@
+.cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    z-index: 9999;
+    transition: opacity var(--tr);
+    width: rem-calc(81);
+    height: rem-calc(81);
+    pointer-events: none;
+
+    &.is-active {
+        opacity: 1;
+
+        &::before {
+            transform: scale(1);
+        }
+    }
+}

@@ -1,0 +1,105 @@
+.menu {
+    --menu-items-gap: 1rem;
+
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--menu-items-gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    a {
+        text-decoration: none;
+    }
+
+    ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    &--vertical {
+        flex-direction: column;
+    }
+}
+
+// dropdown
+.is-dropdown {
+    .dropdown-arrow {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: transform var(--tr);
+        margin-left: rem-calc(10);
+        width: rem-calc(30);
+        height: rem-calc(30);
+
+        &::after {
+            display: block;
+            transform: rotate(45deg);
+            border-right: 1px solid var(--body-color);
+            border-bottom: 1px solid var(--body-color);
+            width: 0.5em;
+            height: 0.5em;
+            content: "";
+        }
+    }
+
+    // submenu
+    ul {
+        display: flex;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        flex-direction: column;
+        gap: rem-calc(8);
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity var(--tr);
+        margin: 0;
+        box-shadow: var(--shadow, 0 0 10px rgb(0 0 0 / 10%));
+        background: var(--white, #fff);
+        padding: rem-calc(20);
+        width: rem-calc(150);
+        pointer-events: none;
+        list-style: none;
+
+        > * + * {
+            margin-top: rem-calc(5);
+        }
+
+        &:has(:focus) {
+            opacity: 1;
+        }
+    }
+
+    [aria-expanded="true"] {
+        &.dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        + ul {
+            visibility: visible;
+        }
+    }
+
+    [aria-expanded="true"]:focus {
+        + ul {
+            opacity: 1;
+        }
+    }
+
+    li:has(ul) {
+        display: flex;
+        position: relative;
+        align-items: center;
+
+        &:hover {
+            > ul {
+                opacity: 1;
+                pointer-events: auto;
+            }
+        }
+    }
+}

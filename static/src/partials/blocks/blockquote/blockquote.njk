@@ -1,0 +1,53 @@
+/**
+* @param {string} class
+* @param {string} style
+* @param {string} quote
+* @param {string} cite
+* @param {string} textAlign - left | center | right
+* @param {string} color
+* @param {string} background
+* @param {string} fontSize
+* @param {string} fontFamily
+* @param {string} align - full | left | right | wide
+* @param {string} id
+* @param {string} customStyle
+*/
+
+{% macro render(props) %}
+
+    {% set classes = ([
+        props.class if props.class,
+        'has-text-align-' + props.textAlign if props.textAlign,
+        'has-text-color has-' + props.color + '-color' if props.color,
+        'has-background has-' + props.background + '-background-color' if props.background,
+        'has-' + props.fontSize + '-font-size' if props.fontSize,
+        'has-' + props.fontFamily + '-family' if props.fontFamily,
+        'align' + props.align if props.align,
+        'is-style-' + props.customStyle if props.customStyle
+    ]) | toClassNames %}
+
+    {% set styles = ([props.style if props.style]) | toStyleString | safe %}
+
+    {% set id = ' id="' + props.id + '"' if props.id %}
+
+    <figure class="wp-block-pullquote{{ classes }}"{{ styles }}{{ id }}>
+
+        <blockquote>
+
+            {% if props.quote %}
+
+                <p>{{ props.quote | safe }}</p>
+
+            {% endif %}
+
+            {% if props.cite %}
+
+                <cite>{{ props.cite }}</cite>
+
+            {% endif %}
+
+        </blockquote>
+
+    </figure>
+
+{% endmacro %}

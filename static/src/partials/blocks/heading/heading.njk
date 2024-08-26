@@ -1,0 +1,51 @@
+/**
+* @param {string} class
+* @param {string} style
+* @param {number} level - 1, 2, 3, 4, 5, 6
+* @param {string} content
+* @param {string} textAlign - left, center, right
+* @param {string} color
+* @param {string} background
+* @param {string} fontSize
+* @param {string} fontFamily
+* @param {string} id
+* @param {string} align - full | wide
+* @param {string} customStyle
+*/
+
+{% macro render( props ) %}
+
+    {% set classes = ([
+        props.class if props.class,
+        'has-text-align-' + props.textAlign if props.textAlign,
+        'has-text-color has-' + props.color + '-color' if props.color,
+        'has-background has-' + props.background + '-background-color' if props.background,
+        'has-' + props.fontSize + '-font-size' if props.fontSize,
+        'has-' + props.fontFamily + '-family' if props.fontFamily,
+        'align' + props.align if props.align,
+        'is-style-' + props.customStyle if props.customStyle
+    ]) | toClassNames %}
+
+    {% set styles = ([
+        props.style if props.style
+    ]) | toStyleString | safe %}
+
+    {% set level = props.level if props.level else '2' %}
+
+    {%  set id = ' id="' + props.id + '"' if props.id %}
+
+    <h{{ level }} class="wp-block-heading{{ classes }}"{{ styles }}{{ id }}>
+
+        {% if caller %}
+
+            {{ caller()  }}
+
+        {% else %}
+
+            {{ props.content | safe}}
+
+        {% endif %}
+
+    </h{{ level }}>
+
+{% endmacro %}

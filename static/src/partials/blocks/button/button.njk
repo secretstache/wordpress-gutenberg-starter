@@ -1,0 +1,29 @@
+{% macro render(props) %}
+
+    {% set wrapperClasses = ([
+        props.class if props.class,
+        props.type if props.type,
+        'has-custom-font-size has-' + props.fontSize + '-font-size' if props.fontSize,
+        'has-' + props.fontFamily + '-family' if props.fontFamily,
+        'is-style-' + props.customStyle if props.customStyle
+    ]) | toClassNames %}
+
+    {% set buttonClasses = ([
+        'has-text-color has-' + button.color + '-color' if button.color,
+        'has-background has-' + button.background + '-background-color' if button.background
+    ]) | toClassNames %}
+
+    {% set wrapperStyles = ([props.wrapperStyle if props.wrapperStyles]) | toStyleString | safe %}
+    {% set styles = ([props.style if props.style]) | toStyleString | safe %}
+
+    {% set id = ' id="' + props.id + '"' if props.id %}
+
+    <div class="wp-block-button{{ wrapperClasses }}"{{ wrapperStyles }}{{ id }}>
+
+        <a href="{{ root }}{{ props.url }}" class="wp-block-button__link{{ buttonClasses }}"{{ styles }}>
+            {{ props.label }}
+        </a>
+
+    </div>
+
+{% endmacro %}

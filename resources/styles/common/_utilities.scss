@@ -1,0 +1,241 @@
+.pull-top {
+    margin-top: 0 !important;
+}
+
+.entry-content-asset {
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        display: block;
+        padding-bottom: 56.25%;
+        content: "";
+    }
+
+    iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+// backgrounds
+@each $color in $backgrounds {
+    .bg-#{$color} {
+        background-color: var(--#{$color}) !important;
+
+        + .bg-#{$color} {
+            margin-top: 0;
+            padding-top: 0;
+        }
+    }
+}
+
+// font sizes
+@each $size, $value in $font-sizes {
+    .has-#{$size}-font-size {
+        font-size: var(--font-size-#{$size}) !important;
+    }
+}
+
+// text colors
+@each $color, $value in $palette {
+    .text-#{$color} {
+        color: var(--#{$color}) !important;
+    }
+}
+
+// margins
+@each $prop, $value in $spacing {
+    .pt-#{$prop} {
+        padding-top: $value !important;
+    }
+
+    .pb-#{$prop} {
+        padding-bottom: $value !important;
+    }
+
+    .pl-#{$prop} {
+        padding-left: $value !important;
+    }
+
+    .pr-#{$prop} {
+        padding-right: $value !important;
+    }
+
+    .mt-#{$prop} {
+        margin-top: $value !important;
+    }
+
+    .mb-#{$prop} {
+        margin-bottom: $value !important;
+    }
+
+    .ml-#{$prop} {
+        margin-left: $value !important;
+    }
+
+    .mr-#{$prop} {
+        margin-right: $value !important;
+    }
+}
+
+// visibility classes
+.hide {
+    display: none !important;
+}
+
+.show-for-sr {
+    display: block;
+    margin: -1px !important; // Fix for https://github.com/twbs/bootstrap/issues/25686
+    padding: 0 !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    border: 0 !important;
+    white-space: nowrap !important;
+}
+
+@each $size in $breakpoint-classes {
+    .hide-for-#{$size} {
+        display: block !important;
+
+        @include breakpoint($size) {
+            display: none !important;
+        }
+    }
+
+    .show-for-#{$size} {
+        display: none !important;
+
+        @include breakpoint($size) {
+            display: block !important;
+        }
+    }
+
+    .hide-for-#{$size}-only {
+        display: block !important;
+
+        @include breakpoint($size only) {
+            display: none !important;
+        }
+    }
+
+    .show-for-#{$size}-only {
+        display: none !important;
+
+        @include breakpoint($size only) {
+            display: block !important;
+        }
+    }
+}
+
+// text alignment classes
+@each $align in (left, right, center, justify) {
+    .text-#{$align} {
+        text-align: $align;
+    }
+}
+
+@each $size in $breakpoint-classes {
+    @include breakpoint($size only) {
+        @each $align in (left, right, center, justify) {
+            .#{$size}-text-#{$align} {
+                text-align: $align;
+            }
+        }
+    }
+}
+
+// shrink, auto, grow
+.shrink {
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 100%;
+}
+
+.auto {
+    flex: 1 1 0;
+    width: auto;
+}
+
+.grow {
+    flex: 1 0 auto;
+}
+
+@each $size in $breakpoint-classes {
+    @include breakpoint($size only) {
+        .#{$size}-shrink {
+            flex: 0 0 auto;
+            width: auto;
+            max-width: 100%;
+        }
+
+        .#{$size}-auto {
+            flex: 1 1 0;
+            width: auto;
+        }
+
+        .#{$size}-grow {
+            flex: 1 0 auto;
+        }
+    }
+}
+
+// flexbox alignment classes
+$-flex-justify: (
+    "left": flex-start,
+    "right": flex-end,
+    "center": center,
+    "justify": space-between,
+    "spaced": space-around,
+);
+
+$-flex-align: (
+    "top": flex-start,
+    "bottom": flex-end,
+    "middle": center,
+    "stretch": stretch,
+);
+
+@each $hdir, $prop in $-flex-justify {
+    .align-#{$hdir} {
+        justify-content: $prop;
+    }
+
+    .align-self-#{$hdir} {
+        justify-self: $prop;
+    }
+}
+
+@each $vdir, $prop in $-flex-align {
+    .align-#{$vdir} {
+        align-items: $prop;
+    }
+
+    .align-self-#{$vdir} {
+        align-self: $prop;
+    }
+}
+
+// order classes
+@each $size in $breakpoint-classes {
+    @include breakpoint($size only) {
+        .#{$size}-order-first {
+            order: -1;
+        }
+
+        .#{$size}-order-last {
+            order: 1000;
+        }
+
+        @for $i from 1 through 6 {
+            .#{$size}-order-#{$i} {
+                order: $i;
+            }
+        }
+    }
+}

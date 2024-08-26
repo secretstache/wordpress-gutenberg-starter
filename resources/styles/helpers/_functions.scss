@@ -1,0 +1,124 @@
+@use "sass:math";
+@use "sass:map";
+@use "sass:string";
+@use "sass:list";
+
+@function map-deep-get($map, $keys...) {
+    @each $key in $keys {
+        $map: map.get($map, $key);
+    }
+
+    @return $map;
+}
+
+// returns value decreased or increased basing on percent
+// usage percent(20, 10);
+// usage percent(20, 10, up);
+@function percent($val, $percent, $dir: down) {
+    @if $dir == up {
+        @return $val + $val * $percent / 100;
+    } @else {
+        @return $val - $val * $percent / 100;
+    }
+}
+
+@function strip-unit($value) {
+    $arg2: $value * 0 + 1;
+
+    @return math.div($value, $arg2);
+}
+
+/// Replace `$search` with `$replace` in `$string`
+/// @author Hugo Giraudel
+/// @link http://sassmeister.com/gist/1b4f2da5527830088e4d
+/// @param {String} $string - Initial string
+/// @param {String} $search - Substring to replace
+/// @param {String} $replace ('') - New value
+/// @return {String} - Updated string
+@function str-replace($string, $search, $replace: "") {
+    $index: string.index($string, $search);
+
+    @if $index {
+        @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+    }
+
+    @return $string;
+}
+
+/// Map Next
+/// Find the next key in a map.
+///
+/// @param {map} $map - Map to traverse.
+/// @param {mixed} $key - Key to use as a starting point.
+///
+/// @return The value for the key after `$key` if `$key` was found. If `$key` was not found, or `$key` was the last value in the map, returns null.
+@function map-next($map, $key) {
+    // Store the values of the map as a list, so we can access them with nth
+    $values: map.values($map);
+
+    // Ghetto for loop
+    $i: 1;
+    $found: false;
+
+    @each $val in map-keys($map) {
+        @if $found == false {
+            @if $key == $val {
+                $found: true;
+            }
+
+            $i: $i + 1;
+        }
+    }
+
+    // If the key doesn't exist, or it's the last key in the map, return null
+    @if $i > length($map) {
+        @return null;
+    }
+
+    // Otherwise return the value
+    @else {
+        @return nth($values, $i);
+    }
+}
+
+$rem-base: 16px;
+
+@function convert-to-rem($value, $base-value: $rem-base) {
+    $value: math.div(strip-unit($value), strip-unit($base-value)) * 1rem;
+
+    @if $value == 0 {
+        $value: 0;
+    }
+
+    // Turn 0rem into 0
+    @return $value;
+}
+
+@function rem-calc($values, $base-value: $rem-base) {
+    $max: list.length($values);
+
+    @if $max == 1 {
+        @return convert-to-rem(list.nth($values, 1), $base-value);
+    }
+
+    $rem-values: ();
+
+    @for $i from 1 through $max {
+        $rem-values: list.append($rem-values, convert-to-rem(list.nth($values, $i), $base-value));
+    }
+
+    @return $rem-values;
+}
+
+/* Returns a CSS clamp function which resolves to $size-at-min-width when page width is below $min-width,$size-at-max-width when page width is above $max-width, and linearly scales between the two between $min-width and $max-width */
+
+@function min-max($min-size, $max-size, $min-breakpoint: 480, $max-breakpoint: 1024, $unit: "vw") {
+    $slope: math.div($max-size - $min-size, $max-breakpoint - $min-breakpoint);
+    $slope-to-unit: $slope * 100;
+
+    $intercept-rem: rem-calc($min-size - $slope * $min-breakpoint);
+    $min-size-rem: rem-calc($min-size);
+    $max-size-rem: rem-calc($max-size);
+
+    @return clamp(#{$min-size-rem}, #{$slope-to-unit}#{$unit} + #{$intercept-rem}, #{$max-size-rem});
+}

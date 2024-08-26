@@ -1,0 +1,35 @@
+.wp-block-table {
+    display: block;
+    margin: unset;
+    width: 100%;
+    overflow: auto;
+
+    --table-padding: var(--spacing-2);
+
+    table,
+    th,
+    td {
+        border-collapse: collapse;
+    }
+
+    table {
+        width: 100%;
+
+        thead {
+            th {
+                vertical-align: middle;
+                padding: var(--table-padding);
+            }
+        }
+
+        td,
+        th {
+            vertical-align: top;
+            padding: var(--table-padding);
+        }
+    }
+
+    .has-fixed-layout {
+        table-layout: fixed;
+    }
+}

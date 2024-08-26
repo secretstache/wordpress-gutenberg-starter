@@ -1,0 +1,56 @@
+.grid-x {
+    display: flex;
+    column-gap: var(--grid-column-gap);
+    row-gap: var(--grid-row-gap);
+    flex-wrap: wrap;
+}
+
+@for $i from 1 through 12 {
+    @include breakpoint(medium) {
+        .container-width-#{$i} {
+            width: calc((100% / 12 * #{$i}) - ((12 / #{$i} - 1) * var(--grid-column-gap) / (12 / #{$i})));
+        }
+    }
+}
+
+.container-align-center {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.container-align-right {
+    margin-left: auto;
+}
+
+.cell {
+    flex: 0 0 auto;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+}
+
+.grid-padding-x {
+    column-gap: 0;
+
+    .cell {
+        padding-right: var(--grid-column-gap);
+        padding-left: var(--grid-column-gap);
+    }
+}
+
+@each $size in $breakpoint-classes {
+    @for $i from 1 through 12 {
+        .#{$size}-#{$i} {
+            @include breakpoint($size) {
+                /* prettier-ignore */
+                width: calc((100% / 12 * #{$i}) - ((12 / #{$i} - 1) * var(--grid-column-gap) / (12 / #{$i})));
+            }
+        }
+
+        .grid-padding-x > .#{$size}-#{$i} {
+            @include breakpoint($size) {
+                width: calc(100% / (12 / #{$i}));
+            }
+        }
+    }
+}

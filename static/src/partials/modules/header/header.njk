@@ -1,0 +1,22 @@
+/**
+* @param {string} class
+* @param {string} headers
+*/
+
+{% macro render( props ) %}
+    <header class="module header{% if props.class %} {{ props.class }}{% endif %}">
+
+    {% for header in props.headers %}
+        {% set headerTag = header.tag if header.tag else 'h2' %}
+
+        {% set classes = ([
+            header.class if header.class,
+            header.size if header.size
+        ]) | toClassNames %}
+
+
+        <{{ headerTag }}{% if classes %} class="{{ classes }}"{% endif %}>{{ header.text | safe }}</{{ headerTag }}>
+    {% endfor %}
+
+    </header>
+{% endmacro %}

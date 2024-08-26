@@ -1,0 +1,28 @@
+%input-styles {
+    display: block;
+    position: relative;
+    margin: 0;
+    outline: none;
+    box-shadow: none;
+    border: 1px solid var(--form-input-border-color);
+    border-radius: var(--form-input-border-radius);
+    background: var(--form-input-bg-color);
+    padding: rem-calc(10 10);
+    width: 100%;
+    height: auto;
+    color: var(--form-input-color);
+    line-height: 1.2;
+
+    &::placeholder {
+        opacity: 0.4;
+        color: inherit;
+    }
+
+    &:focus {
+        outline: none;
+    }
+
+    &:focus-visible {
+        outline: 1px dotted;
+    }
+}

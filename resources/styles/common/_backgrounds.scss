@@ -1,0 +1,41 @@
+.bg-dark {
+    --link-color: var(--inverse);
+    --link-hover-color: var(--inverse);
+    --body-color: var(--inverse);
+    --form-input-border-color: var(--inverse);
+    --form-input-bg-color: transparent;
+    --form-input-color: var(--inverse);
+
+    color: var(--inverse);
+
+    .button {
+        --button-color-primary: var(--inverse);
+        --button-color-inverse: var(--primary-color);
+    }
+}
+
+.bg-container {
+    @include overlay;
+
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+
+    img,
+    video {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.bg-video,
+.bg-image {
+    .overlay {
+        @include overlay;
+
+        background: rgb(0 0 0 / 40%);
+        pointer-events: none;
+    }
+}

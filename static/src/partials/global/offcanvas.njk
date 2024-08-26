@@ -1,0 +1,19 @@
+{% from 'macros/common.njk' import menu %}
+<div class="offcanvas" id="offcanvas" role="complementary" tabindex="-1">
+
+    <div class="offcanvas__inner">
+        <div class="grid-container">
+
+            <button data-dismiss="offcanvas" class="offcanvas__close-btn">&#x2715;<span class="show-for-sr">Close</span></button>
+
+            <nav class="offcanvas__navigation" role="navigation">
+                {{ menu({
+                    nav: navigation.main,
+                    class: "menu--vertical"
+                }) }}
+            </nav>
+
+        </div>
+    </div>
+
+</div>

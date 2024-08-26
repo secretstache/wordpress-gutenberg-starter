@@ -1,0 +1,51 @@
+/**
+* @param {string} class
+* @param {string} style
+* @param {string} src
+* @param {boolean} hasLink
+* @param {string} caption
+* @param {string} align - full | left | right | center | wide
+* @param {string} id
+* @param {string} customStyle
+* @param {string} imageStyle
+*/
+
+{% macro render( props ) %}
+
+    {% set classes = ([
+        props.class if props.class,
+        'align' + props.align if props.align,
+        'is-style-' + props.customStyle if props.customStyle
+    ]) | toClassNames %}
+
+    {% set styles = ([
+        props.style if props.style
+    ]) | toStyleString | safe %}
+
+    {%  set id = ' id="' + props.id + '"' if props.id %}
+
+    <figure class="wp-block-image{{ classes }}"{{ styles }}{{ id }}>
+
+        {% if props.hasLink %}
+
+        <a href="{{ root }}{{ props.url }}">
+
+            {% endif %}
+
+            <img {% if props.imageStyle %} style="{{ props.imageStyle }}"{% endif %} decoding="async" src="{{ root }}{{ props.src }}" alt="img">
+
+            {% if props.hasLink %}
+
+        </a>
+
+        {% endif %}
+
+        {% if props.caption %}
+
+            <figcaption class="wp-element-caption">{{ props.caption }}</figcaption>
+
+        {% endif %}
+
+    </figure>
+
+{% endmacro %}

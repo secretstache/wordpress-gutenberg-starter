@@ -1,0 +1,17 @@
+/**
+* @param {string} class
+* @param {string} url
+* @param {string} label
+* @param {string} type
+*/
+
+{% macro render( props ) %}
+
+    {% set classes = ([
+        props.class if props.class,
+        props.type if props.type
+    ]) | toClassNames %}
+
+    <a href="{{ root }}{{ props.url }}" class="button{{ classes }}">{{ props.label }}</a>
+
+{% endmacro %}

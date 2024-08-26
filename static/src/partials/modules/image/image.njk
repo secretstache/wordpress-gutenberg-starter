@@ -1,0 +1,24 @@
+/**
+* @param {string} class
+* @param {string} src
+* @param {string} mobileSrc
+*/
+
+{% macro render( props ) %}
+    <picture class="module image{%if props.class %} {{ props.class }}{% endif %}">
+
+        {%if props.src %}
+            <img src="{{ root }}{{ props.src }}" alt="">
+
+            {% if props.mobileSrc %}
+                <source media="(max-width: 768px)" srcset="{{ root }}{{ props.mobileSrc }}">
+            {% endif %}
+
+        {% else %}
+
+            <img src="{{ root }}/assets/images/cms/placeholder.svg" alt="">
+
+        {% endif %}
+
+    </picture>
+{% endmacro %}

@@ -1,0 +1,74 @@
+---
+pagination:
+    data: components.components
+    size: 1
+    alias: component
+permalink: "design-system/{{ component.type }}/{{ component.slug }}/"
+title: "Components"
+---
+
+{% extends "design-system/library.njk" %}
+
+{% block content %}
+
+
+    <div class="ds-tabs">
+
+        <div id="demo" class="ds-tabs__panel is-active">
+
+            <div class="ds-tabs__content">
+
+                <div class="viewport-wrapper">
+
+                    <div id="viewpr-content" class="viewport-content">
+
+                            <iframe src="{{ root }}/design-system/{{ component.type }}/full/{{ component.slug }}/" sandbox="allow-same-origin allow-scripts allow-forms allow-modals" style="" vspace="0" hspace="0"></iframe>
+
+                            {% set comp %}
+
+                                {% include 'design-system/demo.njk' %}
+
+                            {% endset %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div id="code-tab" role="tabpanel" class="ds-tabs__panel">
+
+            <div class="ds-tabs__content">
+
+                {% include 'design-system/code.njk' %}
+
+            </div>
+
+        </div>
+
+        <div id="context-tab" role="tabpanel" class="ds-tabs__panel">
+
+            <div class="ds-tabs__content">
+
+                {% include 'design-system/context.njk' %}
+
+            </div>
+
+        </div>
+
+        <div id="options-tab" role="tabpanel" class="ds-tabs__panel">
+
+            <div class="ds-tabs__content">
+
+                {% include 'design-system/options.njk' %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+{% endblock %}

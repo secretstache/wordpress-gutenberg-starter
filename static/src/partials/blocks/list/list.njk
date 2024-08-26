@@ -1,0 +1,70 @@
+/**
+* @param {string} class
+* @param {string} style
+* @param {string} color
+* @param {string} background
+* @param {string} tag
+* @param {array} items
+* @param {number} start
+* @param {string} type
+* @param {string} id
+* @param {string} customStyle
+*/
+
+{% macro render( props ) %}
+
+    {% set classes = ([
+        props.class if props.class,
+        'has-text-color has-' + props.color + '-color' if props.color,
+        'has-background has-' + props.background + '-background-color' if props.background,
+        'has-' + props.fontSize + '-font-size' if props.fontSize,
+        'is-style-' + props.customStyle if props.customStyle
+    ]) | toClassNames %}
+
+    {% set styles = ([
+        props.style if props.style
+    ]) | toStyleString | safe %}
+
+    {%  set type = ' type="' + props.type + '"' if props.type %}
+    {%  set start = ' start="' + props.start + '"' if props.start %}
+    {%  set id = ' id="' + props.id + '"' if props.id %}
+
+    <{{ props.tag if props.tag else 'ul'}} class="{{ classes }}"{{ styles }}{{ type }}{{ start }}{{ id }}>
+
+        {% if props.items %}
+
+            {% for item in props.items %}
+
+                {% set classes = ([
+                    item.class if item.class,
+                    'has-' + item.fontSize + '-font-size' if item.fontSize,
+                    'has-' + item.fontFamily + '-family' if item.fontFamily
+                ]) | toClassNames %}
+
+                {% set styles = ([
+                    item.style if item.style
+                ]) | toStyleString | safe %}
+
+                <li{%if classes %} class="{{ classes }}"{% endif %}{{ styles }}>
+
+                    {{ item.content }}
+
+                </li>
+
+            {% endfor %}
+
+        {% else %}
+
+            {% if props.innerContent %}
+
+                {% include props.innerContent %}
+
+            {% endif %}
+
+            {% if caller %}{{ caller()  }}{% endif %}
+
+        {% endif %}
+
+    </{{ props.tag if props.tag else 'ul'}}>
+
+{% endmacro %}

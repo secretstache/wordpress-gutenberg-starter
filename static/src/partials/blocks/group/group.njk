@@ -1,0 +1,65 @@
+/**
+* @param {string} class
+* @param {string} style
+* @param {string} color
+* @param {string} background
+* @param {string} fontSize
+* @param {string} contentWidth
+* @param {string} minHeight
+* @param {string} id
+* @param {string} contentAlign - left | center | right
+* @param {string} align - full | wide
+* @param {string} customStyle
+*/
+
+{% macro render( props ) %}
+
+    {% from "macros/blocks.njk" import column, block %}
+
+    {% if props.contentWidth %}
+        {% set uid = uid() %}
+    {% endif %}
+
+    {% set classes = ([
+        props.class if props.class,
+        'has-text-color has-' + props.color + '-color' if props.color,
+        'has-background has-' + props.background + '-background-color' if props.background,
+        'has-' + props.fontSize + '-font-size' if props.fontSize,
+        'wp-container-'+ uid if props.contentWidth,
+        'is-content-justification-' + props.contentAlign if props.contentAlign,
+        'is-style-' + props.customStyle if props.customStyle
+    ]) | toClassNames %}
+
+    {% set styles = ([
+        props.style if props.style,
+        'min-height:' + props.minHeight if props.minHeight
+    ]) | toStyleString | safe %}
+
+    {%  set id = ' id="' + props.id + '"' if props.id %}
+
+    <div class="wp-block-group {{ classes }}"{{ styles}}{{ id }}>
+
+        {% if props.innerContent %}
+
+            {% include props.innerContent %}
+
+        {% endif %}
+
+        {% if caller %}{{ caller()  }}{% endif %}
+
+        {% if props.contentWidth %}
+
+            <!--for static purpose only -->
+            <style>
+                .wp-container-{{ uid }}.wp-container-{{ uid }} > :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
+                    max-width: {{ props.contentWidth }};
+                    margin-left: {% if props.contentAlign == 'left' %}0{% else %}auto{% endif %} !important;
+                    margin-right: {% if props.contentAlign == 'right' %}0{% else %}auto{% endif %} !important;
+                }
+            </style>
+
+        {% endif %}
+
+    </div>
+
+{% endmacro %}

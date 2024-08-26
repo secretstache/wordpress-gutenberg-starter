@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{title}}">
+
+    <link rel="stylesheet" href="{{ root }}/assets/styles/app.css">
+
+    <title>{{title}}</title>
+  </head>
+
+  {% from "macros/default.njk" import columns, column, module, template %}
+
+  <body{% if bodyClasses %} class="{{ bodyClasses }}"{% endif %}>
+
+    <a class="skip-main" href="#main">Skip to main content</a>
+
+    <div class="site">
+
+        {% include 'global/offcanvas.njk' %}
+
+        {% include 'global/site-header.njk' %}
+
+        <main class="content" id="main">
+
+          {{ content | safe }}
+
+        </main>
+
+        {% include 'global/site-footer.njk' %}
+
+    </div>
+
+    <script type="text/javascript" src="{{ root }}/assets/scripts/vendor.js"></script>
+    <script type="text/javascript" src="{{ root }}/assets/scripts/app.js"></script>
+
+  </body>
+
+</html>

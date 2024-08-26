@@ -1,0 +1,56 @@
+/**
+* @param {string} class
+* @param {string} style
+* @param {array} buttons
+* @param {string} justification - left, right, center, space-between
+* @param {boolean} stacked
+* @param {string} fontSize
+* @param {string} id
+* @param {string} align - full | wide
+* @param {string} customStyle
+*/
+
+{% macro render(props) %}
+
+    {% from "macros/blocks.njk" import block %}
+
+    {% set classes = ([
+        props.class if props.class,
+        'has-custom-font-size has-' + props.fontSize + '-font-size' if props.fontSize,
+        'is-content-justification-' + props.justification if props.justification,
+        'is-vertical' if props.stacked,
+        'align' + props.align if props.align,
+        'is-style-' + props.customStyle if props.customStyle
+    ]) | toClassNames %}
+
+    {% set styles = ([props.style if props.style]) | toStyleString | safe %}
+
+    {% set id = ' id="' + props.id + '"' if props.id %}
+
+    <div class="wp-block-buttons{{ classes }}"{{ styles }}{{ id }}>
+
+        {% if props.buttons %}
+
+            {% for button in props.buttons %}
+
+                {{ block("button", {
+                    "label": button.label,
+                    "url": button.url,
+                    "type": button.type,
+                    "fontSize": button.fontSize,
+                    "class": button.class,
+                    "fontFamily": button.fontFamily,
+                    "customStyle": button.customStyle,
+                    "color": button.color,
+                    "background": button.background,
+                    "wrapperStyle": button.wrapperStyle,
+                    "style": button.style
+                }) }}
+
+            {% endfor %}
+
+        {% endif %}
+
+    </div>
+
+{% endmacro %}

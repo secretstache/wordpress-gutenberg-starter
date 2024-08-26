@@ -1,0 +1,46 @@
+{#
+# @prop {string} headline
+# @prop {string} subheadline
+# @prop {string} description
+# @prop {array} buttons
+#}
+{% macro render( props ) %}
+
+    <div class="grid-container">
+
+        <div class="hero-unit__content">
+
+            {% if props.headline or props.subheadline %}
+
+                <header class="hero-unit__header">
+                    {% if props.headline %}
+                        <h1 class="hero-unit__headline">{{ props.headline | safe}}</h1>
+                    {% endif %}
+
+                    {% if props.subheadline %}
+                        <h2 class="hero-unit__subheadline">{{ props.subheadline | safe}}</h2>
+                    {% endif %}
+                </header>
+
+            {% endif %}
+
+            {% if props.description %}
+                <div class="hero-unit__description">{{ props.description | safe}}</div>
+            {% endif %}
+
+            {% if props.buttons %}
+                <div class="hero-unit__buttons">
+
+                    {% for button in props.buttons %}
+
+                        <a href="{{ root }}{{ button.url }}" class="button{% if button.type %} {{ button.type }}{% endif %}">{{ button.label }}</a>
+                    {% endfor %}
+
+                </div>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+{% endmacro %}

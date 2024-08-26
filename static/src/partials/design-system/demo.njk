@@ -1,0 +1,69 @@
+{% if component.isContainer %}
+
+    {# if has inner blocks #}
+
+    {%  if component.type == 'template' %}
+
+        {% call template( component.name, component.context ) %}
+
+            {% if component.containerContext %}
+
+                {% include component.type + 's/' + component.name + '/context/' + component.containerContext + '.njk' %}
+
+            {% endif %}
+
+        {% endcall %}
+
+    {% endif %}
+
+    {%  if component.type == 'module' %}
+
+        {% call module( component.name, component.context ) %}
+
+            {% if component.containerContext %}
+
+                {% include component.type + 's/' + component.name + '/context/' + component.containerContext + '.njk' %}
+
+            {% endif %}
+
+        {% endcall %}
+
+    {% endif %}
+
+     {%  if component.type == 'block' %}
+
+         {% call block( component.name, component.context ) %}
+
+             {% if component.containerContext %}
+
+                 {% include component.type + 's/' + component.name + '/context/' + component.containerContext + '.njk' %}
+
+             {% endif %}
+
+         {% endcall %}
+
+     {% endif %}
+
+{%  else %}
+
+    {# if hasn't inner block #}
+
+    {%  if component.type == 'template' %}
+
+        {{ template(component.name, component.context) }}
+
+    {% endif %}
+
+    {%  if component.type == 'module' %}
+
+        {{ module(component.name, component.context) }}
+
+    {% endif %}
+
+    {%  if component.type == 'block' %}
+
+        {{ block(component.name, component.context) }}
+
+    {% endif %}
+
+{% endif %}

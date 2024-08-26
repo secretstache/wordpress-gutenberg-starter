@@ -1,0 +1,295 @@
+.gform_wrapper.gravity-theme {
+    form {
+        grid-row-gap: rem-calc(30);
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    fieldset,
+    legend {
+        background: 0 0;
+        padding: 0;
+    }
+
+    fieldset {
+        display: block;
+        margin: 0;
+        border: none;
+    }
+
+    legend {
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    input:not([type="radio"], [type="checkbox"], [type="submit"], [type="button"], [type="image"], [type="file"]),
+    select,
+    textarea {
+        @extend %input-styles;
+    }
+
+    .gform_fields {
+        display: grid;
+        grid-template-rows: repeat(auto-fill, auto);
+        grid-template-columns: repeat(12, 1fr);
+        grid-column-gap: var(--form-column-gap);
+        width: 100%;
+        grid-row-gap: var(--form-row-gap);
+    }
+
+    .gfield {
+        grid-column: 1/-1;
+
+        &.gfield--width-full {
+            grid-column: span 12;
+        }
+
+        &.gfield--width-eleven-twelfths {
+            grid-column: span 11;
+        }
+
+        &.gfield--width-five-sixths {
+            grid-column: span 10;
+        }
+
+        &.gfield--width-three-quarter {
+            grid-column: span 9;
+        }
+
+        &.gfield--width-two-thirds {
+            grid-column: span 8;
+        }
+
+        &.gfield--width-seven-twelfths {
+            grid-column: span 7;
+        }
+
+        &.gfield--width-half {
+            grid-column: span 6;
+        }
+
+        &.gfield--width-five-twelfths {
+            grid-column: span 5;
+        }
+
+        &.gfield--width-third {
+            grid-column: span 4;
+        }
+
+        &.gfield--width-quarter {
+            grid-column: span 3;
+        }
+
+        .gfield_label {
+            display: block;
+            margin-bottom: rem-calc(10);
+        }
+
+        &.gfield--type-checkbox,
+        &.gfield--type-radio {
+            .gfield_label {
+                margin-bottom: rem-calc(16);
+                text-transform: unset;
+            }
+
+            .gfield-choice-input {
+                display: none;
+
+                + label {
+                    display: block;
+                    position: relative;
+                    padding-left: rem-calc(28);
+                    min-height: rem-calc(25);
+
+                    @include breakpoint(large) {
+                        padding-left: rem-calc(24 + 12);
+                    }
+
+                    &::before {
+                        display: block;
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        cursor: pointer;
+                        border: 1.75px solid;
+                        width: min-max(20, 24);
+                        height: min-max(20, 24);
+                        content: "";
+                    }
+
+                    &::after {
+                        display: block;
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        opacity: 0;
+                        pointer-events: none;
+                        content: "";
+                    }
+                }
+
+                &:checked {
+                    + label {
+                        &::before {
+                            border-color: var(--form-checkbox-color-active);
+                        }
+
+                        &::after {
+                            opacity: 1;
+                        }
+                    }
+                }
+            }
+
+            &.gfield_error {
+                --form-checkbox-color: var(--error-color);
+                --form-checkbox-color-active: var(--error-color);
+                --form-checkbox-bg: var(--pure-red-50);
+            }
+        }
+
+        .gfield_radio,
+        .gfield_checkbox {
+            display: grid;
+            gap: rem-calc(8);
+        }
+
+        .gfield_checkbox {
+            .gfield-choice-input {
+                + label {
+                    &::before {
+                        border-radius: rem-calc(2);
+                    }
+
+                    &::after {
+                        top: rem-calc(5);
+                        left: rem-calc(4);
+                        background: svg-uri('<svg width="16" height="13" viewBox="0 0 16 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5.37501 9.67539L1.70001 6.00039L0.475006 7.22539L5.37501 12.1254L15.875 1.62539L14.65 0.400391L5.37501 9.67539Z" fill="white"/></svg>') no-repeat;
+                        background-size: contain;
+                        width: min-max(13, 16);
+                        height: min-max(10, 13);
+                    }
+                }
+
+                &:checked {
+                    + label {
+                        &::before {
+                            background: var(--form-checkbox-color-active);
+                        }
+                    }
+                }
+            }
+        }
+
+        .gfield_radio {
+            .gfield-choice-input {
+                + label {
+                    &::before {
+                        border-radius: rem-calc(40);
+                    }
+
+                    &::after {
+                        top: min-max(4, 4.5);
+                        left: min-max(4, 4.5);
+                        border-radius: rem-calc(20);
+                        background: var(--form-checkbox-color-active);
+                        width: min-max(12, 15);
+                        height: min-max(12, 15);
+                    }
+                }
+            }
+        }
+
+        textarea.large {
+            height: rem-calc(122);
+        }
+    }
+
+    @media (width <= 640px) {
+        .gform_fields {
+            grid-column-gap: 0;
+        }
+
+        .gfield:not(.gfield--width-full) {
+            grid-column: 1/-1;
+        }
+    }
+
+    .gform_footer {
+        text-align: center;
+    }
+
+    .gform-button,
+    .gform_button {
+        @extend .button;
+    }
+
+    .gfield_validation_message {
+        ul {
+            margin: rem-calc(16 0);
+            padding-left: rem-calc(24);
+
+            &:empty {
+                display: none;
+            }
+        }
+    }
+
+    .gf_hidden,
+    .gform_hidden {
+        display: none;
+    }
+
+    .hidden_label .gfield_label,
+    .hidden_sub_label,
+    .screen-reader-text {
+        border: 0;
+        clip: rect(1px, 1px, 1px, 1px);
+        position: absolute;
+        clip-path: inset(50%);
+        margin: -1px;
+        padding: 0;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        word-wrap: normal !important;
+    }
+
+    .ginput_complex {
+        display: flex;
+        flex-flow: row wrap;
+    }
+
+    // errors
+    .gform_submission_error {
+        display: none;
+    }
+
+    /* stylelint-disable-next-line */
+    form {
+        .gfield_error .gfield_repeater_cell label,
+        .gfield_error label,
+        .gfield_error legend,
+        .gfield_validation_message,
+        .validation_message,
+        [aria-invalid="true"] + label,
+        label + [aria-invalid="true"] {
+            color: var(--error-color);
+        }
+
+        .gfield_validation_message,
+        .validation_message {
+            border: 0;
+            background: none;
+            padding: 0;
+        }
+
+        .gfield.gfield_error {
+            input:not([type="radio"], [type="checkbox"], [type="submit"], [type="button"], [type="image"], [type="file"]),
+            select,
+            textarea {
+                border-color: var(--error-color);
+            }
+        }
+    }
+}

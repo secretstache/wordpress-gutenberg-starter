@@ -1,0 +1,64 @@
+@mixin typo($type) {
+    @if $type == "h1" {
+        font-weight: 700;
+        font-size: var(--font-size-h1);
+        line-height: 100%;
+        font-family: var(--secondary-font);
+    }
+
+    @if $type == "h2" {
+        font-weight: 700;
+        font-size: var(--font-size-h2);
+        line-height: 110%;
+        font-family: var(--secondary-font);
+    }
+
+    @if $type == "h3" {
+        font-weight: 400;
+        font-size: var(--font-size-h3);
+        line-height: 120%;
+        font-family: var(--secondary-font);
+    }
+
+    @if $type == "h4" {
+        font-weight: 400;
+        font-size: var(--font-size-h4);
+        line-height: 120%;
+        font-family: var(--secondary-font);
+    }
+
+    @if $type == "h5" {
+        font-weight: 300;
+        font-size: var(--font-size-h5);
+        line-height: 120%;
+        font-family: var(--secondary-font);
+    }
+
+    @if $type == "h6" {
+        font-weight: 300;
+        font-size: var(--font-size-h6);
+        line-height: 120%;
+        font-family: var(--secondary-font);
+    }
+
+    @if $type == "body" {
+        font-weight: 300;
+        font-size: var(--font-size-body);
+        line-height: 140%;
+        font-family: var(--primary-font);
+    }
+
+    @if $type == "body-large" {
+        font-weight: 300;
+        font-size: var(--font-size-body-large);
+        line-height: 140%;
+        font-family: var(--primary-font);
+    }
+
+    @if $type == "body-small" {
+        font-weight: 400;
+        font-size: var(--font-size-body-small);
+        line-height: 120%;
+        font-family: var(--primary-font);
+    }
+}

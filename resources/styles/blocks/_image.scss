@@ -1,0 +1,40 @@
+.wp-block-image {
+    display: block;
+    position: relative;
+    margin: 0;
+
+    img {
+        display: block;
+        overflow: hidden;
+    }
+
+    a {
+        display: block;
+    }
+
+    .wp-element-caption {
+        margin-top: var(--spacing-4);
+    }
+
+    &.aligncenter {
+        text-align: center;
+
+        img {
+            margin-right: auto;
+            margin-left: auto;
+        }
+    }
+
+    &.alignright {
+        img {
+            margin-left: auto;
+        }
+    }
+
+    &.alignfull {
+        img {
+            margin-right: auto;
+            margin-left: auto;
+        }
+    }
+}

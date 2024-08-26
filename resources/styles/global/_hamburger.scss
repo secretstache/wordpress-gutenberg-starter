@@ -1,0 +1,48 @@
+.hamburger {
+    display: block;
+    position: relative;
+    cursor: pointer;
+    border: none;
+    background: none;
+    width: rem-calc(21);
+    min-width: rem-calc(21);
+    height: rem-calc(17);
+
+    &__line {
+        display: block;
+        position: absolute;
+        transition: transform 0.3s;
+        background: black;
+        width: 100%;
+        height: rem-calc(3);
+
+        &--1 {
+            top: 0;
+        }
+
+        &--2 {
+            top: 50%;
+            margin-top: rem-calc(-1.5);
+        }
+
+        &--3 {
+            bottom: 0;
+        }
+    }
+
+    &[aria-expanded="true"] {
+        .hamburger__line {
+            &--1 {
+                transform: translateY(#{rem-calc(7)}) translateX(0) rotate(45deg);
+            }
+
+            &--2 {
+                opacity: 0;
+            }
+
+            &--3 {
+                transform: translateY(#{rem-calc(-7)}) translateX(0) rotate(-45deg);
+            }
+        }
+    }
+}

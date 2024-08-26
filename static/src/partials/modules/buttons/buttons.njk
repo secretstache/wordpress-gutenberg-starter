@@ -1,0 +1,23 @@
+/**
+* @param {string} class
+*/
+
+{% macro render( props ) %}
+
+    {% from "macros/default.njk" import module %}
+
+    <div class="module buttons{%if props.class %} {{ props.class }}{% endif %}">
+
+        {% if props.buttons %}
+
+            {% for button in props.buttons %}
+
+                {{ module('button', button) }}
+
+            {% endfor %}
+
+        {% endif %}
+
+    </div>
+
+{% endmacro %}
