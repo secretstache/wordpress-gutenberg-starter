@@ -8,6 +8,7 @@
     "printWidth": 1000,
     "singleQuote": true,
     "multilineArraysWrapThreshold": 1,
+    "useTabs": false,
     "overrides": [
         {
             "files": [
