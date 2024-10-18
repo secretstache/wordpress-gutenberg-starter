@@ -19,14 +19,14 @@ class ComposerScripts
         // Extract the last part of the path as the directory name
         $themePublicPathName = basename($projectDirectory); // e.g. ssm2023, amd2024
 
-        $themeName = $io->ask('<question>Theme Name:</question> ', 'Wordpress Starter');
         $companyName = $io->ask('<question>Company Name:</question> ', 'Secret Stache Media');
+        $companyUrl  = $io->ask('<question>Company URL:</question> ', 'https://secretstache.com/');
 
-        $agencyName = $io->ask('<question>Agency Name:</question> ', 'Secret Stache Media');
-        $agencyUrl = $io->ask('<question>Agency URL:</question> ', 'https://secretstache.com/');
-        $textDomain = $io->ask('<question>Text Domain:</question> ', 'ssm');
+        $agencyName  = $io->ask('<question>Agency Name:</question> ', 'Secret Stache Media');
+        $agencyUrl   = $io->ask('<question>Agency URL:</question> ', 'https://secretstache.com/');
+        $textDomain  = $io->ask('<question>Text Domain:</question> ', 'ssm');
 
-        $isInitGit = $io->askConfirmation('<question>Init Git repository?[Y/n]:</question> ', true);
+        $isInitGit   = $io->askConfirmation('<question>Init Git repository?[Y/n]:</question> ', true);
         $isPushToGit = false;
 
         $repositoryUrl = '';
@@ -41,11 +41,11 @@ class ComposerScripts
 
         $io->write('<comment>Setting up your project...</comment>');
 
-        self::updateReadme($io, $themeName, $companyName, $repositoryUrl);
+        self::updateReadme($io, $companyUrl, $companyName, $repositoryUrl);
 
         self::updateThemeInfo(
             $io,
-            $themeName,
+            $companyUrl,
             $companyName,
             $agencyName,
             $agencyUrl,
@@ -138,7 +138,7 @@ class ComposerScripts
         $io->write("<info>Complete.</info>");
     }
 
-    private static function updateReadme(IOInterface $io, string $themeName, string $companyName, string $repositoryUrl = '')
+    private static function updateReadme(IOInterface $io, string $companyUrl, string $companyName, string $repositoryUrl = '')
     {
         $filePath = './README.md';
 
@@ -154,8 +154,8 @@ class ComposerScripts
                 throw new \Exception("Unable to read README.md content.");
             }
 
-            $search = ['THEME_NAME', 'COMPANY_NAME'];
-            $replace = [$themeName, $companyName];
+            $search = ['COMPANY_URL', 'COMPANY_NAME'];
+            $replace = [$companyUrl, $companyName];
 
             if ($repositoryUrl) {
                 $search[] = 'REPOSITORY_URL';
@@ -179,7 +179,7 @@ class ComposerScripts
 
     private static function updateThemeInfo(
         IOInterface $io,
-        string $themeName,
+        string $companyUrl,
         string $companyName,
         string $agencyName,
         string $agencyUrl,
@@ -199,8 +199,8 @@ class ComposerScripts
                 throw new \Exception("Unable to read style.css content.");
             }
 
-            $search = ['THEME_NAME', 'COMPANY_NAME', 'AGENCY_NAME', 'AGENCY_URL', 'TEXT_DOMAIN'];
-            $replace = [$themeName, $companyName, $agencyName, $agencyUrl, $textDomain];
+            $search = ['COMPANY_URL', 'COMPANY_NAME', 'AGENCY_NAME', 'AGENCY_URL', 'TEXT_DOMAIN'];
+            $replace = [$companyUrl, $companyName, $agencyName, $agencyUrl, $textDomain];
 
             // Replace all placeholders with actual values in a single call
             $fileContent = str_replace($search, $replace, $fileContent);
