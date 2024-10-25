@@ -73,6 +73,7 @@ $core->setup();
 add_filter('upload_mimes', function ($mimes) {
     $mimes['json'] = 'text/plain';
     $mimes['lottie'] = 'application/json';
+    $mimes['svg'] = 'image/svg+xml';
 
     return $mimes;
 });

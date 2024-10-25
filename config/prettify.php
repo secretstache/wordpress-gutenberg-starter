@@ -97,7 +97,6 @@ return [
             'the_permalink',
             'wp_list_pages',
             'wp_list_categories',
-            'wp_get_attachment_url',
             'the_content_more_link',
             'the_tags',
             'get_pagenum_link',

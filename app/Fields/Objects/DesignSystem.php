@@ -12,7 +12,7 @@ class DesignSystem {
 		 * Design System Info
 		 */
 		$designSystemInfo = new FieldsBuilder('ds_info', [
-			'title'     => 'Design System Info',
+			'title'     => 'Sandbox Info',
 			'position'  => 'side',
 			'style'		=> 'seamless'
 		]);
@@ -43,7 +43,7 @@ class DesignSystem {
 		 * Design System Archive Info
 		 */
 		$designSystemArchiveInfo = new FieldsBuilder('design_system_archive_info', [
-			'title'     => 'Design System Archive Info',
+			'title'     => 'Sandbox Archive Info',
 			'position'  => 'acf_after_title',
 			'style'     => 'seamless'
 		]);
@@ -76,7 +76,7 @@ class DesignSystem {
 
 			->addField('design_system_archive_message', 'message', [
 				'label'     => false,
-				'message'   => '<b>No other input is required. The list of design system items sorted by type will be displayed on this page.</b>',
+				'message'   => '<b>No other input is required. The list of sandbox items sorted by type will be displayed on this page.</b>',
 			])
 
 			->setLocation('post_type', '==', 'ssm_design_system')

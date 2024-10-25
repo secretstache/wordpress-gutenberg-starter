@@ -76,7 +76,7 @@ add_filter( 'display_post_states', function( $post_states, $post ) {
     }
 
     if( get_page_template_slug( $post ) == 'template-design-system-archive-page.blade.php' ) {
-        $post_states[] = 'Design System Archive Page';
+        $post_states[] = 'Sandbox Archive Page';
     }
 
     return $post_states;

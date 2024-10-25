@@ -22,7 +22,7 @@ add_action( 'init', function() {
         "show_in_rest"          => true,
 
         "labels"            => [
-            "all_items"     => "Design System",
+            "all_items"     => "Sandbox",
         ],
 
         "admin_cols"    => [
@@ -42,8 +42,8 @@ add_action( 'init', function() {
 
     ], [
 
-        "singular"  => "Design System Entry",
-        "plural"    => "Design System",
+        "singular"  => "Sandbox Entry",
+        "plural"    => "Sandbox",
         "slug"      => "ds"
 
     ] );
@@ -65,7 +65,7 @@ add_action( 'init', function() {
     // Create Design System Settings submenu
     if( class_exists("acf") ) {
         acf_add_options_sub_page( array(
-            "page_title"  => "Design System Settings",
+            "page_title"  => "Sandbox Settings",
             "menu_title"  => "Settings",
             "menu_slug"   => "design-system-settings",
             "parent_slug" => "edit.php?post_type=ssm_design_system",
@@ -86,7 +86,7 @@ add_action('template_redirect', function() {
         if( ! current_user_can('administrator') ) {
             $current_url = home_url( $_SERVER['REQUEST_URI'] );
             $login_url   = wp_login_url( $current_url );
-            
+
             wp_redirect( $login_url );
             exit;
         }
