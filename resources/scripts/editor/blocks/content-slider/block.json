@@ -1,0 +1,40 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "title": "Content Slider",
+  "description": "",
+  "name": "ssm/content-slider",
+  "parent": [
+    "ssm/section-wrapper"
+  ],
+  "keywords": [
+    "content",
+    "slider",
+    "cs"
+  ],
+  "category": "ssm-templates",
+  "example": {},
+  "icon": "slides",
+  "supports": {
+    "spacing": {
+      "margin": true,
+      "padding": true
+    }
+  },
+  "attributes": {
+    "isPreview": {
+      "type": "boolean",
+      "default": false
+    },
+    "carouselColor": {
+      "type": "object"
+    },
+    "layoutType": {
+      "enum": [
+        "default",
+        "full-width"
+      ],
+      "default": "default"
+    }
+  }
+}

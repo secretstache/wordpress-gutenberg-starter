@@ -15,7 +15,7 @@
     "static-build": "yarn --cwd ./static build",
     "static-start": "yarn --cwd ./static start",
     "lint": "npm-run-all lint:js:fix lint:scss:fix prettier:fix",
-    "lint:js": "eslint resources/scripts/client --ignore-pattern 'resources/scripts/client/libs/*'",
+    "lint:js": "eslint resources/scripts --ignore-pattern 'resources/scripts/client/libs/*'",
     "lint:js:fix": "yarn lint:js --fix",
     "lint:scss": "npx stylelint resources/styles/",
     "lint:scss:fix": "yarn lint:scss --fix",

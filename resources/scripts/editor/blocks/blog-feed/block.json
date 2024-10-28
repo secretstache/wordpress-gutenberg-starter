@@ -1,0 +1,65 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "title": "Blog Feed",
+  "description": "",
+  "name": "ssm/blog-feed",
+  "parent": [
+    "ssm/section-wrapper"
+  ],
+  "keywords": [
+    "blog",
+    "feed",
+    "bf"
+  ],
+  "category": "ssm-templates",
+  "example": {},
+  "icon": "columns",
+  "supports": {
+    "spacing": {
+      "margin": true,
+      "padding": true
+    }
+  },
+  "attributes": {
+    "queryType": {
+      "type": "string",
+      "enum": ["latest", "by_category", "curated"],
+      "default": "latest"
+    },
+    "selectedCategories": {
+      "type": "array",
+      "default": []
+    },
+    "curatedPosts": {
+      "type": "array",
+      "default": []
+    },
+    "numberOfPosts": {
+      "type": "number",
+      "default": -1
+    },
+    "layoutType": {
+      "type": "string",
+      "enum": ["block-grid", "stacked"],
+      "default": "block-grid"
+    },
+    "isShowFeaturedImage": {
+      "type": "boolean",
+      "default": true
+    },
+    "isShowTitle": {
+      "type": "boolean",
+      "default": true
+    },
+    "isShowPostMeta": {
+      "type": "boolean",
+      "default": false
+    },
+    "columnsPerRow": {
+      "type": "number",
+      "default": 3
+    }
+  },
+  "render": "index"
+}

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "title": "Team Members",
+  "description": "",
+  "name": "ssm/team-members",
+  "parent": [
+    "ssm/section-wrapper"
+  ],
+  "keywords": [
+    "team",
+    "members",
+    "tm"
+  ],
+  "category": "ssm-templates",
+  "example": {},
+  "icon": "businessman",
+  "supports": {
+    "spacing": {
+      "margin": true,
+      "padding": true
+    }
+  },
+  "attributes": {
+    "queryType": {
+      "type": "string",
+      "enum": ["all", "curated"],
+      "default": "all"
+    },
+    "curatedPosts": {
+      "type": "array",
+      "default": []
+    },
+    "numberOfPosts": {
+      "type": "number",
+      "default": -1
+    }
+  },
+  "render": "index"
+}

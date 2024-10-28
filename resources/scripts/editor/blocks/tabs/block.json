@@ -1,0 +1,37 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "title": "Tabs",
+  "description": "",
+  "name": "ssm/tabs",
+  "parent": [
+    "ssm/section-wrapper"
+  ],
+  "keywords": [
+    "tabs"
+  ],
+  "category": "ssm-templates",
+  "example": {},
+  "icon": "table-col-after",
+  "supports": {
+    "margin": true,
+    "padding": true
+  },
+  "attributes": {
+    "layoutType": {
+      "type": "string",
+      "enum": [
+        "vertical",
+        "horizontal"
+      ],
+      "default": "horizontal"
+    },
+    "tabs": {
+      "type": "array",
+      "default": []
+    },
+    "tabItemColor": {
+      "type": "object"
+    }
+  }
+}

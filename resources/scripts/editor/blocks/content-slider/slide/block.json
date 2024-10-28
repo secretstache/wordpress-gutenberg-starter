@@ -1,0 +1,24 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "ssm/slide",
+  "title": "Slide",
+  "category": "ssm-templates",
+  "parent": [
+    "ssm/content-slider"
+  ],
+  "icon": "slides",
+  "supports": {
+    "html": false
+  },
+  "attributes": {
+    "hasInnerBlocks": {
+      "type": "boolean",
+      "default": false
+    },
+    "parentLayoutType": {
+      "type": "string",
+      "default": ""
+    }
+  }
+}

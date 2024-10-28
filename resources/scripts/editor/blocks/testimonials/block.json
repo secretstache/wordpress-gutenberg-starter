@@ -1,0 +1,53 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "title": "Testimonials",
+  "description": "",
+  "name": "ssm/testimonials",
+  "parent": [
+    "ssm/section-wrapper"
+  ],
+  "keywords": [
+    "testimonials"
+  ],
+  "category": "ssm-templates",
+  "example": {},
+  "icon": "slides",
+  "supports": {
+    "spacing": {
+      "margin": true,
+      "padding": true
+    }
+  },
+  "attributes": {
+    "queryType": {
+      "type": "string",
+      "enum": [
+        "latest",
+        "curated"
+      ],
+      "default": "latest"
+    },
+    "numberOfPosts": {
+      "type": "number",
+      "default": 6
+    },
+    "curatedPosts": {
+      "type": "array",
+      "default": []
+    },
+    "layoutType": {
+      "type": "string",
+      "enum": ["grid", "carousel"],
+      "default": "grid"
+    },
+    "columnsPerRow": {
+      "type": "number",
+      "default": 3
+    },
+    "carouselColor": {
+      "type": "object"
+    }
+  },
+  "render": "index"
+}

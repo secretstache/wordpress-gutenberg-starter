@@ -1,0 +1,38 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "title": "Accordion Item",
+  "description": "",
+  "name": "ssm/accordion-item",
+  "parent": [
+    "ssm/accordion"
+  ],
+  "keywords": [
+    "accordion",
+    "item",
+    "ai"
+  ],
+  "category": "ssm-templates",
+  "example": {},
+  "icon": "arrow-right",
+  "supports": {
+    "spacing": {
+      "margin": true,
+      "padding": true
+    }
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": ""
+    },
+    "layoutType": {
+      "enum": ["vertical", "horizontal"],
+      "default": "vertical"
+    },
+    "headingSlug": {
+      "type": "string",
+      "default": "base"
+    }
+  }
+}

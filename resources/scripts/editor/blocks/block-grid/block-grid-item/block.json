@@ -1,0 +1,49 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "title": "Block Grid Item",
+  "description": "",
+  "name": "ssm/block-grid-item",
+  "parent": [
+    "ssm/block-grid"
+  ],
+  "category": "ssm-templates",
+  "icon": "grid-view",
+  "supports": {
+    "html": false
+  },
+  "attributes": {
+    "isIncludeIcon": {
+      "type": "boolean",
+      "default": false
+    },
+    "iconLocation": {
+      "type": "string",
+      "default": "left"
+    },
+    "iconImage": {
+      "type": "object",
+      "default": {
+        "id": null,
+        "url": null,
+        "alt": null
+      }
+    },
+    "isIncludeLink": {
+      "type": "boolean",
+      "default": false
+    },
+    "hasInnerBlocks": {
+      "type": "boolean",
+      "default": false
+    },
+    "parentLayoutType": {
+      "type": "string",
+      "enum": [
+        "default",
+        "seamless"
+      ],
+      "default": "default"
+    }
+  }
+}

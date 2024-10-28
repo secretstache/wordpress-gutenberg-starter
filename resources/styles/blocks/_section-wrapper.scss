@@ -21,19 +21,19 @@
     }
 
     @include breakpoint(small only) {
-        .spacing-mt-mobile-#{$prop} {
+        .mobile-spacing-mt-#{$prop} {
             margin-top: var(--section-spacing-mobile-#{$prop}) !important;
         }
 
-        .spacing-mb-mobile-#{$prop} {
+        .mobile-spacing-mb-#{$prop} {
             margin-bottom: var(--section-spacing-mobile-#{$prop}) !important;
         }
 
-        .spacing-pt-mobile-#{$prop} {
+        .mobile-spacing-pt-#{$prop} {
             padding-top: var(--section-spacing-mobile-#{$prop}) !important;
         }
 
-        .spacing-pb-mobile-#{$prop} {
+        .mobile-spacing-pb-#{$prop} {
             padding-bottom: var(--section-spacing-mobile-#{$prop}) !important;
         }
     }

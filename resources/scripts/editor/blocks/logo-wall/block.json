@@ -1,0 +1,46 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "title": "Logo Wall",
+  "name": "ssm/logo-wall",
+  "parent": [
+    "ssm/section-wrapper"
+  ],
+  "keywords": [
+    "logo",
+    "wall",
+    "lw"
+  ],
+  "category": "ssm-templates",
+  "example": {},
+  "icon": "images-alt",
+  "description": "",
+  "supports": {
+    "spacing": {
+      "margin": true,
+      "padding": true
+    }
+  },
+  "attributes": {
+    "isPreview": {
+      "type": "boolean",
+      "default": false
+    },
+    "logos": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "number" },
+          "url": { "type": "string" },
+          "alt": { "type": "string" },
+          "width": { "type": "string" },
+          "height": { "type": "string" },
+          "linkSource": { "type": "string" },
+          "linkIsOpenInNewTab": { "type": "boolean" }
+        }
+      }
+    }
+  }
+}

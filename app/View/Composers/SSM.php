@@ -91,7 +91,7 @@ class SSM extends Composer
             foreach ( $colors as $color ) {
                 $choices[$color] = get_stylesheet_directory_uri(__FILE__) . '/resources/assets/swatches/' . $color . '.png';
             }
-            
+
         }
 
         return $choices ?? [];
@@ -127,9 +127,74 @@ class SSM extends Composer
     {
 
         $post = get_posts( ['post_type' => 'page', 'meta_key' => '_wp_page_template', 'meta_value' => $page_template] );
-        
+
         return $post ? array_shift( $post )->ID : '';
 
     }
 
+    public static function getPosts( $data )
+    {
+
+        $args = [
+            'post_type'      => ( $data['data_source'] && $data['data_source'] !== 'posts' && $data['data_source'] !== 'resources' ) ? $data['prefix'] . '_' . $data['data_source'] : 'post',
+            'posts_per_page' => $data['number_posts'] ?? -1,
+            'post__not_in'   => $data['excluded_posts'] ?? [],
+            'status'         => 'publish',
+            'fields' 	     => 'ids',
+        ];
+
+        if( isset($data['order']) && isset($data['orderby']) && $data['query'] != 'curated' ){
+
+            $orderby_args = [
+                'order'      => $data['order'],
+                'orderby'    => $data['orderby']
+            ];
+
+            $args = array_merge(
+                $args,
+                $orderby_args
+            );
+
+        }
+
+        // TODO: too long and difficult to understand, refactor
+        if ( isset($data['taxonomy_slug']) && isset($data['curated_terms']) && !empty($data['curated_terms']) && $data['query'] == 'by_' . str_replace( $data['prefix'] . '_', '', $data['taxonomy_slug'] ) ) {
+
+            $taxonomy_args = [
+                'tax_query' => [
+                    [
+                        'taxonomy' => $data['taxonomy_slug'],
+                        'field'    => 'term_id',
+                        'terms'    => $data['curated_terms'],
+                    ]
+                ]
+            ];
+
+            $args = array_merge(
+                $args,
+                $taxonomy_args
+            );
+
+
+        } elseif ($data['query'] == 'curated' && isset( $data['curated_posts'] ) && !empty( $data['curated_posts'] ) ) {
+
+            $post_in = is_array($data['curated_posts'][0]) ? array_column($data['curated_posts'], 'value') : $data['curated_posts'];
+
+            $curated_args = [
+                'post__in'      => $post_in,
+                'orderby'       => 'post__in'
+            ];
+
+            $args = array_merge(
+                $args,
+                $curated_args
+            );
+
+        }
+
+        $posts = get_posts($args);
+
+        return $posts;
+
+    }
 }

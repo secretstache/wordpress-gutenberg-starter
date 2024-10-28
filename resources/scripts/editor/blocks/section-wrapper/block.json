@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "title": "Section Wrapper",
+  "description": "",
+  "name": "ssm/section-wrapper",
+  "keywords": [
+    "section",
+    "wrapper",
+    "sw"
+  ],
+  "category": "ssm-design",
+  "example": {},
+  "icon": "align-full-width",
+  "supports": {
+    "spacing": {
+      "padding": false,
+      "margin": false
+    },
+    "className": true,
+    "anchor": true
+  },
+  "attributes": {
+    "isFullViewportHeight": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "render": "index"
+}

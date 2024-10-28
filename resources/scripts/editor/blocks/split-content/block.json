@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "title": "Split Content",
+  "description": "",
+  "name": "ssm/split-content",
+  "parent": [
+    "ssm/section-wrapper"
+  ],
+  "keywords": [
+    "split",
+    "content",
+    "sc"
+  ],
+  "category": "ssm-templates",
+  "example": {},
+  "icon": "columns",
+  "supports": {
+    "spacing": {
+      "margin": true,
+      "padding": true
+    }
+  },
+  "attributes": {
+    "mediaPosition": {
+      "type": "string",
+      "default": "left"
+    }
+  }
+}

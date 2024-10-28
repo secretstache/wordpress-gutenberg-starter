@@ -1,0 +1,24 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "title": "Tab",
+  "description": "",
+  "name": "ssm/tabs-item",
+  "parent": [
+    "ssm/tabs"
+  ],
+  "keywords": [
+    "tab",
+    "item",
+    "ti"
+  ],
+  "category": "ssm-templates",
+  "example": {},
+  "icon": "table-col-after",
+  "attributes": {
+    "title": {
+      "type": "string",
+      "default": ""
+    }
+  }
+}
