@@ -27,15 +27,17 @@
 
                         <div class="blog-feed__image-wrapper">
 
-                            {!!
-                                ipq_get_theme_image( get_post_thumbnail_id( $post_id ),
-                                    [ [ 480, 320, true ], [ 960, 640, true ], [ 1920, 1280, true ] ],
-                                    [
-                                        'class' => 'blog-feed__image',
-                                        'alt'   => get_the_title( $post_id ),
-                                    ]
-                                );
-                            !!}
+                            @if ( function_exists('ipq_get_theme_image') )
+                                {!!
+                                    ipq_get_theme_image( get_post_thumbnail_id( $post_id ),
+                                        [ [ 480, 320, true ], [ 960, 640, true ], [ 1920, 1280, true ] ],
+                                        [
+                                            'class' => 'blog-feed__image',
+                                            'alt'   => get_the_title( $post_id ),
+                                        ]
+                                    );
+                                !!}
+                            @endif
 
                         </div>
 

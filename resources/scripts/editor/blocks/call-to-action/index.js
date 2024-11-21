@@ -25,7 +25,6 @@ export const TEMPLATE = [
             }],
             ['core/paragraph', {
                 content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br/>Morbi suscipit gravida vulputate. Nulla accumsan porta orci nec vehicula. Sed at.',
-                fontSize: 'lg',
                 align: 'left',
             }],
         ]],
@@ -38,13 +37,6 @@ export const TEMPLATE = [
                     type: 'flex',
                     justifyContent: 'left',
                     alignItems: 'center',
-                },
-                style: {
-                    spacing: {
-                        margin: {
-                            top: 'var(--wp--preset--spacing--3)',
-                        },
-                    },
                 },
             }, [
                 ['core/button', {

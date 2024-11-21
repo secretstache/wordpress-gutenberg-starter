@@ -8,7 +8,7 @@ import { save } from './save.js';
 
 import blockMetadata from './block.json';
 
-export const LAYOUT_TYPES = {
+export const LAYOUT_TYPE = {
     VERTICAL: 'vertical',
     HORIZONTAL: 'horizontal',
 };

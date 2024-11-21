@@ -21,18 +21,16 @@ export const MediaEdit = ({
                 accept={backgroundMediaType === 'image' ? 'image/*' : 'video/*'}
                 allowedTypes={[ backgroundMediaType ]}
                 multiple={false}
-                className="w-full h-full"
             />
         );
     }
 
     return (
-        <div className="relative w-full h-full">
+        <div className="">
             {backgroundMediaType === MEDIA_TYPE.IMAGE && media?.url && (
                 <img
                     src={media.url}
                     alt={media?.alt || 'image'}
-                    className="absolute inset-0 w-full h-auto object-cover md:!h-full"
                 />
             )}
 
@@ -43,18 +41,11 @@ export const MediaEdit = ({
                     loop
                     muted
                     playsInline
-                    className="absolute inset-0 w-auto object-cover h-auto md:w-full md:h-full"
                 />
             )}
 
             {backgroundColor?.slug && (
-                <div
-                    className={classNames('absolute inset-y-0 z-10 w-[20%]', {
-                        'right-0 bg-gradient-to-l': mediaPosition === 'left',
-                        'left-0 bg-gradient-to-r': mediaPosition === 'right',
-                        [`from-${backgroundColor?.slug}`]: !!backgroundColor?.slug,
-                    })}
-                />
+                <div></div>
             )}
         </div>
     );

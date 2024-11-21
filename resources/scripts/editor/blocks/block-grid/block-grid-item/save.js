@@ -3,21 +3,16 @@ import classNames from 'classnames';
 import { GridItemContent } from './components/grid-item-content';
 
 export const save = ({ attributes }) => {
-    const { isIncludeLink, linkSource, linkIsOpenInNewTab, hasInnerBlocks, parentLayoutType } = attributes;
+    const { isIncludeLink, linkSource, linkIsOpenInNewTab, hasInnerBlocks } = attributes;
 
     if (!hasInnerBlocks) {
         return null;
     }
 
     const blockProps = useBlockProps.save({
-        className: classNames(
-            'col-span-1',
-            {
-                'cursor-pointer': isIncludeLink,
-                'rounded-xl shadow-lg': parentLayoutType === 'default',
-                'no-shadow flat': parentLayoutType === 'seamless',
-            },
-        ),
+        className: classNames({
+            'cursor-pointer': isIncludeLink,
+        }),
     });
 
     return (
@@ -27,7 +22,6 @@ export const save = ({ attributes }) => {
                     href={linkSource || "#"}
                     target={linkIsOpenInNewTab ? "_blank" : "_self"}
                     rel={linkIsOpenInNewTab ? "noopener noreferrer" : "noopener"}
-                    className="block w-full h-full !no-underline"
                 >
                     <GridItemContent attributes={attributes}>
                         <InnerBlocks.Content />

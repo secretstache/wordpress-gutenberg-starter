@@ -13,13 +13,14 @@ import { select, useSelect } from '@wordpress/data';
 import classNames from 'classnames';
 import { useSlider, PreviewControl, ColorPaletteControl } from '@secretstache/wordpress-gutenberg';
 
-import { setupSlider } from '@scripts/client/blocks/content-slider';
 import { RadioControl } from '@wordpress/components';
+
+const setupSlider = () => console.log('setup slider');
 
 export const SplideContext = createContext();
 
 export const edit = ({ attributes, setAttributes, clientId }) => {
-    const { isPreview, carouselColor, layoutType } = attributes;
+    const { isPreview } = attributes;
     const sliderRef = useRef(null);
 
     const onIsPreviewChange = useCallback(() => setAttributes({ isPreview: !isPreview }), [ isPreview ]);
@@ -33,11 +34,11 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
 
     const { sliderElRef } = useSlider({
         isEnabled: isPreview,
-        setupSlider: (el) => setupSlider(el, layoutType),
-    }, [ layoutType, isSidebarOpened ]);
+        setupSlider: (el) => setupSlider(el),
+    }, [ isPreview ]);
 
     useEffect(() => {
-        if (isPreview && sliderElRef.current) {
+        if (isPreview && sliderElRef?.current) {
             const resizeObserver = new ResizeObserver(() => {
                 if (sliderElRef.current.splide) {
                     sliderElRef.current.splide.refresh();
@@ -55,9 +56,7 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
 
     const { ...innerBlocksProps } = useInnerBlocksProps(
         {
-            className: classNames('splide__list w-full', {
-                'grid auto-rows-auto gap-4': !isPreview,
-            }),
+            className: 'splide__list',
         },
         {
             allowedBlocks: ['ssm/slide'],
@@ -80,10 +79,8 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
     }, [ isPreview ]);
 
     const blockProps = useBlockProps({
-        className: classNames('layout-carousel w-full', {
-            [`splide-color-${carouselColor?.slug}`]: carouselColor?.slug,
+        className: classNames({
             'is-preview': isPreview,
-            'is-full-width': layoutType === 'full-width',
         }),
     });
 
@@ -95,29 +92,6 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
                         checked={isPreview}
                         onChange={onIsPreviewChange}
                     />
-
-                    <RadioControl
-                        label="Layout"
-                        selected={layoutType}
-                        options={[
-                            { label: 'Default', value: 'default' },
-                            { label: 'Full Width', value: 'full-width' },
-                        ]}
-                        onChange={onLayoutChange}
-                        disabled={isPreview}
-                    />
-
-                    {
-                        isPreview && (
-                            <ColorPaletteControl
-                                label="Color Profile"
-                                value={carouselColor?.value}
-                                attributeName="carouselColor"
-                                setAttributes={setAttributes}
-                                allowedColors={['primary-500', 'secondary-500', 'tertiary-500']}
-                            />
-                        )
-                    }
                 </PanelBody>
             </InspectorControls>
 
@@ -129,46 +103,30 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
                 />
             </BlockControls>
 
-            <SplideContext.Provider value={{ isPreview, layoutType }}>
+            <SplideContext.Provider value={{ isPreview }}>
                 <div {...blockProps} ref={sliderRef}>
-                    {isPreview ? (
-                        <div
-                            className={classNames(
-                            "splide",
-                            { "w-full": layoutType === 'full-width' },
-                        )}
-                            ref={sliderElRef}
-                    >
+                    {
+                        isPreview ? (
                             <div
-                                className={classNames(
-                                "splide__track",
-                                {
-                                    "mx-auto max-w-[800px] overflow-visible": layoutType === 'default',
-                                    "w-full": layoutType === 'full-width',
-                                },
-                            )}
-                        >
-                                <div
-                                    className="splide__list w-full"
-                                    dangerouslySetInnerHTML={{ __html: innerBlocksHTML }}
-                            />
+                                className="splide"
+                                ref={sliderElRef}
+                            >
+                                <div className="splide__track">
+                                    <div
+                                        className="splide__list"
+                                        dangerouslySetInnerHTML={{ __html: innerBlocksHTML }}
+                                    />
+                                </div>
                             </div>
-                        </div>
-                ) : (
-                    <div
-                        className={classNames({
-                            "scroll-shadow": layoutType === 'default',
-                            "w-full": layoutType === 'full-width',
-                        })}
-                    >
-                        <div {...innerBlocksProps}>
-                            {innerBlocksProps.children}
-                        </div>
-                    </div>
-                )}
+                        ) : (
+                            <div {...innerBlocksProps}>
+                                {innerBlocksProps.children}
+                            </div>
+                        )
+                    }
                 </div>
 
-                {!isPreview && <InnerBlocks.ButtonBlockAppender />}
+                {!isPreview && <InnerBlocks.ButtonBlockAppender/>}
             </SplideContext.Provider>
         </>
     );

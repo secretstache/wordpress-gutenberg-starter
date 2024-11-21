@@ -14,7 +14,6 @@ export const Logo = ({ logo, setLink = false }) => {
                         }
                     >
                         <img
-                            className="block mx-auto object-contain transition-opacity duration-300 !max-w-[16rem] !max-h-[6rem]"
                             src={logo?.url}
                             alt={logo?.alt || 'Partner logo'}
                             width={logo?.width}
@@ -23,7 +22,6 @@ export const Logo = ({ logo, setLink = false }) => {
                     </a>
                 ) : (
                     <img
-                        className="block mx-auto object-contain transition-opacity duration-300 !max-w-[16rem] !max-h-[6rem]"
                         src={logo?.url}
                         alt={logo?.alt || 'Partner logo'}
                         width={logo?.width}

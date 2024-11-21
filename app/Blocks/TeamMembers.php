@@ -6,6 +6,7 @@ use App\View\Composers\SSM;
 
 class TeamMembers extends Block
 {
+    // TODO: add to the acf the fist name and last name, order ASC by last name
     protected function prepareData(array $data): array
     {
         $query = $data['attributes']['queryType'] ?? 'all';

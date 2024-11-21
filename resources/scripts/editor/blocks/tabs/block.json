@@ -1,6 +1,6 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 3,
+  "apiVersion": 2,
   "title": "Tabs",
   "description": "",
   "name": "ssm/tabs",
@@ -29,9 +29,6 @@
     "tabs": {
       "type": "array",
       "default": []
-    },
-    "tabItemColor": {
-      "type": "object"
     }
   }
 }

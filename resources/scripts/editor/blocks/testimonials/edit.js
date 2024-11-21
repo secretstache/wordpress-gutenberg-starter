@@ -23,8 +23,6 @@ export const edit = ({ attributes, setAttributes }) => {
         numberOfPosts,
         curatedPosts,
         layoutType,
-        columnsPerRow,
-        carouselColor,
     } = attributes;
 
     const loadOptions = useCallback((inputValue) => {
@@ -72,11 +70,7 @@ export const edit = ({ attributes, setAttributes }) => {
 
     const onLayoutTypeChange = useCallback((layoutType) => setAttributes({ layoutType }), []);
 
-    const onColumnsPerRowChange = useCallback((columnsPerRow) => setAttributes({ columnsPerRow }), []);
-
-    const blockProps = useBlockProps({
-        className: carouselColor?.slug ? `splide-color-${carouselColor?.slug}` : '',
-    });
+    const blockProps = useBlockProps();
 
     return (
         <>
@@ -91,30 +85,6 @@ export const edit = ({ attributes, setAttributes }) => {
                         ]}
                         onChange={onLayoutTypeChange}
                     />
-
-                    {
-                        isGrid && (
-                            <RangeControl
-                                label="Columns Per Row"
-                                value={columnsPerRow}
-                                onChange={onColumnsPerRowChange}
-                                min={1}
-                                max={4}
-                            />
-                        )
-                    }
-
-                    {
-                        isCarousel && (
-                            <ColorPaletteControl
-                                label="Color Profile"
-                                value={carouselColor?.value}
-                                attributeName="carouselColor"
-                                setAttributes={setAttributes}
-                                allowedColors={['primary-500', 'secondary-500', 'tertiary-500']}
-                            />
-                        )
-                    }
 
                     <RadioControl
                         label="Query"
@@ -161,18 +131,10 @@ export const edit = ({ attributes, setAttributes }) => {
                 >
                     {
                         postsToShow && postsToShow?.length > 0 && (
-                            <div className="mx-auto mt-16 flow-root max-w-2xl sm:mt-20 lg:mx-0 lg:max-w-none">
+                            <div className="">
                                 {
                                     isGrid ? (
-                                        <div className={classNames(
-                                            'testimonials__list sm:text-[0] -mt-8 sm:-mx-4 grid gap-8',
-                                            columnsPerRow === 1 ? 'grid-cols-1' :
-                                            columnsPerRow === 2 ? 'grid-cols-1 sm:grid-cols-2' :
-                                            columnsPerRow === 3 ? 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3' :
-                                            'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4',
-                                        )}
-                                            ref={gridRef}
-                                        >
+                                        <div className="testimonials__list" ref={gridRef}>
                                             {
                                                 postsToShow.map((testimonial) => (
                                                     <TestimonialItem
@@ -199,7 +161,7 @@ export const edit = ({ attributes, setAttributes }) => {
                                                 </div>
                                             </div>
 
-                                            <div className="splide__arrows mt-10 justify-center" />
+                                            <div className="splide__arrows" />
                                             <div className="splide__pagination" />
                                         </div>
                                     )

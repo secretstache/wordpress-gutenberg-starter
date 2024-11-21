@@ -11,7 +11,7 @@ export const save = ({ attributes }) => {
 
     const blockProps = useBlockProps.save({
         id,
-        className: classNames('wp-block-ssm-tabs__panel p-10 min-h-[300px] bg-white rounded-lg shadow-md'),
+        className: classNames('wp-block-ssm-tabs__panel'),
     });
 
     return (

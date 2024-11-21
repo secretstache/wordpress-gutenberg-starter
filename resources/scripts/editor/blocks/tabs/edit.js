@@ -8,7 +8,7 @@ import { useState, useRef, useEffect, useCallback } from '@wordpress/element';
 import { ColorPaletteControl, useTabs } from '@secretstache/wordpress-gutenberg';
 import classNames from 'classnames';
 
-import { LAYOUT_TYPES, TabsContext } from './index.js';
+import { LAYOUT_TYPE, TabsContext } from './index.js';
 
 export const edit = ({ attributes, setAttributes, clientId }) => {
     const { layoutType, tabItemColor } = attributes;
@@ -35,8 +35,8 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
 
     const onLayoutTypeChange = useCallback((newLayoutType) => setAttributes({ layoutType: newLayoutType }), []);
 
-    const isLayoutTypeVertical = layoutType === LAYOUT_TYPES.VERTICAL;
-    const isLayoutTypeHorizontal = layoutType === LAYOUT_TYPES.HORIZONTAL;
+    const isLayoutTypeVertical = layoutType === LAYOUT_TYPE.VERTICAL;
+    const isLayoutTypeHorizontal = layoutType === LAYOUT_TYPE.HORIZONTAL;
 
     const blockProps = useBlockProps({
         ref: blockRef,
@@ -48,9 +48,7 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
 
     const innerBlocksProps = useInnerBlocksProps(
         {
-            className: classNames('wp-block-ssm-tabs__content', {
-                'w-full md:w-3/4': isLayoutTypeVertical,
-            }),
+            className: classNames('wp-block-ssm-tabs__content'),
         },
         {
             allowedBlocks: ['ssm/tabs-item'],
@@ -72,8 +70,8 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
                         label="Layout"
                         selected={layoutType}
                         options={[
-                            { label: 'Vertical', value: LAYOUT_TYPES.VERTICAL },
-                            { label: 'Horizontal', value: LAYOUT_TYPES.HORIZONTAL },
+                            { label: 'Vertical', value: LAYOUT_TYPE.VERTICAL },
+                            { label: 'Horizontal', value: LAYOUT_TYPE.HORIZONTAL },
                         ]}
                         onChange={onLayoutTypeChange}
                     />
@@ -83,22 +81,17 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
                         value={tabItemColor?.value}
                         attributeName="tabItemColor"
                         setAttributes={setAttributes}
-                        allowedColors={['primary-500', 'secondary-500', 'tertiary-500']}
+                        // allowedColors={['white']}
                     />
                 </PanelBody>
             </InspectorControls>
 
             <TabsContext.Provider value={{ activeItemId, setActiveItemId, layoutType }}>
                 <div {...blockProps}>
-                    <div className={classNames('wp-block-ssm-tabs__container', {
-                        'block md:flex md:gap-3': isLayoutTypeVertical,
-                    })}>
+                    <div className="wp-block-ssm-tabs__container">
                         <Slot
                             key={slotKey}
-                            className={classNames('wp-block-ssm-tabs__nav isolate flex', {
-                                'mb-2 md:mb-0 flex-row md:flex-col md:gap-2 w-full md:w-1/4': isLayoutTypeVertical,
-                                'mb-2 divide-x divide-gray-200 rounded-lg shadow-md': isLayoutTypeHorizontal,
-                            })}
+                            className="wp-block-ssm-tabs__nav"
                             bubblesVirtually={true}
                             name={`tabsNav-${clientId}`}
                         />

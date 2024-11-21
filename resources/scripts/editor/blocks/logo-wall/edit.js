@@ -129,15 +129,13 @@ export const edit = ({ attributes, setAttributes }) => {
             }
 
             <div {...blockProps}>
-                <div className={classNames('wp-block-ssm-logo-wall__wrapper', {
-                    'mx-auto flex flex-wrap items-center justify-center gap-10': !isPreview,
-                })}>
+                <div className="wp-block-ssm-logo-wall__wrapper">
                     {
                         hasSelectedLogos && (
                             isPreview ? (
-                                <div className="splide is-centered" ref={sliderElRef}>
+                                <div className="splide" ref={sliderElRef}>
                                     <div className="splide__track">
-                                        <div className="splide__list items-center">
+                                        <div className="splide__list">
                                             {
                                                 logos.map((logo) => (
                                                     <div

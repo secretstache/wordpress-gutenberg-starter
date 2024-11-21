@@ -1,6 +1,6 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 3,
+  "apiVersion": 2,
   "title": "Block Grid Item",
   "description": "",
   "name": "ssm/block-grid-item",
@@ -36,14 +36,6 @@
     "hasInnerBlocks": {
       "type": "boolean",
       "default": false
-    },
-    "parentLayoutType": {
-      "type": "string",
-      "enum": [
-        "default",
-        "seamless"
-      ],
-      "default": "default"
     }
   }
 }

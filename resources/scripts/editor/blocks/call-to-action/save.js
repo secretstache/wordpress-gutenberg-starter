@@ -10,7 +10,7 @@ export const save = ({ attributes }) => {
     const hasSelectedBackgroundColor = !!backgroundColor?.slug;
 
     const blockProps = useBlockProps.save({
-        className: className('px-10 sm:px-14 lg:px-20 py-24 sm:py-32 shadow-xl rounded-3xl', {
+        className: className({
             [`bg-${backgroundColor?.slug}`]: hasSelectedBackgroundColor,
         }),
     });

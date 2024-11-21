@@ -17,14 +17,12 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
     const {
         title,
         layoutType: itemLayoutStyle,
-        headingSlug: itemHeadingSlug,
     } = attributes;
 
     const {
         setActiveItemClientId,
         activeItemClientId,
         layoutType: contextLayoutStyle,
-        headingSlug: contextHeadingSlug,
     } = useContext(AccordionContext);
 
     const { blockRef, isActive: isOpened, toggleItem } = useAccordionItem(
@@ -39,12 +37,6 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
             setAttributes({ layoutType: contextLayoutStyle });
         }
     }, [ contextLayoutStyle, itemLayoutStyle ]);
-
-    useEffect(() => {
-        if (itemHeadingSlug !== contextHeadingSlug) {
-            setAttributes({ headingSlug: contextHeadingSlug });
-        }
-    }, [ contextHeadingSlug, itemHeadingSlug ]);
 
     const contentRef = useRef(null);
 
@@ -113,17 +105,17 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
                     onClick={toggleItem}
                 >
 
-                    <div className="wp-block-ssm-accordion__header-inner flex w-full items-start justify-between text-left text-gray-900">
+                    <div className="wp-block-ssm-accordion__header-inner">
 
                         <RichText
                             tagName="h3"
-                            className={`wp-block-ssm-accordion__title font-semibold leading-7 has-${itemHeadingSlug}-font-size`}
+                            className="wp-block-ssm-accordion__title"
                             value={title}
                             onChange={(title) => setAttributes({ title })}
                             placeholder="Enter title..."
                         />
 
-                        <button className="wp-block-ssm-accordion__button ml-6 flex h-7 items-center">
+                        <button className="wp-block-ssm-accordion__button">
 
                             { isOpened ? <CloseIcon /> : <OpenIcon /> }
 
@@ -133,14 +125,10 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
 
                 </header>
 
-                <article className={ classnames(
-                    'wp-block-ssm-accordion__content box-border pr-12 text-base leading-7 text-gray-600',
-                    {
-                        'mt-2 pb-6': isOpened,
-                        'w-full transition-all ease-in-out duration-700': isHorizontal,
-                        'h-0': isHorizontal && !isOpened,
-                        'h-full': isHorizontal && isOpened,
-                    }) }
+                <article
+                    className={classnames('wp-block-ssm-accordion__content', {
+                        'is-active': isOpened,
+                    })}
                     ref={contentRef}
                 >
 

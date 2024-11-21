@@ -13,9 +13,9 @@ export const save = ({ attributes }) => {
     return (
         <div {...blockProps}>
             <div className="wp-block-ssm-logo-wall__wrapper">
-                <div className="splide is-centered">
+                <div className="splide">
                     <div className="splide__track">
-                        <div className="splide__list items-center">
+                        <div className="splide__list">
                             {
                                 logos.map((logo) => (
                                     <div

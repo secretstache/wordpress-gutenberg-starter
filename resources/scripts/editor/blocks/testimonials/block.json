@@ -1,6 +1,6 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 3,
+  "apiVersion": 2,
   "title": "Testimonials",
   "description": "",
   "name": "ssm/testimonials",
@@ -40,13 +40,6 @@
       "type": "string",
       "enum": ["grid", "carousel"],
       "default": "grid"
-    },
-    "columnsPerRow": {
-      "type": "number",
-      "default": 3
-    },
-    "carouselColor": {
-      "type": "object"
     }
   },
   "render": "index"

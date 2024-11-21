@@ -11,7 +11,7 @@
 
     @if( ! empty( $posts ) && ( $query == 'curated' || $number_posts != 0 ) )
 
-        <div class="team-members__list mx-auto mt-20 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3 text-center">
+        <div class="team-members__list">
 
             @foreach( $posts as $post_id )
 
@@ -28,13 +28,12 @@
 
                     @if( function_exists('ipq_get_theme_image') && $headshot )
 
-                        <div class="team-members__member-image mx-auto h-56 w-56 rounded-full overflow-hidden">
+                        <div class="team-members__member-image">
 
                             {!!
                                 ipq_get_theme_image( $headshot['ID'],
                                     [ [ 230, 230, true ], [ 460, 460, true ], [ 920, 920, true ] ],
                                     [
-                                        'class' => 'object-cover inline-block align-middle border-0 max-w-full w-full !h-full',
                                         'alt'   => get_the_title( $post_id ),
                                     ]
                                 );
@@ -44,25 +43,21 @@
 
                     @endif
 
-                    <div class="team-members__member-content mt-6">
+                    <div class="team-members__member-content">
 
-                        <h3 class="text-lg font-semibold leading-7 tracking-tight text-gray-900">{!! $full_name ?: get_the_title( $post_id ) !!}</h3>
+                        <h3>{!! $full_name ?: get_the_title( $post_id ) !!}</h3>
 
                         @if( $job_title )
 
-                            <div class="text-base leading-7 text-gray-600">{!! $job_title !!}</div>
+                            <div class="team-members__member-job-title">{!! $job_title !!}</div>
 
                         @endif
 
                         @if( $division )
 
-                            <div class="text-sm leading-7 text-gray-600 mt-3">{!! $division !!}</div>
+                            <div class="team-members__member-division-location">{!! $division !!}</div>
 
                         @endif
-
-                        <div class="wp-block-button is-style-primary-outline mt-5">
-                            <a href="{!! get_permalink( $post_id ) !!}" class="wp-block-button__link wp-element-button">Read Bio</a>
-                        </div>
 
                     </div>
 

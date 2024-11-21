@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { OpenIcon, CloseIcon } from './components/icons';
 
 export const save = ({ attributes }) => {
-    const { title, layoutType, headingSlug } = attributes;
+    const { title, layoutType } = attributes;
 
     if (!title) {
         return null;
@@ -30,14 +30,14 @@ export const save = ({ attributes }) => {
                         'py-6': !isHorizontal,
                     }) }
                 >
-                <div className="wp-block-ssm-accordion__header-inner flex w-full items-start justify-between text-left text-gray-900">
+                <div className="wp-block-ssm-accordion__header-inner">
                     <RichText.Content
                         tagName="h3"
-                        className={`wp-block-ssm-accordion__title font-semibold leading-7 has-${headingSlug}-font-size`}
+                        className="wp-block-ssm-accordion__title"
                         value={title}
                     />
 
-                    <button className="wp-block-ssm-accordion__button ml-6 flex h-7 items-center">
+                    <button className="wp-block-ssm-accordion__button">
                         <OpenIcon />
                         <CloseIcon />
                     </button>

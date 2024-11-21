@@ -3,6 +3,7 @@ import { PanelBody, RadioControl } from '@wordpress/components';
 import className from 'classnames';
 import { ColorPaletteControl } from '@secretstache/wordpress-gutenberg';
 import { TEMPLATE } from './index.js';
+import { useCallback } from '@wordpress/element';
 
 export const edit = ({ attributes, setAttributes }) => {
     const {
@@ -12,8 +13,12 @@ export const edit = ({ attributes, setAttributes }) => {
 
     const hasSelectedBackgroundColor = !!backgroundColor?.slug;
 
+    const buttonPositionOnChange = useCallback((buttonPosition) => {
+        setAttributes({ buttonPosition });
+    }, []);
+
     const blockProps = useBlockProps({
-        className: className('px-10 sm:px-14 lg:px-20 py-24 sm:py-32 shadow-xl rounded-3xl', {
+        className: className({
             [`bg-${backgroundColor?.slug}`]: hasSelectedBackgroundColor,
         }),
     });
@@ -42,7 +47,7 @@ export const edit = ({ attributes, setAttributes }) => {
                         value={backgroundColor?.value}
                         attributeName="backgroundColor"
                         setAttributes={setAttributes}
-                        allowedColors={['white', 'gray-300', 'primary-500', 'secondary-500', 'tertiary-500']}
+                        // allowedColors={['white']}
                     />
                     <RadioControl
                         label="Button Position"
@@ -51,7 +56,7 @@ export const edit = ({ attributes, setAttributes }) => {
                             { label: 'Bottom', value: 'bottom' },
                             { label: 'Right', value: 'right' },
                         ]}
-                        onChange={(value) => setAttributes({ buttonPosition: value })}
+                        onChange={buttonPositionOnChange}
                     />
                 </PanelBody>
             </InspectorControls>

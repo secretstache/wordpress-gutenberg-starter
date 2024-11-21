@@ -2391,10 +2391,10 @@
   dependencies:
     tslib "2.6.3"
 
-"@secretstache/wordpress-gutenberg@^0.4.4":
-  version "0.4.4"
-  resolved "https://registry.yarnpkg.com/@secretstache/wordpress-gutenberg/-/wordpress-gutenberg-0.4.4.tgz#709fac09fa39afaae68a4105671f219438d57ba3"
-  integrity sha512-V5lyo+QLOKPXf2kvBfQMlf8sZ0zVjDwWsCp0DT24pTlODfZ6D2nXv2XLF12tQ8PnQbLgrG3RghtGV293Ue49hQ==
+"@secretstache/wordpress-gutenberg@^0.4.7":
+  version "0.4.7"
+  resolved "https://registry.yarnpkg.com/@secretstache/wordpress-gutenberg/-/wordpress-gutenberg-0.4.7.tgz#4b780d66e045010e1e1c61f5147b8d313846ba97"
+  integrity sha512-DrFWwwLzKAhbCaOZaT4+21gOZmsR+v6y+oP2E40+7awfTbV3uwH8r5opozY2q0Rj25J2tqxZFBGo52VYdGhWww==
   dependencies:
     classnames "^2.5.1"
     es-toolkit "^1.12.0"
@@ -3461,6 +3461,24 @@
     moment "^2.29.4"
     moment-timezone "^0.5.40"
 
+"@wordpress/date@^5.12.0":
+  version "5.12.0"
+  resolved "https://registry.yarnpkg.com/@wordpress/date/-/date-5.12.0.tgz#16634d36611e1594fa22be243ad5fc6d0422e775"
+  integrity sha512-iuv4/J3K/ii1Jdf30unochrcf8FI3/S+oLqQkVetQFp71fXZehD5U9Shy86888Pu8kx50E5OHNmd+8e5R+9Wlw==
+  dependencies:
+    "@babel/runtime" "7.25.7"
+    "@wordpress/deprecated" "*"
+    moment "^2.29.4"
+    moment-timezone "^0.5.40"
+
+"@wordpress/deprecated@*":
+  version "4.12.0"
+  resolved "https://registry.yarnpkg.com/@wordpress/deprecated/-/deprecated-4.12.0.tgz#1ddc68cb03e5a0e093d95cc22608ddfd02cfa7b5"
+  integrity sha512-gH1o+vERfrwDwV3Y992UUtNoOKDMwdhpU5TqL7HYA2/GM//0xd7/3wgvdKRLS3/KNal2E9IvwrPpAV6uH4BDIA==
+  dependencies:
+    "@babel/runtime" "7.25.7"
+    "@wordpress/hooks" "*"
+
 "@wordpress/deprecated@^4.10.0":
   version "4.10.0"
   resolved "https://registry.yarnpkg.com/@wordpress/deprecated/-/deprecated-4.10.0.tgz#26f4d44e929779ebaf730545799aa07a3544a213"
@@ -3623,6 +3641,13 @@
     "@wordpress/warning" "^3.10.0"
     change-case "4.1.2"
     client-zip "^2.4.5"
+
+"@wordpress/hooks@*":
+  version "4.12.0"
+  resolved "https://registry.yarnpkg.com/@wordpress/hooks/-/hooks-4.12.0.tgz#38cc3eec88ad010fbea0723eae476481fcdfe487"
+  integrity sha512-pgeAbr9552AGRn7y4BJM95XUFKl1Cs0t980fgSwvFCbob+2Q+xYPvhtpfSGdHPBWdbQ75TcTBaeVUXbY2kwF8Q==
+  dependencies:
+    "@babel/runtime" "7.25.7"
 
 "@wordpress/hooks@^4.10.0", "@wordpress/hooks@^4.5.0":
   version "4.10.0"

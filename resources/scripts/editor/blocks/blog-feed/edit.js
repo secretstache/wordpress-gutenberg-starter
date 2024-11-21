@@ -106,7 +106,7 @@ export const edit = ({ attributes, setAttributes }) => {
         numberOfPosts: isQueryTypeAll ? numberOfPosts : -1,
     }, [ queryType, selectedCategories, curatedPosts, numberOfPosts ]);
 
-    const isBlockGrid = layoutType === 'block-grid';
+    const isBlockGrid = layoutType === LAYOUT_TYPE.BLOCK_GRID;
 
     const blockProps = useBlockProps();
 

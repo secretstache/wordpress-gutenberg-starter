@@ -1,6 +1,6 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 3,
+  "apiVersion": 2,
   "title": "Content Slider",
   "description": "",
   "name": "ssm/content-slider",
@@ -26,15 +26,5 @@
       "type": "boolean",
       "default": false
     },
-    "carouselColor": {
-      "type": "object"
-    },
-    "layoutType": {
-      "enum": [
-        "default",
-        "full-width"
-      ],
-      "default": "default"
-    }
   }
 }

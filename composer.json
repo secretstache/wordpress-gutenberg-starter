@@ -1,5 +1,6 @@
 {
-  "name": "secretstache/wordpress-starter",
+  "version": "1.0.4",
+  "name": "secretstache/wordpress-gutenberg-starter",
   "type": "wordpress-theme",
   "license": "MIT",
   "description": "WordPress starter theme based on the Sage framework",

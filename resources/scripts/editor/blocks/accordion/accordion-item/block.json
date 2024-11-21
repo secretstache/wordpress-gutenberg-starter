@@ -1,6 +1,6 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 3,
+  "apiVersion": 2,
   "title": "Accordion Item",
   "description": "",
   "name": "ssm/accordion-item",
@@ -29,10 +29,6 @@
     "layoutType": {
       "enum": ["vertical", "horizontal"],
       "default": "vertical"
-    },
-    "headingSlug": {
-      "type": "string",
-      "default": "base"
     }
   }
 }

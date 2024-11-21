@@ -8,14 +8,7 @@ import { getGridClass } from './index.js';
 const ALLOWED_BLOCKS = ['ssm/block-grid-item'];
 
 export const edit = ({ attributes, setAttributes, clientId }) => {
-    const { columnsPerRow, layoutType } = attributes;
-
-    const { updateBlockAttributes } = useDispatch('core/block-editor');
-
-    const childBlocks = useSelect(
-        (select) => select('core/block-editor').getBlocksByClientId(clientId)[0]?.innerBlocks || [],
-        [ clientId ],
-    );
+    const { columnsPerRow } = attributes;
 
     const blockProps = useBlockProps({
         className: `grid gap-6 ${getGridClass(columnsPerRow)}`,
@@ -34,14 +27,6 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
         renderAppender: InnerBlocks.DefaultBlockAppender,
     });
 
-    const onLayoutChange = useCallback((value) => {
-        setAttributes({ layoutType: value });
-
-        childBlocks.forEach((block) => {
-            updateBlockAttributes(block.clientId, { parentLayoutType: value });
-        });
-    }, [ childBlocks, updateBlockAttributes ]);
-
     return (
         <>
             <InspectorControls>
@@ -52,16 +37,6 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
                         onChange={(value) => setAttributes({ columnsPerRow: value })}
                         min={1}
                         max={4}
-                    />
-
-                    <RadioControl
-                        label="Layout"
-                        selected={layoutType}
-                        options={[
-                            { label: 'Default', value: 'default' },
-                            { label: 'Seamless', value: 'seamless' },
-                        ]}
-                        onChange={onLayoutChange}
                     />
                 </PanelBody>
             </InspectorControls>

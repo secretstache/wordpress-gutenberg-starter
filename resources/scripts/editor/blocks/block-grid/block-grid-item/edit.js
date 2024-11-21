@@ -17,12 +17,6 @@ const ALLOWED_BLOCKS = [
     'core/embed',
 ];
 
-const CustomDefaultBlockAppender = () => (
-    <div className="w-full flex justify-end">
-        <InnerBlocks.DefaultBlockAppender/>
-    </div>
-);
-
 export const edit = ({ attributes, setAttributes, clientId }) => {
     const {
         isIncludeIcon,
@@ -31,7 +25,6 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
         isIncludeLink,
         linkSource,
         linkIsOpenInNewTab,
-        parentLayoutType,
     } = attributes;
 
     const hasInnerBlocks = useSelect((select) => {
@@ -45,21 +38,16 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
     }, [ hasInnerBlocks ]);
 
     const blockProps = useBlockProps({
-        className: classNames(
-            'col-span-1',
-            {
-                'cursor-pointer': isIncludeLink,
-                'rounded-xl shadow-lg': parentLayoutType === 'default',
-                'no-shadow flat': parentLayoutType === 'seamless',
-            },
-        ),
+        className: classNames({
+            'cursor-pointer': isIncludeLink,
+        }),
     });
 
     const innerBlocksProps = useInnerBlocksProps(
-        { className: 'is-layout-flow flex flex-col w-full space-y-3' },
+        {},
         {
             allowedBlocks: ALLOWED_BLOCKS,
-            renderAppender: hasInnerBlocks ? CustomDefaultBlockAppender : InnerBlocks.ButtonBlockAppender,
+            renderAppender: true,
         },
     );
 
@@ -92,6 +80,7 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
                         checked={isIncludeIcon}
                         onChange={onIncludeIconChange}
                     />
+
                     {isIncludeIcon && (
                         <>
                             <RadioControl
@@ -103,6 +92,7 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
                                 ]}
                                 onChange={onIconLocationChange}
                             />
+
                             <MediaControl
                                 type="image"
                                 mediaId={iconImage?.id}
@@ -110,6 +100,7 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
                                 onSelect={onIconSelect}
                                 onRemove={onIconRemove}
                                 selectButtonLabel="Select Icon"
+                                removeButtonLabel="Remove Icon"
                             />
                         </>
                     )}
@@ -137,10 +128,7 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
             </InspectorControls>
 
             <div {...blockProps}>
-                <GridItemContent
-                    attributes={attributes}
-                    className={isIncludeLink ? 'cursor-pointer !no-underline' : ''}
-                >
+                <GridItemContent attributes={attributes}>
                     <div {...innerBlocksProps} />
                 </GridItemContent>
             </div>
