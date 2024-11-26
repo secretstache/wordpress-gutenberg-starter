@@ -72,7 +72,7 @@
 
 					<nav class="site-footer__terms__navigation">
 
-						@include( 'partials.navigation', ['menu_items' => $navigation['primary'] ] )
+						@include( 'partials.navigation', ['menu_items' => $navigation['legal'] ] )
 								
 					</nav>
 

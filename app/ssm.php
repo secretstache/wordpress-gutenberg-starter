@@ -116,7 +116,7 @@ add_action( 'admin_bar_menu', function( $wp_admin_bar ) {
  */
 add_filter( 'wpseo_sitemap_exclude_taxonomy', function( $value, $taxonomy ) {
 
-    $exclude = []; // Taxonomy Slug;
+    $exclude = ['ssm_ds_type']; // Taxonomy Slug;
 
     if( in_array( $taxonomy, $exclude ) ) return true;
 

@@ -44,6 +44,7 @@ class SSM extends Composer
             'builder'       => $this->getBuilder(),
             'navigation'    => [
                 'primary'   => Navi::make()->build('primary_navigation')->toArray(),
+                'legal'     => Navi::make()->build('legal_navigation')->toArray(),
                 'footer'    => $footer_menus
             ],
             'logo_assets'           => [
