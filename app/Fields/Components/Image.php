@@ -10,9 +10,6 @@ class Image {
 
 		/**
          * [Component] - Image
-         * @author Rich Staats <rich@secretstache.com>
-         * @since 3.0.0
-         * @todo Link to Team Snippet Code
          */
         $imageComponent = new FieldsBuilder('image');
 

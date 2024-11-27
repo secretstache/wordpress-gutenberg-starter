@@ -10,13 +10,10 @@ class BrandSettings {
 
 		/**
 		 * Logo Assets
-		 * @author Rich Staats <rich@secretstache.com>
-		 * @since 3.0.0
-		 * @todo Link to Team Snippet Code
 		 */
 		$logoAssets = new FieldsBuilder('logo_assets', [
 			'title'			=> 'Logo Assets',
-			'menu_order'	=>	1
+			'menu_order'	=> 1
 		]);
 
 		$logoAssets
@@ -42,13 +39,10 @@ class BrandSettings {
 
 		/**
 		 * Business Information
-		 * @author Rich Staats <rich@secretstache.com>
-		 * @since 3.0.0
-		 * @todo Link to Team Snippet Code
 		 */
 		$businessInformation = new FieldsBuilder('business_information', [
 			'title'			=> 'Business Information',
-			'menu_order'	=>	5
+			'menu_order'	=> 5
 		]);
 
 		$businessInformation
@@ -106,13 +100,10 @@ class BrandSettings {
 
 		/**
 		 * Social Networks
-		 * @author Rich Staats <rich@secretstache.com>
-		 * @since 3.0.0
-		 * @todo Link to Team Snippet Code
 		 */
 		$socialNetworks = new FieldsBuilder('social_networks', [
 			'title'			=> 'Social Networks',
-			'menu_order'	=>	10
+			'menu_order'	=> 10
 		]);
 
 		$socialNetworks
@@ -146,13 +137,10 @@ class BrandSettings {
 
 		/**
 		 * Global Footer
-		 * @author Rich Staats <rich@secretstache.com>
-		 * @since 3.0.0
-		 * @todo Link to Team Snippet Code
 		 */
 		$globalFooter = new FieldsBuilder('global_footer', [
 			'title'			=> 'Footer',
-			'menu_order'	=>	15
+			'menu_order'	=> 15
 		]);
 
 		$globalFooter
@@ -173,11 +161,10 @@ class BrandSettings {
 
 		/**
 		 * Script Manager
-		 * 
 		 */
 		$scriptManager = new FieldsBuilder('script-manager', [
 			'title'			=> 'Script Manager',
-			'menu_order'	=>	20
+			'menu_order'	=> 20
 		]);
 
 		$scriptManager
@@ -203,7 +190,6 @@ class BrandSettings {
 				])
 
 				// Google Tag Manager
-
 				->addText('google_tag_manager_id', [
 					'label' => false,
 					'placeholder' => 'Tag Manager ID',
@@ -214,7 +200,6 @@ class BrandSettings {
 					->conditional('type', '==', 'google_tag_manager')
 
 				// Google Site Verification
-
 				->addText('google_site_verification_id', [
 					'label' => false,
 					'placeholder' => 'Site Verification ID',
@@ -224,8 +209,7 @@ class BrandSettings {
 				])
 					->conditional('type', '==', 'google_site_verification')
 
-				// Custom
-
+				// Custom Script
 				->addText('custom_script_title', [
 					'label' => false,
 					'placeholder'    => 'Title',
@@ -262,13 +246,10 @@ class BrandSettings {
 
 		/**
 		 * Global Inline Styles
-		 * @author Rich Staats <rich@secretstache.com>
-		 * @since 3.0.0
-		 * @todo Link to Team Snippet Code
 		 */
 		$globalInlineStyles = new FieldsBuilder('global_inline_styles', [
 			'title'			=> 'Global Inline Styles',
-			'menu_order'	=>	25
+			'menu_order'	=> 25
 		]);
 
 		$globalInlineStyles
