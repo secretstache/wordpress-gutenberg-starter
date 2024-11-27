@@ -38,17 +38,17 @@ add_action( 'init', function() {
     if( class_exists("acf") ) {
 
         // Add Brand Settings Page
-        acf_add_options_sub_page( array(
+        acf_add_options_sub_page([
             "page_title"  => "Brand Settings",
             "menu_title"  => "Brand Settings",
             "parent_slug" => "ssm",
-		));
+		]);
 
-        acf_add_options_sub_page(array(
+        acf_add_options_sub_page([
             "page_title"  => "Core Settings",
             "menu_title"  => "Core",
             "parent_slug" => "options-general.php",
-        ));
+        ]);
 
     }
 

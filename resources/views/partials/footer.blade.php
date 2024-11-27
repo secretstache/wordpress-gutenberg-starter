@@ -32,7 +32,7 @@
 
 			</div>
 
-			@if ( is_array( $navigation['footer'] ) && !empty( $navigation['footer'] ) )
+			@if (!empty($navigation['footer']) && is_array($navigation['footer']))
 				
 				<div class="site-footer__navigation">
 

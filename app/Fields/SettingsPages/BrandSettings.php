@@ -145,6 +145,20 @@ class BrandSettings {
 
 		$globalFooter
 
+			->addRepeater('footer_menus', [
+				'label'         => 'Menu Columns',
+				'layout'        => 'block',
+				'button_label'  => 'Add Column',
+			])
+
+				->addField('menu_id', 'acfe_menus', [
+					'label'         => 'Choose Menu',
+					'field_type'    => 'select',
+					'allow_null'    => 1
+				])
+
+			->endRepeater()
+
 			->addWysiwyg('footer_copyright', [
 				'label'			=> 'Copyright',
 				'tabs'			=> 'all',

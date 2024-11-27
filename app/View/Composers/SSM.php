@@ -3,7 +3,7 @@
 namespace App\View\Composers;
 
 use Roots\Acorn\View\Composer;
-use \Log1x\Navi\Navi;
+use Log1x\Navi\Facades\Navi;
 use Roots\Acorn\View\Composers\Concerns\AcfFields;
 
 class SSM extends Composer
@@ -33,8 +33,8 @@ class SSM extends Composer
 
             foreach( $menu_columns as $column ) {
                 $footer_menus[] = [
+                    'headline' => $column['headline'],
                     'nav_menu' => Navi::build( $column['nav_menu']->term_id )->toArray(),
-                    'headline' => $column['headline']
                 ];
             }
 

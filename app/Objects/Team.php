@@ -50,7 +50,7 @@ add_filter( 'manage_ssm_team_posts_columns', function( $columns ) {
 
     unset( $columns["title"] );
 
-    $new_columns = array_slice($columns, 0, 2, true) + array("title" => "Title") + array_slice($columns, 2, count($columns) - 1, true);
+    $new_columns = array_slice($columns, 0, 2, true) + ["title" => "Title"] + array_slice($columns, 2, count($columns) - 1, true);
 
     return $new_columns;
 
