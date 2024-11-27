@@ -177,6 +177,44 @@ function flexible_content_label($title, $field, $layout, $i)
 };
 
 /**
+ * Templates Without Editor
+ */
+function ea_disable_editor($id = false)
+{
+
+    $excluded_templates = [
+        'template-legal-page.blade.php',
+    ];
+
+    if (empty($id)) return false;
+
+    $template = get_page_template_slug(intval($id));
+
+    return in_array($template, $excluded_templates);
+}
+
+/**
+ * Disable Classic Editor by Template
+ */
+add_action('admin_head', function () {
+
+    if ($_GET && isset($_GET['post']) && ea_disable_editor($_GET['post'])) {
+        remove_post_type_support('page', 'editor');
+    }
+});
+
+/**
+ * Disable Gutenberg by Template
+ */
+add_filter('use_block_editor_for_post_type', function ($can_edit, $post_type) {
+
+    if ($_GET && isset($_GET['post']) && ea_disable_editor($_GET['post']))
+        $can_edit = false;
+
+    return $can_edit;
+}, 10, 2);
+
+/**
  * Register Objects
  */
 foreach ( glob( get_template_directory( __FILE__ ) . '/app/Objects/*.php') as $file) {

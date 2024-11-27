@@ -6,10 +6,10 @@
 
 			<div class="site-header__brand cell shrink">
 
-				@if ( ( $brand_logo = $logo_assets['brand_logo'] ) && $brand_logo['url'] )
+				@if (!empty($logo_assets['brand_logo']))
 								
 					<a href="{!! home_url() !!}">
-						<img src="{!! $brand_logo['url'] !!}" alt="{!! $brand_logo['alt'] ?: get_bloginfo('name') !!}" class="editable-svg">
+						<img src="{!! $logo_assets['brand_logo']['url'] !!}" alt="{!! $logo_assets['brand_logo']['alt'] ?: get_bloginfo('name') !!}" class="editable-svg">
 					</a>
 
 				@endif

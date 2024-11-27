@@ -18,7 +18,7 @@
 
             </header>
 
-            @if ( $data['legal_editor'] )
+            @if ($legal_editor)
                     
                 <div class="grid-x grid-margin-x has-1-cols">
 
@@ -26,7 +26,7 @@
 
                         <div class="inner">
 
-                            <div class="module text-editor">{!! $data['legal_editor'] !!}</div>            
+                            <div class="module text-editor">{!! $legal_editor !!}</div>            
 
                         </div>
 

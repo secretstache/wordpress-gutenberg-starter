@@ -13,7 +13,8 @@ class Inner extends SSM
      * @var array
      */
     protected static $views = [
-        'single-ssm_design_system'
+        'single-ssm_design_system',
+        'template-legal-page'
     ];
 
     /**
@@ -26,7 +27,8 @@ class Inner extends SSM
         $data = collect($this->fields())->toArray();
 
         return [
-            'templates' => $data['templates'] ?? []
+            'templates'    => $data['templates'] ?? [],
+            'legal_editor' => $data['legal_editor'] ?? ''
         ];
     }
 }
