@@ -8,36 +8,34 @@
 
 @section('content')
 
-    <section class="content-block template-free-form">
-                
-        <div class="grid-container">
+    <div class="wp-block-ssm-section-wrapper has-background spacing-pt-2 spacing-pb-2">
 
-            <header class="template-header">
+        <div class="wp-block-ssm-section-wrapper__content is-layout-constrained">
 
-                <h2 class="headline">{!! get_the_title( get_the_ID() ) !!}</h2>
+            <div class="wp-block-group is-content-justification-left alignwide">
 
-            </header>
+                @if ($headline)
+                    <h1 class="wp-block-heading has-80-font-size">{!! $headline !!}</h1>
+                @endif
 
-            @if ($legal_editor)
-                    
-                <div class="grid-x grid-margin-x has-1-cols">
-
-                    <div class="cell medium-12">
-
-                        <div class="inner">
-
-                            <div class="module text-editor">{!! $legal_editor !!}</div>            
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            @endif
+            </div>
 
         </div>
 
-    </section>
+    </div>
+
+    @if ( $content )
+        
+        <div class="wp-block-ssm-section-wrapper has-background spacing-pt-3 spacing-pb-3 spacing-pt-mobile-2">
+
+            <div class="wp-block-ssm-section-wrapper__content">
+
+                {!! $content !!}
+
+            </div>
+
+        </div>
+
+    @endif
 
 @endsection
