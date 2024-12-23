@@ -1,3 +1,3 @@
-export * from './reassign-block-categories.js';
-export * from './set-allowed-blocks-for-column.js';
+export * from './block-categories.js';
+export * from './allowed-blocks-for-column.js';
 

@@ -1,8 +1,7 @@
 import { addFilter } from '@wordpress/hooks';
 
-export const reassignBlockCategories = () => {
-    // Change core block categories before editor loading
-    addFilter("blocks.registerBlockType", "ssm/reassign-block-categories", (settings, name) => {
+export const addBlockCategoriesFilter = () => {
+    addFilter('blocks.registerBlockType', 'ssm/block-categories', (settings, name) => {
         const movedBlocks = [
             'core/cover',
             'core/heading',

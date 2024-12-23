@@ -25,31 +25,23 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
         layoutType: contextLayoutStyle,
     } = useContext(AccordionContext);
 
-    const { blockRef, isActive: isOpened, toggleItem } = useAccordionItem(
-        clientId,
-        activeItemClientId,
-        setActiveItemClientId,
-        '.wp-block-ssm-accordion__content',
-    );
+    const { childBlocks } = useSelect(select => ({
+        childBlocks: select('core/block-editor').getBlocks(clientId),
+    }), []);
+
+    const { blockRef, isActive: isOpened, toggleItem } = useAccordionItem({
+        itemId: clientId,
+        activeItemId: activeItemClientId,
+        setActiveItemId: setActiveItemClientId,
+        contentSelector: '.wp-block-ssm-accordion__content',
+        heightObserverDeps: [ childBlocks ],
+    });
 
     useEffect(() => {
         if (itemLayoutStyle !== contextLayoutStyle) {
             setAttributes({ layoutType: contextLayoutStyle });
         }
     }, [ contextLayoutStyle, itemLayoutStyle ]);
-
-    const contentRef = useRef(null);
-
-    const { childBlocks } = useSelect(select => ({
-        childBlocks: select('core/block-editor').getBlocks(clientId),
-    }), [ clientId ]);
-
-    useEffect(() => {
-        // update the max height when the content is changed
-        if (isOpened && contentRef?.current) {
-            contentRef.current.style.maxHeight = contentRef.current.scrollHeight + 'px';
-        }
-    }, [ childBlocks ]);
 
     const allowedBlocks = useFilterBlocks((block) => {
         const isBaseBlock = block.name === 'core/block';
@@ -129,7 +121,6 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
                     className={classnames('wp-block-ssm-accordion__content', {
                         'is-active': isOpened,
                     })}
-                    ref={contentRef}
                 >
 
                     <div {...innerBlocksProps}>

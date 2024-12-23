@@ -19,7 +19,7 @@ import {
     getSpacingClasses,
     MediaTypeControl,
     EmptyBlockAppender,
-    useFilterBlocks,
+    useAllowedBlocks,
 } from '@secretstache/wordpress-gutenberg';
 import { useSelect } from '@wordpress/data';
 
@@ -78,12 +78,18 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
         setAttributes({ spacing });
     }, []);
 
-    const allowedBlocks = useFilterBlocks((block) => {
-        const isBaseBlock = block.name === 'core/block';
-        const noParent = !block.parent;
+    const allowedBlocks = useAllowedBlocks(blockName, blockName);
 
-        return isBaseBlock || noParent;
-    });
+    const hasInnerBlocks = useSelect((select) => {
+        const { getBlockOrder } = select('core/block-editor');
+
+        return getBlockOrder(clientId).length > 0;
+    }, []);
+
+    const deviceType = useSelect(
+        (select) => select('core/edit-post')?.__experimentalGetPreviewDeviceType?.() || 'Desktop',
+        [],
+    );
 
     const blockProps = useBlockProps({
         className: classNames(
@@ -95,13 +101,6 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
             },
         ),
     });
-
-    const hasInnerBlocks = useSelect((select) => {
-        const { getBlockOrder } = select('core/block-editor');
-
-        return getBlockOrder(clientId).length > 0;
-    }, [ clientId ]);
-
 
     const { ...innerBlocksProps } = useInnerBlocksProps({
         className: 'wp-block-ssm-section-wrapper__content',
@@ -191,6 +190,7 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
                         max={6}
                         onChange={onSpacingChange}
                         value={spacing}
+                        deviceType={deviceType}
                     />
                 </PanelBody>
             </InspectorControls>

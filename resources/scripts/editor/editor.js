@@ -1,8 +1,7 @@
 import domReady from '@wordpress/dom-ready';
-import { getBlockVariations, unregisterBlockVariation } from '@wordpress/blocks';
 import {
-    setRootBlock,
-    hideRootBlockForOtherBlocks,
+    rootBlockVisibilityFilter,
+    setRootBlockForPostTypes,
 } from '@secretstache/wordpress-gutenberg';
 
 import './blocks/section-wrapper/index.js';
@@ -18,28 +17,29 @@ import './blocks/section-wrapper/index.js';
 // import './blocks/icon/index.js';
 // import './blocks/testimonials/index.js';
 
-import {
-    reassignBlockCategories,
-} from '@scripts/editor/filters/index.js';
-import { unsetBlocks, setButtonStyles } from '@scripts/editor/utils/index.js';
-
-reassignBlockCategories();
+import { addBlockCategoriesFilter, allowedBlocksForColumnFilter } from '@scripts/editor/filters/index.js';
+import { unsetBlocks, setBlocksVariations, setBlocksStyles } from '@scripts/editor/utils/index.js';
 
 const rootBlockName = 'ssm/section-wrapper';
 
+addBlockCategoriesFilter();
+
 domReady(() => {
-    hideRootBlockForOtherBlocks(rootBlockName);
-    setRootBlock(rootBlockName);
-
     unsetBlocks();
+    setBlocksStyles();
+    setBlocksVariations();
 
-    // unset unnecessary embed blocks
-    getBlockVariations("core/embed")
-        .forEach(function (embed) {
-            if (embed.name !== "youtube" && embed.name !== "vimeo") {
-                unregisterBlockVariation("core/embed", embed.name);
-            }
-        });
-
-    setButtonStyles();
+    setRootBlockForPostTypes(
+        rootBlockName,
+        ['page', 'post', 'ssm_design_system'],
+        () => {
+            unsetBlocks();
+            setBlocksStyles();
+            setBlocksVariations();
+        },
+        [
+            rootBlockVisibilityFilter,
+            allowedBlocksForColumnFilter,
+        ],
+    );
 });

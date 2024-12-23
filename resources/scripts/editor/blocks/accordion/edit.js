@@ -22,7 +22,7 @@ const TEMPLATE = [
 export const AccordionContext = createContext();
 
 export const edit = ({ attributes, setAttributes, clientId }) => {
-    const { layoutType, isOpenedByDefault, headingSize } = attributes;
+    const { layoutType, isOpenedByDefault } = attributes;
 
     const [ activeItemClientId, setActiveItemClientId ] = useState(null);
 
@@ -30,7 +30,7 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
 
     const { childBlocks } = useSelect(select => ({
         childBlocks: select('core/block-editor').getBlocks(clientId),
-    }), [ clientId ]);
+    }), []);
 
     useEffect(() => {
         if (isOpenedByDefault) {
