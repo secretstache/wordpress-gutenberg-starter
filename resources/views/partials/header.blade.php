@@ -1,4 +1,13 @@
-<header class="site-header">
+@php
+    /**
+    * @var $is_editor bool
+    */
+@endphp
+
+<header @class([
+    'site-header',
+    'site-header--editor' => $is_editor,
+])>
 
 	<div class="grid-container">
 

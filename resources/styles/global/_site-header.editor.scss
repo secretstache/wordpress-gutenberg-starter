@@ -1,0 +1,19 @@
+/* Site Header Editor */
+.editor-styles-wrapper .site-header--editor {
+    position: relative;
+    margin: 0 auto;
+    width: 100%;
+    z-index: 21;
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: 10;
+        background: transparent;
+    }
+
+    .menu__item a {
+        text-decoration: none !important;
+    }
+}
