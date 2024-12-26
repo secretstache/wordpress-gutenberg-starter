@@ -77,3 +77,26 @@ add_filter('upload_mimes', function ($mimes) {
 
     return $mimes;
 });
+
+add_action( 'init', function () {
+    register_post_meta( 'page', 'isShowHeader', array(
+        'show_in_rest' => true,
+        'single' => true,
+        'type' => 'boolean',
+        'default' => true,
+    ));
+});
+
+add_action( 'rest_api_init', function() {
+    register_rest_route( 'ssm/v1', '/get-header', array(
+        'methods'  => 'GET',
+        'callback' => function( WP_REST_Request $request ) {
+            return array(
+                'html' => view( 'partials.header', [ 'is_editor' => true ] )->render(),
+            );
+        },
+        'permission_callback' => function () {
+            return current_user_can('edit_posts');
+        }
+    ));
+});

@@ -4,6 +4,8 @@ import {
     setRootBlockForPostTypes,
 } from '@secretstache/wordpress-gutenberg';
 
+import './plugins/header-preview.js';
+
 import './blocks/section-wrapper/index.js';
 // import './blocks/accordion/index.js';
 // import './blocks/block-grid/index.js';
