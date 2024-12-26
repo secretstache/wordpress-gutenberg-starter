@@ -64,12 +64,12 @@ add_action( 'init', function() {
 
     // Create Design System Settings submenu
     if( class_exists("acf") ) {
-        acf_add_options_sub_page( array(
+        acf_add_options_sub_page([
             "page_title"  => "Sandbox Settings",
             "menu_title"  => "Settings",
             "menu_slug"   => "design-system-settings",
             "parent_slug" => "edit.php?post_type=ssm_design_system",
-		));
+        ]);
     }
 
 });

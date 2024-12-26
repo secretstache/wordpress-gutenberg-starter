@@ -2,33 +2,23 @@
 
     <li class="menu__item{!! !empty( $item->children ) ? ' menu-item-has-children' : '' !!}{!! $item->classes ? ' ' . $item->classes : '' !!}">
 
-        <a href="{!! $item->url !!}">{!! $item->label !!}</a>
+        <a target="{{ $item->target ?: '_self' }}" href="{!! $item->url !!}">{!! $item->label !!}</a>
 
-        @if ( !empty( $item->children ) )
+        @if (!empty($item->children))
 
-            <button type="button" aria-expanded="false" aria-label="More {!! $item->label !!} pages" class="dropdown-arrow"></button>
+            <ul class="submenu">
 
-            <div class="submenu-wrapper">
+                @foreach ($item->children as $child)
 
-                <ul class="menu">
+                    <li class="submenu_menu__item{!! $child->classes ? ' ' . $child->classes : '' !!}">
 
-                    @foreach ($item->children as $child)
+                        <a target="{{ $child->target ?: '_self' }}" href="{!! $child->url !!}">{!! $child->label !!}</a>
 
-                        <li class="menu__item{!! $child->classes ? ' ' . $child->classes : '' !!}">
+                    </li>
 
-                            <a href="{!! $child->url !!}">
+                @endforeach
 
-                                <p class="menu__item-title">{!! $child->label !!}</p>
-
-                            </a>
-
-                        </li>
-
-                    @endforeach
-
-                </ul>
-
-            </div>
+            </ul>
 
         @endif
 

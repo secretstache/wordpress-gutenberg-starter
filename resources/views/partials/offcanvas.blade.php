@@ -6,7 +6,7 @@
 
             <button data-dismiss="offcanvas" class="offcanvas__close-btn">✕<span class="show-for-sr">Close</span></button>
 
-            @if ( has_nav_menu('primary_navigation') )
+            @if (has_nav_menu('primary_navigation'))
 
                 <nav class="offcanvas__navigation">
 
