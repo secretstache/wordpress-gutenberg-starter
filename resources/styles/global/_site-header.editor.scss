@@ -1,5 +1,4 @@
-/* Site Header Editor */
-.editor-styles-wrapper .site-header--editor {
+.site-header--editor {
     position: relative;
     margin: 0 auto;
     width: 100%;
@@ -16,4 +15,9 @@
     .menu__item a {
         text-decoration: none !important;
     }
+}
+
+/* Hide for patterns */
+.wp-site-blocks .site-header--editor {
+    display: none;
 }

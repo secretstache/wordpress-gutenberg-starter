@@ -3,20 +3,9 @@ import { ToggleControl } from '@wordpress/components';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { registerPlugin } from '@wordpress/plugins';
 import { useEffect, useState } from '@wordpress/element';
+import { getRootContainer } from '@secretstache/wordpress-gutenberg';
 
 import { EditableSvg } from '@scripts/client/utils/utilities.js';
-
-const getRootContainer = () => {
-    const previewIframe = document.querySelector('iframe[name="editor-canvas"]');
-
-    if (previewIframe) {
-        const iframeDocument = previewIframe.contentDocument || previewIframe.contentWindow.document;
-
-        return iframeDocument.querySelector('.is-root-container');
-    }
-
-    return document.querySelector('.is-root-container');
-};
 
 const insertHeader = (headerMarkup) => {
     removeHeader();
@@ -34,17 +23,11 @@ const removeHeader = () => {
     if (header) {
         header.remove();
     }
-
 };
 
 const HeaderPreview = () => {
     const meta = useSelect((select) =>
         select('core/editor').getEditedPostAttribute('meta'),
-    );
-
-    const deviceType = useSelect((select) =>
-            select('core/edit-post')?.__experimentalGetPreviewDeviceType?.() || 'Desktop',
-        [],
     );
 
     const [ headerMarkup, setHeaderMarkup ] = useState(null);
@@ -70,32 +53,16 @@ const HeaderPreview = () => {
     useEffect(() => {
         if (!headerMarkup) return;
 
-        if (isShowHeader) {
-            const isDesktop = deviceType === 'Desktop';
+        const rootContainer = getRootContainer();
 
-            if (isDesktop) {
+        if (rootContainer) {
+            if (isShowHeader) {
                 insertHeader(headerMarkup);
             } else {
-                const rootContainer = getRootContainer();
-
-                if (rootContainer) {
-                    insertHeader(headerMarkup);
-                } else {
-                    const iframe = document.querySelector('iframe[name="editor-canvas"]');
-
-                    if (iframe) {
-                        const onLoad = () => insertHeader(headerMarkup);
-
-                        iframe.addEventListener('load', onLoad);
-
-                        return () => iframe.removeEventListener('load', onLoad);
-                    }
-                }
+                removeHeader();
             }
-        } else {
-            removeHeader();
         }
-    }, [ isShowHeader, deviceType, headerMarkup ]);
+    }, [ isShowHeader, headerMarkup ]);
 
     const onIsShowHeaderChange = () => editPost({
         meta: { ...meta, isShowHeader: !isShowHeader },
