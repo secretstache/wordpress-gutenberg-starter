@@ -6,12 +6,12 @@ use App\View\Composers\SSM;
 class BlogFeed extends Block
 {
 
-    protected function prepareData(array $data): array
+    protected function prepareData($attributes, $content): array
     {
-        $query              = $data['attributes']['queryType'] ?? 'latest';
-        $number_posts       = $data['attributes']['numberOfPosts'] ?? -1;
-        $curated_posts      = $data['attributes']['curatedPosts'] ?? [];
-        $curated_terms      = $data['attributes']['curatedTermsIds'] ?? [];
+        $query              = $attributes['queryType'] ?? 'latest';
+        $number_posts       = $attributes['numberOfPosts'] ?? -1;
+        $curated_posts      = $attributes['curatedPosts'] ?? [];
+        $curated_terms      = $attributes['curatedTermsIds'] ?? [];
 
         $posts = SSM::getPosts( [
             'data_source'       => 'posts',

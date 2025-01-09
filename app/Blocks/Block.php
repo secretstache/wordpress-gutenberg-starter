@@ -31,7 +31,7 @@ class Block
         if (isset($this->blockMetadata['render'])) {
             $args['render_callback'] = function ($attributes, $content) {
                 $view = "blocks.{$this->folderName}.{$this->blockMetadata['render']}";
-                $data = $this->prepareData(['attributes' => $attributes, 'content' => $content]);
+                $data = $this->prepareData($attributes, $content);
 
                 if (\View::exists($view)) {
 
@@ -45,8 +45,11 @@ class Block
         register_block_type($this->blockMetadataPath, $args);
     }
 
-    protected function prepareData(array $data): array
+    protected function prepareData($attributes, $content): array
     {
-        return $data;
+        return [
+            'attributes' => $attributes,
+            'content' => $content,
+        ];
     }
 }

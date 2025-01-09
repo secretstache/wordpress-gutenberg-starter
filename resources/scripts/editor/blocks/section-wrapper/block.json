@@ -24,6 +24,9 @@
     "isFullViewportHeight": {
       "type": "boolean",
       "default": false
+    },
+    "anchor": {
+      "type": "string"
     }
   },
   "render": "index"

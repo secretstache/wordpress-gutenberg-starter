@@ -11,11 +11,8 @@ class SectionWrapper extends Block
     private const MEDIA_TYPE_VIDEO = 'video';
     private const MEDIA_TYPE_ANIMATION = 'animation';
 
-    protected function prepareData(array $data): array
+    protected function prepareData($attributes, $content): array
     {
-        $attributes = $data['attributes'];
-        $content = $data['content'];
-
         $background_color = $attributes['backgroundColor'];
 
         $is_include_background_media = $attributes['isIncludeBackgroundMedia'];
@@ -58,7 +55,8 @@ class SectionWrapper extends Block
                 'has-background' => $has_selected_background,
                 $full_viewport_height_class,
                 $spacing_classes,
-            ]))
+            ])),
+            'id' => $attributes['anchor'] ?? '',
         ]);
 
         return [

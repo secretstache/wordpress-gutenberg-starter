@@ -5,18 +5,19 @@ use App\View\Composers\SSM;
 
 class Testimonials extends Block
 {
-    protected function prepareData(array $data): array
+    protected function prepareData($attributes, $content): array
     {
-        $query              = $data['attributes']['queryType'] ?? 'latest';
-        $number_posts       = isset($data['attributes']['numberOfPosts']) && $query == 'latest' ? $data['attributes']['numberOfPosts'] : -1;
-        $columns_per_row    = $data['attributes']['columnsPerRow'] ?? 3;
-        $layout             = $data['attributes']['layoutType'] ?? 'grid';
+        $query              = $attributes['queryType'] ?? 'latest';
+        $number_posts       = isset($attributes['numberOfPosts']) && $query == 'latest' ? $attributes['numberOfPosts'] : -1;
+        $columns_per_row    = $attributes['columnsPerRow'] ?? 3;
+        $layout             = $attributes['layoutType'] ?? 'grid';
+        $curated_posts      = $attributes['curatedPosts'] ?? [];
 
         $posts = SSM::getPosts( [
             'data_source'       => 'testimonial',
             'query'             => $query,
             'number_posts'      => $number_posts,
-            'curated_posts'     => $data['attributes']['curatedPosts'] ?? [],
+            'curated_posts'     => $curated_posts,
             'prefix'            => 'ssm'
         ]);
 

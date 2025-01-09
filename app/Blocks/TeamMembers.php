@@ -7,16 +7,17 @@ use App\View\Composers\SSM;
 class TeamMembers extends Block
 {
     // TODO: add to the acf the fist name and last name, order ASC by last name
-    protected function prepareData(array $data): array
+    protected function prepareData($attributes, $content): array
     {
-        $query = $data['attributes']['queryType'] ?? 'all';
-        $number_posts = $data['attributes']['numberOfPosts'] ?? -1;
+        $query = $attributes['queryType'] ?? 'all';
+        $number_posts = $attributes['numberOfPosts'] ?? -1;
+        $curated_posts = $attributes['curatedPosts'] ?? [];
 
         $args = [
             'data_source'           => 'team',
             'query'                 => $query,
             'number_posts'          => $number_posts,
-            'curated_posts'         => $data['attributes']['curatedPosts'] ?? [],
+            'curated_posts'         => $curated_posts,
             'order'                 => 'ASC',
             'orderby'               => 'title',
             'prefix'                => 'ssm'
