@@ -2,7 +2,9 @@ export const DropdownMenu = () => {
     const menus = document.querySelectorAll('.is-dropdown');
 
     menus.forEach((menu) => {
-        new Dropdown(menu);
+        new Dropdown(menu, {
+            topLevelClickable: true,
+        });
     });
 };
 

@@ -21,6 +21,13 @@
     "anchor": true
   },
   "attributes": {
+    "backgroundColor": {
+      "type": "object",
+      "default": {
+        "value": "#ffffff",
+        "slug": "white"
+      }
+    },
     "isFullViewportHeight": {
       "type": "boolean",
       "default": false

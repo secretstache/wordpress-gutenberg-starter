@@ -13,7 +13,7 @@ export default async (app) => {
         .entry('admin', ['@styles/admin'])
         .assets(['images']);
 
-    app.setPublicPath('/wp-content/themes/THEME_PUBLIC_PATH_NAME/public/');
+    app.setPublicPath('/wp-content/themes/wordpress-gutenberg-starter/public/');
 
     app.setUrl('http://localhost:3000').setProxyUrl(process.env.WP_HOME).watch([
         'resources/views',
@@ -23,6 +23,7 @@ export default async (app) => {
     ]);
 
     app.eslint
+        .extends(['@roots/eslint-config'])
         .setFailOnError(true)
         .setFailOnWarning(false);
 

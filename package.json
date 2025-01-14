@@ -57,7 +57,7 @@
   "dependencies": {
     "@roots/bud-prettier": "^6.23.3",
     "@roots/bud-sass": "^6.23.3",
-    "@secretstache/wordpress-gutenberg": "^0.5.0",
+    "@secretstache/wordpress-gutenberg": "^0.5.3",
     "@splidejs/splide": "^4.1.4",
     "@splidejs/splide-extension-auto-scroll": "^0.5.3",
     "@splidejs/splide-extension-intersection": "^0.2.0",

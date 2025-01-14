@@ -50,8 +50,8 @@
     "name": "FacetWP",
     "slug": "facetwp",
     "source": "https://www.secretstache.com/required-plugins/facetwp.zip",
-    "required": true,
-    "force_activation": true
+    "required": false,
+    "force_activation": false
   },
   {
     "name": "Gravity Forms",
