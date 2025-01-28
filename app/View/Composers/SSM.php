@@ -33,7 +33,6 @@ class SSM extends Composer
 
             foreach( $menu_columns as $column ) {
                 $footer_menus[] = [
-                    'headline' => $column['headline'],
                     'nav_menu' => Navi::build( $column['nav_menu']->term_id )->toArray(),
                 ];
             }
