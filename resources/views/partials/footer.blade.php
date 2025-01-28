@@ -10,20 +10,20 @@
 
 					<ul>
 
-						@if ( $twitter = $social_networks['twitter'] )
-							<li><a href="{!! $twitter !!}" target="_blank"><img src="@asset('images/twitter-icon.svg')" alt="Twitter"></a></li>
+						@if ($social_networks['twitter'])
+							<li><a href="{!! $social_networks['twitter'] !!}" target="_blank"><img src="@asset('images/twitter-icon.svg')" alt="Twitter"></a></li>
 						@endif
 
-						@if ( $facebook = $social_networks['facebook'] )
-							<li><a href="{!! $facebook !!}" target="_blank"><img src="@asset('images/facebook-icon.svg')" alt="Facebook"></a></li>
+						@if ($social_networks['facebook'])
+							<li><a href="{!! $social_networks['facebook'] !!}" target="_blank"><img src="@asset('images/facebook-icon.svg')" alt="Facebook"></a></li>
 						@endif
 
-						@if ( $instagram = $social_networks['instagram'] )
-							<li><a href="{!! $instagram !!}" target="_blank"><img src="@asset('images/instagram-icon.svg')" alt="Instagram"></a></li>
+						@if ($social_networks['instagram'])
+							<li><a href="{!! $social_networks['instagram'] !!}" target="_blank"><img src="@asset('images/instagram-icon.svg')" alt="Instagram"></a></li>
 						@endif
 
-						@if ( $linkedin = $social_networks['linkedin'] )
-							<li><a href="{!! $linkedin !!}" target="_blank"><img src="@asset('images/linkedin-icon.svg')" alt="LinkedIn"></a></li>
+						@if ($social_networks['linkedin'])
+							<li><a href="{!! $social_networks['linkedin'] !!}" target="_blank"><img src="@asset('images/linkedin-icon.svg')" alt="LinkedIn"></a></li>
 						@endif
 
 					</ul>
@@ -32,7 +32,7 @@
 
 			</div>
 
-			@if ( is_array( $navigation['footer'] ) && !empty( $navigation['footer'] ) )
+			@if (!empty($navigation['footer']) && is_array($navigation['footer']))
 				
 				<div class="site-footer__navigation">
 
@@ -52,10 +52,10 @@
 
 			<div class="site-footer__logo">
 
-				@if ( ( $brand_logo = $logo_assets['brand_logo'] ) && $brand_logo['url'] )
+				@if (!empty($logo_assets['brand_logo']))
 								
 					<a href="{!! home_url() !!}">
-						<img src="{!! $brand_logo['url'] !!}" class="editable-svg" alt="{!! $brand_logo['alt'] ?: get_bloginfo('name') !!}">
+						<img src="{!! $logo_assets['brand_logo']['url'] !!}" class="editable-svg" alt="{!! $logo_assets['brand_logo']['alt'] ?: get_bloginfo('name') !!}">
 					</a>
 
 				@endif
@@ -64,15 +64,15 @@
 
 			<div class="site-footer__terms">
 
-				@if ( $footer['copyright'] )
-					{!! $footer['copyright'] !!}
+				@if ($footer['copyright'])
+					<div class="site-footer__copyright">{!! $footer['copyright'] !!}</div>
 				@endif
 
-				@if ( has_nav_menu('legal_navigation') )
+				@if (has_nav_menu('legal_navigation'))
 
 					<nav class="site-footer__terms__navigation">
 
-						@include( 'partials.navigation', ['menu_items' => $navigation['primary'] ] )
+						@include( 'partials.navigation', ['menu_items' => $navigation['legal'] ] )
 								
 					</nav>
 

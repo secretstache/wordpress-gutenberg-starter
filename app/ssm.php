@@ -38,17 +38,17 @@ add_action( 'init', function() {
     if( class_exists("acf") ) {
 
         // Add Brand Settings Page
-        acf_add_options_sub_page( array(
+        acf_add_options_sub_page([
             "page_title"  => "Brand Settings",
             "menu_title"  => "Brand Settings",
             "parent_slug" => "ssm",
-		));
+		]);
 
-        acf_add_options_sub_page(array(
+        acf_add_options_sub_page([
             "page_title"  => "Core Settings",
             "menu_title"  => "Core",
             "parent_slug" => "options-general.php",
-        ));
+        ]);
 
     }
 
@@ -116,7 +116,7 @@ add_action( 'admin_bar_menu', function( $wp_admin_bar ) {
  */
 add_filter( 'wpseo_sitemap_exclude_taxonomy', function( $value, $taxonomy ) {
 
-    $exclude = []; // Taxonomy Slug;
+    $exclude = ['ssm_ds_type']; // Taxonomy Slug;
 
     if( in_array( $taxonomy, $exclude ) ) return true;
 
@@ -175,6 +175,44 @@ function flexible_content_label($title, $field, $layout, $i)
 
     return $label;
 };
+
+/**
+ * Templates Without Editor
+ */
+function ea_disable_editor($id = false)
+{
+
+    $excluded_templates = [
+        'template-legal-page.blade.php',
+    ];
+
+    if (empty($id)) return false;
+
+    $template = get_page_template_slug(intval($id));
+
+    return in_array($template, $excluded_templates);
+}
+
+/**
+ * Disable Classic Editor by Template
+ */
+add_action('admin_head', function () {
+
+    if ($_GET && isset($_GET['post']) && ea_disable_editor($_GET['post'])) {
+        remove_post_type_support('page', 'editor');
+    }
+});
+
+/**
+ * Disable Gutenberg by Template
+ */
+add_filter('use_block_editor_for_post_type', function ($can_edit, $post_type) {
+
+    if ($_GET && isset($_GET['post']) && ea_disable_editor($_GET['post']))
+        $can_edit = false;
+
+    return $can_edit;
+}, 10, 2);
 
 /**
  * Register Objects

@@ -3,7 +3,6 @@
 namespace App\Fields\Objects;
 
 use StoutLogic\AcfBuilder\FieldsBuilder;
-use App\Fields\Components\Header;
 
 class Shared {
 
@@ -11,9 +10,6 @@ class Shared {
 
 		/**
 		 * Inline Styles
-		 * @author Rich Staats <rich@secretstache.com>
-		 * @since 3.0.0
-		 * @todo Link to Team Snippet Code
 		 */
 		$inlineStyles = new FieldsBuilder('inline_styles', [
 			'menu_order' =>	5
@@ -38,9 +34,6 @@ class Shared {
 
 		/**
 		 * Inline Scripts
-		 * @author Rich Staats <rich@secretstache.com>
-		 * @since 3.0.0
-		 * @todo Link to Team Snippet Code
 		 */
 		$inlineScripts = new FieldsBuilder('inline_scripts', [
 			'menu_order' =>	10

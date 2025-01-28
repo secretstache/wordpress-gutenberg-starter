@@ -10,11 +10,10 @@ class DesignSystemSettings {
 
         /**
 		 * Global Settings
-         *
 		 */
 		$globalSettings = new FieldsBuilder('ds_global_settings', [
 			'title'			=> 'Global Settings',
-			'menu_order'	=>	1
+			'menu_order'	=> 1
 		]);
 
 		$globalSettings

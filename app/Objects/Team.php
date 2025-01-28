@@ -12,7 +12,7 @@ add_action( 'init', function() {
         "capability_type"   => "page",
         "menu_icon"         => "dashicons-groups",
         "menu_position"		=> 5,
-        "supports" 			=> [ "title" ],
+        "supports" 			=> ["title"],
         "show_in_menu"      => "ssm",
         "has_archive"       => false,
         "public"            => false,
@@ -50,7 +50,7 @@ add_filter( 'manage_ssm_team_posts_columns', function( $columns ) {
 
     unset( $columns["title"] );
 
-    $new_columns = array_slice($columns, 0, 2, true) + array("title" => "Title") + array_slice($columns, 2, count($columns) - 1, true);
+    $new_columns = array_slice($columns, 0, 2, true) + ["title" => "Title"] + array_slice($columns, 2, count($columns) - 1, true);
 
     return $new_columns;
 
@@ -78,7 +78,6 @@ add_action( 'init', function() {
 /**
  * Allow sorting by first/last name
  */
-
 //add_filter('rest_ssm_team_collection_params', function ($query_params) {
 //    // Add meta_value as an allowed option for orderby
 //    $query_params['orderby']['enum'][] = 'meta_value';

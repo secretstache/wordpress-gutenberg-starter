@@ -4,7 +4,7 @@ namespace App\View\Composers\Pages;
 
 use App\View\Composers\SSM;
 
-class Inner extends SSM
+class LegalPage extends SSM
 {
 
     /**
@@ -13,7 +13,7 @@ class Inner extends SSM
      * @var array
      */
     protected static $views = [
-        'single-ssm_design_system',
+        'template-legal-page'
     ];
 
     /**
@@ -23,10 +23,12 @@ class Inner extends SSM
      */
     public function with()
     {
+
         $data = collect($this->fields())->toArray();
 
         return [
-            'templates'    => $data['templates'] ?? [],
+            'headline'  => get_the_title(),
+            'content'   => $data['legal_editor']
         ];
     }
 }
