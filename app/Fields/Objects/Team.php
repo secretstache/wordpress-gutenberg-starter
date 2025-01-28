@@ -23,8 +23,28 @@ class Team {
 				'preview_size'	=> 'medium',
 			])
 
+			->addText('team_first_name', [
+				'label'     => 'First Name',
+				'wrapper'	=> [
+					'width'	=> 50
+				]
+			])
+
+			->addText('team_last_name', [
+				'label'     => 'Last Name',
+				'wrapper'	=> [
+					'width'	=> 50
+				]
+			])
+
             ->addText('team_job_title', [
 				'label'     => 'Job Title',
+			])
+
+			->addWysiwyg('team_bio', [
+				'label'         => 'Bio',
+				'toolbar'       => 'basic',
+				'media_upload' 	=> 0
 			])
 
 			->setLocation('post_type', '==', 'ssm_team');

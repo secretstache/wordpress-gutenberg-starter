@@ -15,7 +15,7 @@ import './blocks/section-wrapper/index.js';
 // import './blocks/call-to-action/index.js';
 // import './blocks/logo-wall/index.js';
 // import './blocks/blog-feed/index.js';
-// import './blocks/team-members/index.js';
+import './blocks/team-members/index.js';
 // import './blocks/icon/index.js';
 // import './blocks/testimonials/index.js';
 

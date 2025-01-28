@@ -14,7 +14,7 @@ import { arrayMove } from 'react-sortable-hoc';
 import { POST_TYPE, QUERY_TYPE } from './index.js';
 
 const getFullName = (firstname = '', lastName = '') => {
-    return [ firstname, lastName ].join(' ');
+    return [ firstname, lastName ].filter(Boolean).join(' ') || '';
 };
 
 export const edit = ({ attributes, setAttributes }) => {
@@ -54,7 +54,7 @@ export const edit = ({ attributes, setAttributes }) => {
         postType: POST_TYPE.TEAM,
         curatedPostsIds: isQueryTypeCurated && curatedPosts?.map((post) => post.value),
         numberOfPosts: isQueryTypeAll ? numberOfPosts : -1,
-        extraQueryArgs: isQueryTypeAll ? { orderby: 'title', order: 'asc' } : {},
+        extraQueryArgs: isQueryTypeAll ? { order: 'asc', orderby: 'meta_value', meta_key: 'team_last_name' } : {},
     }, [ queryType, curatedPosts, numberOfPosts ]);
 
     const blockProps = useBlockProps();
@@ -149,13 +149,6 @@ export const edit = ({ attributes, setAttributes }) => {
                                                         )
                                                     }
 
-                                                    {
-                                                        member?.acf?.team_division_location && (
-                                                            <div className="team-members__member-division-location">
-                                                                {decodeHtmlEntities(member?.acf?.team_division_location)}
-                                                            </div>
-                                                        )
-                                                    }
                                                 </div>
                                             </div>
                                         );

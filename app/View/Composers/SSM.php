@@ -132,7 +132,7 @@ class SSM extends Composer
 
     }
 
-    public static function getPosts( $data )
+    public static function getPosts( $data, $extra_args = [] )
     {
 
         $args = [
@@ -190,6 +190,10 @@ class SSM extends Composer
                 $curated_args
             );
 
+        }
+
+        if (!empty($extra_args) && is_array($extra_args)) {
+            $args = array_merge($args, $extra_args);
         }
 
         $posts = get_posts($args);
