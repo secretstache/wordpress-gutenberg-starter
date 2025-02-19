@@ -81,7 +81,7 @@ add_action( 'init', function() {
  */
 add_filter('rest_ssm_team_collection_params', function ($query_params) {
    $query_params['orderby']['enum'][] = 'meta_value';
-   
+
    return $query_params;
 } );
 

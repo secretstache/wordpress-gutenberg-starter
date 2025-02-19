@@ -15,7 +15,7 @@ class TeamMembers extends Block
         $args = [
             'data_source'           => 'team',
             'query'                 => $query,
-            'number_posts'          => $query == 'curated' ? -1 : $number_posts,
+            'number_posts'          => $query === 'curated' ? -1 : $number_posts,
             'curated_posts'         => $curated_posts,
             'prefix'                => 'ssm'
         ];
