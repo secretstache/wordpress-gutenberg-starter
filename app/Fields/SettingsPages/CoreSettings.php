@@ -84,6 +84,14 @@ class CoreSettings
                 'multiple'      => 1
             ])
 
+            ->addSelect('dashboard_widgets_to_remove', [
+                'label'        => 'Dashboard Widgets to remove',
+                'multiple'     => 1,
+                'ui'           => 1,
+                'ajax'         => 0,
+                'choices'      => [],
+            ])
+
             ->setLocation('options_page', '==', 'acf-options-core');
 
         // Register Defaults
