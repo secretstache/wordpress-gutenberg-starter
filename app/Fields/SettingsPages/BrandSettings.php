@@ -151,10 +151,10 @@ class BrandSettings {
 				'button_label'  => 'Add Column',
 			])
 
-				->addField('nav_menu', 'acfe_menus', [
-					'label'         => 'Choose Menu',
-					'field_type'    => 'select',
-					'allow_null'    => 1
+				->addField('menu_id', 'get_nav', [
+					'label' 		=> 'Select a Menu',
+					'field_type'	=> 'select',
+					'allow_null'	=> 1
 				])
 
 			->endRepeater()
