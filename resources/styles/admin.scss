@@ -1,3 +1,10 @@
 #dashboard-widgets-wrap .postbox-container .empty-container {
     display: block !important;
 }
+
+.edit-post-meta-boxes-area .acf-postbox>.postbox-header>h2 {
+    font-size: 13px !important;
+    padding-left: 15px !important;
+    color: #1e1e1e !important;
+    font-weight: 500 !important;
+}
