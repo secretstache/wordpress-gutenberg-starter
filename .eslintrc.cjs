@@ -10,7 +10,7 @@ module.exports = {
     "no-plusplus": "off",
     "object-curly-newline": "off",
     "comma-dangle": [
-      "error",
+      "warn",
       "always-multiline",
     ],
     "func-names": "off",
