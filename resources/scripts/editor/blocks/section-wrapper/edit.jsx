@@ -11,6 +11,7 @@ import {
     ToggleControl,
     BaseControl,
 } from '@wordpress/components';
+import { useSelect } from '@wordpress/data';
 import classNames from 'classnames';
 import {
     InsertBlockToolbar,
@@ -21,11 +22,10 @@ import {
     EmptyBlockAppender,
     useAllowedBlocks,
 } from '@secretstache/wordpress-gutenberg';
-import { useSelect } from '@wordpress/data';
 
 export const edit = ({ name: blockName, attributes, setAttributes, clientId }) => {
     const {
-        backgroundColor = { value: '#fff', slug: 'white' },
+        backgroundColor,
         isIncludeBackgroundMedia,
         backgroundMediaType = 'image',
         media,

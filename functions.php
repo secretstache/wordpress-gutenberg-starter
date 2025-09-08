@@ -1,5 +1,7 @@
 <?php
 
+use Roots\Acorn\Application;
+
 /*
 |--------------------------------------------------------------------------
 | Register The Auto Loader
@@ -29,18 +31,11 @@ require $composer;
 |
 */
 
-if (! function_exists('\Roots\bootloader')) {
-    wp_die(
-        __('You need to install Acorn to use this theme.', 'sage'),
-        '',
-        [
-            'link_url' => 'https://roots.io/acorn/docs/installation/',
-            'link_text' => __('Acorn Docs: Installation', 'sage'),
-        ]
-    );
-}
-
-\Roots\bootloader()->boot();
+Application::configure()
+    ->withProviders([
+        App\Providers\ThemeServiceProvider::class,
+    ])
+    ->boot();
 
 /*
 |--------------------------------------------------------------------------
@@ -58,7 +53,7 @@ collect(['setup', 'filters', 'core', 'scripts', 'ssm'])
     ->each(function ($file) {
         if (! locate_template($file = "app/{$file}.php", true, true)) {
             wp_die(
-            /* translators: %s is replaced with the relative file path */
+                /* translators: %s is replaced with the relative file path */
                 sprintf(__('Error locating <code>%s</code> for inclusion.', 'sage'), $file)
             );
         }
@@ -78,7 +73,7 @@ add_filter('upload_mimes', function ($mimes) {
     return $mimes;
 });
 
-add_action( 'init', function () {
+add_action('init', function () {
     register_post_meta( 'page', 'isShowHeader', array(
         'show_in_rest' => true,
         'single' => true,
@@ -87,7 +82,16 @@ add_action( 'init', function () {
     ));
 });
 
-add_action( 'rest_api_init', function() {
+add_action('init', function () {
+    register_post_meta( 'post', 'isShowHeader', array(
+        'show_in_rest' => true,
+        'single' => true,
+        'type' => 'boolean',
+        'default' => true,
+    ));
+});
+
+add_action('rest_api_init', function() {
     register_rest_route( 'ssm/v1', '/get-header', array(
         'methods'  => 'GET',
         'callback' => function( WP_REST_Request $request ) {

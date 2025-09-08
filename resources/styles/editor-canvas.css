@@ -1,0 +1,8 @@
+@import "tailwindcss";
+@import "@secretstache/wordpress-gutenberg/build/editor-canvas.css";
+
+.editor-styles-wrapper {
+    .block-editor-block-list__layout.is-root-container {
+        @apply overflow-hidden font-sans;
+    }
+}

@@ -46,7 +46,7 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
     }, [ isOpenedByDefault ]);
 
     const onLayoutTypeChange = useCallback((layoutType) => {
-        setAttributes({ layoutType })
+        setAttributes({ layoutType });
     }, []);
 
     const isHorizontal = layoutType === LAYOUT_TYPE.HORIZONTAL;

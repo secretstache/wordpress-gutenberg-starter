@@ -13,11 +13,11 @@ import {
     ToolbarButton,
 } from '@wordpress/components';
 import { useCallback, useMemo } from '@wordpress/element';
-import { plus as plusIcon, brush as brushIcon } from '@wordpress/icons';
 import classNames from 'classnames';
 import { LinkControl, useSlider, PreviewControl } from '@secretstache/wordpress-gutenberg';
 
-import { initLogoWall } from '@scripts/client/blocks/logo-wall';
+import { plusIcon, brushIcon } from '../../components/icons.jsx';
+import { initLogoWall } from '@scripts/client/blocks/logo-walll.js';
 import { Logo } from './components/logo.js';
 
 export const edit = ({ attributes, setAttributes }) => {

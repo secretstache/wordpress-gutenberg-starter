@@ -1,5 +1,5 @@
 @include('partials.offcanvas')
-	
+
 @include('partials.header')
 
 <div class="container">

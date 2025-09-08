@@ -7,13 +7,12 @@ import {
 } from '@wordpress/block-editor';
 import { PanelBody, ToolbarButton } from '@wordpress/components';
 import { useCallback, useMemo, useEffect, useRef, createContext } from '@wordpress/element';
-import { brush as brushIcon } from '@wordpress/icons';
 import { getBlockContent } from '@wordpress/blocks';
 import { select, useSelect } from '@wordpress/data';
 import classNames from 'classnames';
-import { useSlider, PreviewControl, ColorPaletteControl } from '@secretstache/wordpress-gutenberg';
+import { useSlider, PreviewControl } from '@secretstache/wordpress-gutenberg';
 
-import { RadioControl } from '@wordpress/components';
+import { brushIcon } from '../../components/icons.jsx';
 
 const setupSlider = () => console.log('setup slider');
 
@@ -24,8 +23,6 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
     const sliderRef = useRef(null);
 
     const onIsPreviewChange = useCallback(() => setAttributes({ isPreview: !isPreview }), [ isPreview ]);
-
-    const onLayoutChange = useCallback((newLayout) => setAttributes({ layoutType: newLayout }), []);
 
     const isSidebarOpened = useSelect(
         (select) => select('core/edit-post').isEditorSidebarOpened(),
