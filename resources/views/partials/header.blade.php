@@ -16,7 +16,7 @@
 			<div class="site-header__brand cell shrink">
 
 				@if (!empty($logo_assets['brand_logo']))
-								
+
 					<a href="{!! home_url() !!}">
 						<img src="{!! $logo_assets['brand_logo']['url'] !!}" alt="{!! $logo_assets['brand_logo']['alt'] ?: get_bloginfo('name') !!}" class="editable-svg">
 					</a>
@@ -32,9 +32,9 @@
 					<nav class="site-header__navigation show-for-large">
 
 						@include( 'partials.navigation', ['menu_items' => $navigation['primary'] ] )
-							
+
 					</nav>
-					
+
 					@include( 'partials.hamburger' )
 
 				</div>
@@ -44,5 +44,5 @@
 		</div>
 
 	</div>
-  
+
 </header>

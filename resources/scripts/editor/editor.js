@@ -1,23 +1,13 @@
 import domReady from '@wordpress/dom-ready';
+
 import {
     rootBlockVisibilityFilter,
     setRootBlockForPostTypes,
 } from '@secretstache/wordpress-gutenberg';
 
-import './plugins/header-preview.js';
+import './plugins/header-preview.jsx';
 
-import './blocks/section-wrapper/index.js';
-// import './blocks/accordion/index.js';
-// import './blocks/block-grid/index.js';
-// import './blocks/content-slider/index.js';
-// import './blocks/split-content/index.js';
-// import './blocks/tabs/index.js';
-// import './blocks/call-to-action/index.js';
-// import './blocks/logo-wall/index.js';
-// import './blocks/blog-feed/index.js';
-import './blocks/team-members/index.js';
-// import './blocks/icon/index.js';
-// import './blocks/testimonials/index.js';
+import './blocks/section-wrapper/index.jsx';
 
 import { addBlockCategoriesFilter, allowedBlocksForColumnFilter } from '@scripts/editor/filters/index.js';
 import { unsetBlocks, setBlocksVariations, setBlocksStyles } from '@scripts/editor/utils/index.js';

@@ -1,8 +1,12 @@
 import { registerBlockType } from '@wordpress/blocks';
 import { InnerBlocks } from '@wordpress/block-editor';
-import { getBaseBackgroundAttributes, responsiveSpacingAttribute } from '@secretstache/wordpress-gutenberg';
 
-import { edit } from './edit.js';
+import {
+  getBaseBackgroundAttributes,
+  responsiveSpacingAttribute,
+} from '@secretstache/wordpress-gutenberg';
+
+import { edit } from './edit.jsx';
 
 import blockMetadata from './block.json';
 

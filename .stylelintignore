@@ -1,5 +1,5 @@
 /resources/styles/libs
 /resources/styles/wp-plugins
-/resources/styles/vendor.scss
-/resources/styles/admin.scss
+/resources/styles/vendor.css
+/resources/styles/admin.css
 /static/

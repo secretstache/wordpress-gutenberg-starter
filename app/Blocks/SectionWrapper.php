@@ -13,14 +13,14 @@ class SectionWrapper extends Block
 
     protected function prepareData($attributes, $content): array
     {
-        $background_color = $attributes['backgroundColor'];
+        $background_color = $attributes['backgroundColor'] ?? false;
 
-        $is_include_background_media = $attributes['isIncludeBackgroundMedia'];
-        $background_media_type = $attributes['backgroundMediaType'];
-        $media = $attributes['media'];
+        $is_include_background_media = $attributes['isIncludeBackgroundMedia'] ?? false;
+        $background_media_type = $attributes['backgroundMediaType'] ?? false;
+        $media = $attributes['media'] ?? false;
 
-        $is_include_overlay = $attributes['isIncludeOverlay'];
-        $overlay_color = $attributes['overlayColor'];
+        $is_include_overlay = $attributes['isIncludeOverlay'] ?? false;
+        $overlay_color = $attributes['overlayColor'] ?? false;
 
         $is_background_type_image = $background_media_type === self::MEDIA_TYPE_IMAGE;
         $is_background_type_video = $background_media_type === self::MEDIA_TYPE_VIDEO;
@@ -51,7 +51,6 @@ class SectionWrapper extends Block
 
         $wrapper_attributes = get_block_wrapper_attributes([
             'class' => implode(' ', array_filter([
-                'wp-block-ssm-section-wrapper',
                 'has-background' => $has_selected_background,
                 $full_viewport_height_class,
                 $spacing_classes,
