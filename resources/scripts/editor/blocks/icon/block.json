@@ -3,9 +3,6 @@
   "apiVersion": 3,
   "title": "Icon",
   "name": "ssm/icon",
-  "ancestor": [
-    "ssm/section-wrapper"
-  ],
   "keywords": [
     "icon"
   ],

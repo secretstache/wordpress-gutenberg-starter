@@ -3,9 +3,6 @@
   "apiVersion": 3,
   "title": "Logo Wall",
   "name": "ssm/logo-wall",
-  "parent": [
-    "ssm/section-wrapper"
-  ],
   "keywords": [
     "logo",
     "wall",

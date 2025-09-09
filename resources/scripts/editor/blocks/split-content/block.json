@@ -4,9 +4,6 @@
   "title": "Split Content",
   "description": "",
   "name": "ssm/split-content",
-  "parent": [
-    "ssm/section-wrapper"
-  ],
   "keywords": [
     "split",
     "content",

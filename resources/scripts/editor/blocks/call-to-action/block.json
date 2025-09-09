@@ -3,9 +3,6 @@
   "apiVersion": 3,
   "title": "Call To Action",
   "name": "ssm/call-to-action",
-  "parent": [
-    "ssm/section-wrapper"
-  ],
   "keywords": [
     "call",
     "cta",

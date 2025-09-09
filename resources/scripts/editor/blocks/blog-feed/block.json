@@ -4,9 +4,6 @@
   "title": "Blog Feed",
   "description": "",
   "name": "ssm/blog-feed",
-  "parent": [
-    "ssm/section-wrapper"
-  ],
   "keywords": [
     "blog",
     "feed",

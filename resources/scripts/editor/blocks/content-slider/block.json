@@ -4,9 +4,6 @@
   "title": "Content Slider",
   "description": "",
   "name": "ssm/content-slider",
-  "parent": [
-    "ssm/section-wrapper"
-  ],
   "keywords": [
     "content",
     "slider",

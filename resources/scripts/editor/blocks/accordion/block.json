@@ -4,9 +4,6 @@
   "title": "Accordion",
   "description": "",
   "name": "ssm/accordion",
-  "parent": [
-    "ssm/section-wrapper"
-  ],
   "keywords": [
     "accordion"
   ],

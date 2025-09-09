@@ -4,9 +4,6 @@
   "title": "Block Grid",
   "description": "",
   "name": "ssm/block-grid",
-  "parent": [
-    "ssm/section-wrapper"
-  ],
   "allowedBlocks": [
     "ssm/block-grid-item"
   ],

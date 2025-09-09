@@ -4,9 +4,6 @@
   "title": "Testimonials",
   "description": "",
   "name": "ssm/testimonials",
-  "parent": [
-    "ssm/section-wrapper"
-  ],
   "keywords": [
     "testimonials"
   ],

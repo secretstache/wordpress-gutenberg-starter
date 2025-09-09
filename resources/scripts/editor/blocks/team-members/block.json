@@ -4,9 +4,6 @@
   "title": "Team Members",
   "description": "",
   "name": "ssm/team-members",
-  "parent": [
-    "ssm/section-wrapper"
-  ],
   "keywords": [
     "team",
     "members",

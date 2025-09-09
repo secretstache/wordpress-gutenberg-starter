@@ -4,9 +4,6 @@
   "title": "Tabs",
   "description": "",
   "name": "ssm/tabs",
-  "parent": [
-    "ssm/section-wrapper"
-  ],
   "keywords": [
     "tabs"
   ],
