@@ -29,10 +29,7 @@ export default [
             'no-console': 'off',
             'no-plusplus': 'off',
             'object-curly-newline': 'off',
-            'comma-dangle': [
-                'error',
-                'always-multiline',
-            ],
+            'comma-dangle': "off",
             'func-names': 'off',
             'semi': [
                 'error',
