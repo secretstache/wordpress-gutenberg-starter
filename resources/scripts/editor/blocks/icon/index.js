@@ -1,8 +1,8 @@
 import { registerBlockType } from '@wordpress/blocks';
 import { getMediaAttribute } from '@secretstache/wordpress-gutenberg';
 
-import { edit } from './edit.js';
-import { save } from './save.js';
+import { edit } from './edit.jsx';
+import { save } from './save.jsx';
 
 import blockMetadata from './block.json';
 
@@ -26,7 +26,7 @@ export const getSizeValue = (size) => {
         [ICON_SIZE.MEDIUM]: '256',
         [ICON_SIZE.LARGE]: '384',
     };
-    
+
     return sizeMap[size] || '256';
 };
 

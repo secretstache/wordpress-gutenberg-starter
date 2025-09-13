@@ -1,5 +1,5 @@
 import { useBlockProps } from '@wordpress/block-editor';
-import { Logo } from '@scripts/editor/blocks/logo-wall/components/logo.js';
+import { Logo } from './components/Logo.jsx';
 
 export const save = ({ attributes }) => {
     const { logos } = attributes;

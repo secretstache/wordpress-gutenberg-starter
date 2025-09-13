@@ -1,12 +1,10 @@
 import { InnerBlocks, useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
-import { useFilterBlocks } from '@secretstache/wordpress-gutenberg';
+import { useFilterBlocks, EmptyBlockAppender } from '@secretstache/wordpress-gutenberg';
 import classNames from 'classnames';
 import { useSelect } from '@wordpress/data';
 import { useContext, useEffect } from '@wordpress/element';
-import { SplideContext } from '../edit.js';
 
-
-import { EmptyBlockAppender } from '@scripts/editor/components/empty-block-appender.js';
+import { SplideContext } from '../index.js';
 
 export const edit = ({ setAttributes, clientId }) => {
     const { isPreview, layoutType } = useContext(SplideContext);

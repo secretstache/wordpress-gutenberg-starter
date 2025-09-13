@@ -1,7 +1,7 @@
 import { registerBlockType } from '@wordpress/blocks';
 
-import { edit } from './edit.js';
-import { save } from './save.js';
+import { edit } from './edit.jsx';
+import { save } from './save.jsx';
 
 import './accordion-item/index.js';
 

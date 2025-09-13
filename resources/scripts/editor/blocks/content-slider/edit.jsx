@@ -6,17 +6,16 @@ import {
     BlockControls,
 } from '@wordpress/block-editor';
 import { PanelBody, ToolbarButton } from '@wordpress/components';
-import { useCallback, useMemo, useEffect, useRef, createContext } from '@wordpress/element';
+import { useCallback, useMemo, useEffect, useRef } from '@wordpress/element';
 import { getBlockContent } from '@wordpress/blocks';
 import { select, useSelect } from '@wordpress/data';
 import classNames from 'classnames';
 import { useSlider, PreviewControl } from '@secretstache/wordpress-gutenberg';
 
-import { brushIcon } from '../../components/icons.jsx';
+import { SplideContext } from './index.js';
+import { BrushIcon } from '../../components/icons.jsx';
 
 const setupSlider = () => console.log('setup slider');
-
-export const SplideContext = createContext();
 
 export const edit = ({ attributes, setAttributes, clientId }) => {
     const { isPreview } = attributes;
@@ -94,7 +93,7 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
 
             <BlockControls group="inline">
                 <ToolbarButton
-                    icon={brushIcon}
+                    icon={BrushIcon}
                     onClick={onIsPreviewChange}
                     isActive={isPreview}
                 />

@@ -4,7 +4,7 @@ import { MediaControl, LinkControl } from '@secretstache/wordpress-gutenberg';
 import classNames from 'classnames';
 import { useSelect } from '@wordpress/data';
 import { useCallback, useEffect } from '@wordpress/element';
-import { GridItemContent } from './components/grid-item-content';
+import { GridItemContent } from './components/GridItemContent.jsx';
 
 const ALLOWED_BLOCKS = [
     'core/heading',

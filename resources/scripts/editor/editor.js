@@ -8,6 +8,7 @@ import {
 import './plugins/header-preview.jsx';
 
 import './blocks/section-wrapper/index.jsx';
+import './blocks/content-slider/index.js';
 
 import { addBlockCategoriesFilter, allowedBlocksForColumnFilter } from '@scripts/editor/filters/index.js';
 import { unsetBlocks, setBlocksVariations, setBlocksStyles } from '@scripts/editor/utils/index.js';

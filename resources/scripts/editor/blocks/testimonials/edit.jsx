@@ -2,7 +2,6 @@ import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { useCallback, useRef } from '@wordpress/element';
 import { PanelBody, RadioControl, RangeControl } from '@wordpress/components';
 import { arrayMove } from 'react-sortable-hoc';
-import classNames from 'classnames';
 import {
     SortableSelectAsync,
     ResourcesWrapper,
@@ -10,12 +9,14 @@ import {
     useDataQuery,
     useSlider,
     decodeHtmlEntities,
-    ColorPaletteControl,
 } from '@secretstache/wordpress-gutenberg';
 
 import { POST_TYPE, LAYOUT_TYPE, QUERY_TYPE } from './index.js';
-import { TestimonialItem } from './components/TestimonialItem.js';
-import { setupSlider } from '@scripts/client/blocks/testimonials';
+import { TestimonialItem } from './components/TestimonialItem.jsx';
+
+const setupSlider = () => {
+  console.log('setupSlider');
+}
 
 export const edit = ({ attributes, setAttributes }) => {
     const {

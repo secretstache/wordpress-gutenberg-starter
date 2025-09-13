@@ -1,6 +1,6 @@
 import { registerBlockType } from '@wordpress/blocks';
 
-import { edit } from './edit.js';
+import { edit } from './edit.jsx';
 
 import blockMetadata from './block.json';
 

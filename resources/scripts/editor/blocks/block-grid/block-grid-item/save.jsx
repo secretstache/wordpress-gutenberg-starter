@@ -1,6 +1,6 @@
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import classNames from 'classnames';
-import { GridItemContent } from './components/grid-item-content';
+import { GridItemContent } from './components/GridItemContent.jsx';
 
 export const save = ({ attributes }) => {
     const { isIncludeLink, linkSource, linkIsOpenInNewTab, hasInnerBlocks } = attributes;

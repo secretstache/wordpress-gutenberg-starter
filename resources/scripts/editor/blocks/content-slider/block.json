@@ -22,6 +22,6 @@
     "isPreview": {
       "type": "boolean",
       "default": false
-    },
+    }
   }
 }

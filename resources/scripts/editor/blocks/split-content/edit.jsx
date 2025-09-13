@@ -8,7 +8,7 @@ import {
 } from '@secretstache/wordpress-gutenberg';
 import classNames from 'classnames';
 
-import { MediaEdit } from './components/media-edit.js';
+import { MediaEdit } from './components/MediaEdit.jsx';
 
 const ALLOWED_BLOCKS = [
     'core/heading',

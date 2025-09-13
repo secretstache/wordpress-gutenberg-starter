@@ -1,7 +1,7 @@
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import classNames from 'classnames';
 
-import { MediaSave } from './components/media-save.js';
+import { MediaSave } from './components/MediaSave.jsx';
 
 export const save = ({ attributes }) => {
     const {

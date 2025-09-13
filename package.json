@@ -18,7 +18,7 @@
     "lint:css:fix": "yarn lint:css --fix",
     "prettier": "npx prettier resources/scripts/client resources/styles/ --check",
     "prettier:fix": "yarn prettier --write",
-    "clean-assets": "rimraf \"resources/scripts/app.js resources/fonts/* resources/styles/{*,!editor.scss} resources/video/* resources/images/*\""
+    "clean-assets": "rimraf \"resources/scripts/client/app.js resources/fonts/* resources/styles/{*,!editor} resources/video/* resources/images/*\""
   },
   "devDependencies": {
     "@roots/vite-plugin": "^1.1.0",
@@ -63,7 +63,7 @@
     "vite-plugin-svgr": "^4.3.0"
   },
   "dependencies": {
-    "@secretstache/wordpress-gutenberg": "^0.6.0",
+    "@secretstache/wordpress-gutenberg": "^0.6.3",
     "@splidejs/splide": "^4.1.4",
     "@splidejs/splide-extension-auto-scroll": "^0.5.3",
     "@splidejs/splide-extension-intersection": "^0.2.0",

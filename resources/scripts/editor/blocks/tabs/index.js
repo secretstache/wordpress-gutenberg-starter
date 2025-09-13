@@ -3,8 +3,8 @@ import { createContext } from '@wordpress/element';
 
 import './tabs-item/index.js';
 
-import { edit } from './edit.js';
-import { save } from './save.js';
+import { edit } from './edit.jsx';
+import { save } from './save.jsx';
 
 import blockMetadata from './block.json';
 

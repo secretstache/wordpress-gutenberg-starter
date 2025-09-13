@@ -83,9 +83,7 @@ const HeaderPreview = () => {
 };
 
 const HeaderPlugin = () => {
-    const postType = useSelect((select) =>
-        select('core/editor').getCurrentPostType(),
-    );
+    const postType = useSelect((select) => select('core/editor').getCurrentPostType(), []);
 
     const isPost = postType === 'post';
     const isPage = postType === 'page';
