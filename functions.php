@@ -104,3 +104,25 @@ add_action('rest_api_init', function() {
         }
     ));
 });
+
+add_filter('rest_endpoints', function($endpoints) {
+    $original_callback = $endpoints['/wp/v2/search'][0]['callback'];
+
+    $endpoints['/wp/v2/search'][0]['callback'] = function($request) use ($original_callback) {
+        $response = $original_callback($request);
+
+        if (is_a($response, 'WP_REST_Response')) {
+            $data = $response->get_data();
+
+            $filtered_data = array_filter($data, function($item) {
+                return $item['subtype'] !== 'ssm_design_system';
+            });
+
+            $response->set_data(array_values($filtered_data));
+        }
+
+        return $response;
+    };
+
+    return $endpoints;
+});
