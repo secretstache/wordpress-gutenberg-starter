@@ -5,7 +5,8 @@
   "description": "",
   "name": "ssm/accordion",
   "keywords": [
-    "accordion"
+    "accordion",
+    "faq"
   ],
   "category": "ssm-templates",
   "example": {},
@@ -17,18 +18,39 @@
     }
   },
   "attributes": {
-    "layoutType": {
-      "type": "string",
-      "enum": ["vertical", "horizontal"],
-      "default": "vertical"
-    },
     "isOpenedByDefault": {
       "type": "boolean",
       "default": false
     },
-    "headingSize": {
+    "dataSource": {
       "type": "string",
-      "default": "1rem"
+      "enum": [
+        "none",
+        "faq"
+      ],
+      "default": "none"
+    },
+    "queryType": {
+      "type": "string",
+      "enum": [
+        "latest",
+        "by_faq_category",
+        "curated"
+      ],
+      "default": "latest"
+    },
+    "numberOfPosts": {
+      "type": "number",
+      "default": 6
+    },
+    "selectedCategories": {
+      "type": "array",
+      "default": []
+    },
+    "curatedPosts": {
+      "type": "array",
+      "default": []
     }
-  }
+  },
+  "render": "index"
 }

@@ -25,10 +25,6 @@
     "title": {
       "type": "string",
       "default": ""
-    },
-    "layoutType": {
-      "enum": ["vertical", "horizontal"],
-      "default": "vertical"
     }
   }
 }

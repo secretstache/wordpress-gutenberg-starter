@@ -2,15 +2,20 @@ import {
     useBlockProps,
     InspectorControls,
     useInnerBlocksProps,
-    InnerBlocks,
-    useSetting,
 } from '@wordpress/block-editor';
-import { PanelBody, RadioControl, ToggleControl, FontSizePicker, BaseControl } from '@wordpress/components';
-import { createContext, useState, useRef, useEffect, useCallback } from '@wordpress/element';
+import {
+    PanelBody,
+    ToggleControl,
+    RadioControl,
+    __experimentalDivider as Divider,
+} from '@wordpress/components';
+import { useState, useRef, useEffect, useCallback, useMemo } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 import classNames from 'classnames';
+import { useDataQuery, ResourcesWrapper, DataQueryControls } from '@secretstache/wordpress-gutenberg';
 
-import { LAYOUT_TYPE } from './index.js';
+import { DATA_SOURCE, POST_TYPE, QUERY_TYPE, TAXONOMY, AccordionContext } from './index.js';
+import { FaqItem } from './components/FaqItem.js';
 
 const ALLOWED_BLOCKS = ['ssm/accordion-item'];
 
@@ -19,10 +24,15 @@ const TEMPLATE = [
     ['ssm/accordion-item'],
 ];
 
-export const AccordionContext = createContext();
-
 export const edit = ({ attributes, setAttributes, clientId }) => {
-    const { layoutType, isOpenedByDefault } = attributes;
+    const {
+        isOpenedByDefault,
+        dataSource,
+        numberOfPosts,
+        queryType,
+        selectedCategories,
+        curatedPosts,
+    } = attributes;
 
     const [ activeItemClientId, setActiveItemClientId ] = useState(null);
 
@@ -31,6 +41,29 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
     const { childBlocks } = useSelect(select => ({
         childBlocks: select('core/block-editor').getBlocks(clientId),
     }), []);
+
+    const isDataSourceNone = dataSource === DATA_SOURCE.NONE;
+    const isDataSourceFaq = dataSource === DATA_SOURCE.FAQ;
+
+    const isQueryTypeAll = queryType === QUERY_TYPE.LATEST;
+    const isQueryTypeCurated = queryType === QUERY_TYPE.CURATED;
+    const isQueryTypeByCategory = queryType === QUERY_TYPE.BY_CATEGORY;
+
+    const isEmptySelection = (isQueryTypeCurated && !curatedPosts?.length) || (isQueryTypeByCategory && !selectedCategories?.length);
+
+    const queryConfig = useMemo(() => ({
+        postType: POST_TYPE.FAQ,
+        taxonomySlug: TAXONOMY.FAQ_CATEGORY,
+        curatedTermsIds: isQueryTypeByCategory && selectedCategories,
+        curatedPostsIds: isQueryTypeCurated && curatedPosts?.map((post) => post.value),
+        numberOfPosts: !isQueryTypeCurated ? numberOfPosts : -1,
+        extraQueryArgs: (isQueryTypeAll || isQueryTypeByCategory) ? { order: 'asc', orderby: 'title' } : {},
+    }), [ queryType, selectedCategories, curatedPosts, numberOfPosts ]);
+
+    const { postsToShow, isResolving, isEmpty } = useDataQuery(
+        isDataSourceFaq ? queryConfig : {},
+        [ dataSource, queryType, selectedCategories, curatedPosts, numberOfPosts ],
+    );
 
     useEffect(() => {
         if (isOpenedByDefault) {
@@ -41,64 +74,112 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
         }
     }, [ isOpenedByDefault ]);
 
-    const onOpenByDefaultChange = useCallback(() => {
-        setAttributes({ isOpenedByDefault: !isOpenedByDefault });
-    }, [ isOpenedByDefault ]);
-
-    const onLayoutTypeChange = useCallback((layoutType) => {
-        setAttributes({ layoutType });
+    const onOpenByDefaultChange = useCallback((isOpenedByDefault) => {
+        setAttributes({ isOpenedByDefault });
     }, []);
 
-    const isHorizontal = layoutType === LAYOUT_TYPE.HORIZONTAL;
+    const onDataSourceChange = useCallback((dataSource) => {
+        setAttributes({ dataSource });
+    }, []);
 
     const blockProps = useBlockProps({
-        className: classNames('wp-block-ssm-accordion', {
-            'is-horizontal': isHorizontal,
+        className: classNames('flex flex-col gap-4', {
             'is-opened-by-default': isOpenedByDefault,
         }),
         ref: blockRef,
     });
 
-    const innerBlocksProps = useInnerBlocksProps(blockProps, {
-        allowedBlocks: ALLOWED_BLOCKS,
-        template: TEMPLATE,
-        orientation: layoutType,
-        renderAppender: false,
-    });
+    const innerBlocksProps = useInnerBlocksProps(
+        blockProps,
+        {
+            allowedBlocks: ALLOWED_BLOCKS,
+            template: TEMPLATE,
+        },
+    );
 
     return (
-        <AccordionContext.Provider value={{ layoutType, activeItemClientId, setActiveItemClientId }}>
+        <AccordionContext.Provider value={{
+            activeItemClientId,
+            setActiveItemClientId,
+            dataSource,
+        }}>
             <InspectorControls>
                 <PanelBody title="Settings">
-                    <RadioControl
-                        label="Layout"
-                        selected={layoutType}
-                        options={[
-                            { label: 'Vertical', value: LAYOUT_TYPE.VERTICAL },
-                            { label: 'Horizontal', value: LAYOUT_TYPE.HORIZONTAL },
-                        ]}
-                        onChange={onLayoutTypeChange}
-                    />
-
                     <ToggleControl
                         label="Initially opened"
                         checked={isOpenedByDefault}
                         onChange={onOpenByDefaultChange}
                     />
+
+                    <Divider />
+
+                    <RadioControl
+                        label="Data Source"
+                        selected={dataSource}
+                        options={[
+                            { label: 'None', value: DATA_SOURCE.NONE },
+                            { label: 'FAQ', value: DATA_SOURCE.FAQ },
+                        ]}
+                        onChange={onDataSourceChange}
+                    />
+
+                    {isDataSourceFaq && (
+                        <>
+                            <Divider />
+
+                            <DataQueryControls
+                                attributes={attributes}
+                                setAttributes={setAttributes}
+                            >
+                                <DataQueryControls.QueryType options={[
+                                    { label: 'All', value: QUERY_TYPE.LATEST },
+                                    { label: 'By Category', value: QUERY_TYPE.BY_CATEGORY },
+                                    { label: 'Curated', value: QUERY_TYPE.CURATED },
+                                ]} />
+
+                                <DataQueryControls.CuratedPosts
+                                    condition={isQueryTypeCurated}
+                                    attributeName="curatedPosts"
+                                    postType={POST_TYPE.FAQ}
+                                    placeholder="FAQs to show"
+                                />
+
+                                <DataQueryControls.TaxonomySelect
+                                    condition={isQueryTypeByCategory}
+                                    attributeName="selectedCategories"
+                                    taxonomy={TAXONOMY.FAQ_CATEGORY}
+                                    value={selectedCategories}
+                                />
+
+                                <DataQueryControls.NumberOfPosts
+                                    condition={!isQueryTypeCurated}
+                                    attributeName="numberOfPosts"
+                                    value={numberOfPosts}
+                                />
+                            </DataQueryControls>
+                        </>
+                    )}
                 </PanelBody>
             </InspectorControls>
 
             <div {...innerBlocksProps}>
-                <div className={classNames('mt-10', {
-                    'horizontal': isHorizontal,
-                    'vertical': !isHorizontal,
-                })}>
-                    { innerBlocksProps.children }
-                </div>
-
-                <InnerBlocks.DefaultBlockAppender />
+                {isDataSourceNone ? (
+                    innerBlocksProps.children
+                ) : (
+                    <ResourcesWrapper
+                        isLoading={isResolving}
+                        isEmptyResources={isEmpty}
+                        isEmptySelection={isEmptySelection}
+                    >
+                        {
+                            postsToShow && postsToShow.length > 0 && (
+                                postsToShow.map((post) => <FaqItem key={post.id} post={post} />)
+                            )
+                        }
+                    </ResourcesWrapper>
+                )}
             </div>
-
         </AccordionContext.Provider>
     );
 };
+

@@ -4,32 +4,23 @@ import {
     InspectorControls,
     RichText,
 } from '@wordpress/block-editor';
-import { PanelBody, TextControl } from '@wordpress/components';
-import { useEffect, useContext, useRef } from '@wordpress/element';
+import { useContext, useCallback, useEffect } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
-import classnames from 'classnames';
+import classNames from 'classnames';
 import { useAccordionItem, useFilterBlocks } from '@secretstache/wordpress-gutenberg';
 
-import { OpenIcon, CloseIcon } from './components/icons';
-import { AccordionContext } from '../edit';
+import { ToggleIcon } from '../components/icons.jsx';
+import { AccordionContext } from '../index.js';
 
 export const edit = ({ attributes, setAttributes, clientId }) => {
-    const {
-        title,
-        layoutType: itemLayoutStyle,
-    } = attributes;
-
-    const {
-        setActiveItemClientId,
-        activeItemClientId,
-        layoutType: contextLayoutStyle,
-    } = useContext(AccordionContext);
+    const { title } = attributes;
+    const { setActiveItemClientId, activeItemClientId } = useContext(AccordionContext);
 
     const { childBlocks } = useSelect(select => ({
         childBlocks: select('core/block-editor').getBlocks(clientId),
     }), []);
 
-    const { blockRef, isActive: isOpened, toggleItem } = useAccordionItem({
+    const { blockRef, toggleItem, isActive } = useAccordionItem({
         itemId: clientId,
         activeItemId: activeItemClientId,
         setActiveItemId: setActiveItemClientId,
@@ -37,11 +28,19 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
         heightObserverDeps: [ childBlocks ],
     });
 
+    const { isChildSelected } = useSelect((select) => {
+        const isChildSelected = select('core/block-editor').hasSelectedInnerBlock(clientId, true);
+
+        return {
+            isChildSelected,
+        };
+    }, []);
+
     useEffect(() => {
-        if (itemLayoutStyle !== contextLayoutStyle) {
-            setAttributes({ layoutType: contextLayoutStyle });
+        if (isChildSelected) {
+            setActiveItemClientId(clientId);
         }
-    }, [ contextLayoutStyle, itemLayoutStyle ]);
+    }, [ isChildSelected ]);
 
     const allowedBlocks = useFilterBlocks((block) => {
         const isBaseBlock = block.name === 'core/block';
@@ -52,23 +51,20 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
         return isBaseBlock || columns || ( isComponentsCategory && noParent );
     });
 
-    const isHorizontal = itemLayoutStyle === 'horizontal';
+    const onTitleChange = useCallback((title) => {
+        setAttributes({ title });
+    }, []);
 
     const blockProps = useBlockProps({
-        className: classnames(
-            'wp-block-ssm-accordion__item',
-            {
-                'is-opened': isOpened,
-                // eslint-disable-next-line max-len
-                'flex-grow overflow-hidden transition-all duration-700 ease-in-out w-full md:w-1/6 border-2 border-gray-200 pr-6 md:min-h-96 md:ml-[-20px] first:ml-0 rounded-xl': isHorizontal,
-            },
-        ),
+        className: classNames('wp-block-ssm-accordion__item border-[2px] border-gray-50 rounded-20 has-[.is-open]:border-none has-[.is-open]:text-white transition-all has-[.is-open]:bg-[linear-gradient(19.81deg,_#FF9A00_1.08%,_#F15435_49.15%)]', {
+            'is-opened': isActive,
+        }),
         ref: blockRef,
     });
 
     const innerBlocksProps = useInnerBlocksProps(
         {
-            className: 'wp-block-ssm-accordion__inner',
+            className: 'p-6 bg-white rounded-20 *:text-gray-300 is-layout-flow',
         },
         {
             allowedBlocks,
@@ -77,58 +73,36 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
 
     return (
         <>
-            <InspectorControls>
-                <PanelBody title="Settings">
-                    <TextControl
-                        label="Title"
-                        value={title}
-                        onChange={(title) => setAttributes({ title })}
-                    />
-                </PanelBody>
-            </InspectorControls>
+            <InspectorControls />
 
             <div {...blockProps}>
-
-                <header
-                    className={ classnames('wp-block-ssm-accordion__header cursor-pointer', {
-                        'py-6': !isHorizontal,
-                        'h-full': isHorizontal && !isOpened,
+                <div
+                    className={classNames('wp-block-ssm-accordion__button flex group items-center justify-between gap-8 p-6 cursor-pointer w-full', {
+                        'is-open': isActive,
                     })}
                     onClick={toggleItem}
                 >
 
-                    <div className="wp-block-ssm-accordion__header-inner">
+                    <RichText
+                        tagName="h3"
+                        className="font-bold text-lg transition-colors"
+                        value={title}
+                        onChange={onTitleChange}
+                        placeholder="Enter title..."
+                    />
 
-                        <RichText
-                            tagName="h3"
-                            className="wp-block-ssm-accordion__title"
-                            value={title}
-                            onChange={(title) => setAttributes({ title })}
-                            placeholder="Enter title..."
-                        />
-
-                        <button className="wp-block-ssm-accordion__button">
-
-                            { isOpened ? <CloseIcon /> : <OpenIcon /> }
-
-                        </button>
-
+                    <div className="wp-block-ssm-accordion__button-toggle min-w-8 w-8 h-8 flex group-[.is-open]:bg-white transition-colors bg-sunrise rounded-full items-center justify-center">
+                        <ToggleIcon />
                     </div>
+                </div>
 
-                </header>
-
-                <article
-                    className={classnames('wp-block-ssm-accordion__content', {
-                        'is-active': isOpened,
-                    })}
-                >
-
-                    <div {...innerBlocksProps}>
-                        {innerBlocksProps.children}
+                <div className="wp-block-ssm-accordion__content is-layout-flow max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+                    <div className="pb-6 px-6">
+                        <div {...innerBlocksProps}>
+                            {innerBlocksProps.children}
+                        </div>
                     </div>
-
-                </article>
-
+                </div>
             </div>
         </>
     );
