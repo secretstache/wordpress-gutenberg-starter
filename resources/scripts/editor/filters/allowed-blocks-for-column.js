@@ -14,11 +14,10 @@ export const allowedBlocksForColumnFilter = {
                 // get all blockTypes
                 blockSettings.allowedBlocks = getBlockTypes()
                     ?.filter((allowedBlock) => {
+                        const isRootBlock = allowedBlock.name === 'ssm/section-wrapper';
                         const hasParent = !!allowedBlock?.parent;
-                        const isComponentsCategory = allowedBlock?.category === 'ssm-components';
-                        const isColumn = allowedBlock.name === 'core/columns';
 
-                        return (isComponentsCategory && !hasParent) || isColumn;
+                        return !isRootBlock && !hasParent;
                     })
                     ?.map(allowedBlock => allowedBlock.name);
 
