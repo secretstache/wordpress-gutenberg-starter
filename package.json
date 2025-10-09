@@ -21,7 +21,7 @@
     "clean-assets": "rimraf \"resources/scripts/client/app.js resources/fonts/* resources/styles/{*,!editor} resources/video/* resources/images/*\""
   },
   "devDependencies": {
-    "@roots/vite-plugin": "^1.1.0",
+    "@roots/vite-plugin": "^1.2.1",
     "@svgr/webpack": "^8.1.0",
     "@tailwindcss/vite": "^4.1.7",
     "@vitejs/plugin-react": "^4.5.0",
@@ -63,7 +63,7 @@
     "vite-plugin-svgr": "^4.3.0"
   },
   "dependencies": {
-    "@secretstache/wordpress-gutenberg": "^0.6.4",
+    "@secretstache/wordpress-gutenberg": "^0.6.5",
     "@splidejs/splide": "^4.1.4",
     "@splidejs/splide-extension-auto-scroll": "^0.5.3",
     "@splidejs/splide-extension-intersection": "^0.2.0",

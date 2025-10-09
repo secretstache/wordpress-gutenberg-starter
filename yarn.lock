@@ -1781,10 +1781,10 @@
   resolved "https://registry.yarnpkg.com/@rollup/rollup-win32-x64-msvc/-/rollup-win32-x64-msvc-4.41.1.tgz#848f99b0d9936d92221bb6070baeff4db6947a30"
   integrity sha512-Wq2zpapRYLfi4aKxf2Xff0tN+7slj2d4R87WEzqw7ZLsVvO5zwYCIuEGSZYiK41+GlwUo1HiR+GdkLEJnCKTCw==
 
-"@roots/vite-plugin@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@roots/vite-plugin/-/vite-plugin-1.1.0.tgz#2fcc8a2bb1bc2055884177d346a1b3490b71d510"
-  integrity sha512-9nG9G452QCoOll/O8V6v9lqJKdjMTo9XCC7l9Ka1cne6yxR4ace1k6BIqxvRMXissnmKprhVGh9DQKTlfliEyA==
+"@roots/vite-plugin@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@roots/vite-plugin/-/vite-plugin-1.2.1.tgz#0caec97182c25927c29a6bd0369317df4a00327c"
+  integrity sha512-BNeoc+mYnS1CJ7zRK5umJ+GZJk/01Wi8HHbZ/c4hHLV/6aRN5b1EPiwU8hPsxgBJ2rrB16bLC/MnBg/nZnTB/w==
   dependencies:
     "@wordpress/dependency-extraction-webpack-plugin" "^6.27.0"
 
@@ -1793,10 +1793,10 @@
   resolved "https://registry.yarnpkg.com/@rtsao/scc/-/scc-1.1.0.tgz#927dd2fae9bc3361403ac2c7a00c32ddce9ad7e8"
   integrity sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==
 
-"@secretstache/wordpress-gutenberg@^0.6.4":
-  version "0.6.4"
-  resolved "https://registry.yarnpkg.com/@secretstache/wordpress-gutenberg/-/wordpress-gutenberg-0.6.4.tgz#207061ec0d366f09fa2cc40ef57daf3e7956e6ee"
-  integrity sha512-TemABkMdMBNXOmZ0TpgHGqQaU3xWf/Zrrwe3NBv5WEdpuKsyHLKlPQB4p9SzTsA/bSSRBjk3bJw6FvV58M8H1w==
+"@secretstache/wordpress-gutenberg@^0.6.5":
+  version "0.6.5"
+  resolved "https://registry.yarnpkg.com/@secretstache/wordpress-gutenberg/-/wordpress-gutenberg-0.6.5.tgz#a9c89c537da5532707ae7e697a1429c66a5bff47"
+  integrity sha512-PlDIzdaPh6x3gFxYsuUD1rOdU0ud4TJmin56iR/nPUOXMYT2JpAeiIp077Ip70r2rtr4IrvGx47H9TU4irCEeA==
   dependencies:
     classnames "^2.5.1"
     es-toolkit "^1.12.0"
