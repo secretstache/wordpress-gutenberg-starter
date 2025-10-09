@@ -35,6 +35,12 @@ export default defineConfig(({ mode }) => {
 
             wordpressPlugin(),
 
+            wordpressThemeJson({
+                disableTailwindColors: false,
+                disableTailwindFonts: false,
+                disableTailwindFontSizes: false,
+            }),
+
             eslint({
                 include: ['resources/scripts/**/*.{js,jsx}'],
                 exclude: ['node_modules', 'public', 'static'],
@@ -72,32 +78,6 @@ export default defineConfig(({ mode }) => {
                     ],
                 },
                 include: '**/*.inline.svg',
-            }),
-
-            wordpressThemeJson({
-                layout: {
-                    contentSize: '1240px',
-                    wideSize: '1440px',
-                },
-                color: {
-                    custom: false,
-                    customDuotone: false,
-                    customGradient: false,
-                    defaultDuotone: false,
-                    defaultGradients: false,
-                    defaultPalette: false,
-                    duotone: [],
-                },
-                spacing: {
-                    margin: true,
-                    padding: true,
-                    customMargin: true,
-                    customPadding: true,
-                    units: ['px', '%', 'em', 'rem', 'vw', 'vh'],
-                },
-                typography: {
-                    customFontSize: false,
-                },
             }),
         ],
         resolve: {

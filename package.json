@@ -57,13 +57,13 @@
     "stylelint": "^16.19.1",
     "stylelint-config-tailwindcss": "^1.0.0",
     "tailwindcss": "^4.1.7",
-    "vite": "^6.3.5",
+    "vite": "^7.1.9",
     "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-stylelint": "^6.0.0",
     "vite-plugin-svgr": "^4.3.0"
   },
   "dependencies": {
-    "@secretstache/wordpress-gutenberg": "^0.6.5",
+    "@secretstache/wordpress-gutenberg": "^0.6.7",
     "@splidejs/splide": "^4.1.4",
     "@splidejs/splide-extension-auto-scroll": "^0.5.3",
     "@splidejs/splide-extension-intersection": "^0.2.0",
