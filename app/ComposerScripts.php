@@ -219,18 +219,18 @@ class ComposerScripts
 
     private static function updateThemePublicPathName(IOInterface $io, string $themePublicPathName)
     {
-        $filePath = './bud.config.js';
+        $filePath = './vite.config.js';
 
-        $io->write('<comment>Updating bud.config.js...</comment>');
+        $io->write('<comment>Updating vite.config.js...</comment>');
 
         try {
             if (!file_exists($filePath)) {
-                throw new \Exception("bud.config.js file does not exist.");
+                throw new \Exception("vite.config.js file does not exist.");
             }
 
             $fileContent = file_get_contents($filePath);
             if ($fileContent === false) {
-                throw new \Exception("Unable to read bud.config.js content.");
+                throw new \Exception("Unable to read vite.config.js content.");
             }
 
             $search = ['THEME_PUBLIC_PATH_NAME'];
@@ -241,7 +241,7 @@ class ComposerScripts
 
             // Attempt to write the updated README.md content
             if (file_put_contents($filePath, $fileContent) === false) {
-                throw new \Exception("Failed to write updates to bud.config.js");
+                throw new \Exception("Failed to write updates to vite.config.js");
             }
 
             $io->write("<info>Complete.</info>");
