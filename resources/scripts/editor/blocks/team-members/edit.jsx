@@ -1,7 +1,7 @@
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { PanelBody, __experimentalDivider as Divider, RangeControl, RadioControl } from '@wordpress/components';
 import { useCallback } from '@wordpress/element';
-
+import { arrayMove } from 'react-sortable-hoc';
 import {
     SortableSelectAsync,
     loadSelectOptions,
@@ -9,9 +9,8 @@ import {
     ResourcesWrapper,
     decodeHtmlEntities,
 } from '@secretstache/wordpress-gutenberg';
-import { arrayMove } from 'react-sortable-hoc';
 
-import { POST_TYPE, QUERY_TYPE } from './index.js';
+import { POST_TYPE, QUERY_TYPE } from './index.jsx';
 
 const getFullName = (firstname = '', lastName = '') => {
     return [ firstname, lastName ].filter(Boolean).join(' ') || '';

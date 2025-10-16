@@ -12,7 +12,7 @@ export default defineConfig(({ mode }) => {
     const origin = env.APP_URL;
 
     return {
-        base: '/wp-content/themes/THEME_PUBLIC_PATH_NAME/public/build',
+        base: '/wp-content/themes/wordpress-gutenberg-starter/public/build',
         server: {
             cors: {
                 origin: origin,

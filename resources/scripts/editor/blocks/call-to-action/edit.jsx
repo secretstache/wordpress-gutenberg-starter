@@ -1,9 +1,10 @@
 import { useBlockProps, InspectorControls, useInnerBlocksProps } from '@wordpress/block-editor';
 import { PanelBody, RadioControl } from '@wordpress/components';
+import { useCallback } from '@wordpress/element';
 import className from 'classnames';
 import { ColorPaletteControl } from '@secretstache/wordpress-gutenberg';
-import { TEMPLATE } from './index.js';
-import { useCallback } from '@wordpress/element';
+
+import { TEMPLATE } from './index.jsx';
 
 export const edit = ({ attributes, setAttributes }) => {
     const {

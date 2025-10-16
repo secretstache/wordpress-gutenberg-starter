@@ -2,7 +2,7 @@ import { useCallback, useContext, useEffect } from '@wordpress/element';
 import { decodeHtmlEntities, useAccordionItem } from '@secretstache/wordpress-gutenberg';
 import classnames from 'classnames';
 
-import { AccordionContext } from '../index.js';
+import { AccordionContext } from '../index.jsx';
 import { ToggleIcon } from './icons.jsx';
 
 export const FaqItem = ({ post }) => {
@@ -37,7 +37,7 @@ export const FaqItem = ({ post }) => {
     const postContent = post?.acf?.faq_description;
 
     return (
-        <div className="wp-block-ssm-accordion__item border-[2px] border-gray-50 rounded-20 has-[.is-open]:border-none has-[.is-open]:text-white transition-all has-[.is-open]:bg-[linear-gradient(19.81deg,_#FF9A00_1.08%,_#F15435_49.15%)]" ref={blockRef}>
+        <div className="wp-block-ssm-accordion__item border-[2px] border-gray-50 rounded-20 transition-all" ref={blockRef}>
             <button
                 className={classnames('wp-block-ssm-accordion__button flex group items-center justify-between gap-8 p-6 cursor-pointer w-full', {
                     'is-open': isOpened,

@@ -1,7 +1,7 @@
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import { getSlug } from '@secretstache/wordpress-gutenberg';
 
-import { LAYOUT_TYPE } from './index.js';
+import { LAYOUT_TYPE } from './index.jsx';
 
 export const save = ({ attributes }) => {
     const {

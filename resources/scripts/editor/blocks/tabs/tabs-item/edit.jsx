@@ -5,7 +5,7 @@ import { useContext, useRef } from '@wordpress/element';
 import classNames from 'classnames';
 import { useFilterBlocks, getSlug, EmptyBlockAppender } from '@secretstache/wordpress-gutenberg';
 
-import { TabsContext, LAYOUT_TYPE } from '../index.js';
+import { TabsContext, LAYOUT_TYPE } from '../index.jsx';
 
 export const edit = ({ attributes, setAttributes, clientId }) => {
     const { title } = attributes;

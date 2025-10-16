@@ -21,7 +21,7 @@ import {
     decodeHtmlEntities,
 } from '@secretstache/wordpress-gutenberg';
 
-import { LAYOUT_TYPE, POST_TYPE, QUERY_TYPE } from './index.js';
+import { LAYOUT_TYPE, POST_TYPE, QUERY_TYPE } from './index.jsx';
 import { PostsList } from './components/PostsList.jsx';
 
 export const edit = ({ attributes, setAttributes }) => {

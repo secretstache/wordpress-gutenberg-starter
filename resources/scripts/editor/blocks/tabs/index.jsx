@@ -1,7 +1,7 @@
 import { registerBlockType } from '@wordpress/blocks';
 import { createContext } from '@wordpress/element';
 
-import './tabs-item/index.js';
+import './tabs-item/index.jsx';
 
 import { edit } from './edit.jsx';
 import { save } from './save.jsx';

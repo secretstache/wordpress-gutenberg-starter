@@ -8,7 +8,7 @@ import { useState, useRef, useEffect, useCallback } from '@wordpress/element';
 import { ColorPaletteControl, useTabs } from '@secretstache/wordpress-gutenberg';
 import classNames from 'classnames';
 
-import { LAYOUT_TYPE, TabsContext } from './index.js';
+import { LAYOUT_TYPE, TabsContext } from './index.jsx';
 
 export const edit = ({ attributes, setAttributes, clientId }) => {
     const { layoutType, tabItemColor } = attributes;

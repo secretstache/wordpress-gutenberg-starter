@@ -1,12 +1,12 @@
 import { registerBlockType } from '@wordpress/blocks';
 import { InnerBlocks } from '@wordpress/block-editor';
 import { createContext } from '@wordpress/element';
+import { addInnerBlocksCleanupFilter } from '@secretstache/wordpress-gutenberg';
 
-import './accordion-item/index.js';
+import './accordion-item/index.jsx';
 
 import { edit } from './edit.jsx';
 import blockMetadata from './block.json';
-import { addInnerBlocksCleanupFilter } from '@secretstache/wordpress-gutenberg';
 
 export const POST_TYPE = {
     FAQ: 'ssm_faq',

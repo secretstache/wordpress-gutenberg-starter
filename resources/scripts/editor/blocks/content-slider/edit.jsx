@@ -12,7 +12,7 @@ import { select, useSelect } from '@wordpress/data';
 import classNames from 'classnames';
 import { useSlider, PreviewControl } from '@secretstache/wordpress-gutenberg';
 
-import { SplideContext } from './index.js';
+import { SplideContext } from './index.jsx';
 import { BrushIcon } from '../../components/icons.jsx';
 
 const setupSlider = () => console.log('setup slider');

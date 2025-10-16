@@ -10,7 +10,7 @@ import classNames from 'classnames';
 import { useAccordionItem, useFilterBlocks } from '@secretstache/wordpress-gutenberg';
 
 import { ToggleIcon } from '../components/icons.jsx';
-import { AccordionContext } from '../index.js';
+import { AccordionContext } from '../index.jsx';
 
 export const edit = ({ attributes, setAttributes, clientId }) => {
     const { title } = attributes;
@@ -56,7 +56,7 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
     }, []);
 
     const blockProps = useBlockProps({
-        className: classNames('wp-block-ssm-accordion__item border-[2px] border-gray-50 rounded-20 has-[.is-open]:border-none has-[.is-open]:text-white transition-all has-[.is-open]:bg-[linear-gradient(19.81deg,_#FF9A00_1.08%,_#F15435_49.15%)]', {
+        className: classNames('wp-block-ssm-accordion__item border-[2px] border-gray-50 rounded-20 transition-all', {
             'is-opened': isActive,
         }),
         ref: blockRef,

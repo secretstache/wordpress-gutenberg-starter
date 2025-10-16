@@ -14,8 +14,8 @@ import { useSelect } from '@wordpress/data';
 import classNames from 'classnames';
 import { useDataQuery, ResourcesWrapper, DataQueryControls } from '@secretstache/wordpress-gutenberg';
 
-import { DATA_SOURCE, POST_TYPE, QUERY_TYPE, TAXONOMY, AccordionContext } from './index.js';
-import { FaqItem } from './components/FaqItem.js';
+import { DATA_SOURCE, POST_TYPE, QUERY_TYPE, TAXONOMY, AccordionContext } from './index.jsx';
+import { FaqItem } from './components/FaqItem.jsx';
 
 const ALLOWED_BLOCKS = ['ssm/accordion-item'];
 
