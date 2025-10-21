@@ -4,12 +4,13 @@ import {
     useBlockProps,
     useInnerBlocksProps,
 } from '@wordpress/block-editor';
-import { useCallback } from '@wordpress/element';
+import { useCallback, useEffect, useState } from '@wordpress/element';
 import {
     PanelBody,
     __experimentalDivider as Divider,
     ToggleControl,
     BaseControl,
+    SelectControl,
 } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 import classNames from 'classnames';
@@ -18,65 +19,101 @@ import {
     ResponsiveSpacingControl,
     ColorPaletteControl,
     getSpacingClasses,
-    MediaTypeControl,
     EmptyBlockAppender,
     useAllowedBlocks,
+    MediaControl,
 } from '@secretstache/wordpress-gutenberg';
+
+import { isSomeColorDark } from '@scripts/editor/utils/index.js';
 
 export const edit = ({ name: blockName, attributes, setAttributes, clientId }) => {
     const {
+        backgroundType,
         backgroundColor,
-        isIncludeBackgroundMedia,
-        backgroundMediaType = 'image',
-        media,
+        backgroundImage,
+        focalPoint,
+        backgroundVideo,
         isIncludeOverlay,
         overlayColor,
-
         isFullViewportHeight,
         spacing,
     } = attributes;
 
-    const isBackgroundTypeImage = backgroundMediaType === 'image';
-    const isBackgroundTypeVideo = backgroundMediaType === 'video';
+    const isBackgroundTypeImage = backgroundType === 'image';
+    const isBackgroundTypeVideo = backgroundType === 'video';
+    const isBackgroundTypeColor = backgroundType === 'color';
 
-    const hasSelectedBackgroundImage = isBackgroundTypeImage && media?.url;
-    const hasSelectedBackgroundVideo = isBackgroundTypeVideo && media?.url;
-    const hasSelectedBackgroundColor = !!backgroundColor?.slug;
+    const hasSelectedBackgroundImage = isBackgroundTypeImage && backgroundImage?.url;
+    const hasSelectedBackgroundVideo = isBackgroundTypeVideo && backgroundVideo?.url;
+    const hasSelectedBackgroundColor = isBackgroundTypeColor && !!backgroundColor?.slug;
 
     const hasSelectedBackgroundMedia = hasSelectedBackgroundImage || hasSelectedBackgroundVideo;
     const hasSelectedBackground = hasSelectedBackgroundColor || hasSelectedBackgroundMedia;
 
     const hasSelectedOverlayColor = isIncludeOverlay && !!overlayColor?.slug;
 
-    const onIncludeBackgroundMediaChange = useCallback(() => {
+    const onBackgroundTypeChange = useCallback((mediaType) => {
+        setAttributes({ backgroundType: mediaType });
+    }, []);
+
+    const onBackgroundImageSelect = useCallback((media) => {
         setAttributes({
-            isIncludeBackgroundMedia: !isIncludeBackgroundMedia,
+            backgroundImage: {
+                id: media?.id,
+                url: media?.url,
+                alt: media?.alt,
+            },
         });
-    }, [ isIncludeBackgroundMedia ]);
-
-    const onBackgroundMediaTypeChange = useCallback((mediaType) => {
-        setAttributes({ backgroundMediaType: mediaType, media: {} });
     }, []);
 
-    const onMediaSelect = useCallback((media) => {
-        setAttributes({ media: { id: media?.id, url: media?.url }, backgroundMediaType });
-    }, [ backgroundMediaType ]);
-
-    const onMediaRemove = useCallback(() => {
-        setAttributes({ media: {} });
+    const onBackgroundImageRemove = useCallback(() => {
+        setAttributes({
+            backgroundImage: {
+                id: null,
+                url: null,
+                alt: null,
+            },
+        });
     }, []);
 
-    const onIncludeOverlayChange = useCallback(() => {
-        setAttributes({ isIncludeOverlay: !isIncludeOverlay });
-    }, [ isIncludeOverlay ]);
+    const onBackgroundVideoSelect = useCallback((media) => {
+        setAttributes({
+            backgroundVideo: {
+                id: media?.id,
+                url: media?.url,
+            },
+        });
+    }, []);
 
-    const onIsFullViewportHeightChange = useCallback(() => {
-        setAttributes({ isFullViewportHeight: !isFullViewportHeight });
-    }, [ isFullViewportHeight ]);
+    const onBackgroundVideoRemove = useCallback(() => {
+        setAttributes({
+            backgroundVideo: {
+                id: null,
+                url: null,
+            },
+        });
+    }, []);
+
+    const onIncludeOverlayChange = () => setAttributes({ isIncludeOverlay: !isIncludeOverlay });
+
+    const onIsFullViewportHeightChange = () => setAttributes({ isFullViewportHeight: !isFullViewportHeight });
 
     const onSpacingChange = useCallback((spacing) => {
         setAttributes({ spacing });
     }, []);
+
+    const [ localFocalPoint, setLocalFocalPoint ] = useState({
+        x: focalPoint?.x || 0.5,
+        y: focalPoint?.y || 0.5
+    });
+
+    const onFocalPointChange = useCallback((newFocalPoint) => {
+        setLocalFocalPoint(newFocalPoint);
+    }, []);
+
+    useEffect(() => {
+        setAttributes({ focalPoint: localFocalPoint });
+    }, [ localFocalPoint ]);
 
     const allowedBlocks = useAllowedBlocks(blockName, blockName);
 
@@ -91,13 +128,17 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
         [],
     );
 
+    const isLightAppender = hasSelectedBackgroundMedia || (hasSelectedBackgroundColor && isSomeColorDark([ backgroundColor?.slug ]))
+
     const blockProps = useBlockProps({
         className: classNames(
             '',
-            getSpacingClasses(spacing, 'spacing-', 'mobile-spacing-'),
+            getSpacingClasses(spacing, { desktopPrefix: 'md:', mobilePrefix: 'max-md:', valuePrefix: 'ssm-',}),
             {
                 'has-background': hasSelectedBackground,
-                'h-screen': isFullViewportHeight,
+                'min-h-screen': isFullViewportHeight,
+                [`bg-${backgroundColor?.slug}`]: hasSelectedBackgroundColor,
+                'bg-dark': hasSelectedBackgroundImage || hasSelectedBackgroundVideo,
             },
         ),
     });
@@ -119,37 +160,45 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
 
             <InspectorControls>
                 <PanelBody title="Settings">
-                    <ColorPaletteControl
-                        label="Background Color"
-                        value={backgroundColor?.value}
-                        attributeName="backgroundColor"
-                        setAttributes={setAttributes}
-                        // allowedColors={['white']}
-                    />
-
-                    <Divider margin={2} />
-
-                    <ToggleControl
-                        label="Include Background Media"
-                        onChange={onIncludeBackgroundMediaChange}
-                        checked={isIncludeBackgroundMedia}
+                    <SelectControl
+                        label="Background Type"
+                        value={backgroundType}
+                        onChange={onBackgroundTypeChange}
+                        options={[
+                            { label: 'Color', value: 'color' },
+                            { label: 'Image', value: 'image' },
+                            { label: 'Video', value: 'video' },
+                        ]}
                     />
 
                     {
-                        isIncludeBackgroundMedia && (
+                        isBackgroundTypeColor && (
+                            <ColorPaletteControl
+                                label="Background Color"
+                                value={backgroundColor?.value}
+                                attributeName="backgroundColor"
+                                setAttributes={setAttributes}
+                                allowedColors={['white', 'black']}
+                            />
+                        )
+                    }
+
+                    {
+                        isBackgroundTypeImage && (
                             <>
-                                <MediaTypeControl
-                                    label="Background Media"
-                                    types={[ 'image', 'video' ]}
-                                    selectedType={backgroundMediaType}
-                                    onTypeChange={onBackgroundMediaTypeChange}
-                                    mediaId={media?.id}
-                                    mediaUrl={media?.url}
-                                    onMediaSelect={onMediaSelect}
-                                    onMediaRemove={onMediaRemove}
+                                <MediaControl
+                                    type="image"
+                                    label="Background Image"
+                                    mediaId={backgroundImage?.id}
+                                    mediaUrl={backgroundImage?.url}
+                                    onSelect={onBackgroundImageSelect}
+                                    onRemove={onBackgroundImageRemove}
+                                    hasFocalPoint={!!backgroundImage?.id}
+                                    focalPoint={focalPoint}
+                                    onFocalPointChange={onFocalPointChange}
                                 />
 
-                                <Divider margin={2} />
+                                <Divider />
 
                                 <ToggleControl
                                     label="Include Overlay"
@@ -164,7 +213,7 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
                                             value={overlayColor?.value}
                                             attributeName="overlayColor"
                                             setAttributes={setAttributes}
-                                            // allowedColors={['white']}
+                                            allowedColors={['white', 'black']}
                                         />
                                     )
                                 }
@@ -172,7 +221,20 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
                         )
                     }
 
-                    <Divider margin={2} />
+                    {
+                        isBackgroundTypeVideo && (
+                            <MediaControl
+                                type="video"
+                                label="Background Video"
+                                mediaId={backgroundVideo?.id}
+                                mediaUrl={backgroundVideo?.url}
+                                onSelect={onBackgroundVideoSelect}
+                                onRemove={onBackgroundVideoRemove}
+                            />
+                        )
+                    }
+
+                    <Divider />
 
                     <BaseControl>
                         <ToggleControl
@@ -196,46 +258,31 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
             </InspectorControls>
 
             <div {...blockProps}>
-                {
-                    hasSelectedBackgroundColor && (
-                        <span
-                            aria-hidden="true"
-                            className={`wp-block-ssm-section-wrapper__background has-${backgroundColor?.slug}-background-color`}
-                        />
-                    )
-                }
+                {hasSelectedBackgroundMedia && (
+                    <div className="wp-block-ssm-section-wrapper__background absolute inset-0 pointer-events-none overflow-hidden">
+                        {hasSelectedBackgroundImage && (
+                            <img
+                                src={backgroundImage.url}
+                                alt={backgroundImage?.alt || 'background image'}
+                                className="w-full h-full object-cover transform transition-transform duration-100"
+                                style={{
+                                    'object-position': `${localFocalPoint.x * 100}% ${localFocalPoint.y * 100}%`,
+                                }}
+                            />
+                        )}
 
-                {
-                    isIncludeBackgroundMedia && hasSelectedBackgroundMedia && (
-                        <div className={classNames('wp-block-ssm-section-wrapper__background', {
-                            'has-overlay': hasSelectedOverlayColor,
-                            [`has-${overlayColor?.slug}-overlay`]: hasSelectedOverlayColor,
-                        })}>
-                            <>
-                                {
-                                    hasSelectedBackgroundImage && (
-                                        <img
-                                            src={media.url}
-                                            alt={media?.alt || 'background image'}
-                                        />
-                                    )
-                                }
-
-                                {
-                                    hasSelectedBackgroundVideo && (
-                                        <video
-                                            src={media.url}
-                                            autoPlay
-                                            playsInline
-                                            muted
-                                            loop
-                                        />
-                                    )
-                                }
-                            </>
-                        </div>
-                    )
-                }
+                        {hasSelectedBackgroundVideo && (
+                            <video
+                                src={backgroundVideo.url}
+                                autoPlay
+                                playsInline
+                                muted
+                                loop
+                                className="w-full h-full object-cover"
+                            />
+                        )}
+                    </div>
+                )}
 
                 <div {...innerBlocksProps}>
                     {innerBlocksProps.children}
@@ -243,7 +290,7 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
                     {
                         hasInnerBlocks
                             ? <InnerBlocks.DefaultBlockAppender/>
-                            : <EmptyBlockAppender title="This section is empty"/>
+                            : <EmptyBlockAppender title="This section is empty" isLight={isLightAppender} />
                     }
                 </div>
             </div>

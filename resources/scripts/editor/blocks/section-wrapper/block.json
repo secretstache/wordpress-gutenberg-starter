@@ -21,16 +21,82 @@
     "anchor": true
   },
   "attributes": {
+    "backgroundType": {
+      "type": "string",
+      "enum": [
+        "color",
+        "image",
+        "video"
+      ],
+      "default": "color"
+    },
     "backgroundColor": {
       "type": "object",
       "default": {
-        "value": "#ffffff",
+        "value": "#fff",
+        "slug": "white"
+      }
+    },
+    "backgroundImage": {
+      "type": "object",
+      "default": {
+        "id": null,
+        "url": null,
+        "alt": null
+      }
+    },
+    "focalPoint": {
+      "type": "object",
+      "default": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "backgroundVideo": {
+      "type": "object",
+      "default": {
+        "id": null,
+        "url": null
+      }
+    },
+    "isIncludeOverlay": {
+      "type": "boolean"
+    },
+    "overlayColor": {
+      "type": "object",
+      "default": {
+        "value": "#fff",
         "slug": "white"
       }
     },
     "isFullViewportHeight": {
       "type": "boolean",
       "default": false
+    },
+    "spacing": {
+      "type": "object",
+      "default": {
+        "desktop": {
+          "margin": {
+            "top": -1,
+            "bottom": -1
+          },
+          "padding": {
+            "top": -1,
+            "bottom": -1
+          }
+        },
+        "mobile": {
+          "margin": {
+            "top": -1,
+            "bottom": -1
+          },
+          "padding": {
+            "top": -1,
+            "bottom": -1
+          }
+        }
+      }
     },
     "anchor": {
       "type": "string"
