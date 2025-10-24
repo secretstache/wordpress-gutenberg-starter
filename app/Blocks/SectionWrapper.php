@@ -2,8 +2,7 @@
 
 namespace App\Blocks;
 
-use InvalidArgumentException;
-use stdClass;
+use App\View\Composers\SSM;
 
 class SectionWrapper extends Block
 {
@@ -16,10 +15,12 @@ class SectionWrapper extends Block
     {
         $background_type = $attributes['backgroundType'] ?? false;
 
-        $background_color = $attributes['backgroundColor'] ?? false;
-        $background_image = $attributes['backgroundImage'] ?? false;
-        $focal_point      = $attributes['focalPoint'] ?? ['x' => 0.5, 'y' => 0.5];
-        $background_video = $attributes['backgroundVideo'] ?? false;
+        $background_color               = $attributes['backgroundColor'] ?? false;
+        $background_image               = $attributes['backgroundImage'] ?? false;
+        $focal_point                    = $attributes['focalPoint'] ?? ['x' => 0.5, 'y' => 0.5];
+        $background_video_source        = $attributes['backgroundVideoSource'] ?? 'file';
+        $external_background_video_url  = $attributes['externalBackgroundVideoUrl'] ?? '';
+        $background_video               = $attributes['backgroundVideo'] ?? [];
 
         $is_include_overlay = $attributes['isIncludeOverlay'] ?? false;
         $overlay_color = $attributes['overlayColor'] ?? false;
@@ -29,7 +30,14 @@ class SectionWrapper extends Block
         $is_background_type_video = $background_type === self::BG_TYPE_VIDEO;
 
         $has_selected_background_image = $is_background_type_image && $background_image['url'];
-        $has_selected_background_video = $is_background_type_video && $background_video['url'];
+
+        $is_background_video_source_file = $background_video_source === 'file';
+        $is_background_video_source_external = $background_video_source === 'external';
+
+        $has_selected_background_video = $is_background_type_video && (
+            ($is_background_video_source_file && !empty($background_video['url'])) || ($is_background_video_source_external && !empty($external_background_video_url))
+        );
+
         $has_selected_background_color = $is_background_type_color && !empty($background_color['slug']);
 
         $has_selected_background_media = $has_selected_background_image || $has_selected_background_video;
@@ -45,10 +53,22 @@ class SectionWrapper extends Block
             ? 'has-overlay ' . $this->getColorClass($attributes, 'overlayColor', 'has-', '-overlay')
             : '';
 
-        $background_media = $this->getBackgroundMedia($attributes);
+        if ($has_selected_background) {
+            $background_media = [
+                'type'      => $background_type,
+                'image'     => $has_selected_background_image ? [
+                    'url'   => $background_image['url'],
+                    'alt'   => $background_image['alt'] ?? 'Background Image',
+                    'focal_point' => $focal_point,
+                ] : null,
+                'video'     => $has_selected_background_video ? [
+                    'url'   => $is_background_video_source_file ? $background_video['url'] : $external_background_video_url,
+                ] : null,
+            ];
+        }
 
         $full_viewport_height_class = $this->getFullViewportClass($attributes);
-        $spacing_classes = $this->getSpacingClasses($attributes, 'md:', 'max-md:', 'ssm-');
+        $spacing_classes = SSM::getSpacingClasses($attributes, 'md:', 'max-md:', 'ssm-');
 
         $wrapper_attributes = get_block_wrapper_attributes([
             'class' => implode(' ', array_filter([
@@ -63,45 +83,9 @@ class SectionWrapper extends Block
             'wrapper_attributes'     => $wrapper_attributes,
             'background_color_class' => $background_color_class,
             'overlay_color_class'    => $overlay_color_class,
-            'background_media'       => $background_media,
-            'focal_point'            => $focal_point,
+            'background_media'       => $background_media ?? false,
             'content'                => $content
         ];
-    }
-
-    private function getSpacingClasses(
-        array $attributes,
-        string $desktopPrefix = 'md:',
-        string $mobilePrefix = '',
-        string $valuePrefix = ''
-    ): string {
-        $SKIP = -1;
-
-        $spacing = $attributes['spacing'] ?? null;
-
-        $buildClass = static function ($prefix, $property, $valuePrefixLocal, $value) use ($SKIP) {
-            if ($value === $SKIP) {
-                return null;
-            }
-            return sprintf('%s%s-%s%s', (string)$prefix, $property, (string)$valuePrefixLocal, (string)$value);
-        };
-
-        $candidates = [
-            $buildClass($desktopPrefix, 'mt', $valuePrefix, $spacing['desktop']['margin']['top'] ?? null),
-            $buildClass($desktopPrefix, 'mb', $valuePrefix, $spacing['desktop']['margin']['bottom'] ?? null),
-            $buildClass($desktopPrefix, 'pt', $valuePrefix, $spacing['desktop']['padding']['top'] ?? null),
-            $buildClass($desktopPrefix, 'pb', $valuePrefix, $spacing['desktop']['padding']['bottom'] ?? null),
-            $buildClass($mobilePrefix, 'mt', $valuePrefix, $spacing['mobile']['margin']['top'] ?? null),
-            $buildClass($mobilePrefix, 'mb', $valuePrefix, $spacing['mobile']['margin']['bottom'] ?? null),
-            $buildClass($mobilePrefix, 'pt', $valuePrefix, $spacing['mobile']['padding']['top'] ?? null),
-            $buildClass($mobilePrefix, 'pb', $valuePrefix, $spacing['mobile']['padding']['bottom'] ?? null),
-        ];
-
-        $filtered = array_values(array_filter($candidates, static function ($v) {
-            return is_string($v) && strlen($v) > 0;
-        }));
-
-        return implode(' ', $filtered);
     }
 
     private function getColorClass(array $attributes, string $colorKey, string $prefix = 'has-', string $suffix = '-background-color', ): string {
@@ -112,70 +96,5 @@ class SectionWrapper extends Block
 
     private function getFullViewportClass(array $attributes): string {
         return ($attributes['isFullViewportHeight'] ?? false) ? 'h-screen' : '';
-    }
-
-    private function getBackgroundMedia(array $attributes): null|array {
-        $backgroundMedia = [];
-        $backgroundMediaType = $this->getBackgroundType($attributes);
-
-        switch ($backgroundMediaType) {
-            case self::BG_TYPE_IMAGE:
-                $backgroundMedia = $this->getBackgroundImage($attributes);
-                break;
-
-            case self::BG_TYPE_VIDEO:
-                $backgroundMedia = $this->getBackgroundVideo($attributes);
-                break;
-
-            case self::BG_TYPE_ANIMATION:
-                $backgroundMedia = $this->getBackgroundAnimation($attributes);
-                break;
-        }
-
-        $backgroundMedia['type'] = $backgroundMediaType;
-
-        return $backgroundMedia;
-    }
-
-    private function getBackgroundType(array $attributes): ?string {
-        $type = $attributes['backgroundType'] ?? null;
-        $validTypes = [
-            self::BG_TYPE_IMAGE,
-            self::BG_TYPE_COLOR,
-            self::BG_TYPE_VIDEO,
-            self::BG_TYPE_ANIMATION
-        ];
-
-        if ($type && !in_array($type, $validTypes, true)) {
-            throw new InvalidArgumentException("Invalid bg type: {$type}");
-        }
-
-        return $type;
-    }
-
-    private function getBackgroundImage(array $attributes): array {
-        $media = $attributes['backgroundImage'] ?? [];
-
-        return [
-            'url' => $media['url'] ?? null,
-            'alt' => $media['alt'] ?? 'background image'
-        ];
-    }
-
-    private function getBackgroundVideo(array $attributes): array {
-        $media = $attributes['backgroundVideo'] ?? [];
-
-        return [
-            'url' => $media['url'] ?? null
-        ];
-    }
-
-    private function getBackgroundAnimation(array $attributes): array {
-        $media = $attributes['backgroundAnimation'] ?? [];
-
-        return [
-            'url' => $media['url'] ?? null,
-            'is_looped' => $attributes['isAnimationLooped'] ?? false
-        ];
     }
 }

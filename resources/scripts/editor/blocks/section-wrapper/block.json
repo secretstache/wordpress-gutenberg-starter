@@ -52,6 +52,15 @@
         "y": 0.5
       }
     },
+    "backgroundVideoSource": {
+      "type": "string",
+      "enum": ["file", "external"],
+      "default": "file"
+    },
+    "externalBackgroundVideoUrl": {
+      "type": "string",
+      "default": ""
+    },
     "backgroundVideo": {
       "type": "object",
       "default": {

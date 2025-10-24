@@ -134,3 +134,4 @@ add_filter('rest_endpoints', function($endpoints) {
 
     return $endpoints;
 });
+

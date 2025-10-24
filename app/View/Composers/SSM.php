@@ -201,4 +201,39 @@ class SSM extends Composer
         return $posts;
 
     }
+
+    public static function getSpacingClasses(
+        array $attributes,
+        string $desktopPrefix = 'md:',
+        string $mobilePrefix = '',
+        string $valuePrefix = ''
+    ): string {
+        $SKIP = -1;
+
+        $spacing = $attributes['spacing'] ?? null;
+
+        $buildClass = static function ($prefix, $property, $valuePrefixLocal, $value) use ($SKIP) {
+            if ($value === $SKIP) {
+                return null;
+            }
+            return sprintf('%s%s-%s%s', (string)$prefix, $property, (string)$valuePrefixLocal, (string)$value);
+        };
+
+        $candidates = [
+            $buildClass($desktopPrefix, 'mt', $valuePrefix, $spacing['desktop']['margin']['top'] ?? null),
+            $buildClass($desktopPrefix, 'mb', $valuePrefix, $spacing['desktop']['margin']['bottom'] ?? null),
+            $buildClass($desktopPrefix, 'pt', $valuePrefix, $spacing['desktop']['padding']['top'] ?? null),
+            $buildClass($desktopPrefix, 'pb', $valuePrefix, $spacing['desktop']['padding']['bottom'] ?? null),
+            $buildClass($mobilePrefix, 'mt', $valuePrefix, $spacing['mobile']['margin']['top'] ?? null),
+            $buildClass($mobilePrefix, 'mb', $valuePrefix, $spacing['mobile']['margin']['bottom'] ?? null),
+            $buildClass($mobilePrefix, 'pt', $valuePrefix, $spacing['mobile']['padding']['top'] ?? null),
+            $buildClass($mobilePrefix, 'pb', $valuePrefix, $spacing['mobile']['padding']['bottom'] ?? null),
+        ];
+
+        $filtered = array_values(array_filter($candidates, static function ($v) {
+            return is_string($v) && strlen($v) > 0;
+        }));
+
+        return implode(' ', $filtered);
+    }
 }

@@ -11,6 +11,8 @@ import {
     ToggleControl,
     BaseControl,
     SelectControl,
+    RadioControl,
+    TextControl,
 } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 import classNames from 'classnames';
@@ -32,6 +34,8 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
         backgroundColor,
         backgroundImage,
         focalPoint,
+        backgroundVideoSource,
+        externalBackgroundVideoUrl,
         backgroundVideo,
         isIncludeOverlay,
         overlayColor,
@@ -44,8 +48,13 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
     const isBackgroundTypeColor = backgroundType === 'color';
 
     const hasSelectedBackgroundImage = isBackgroundTypeImage && backgroundImage?.url;
-    const hasSelectedBackgroundVideo = isBackgroundTypeVideo && backgroundVideo?.url;
+
     const hasSelectedBackgroundColor = isBackgroundTypeColor && !!backgroundColor?.slug;
+
+    const isBackgroundVideoSourceFile = backgroundVideoSource === 'file';
+    const isBackgroundVideoSourceExternal = backgroundVideoSource === 'external';
+
+    const hasSelectedBackgroundVideo = isBackgroundTypeVideo && ((isBackgroundVideoSourceFile && backgroundVideo?.url) || (isBackgroundVideoSourceExternal && externalBackgroundVideoUrl));
 
     const hasSelectedBackgroundMedia = hasSelectedBackgroundImage || hasSelectedBackgroundVideo;
     const hasSelectedBackground = hasSelectedBackgroundColor || hasSelectedBackgroundMedia;
@@ -74,6 +83,14 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
                 alt: null,
             },
         });
+    }, []);
+
+    const onBackgroundVideoSourceChange = useCallback((backgroundVideoSource) => {
+        setAttributes({ backgroundVideoSource });
+    }, []);
+
+    const onExternalBackgroundVideoUrlChange = useCallback((externalBackgroundVideoUrl) => {
+        setAttributes({ externalBackgroundVideoUrl });
     }, []);
 
     const onBackgroundVideoSelect = useCallback((media) => {
@@ -223,14 +240,42 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
 
                     {
                         isBackgroundTypeVideo && (
-                            <MediaControl
-                                type="video"
-                                label="Background Video"
-                                mediaId={backgroundVideo?.id}
-                                mediaUrl={backgroundVideo?.url}
-                                onSelect={onBackgroundVideoSelect}
-                                onRemove={onBackgroundVideoRemove}
-                            />
+                            <>
+                                <RadioControl
+                                    label="Video Source"
+                                    selected={backgroundVideoSource}
+                                    options={[
+                                        { label: 'File', value: 'file' },
+                                        { label: 'External URL', value: 'external' },
+                                    ]}
+                                    onChange={onBackgroundVideoSourceChange}
+                                />
+
+                                <Divider />
+
+                                {
+                                    isBackgroundVideoSourceFile && (
+                                        <MediaControl
+                                            type="video"
+                                            label="Background Video"
+                                            mediaId={backgroundVideo?.id}
+                                            mediaUrl={backgroundVideo?.url}
+                                            onSelect={onBackgroundVideoSelect}
+                                            onRemove={onBackgroundVideoRemove}
+                                        />
+                                    )
+                                }
+
+                                {
+                                    isBackgroundVideoSourceExternal && (
+                                        <TextControl
+                                            label="Video URL"
+                                            value={externalBackgroundVideoUrl}
+                                            onChange={onExternalBackgroundVideoUrlChange}
+                                        />
+                                    )
+                                }
+                            </>
                         )
                     }
 
@@ -273,7 +318,7 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
 
                         {hasSelectedBackgroundVideo && (
                             <video
-                                src={backgroundVideo.url}
+                                src={isBackgroundVideoSourceFile ? backgroundVideo.url : externalBackgroundVideoUrl}
                                 autoPlay
                                 playsInline
                                 muted
