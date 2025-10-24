@@ -28,7 +28,7 @@ add_filter( 'render_block', function ( $html, $block ) {
 
     $mid  = intval( $mobile['id'] ?? 0 );
     $murl = $mobile['url'] ?? '';
-    if ( ! $mid && ! $murl ) return $html;
+    if ( ! $mid || ! $murl ) return $html;
 
     $size  = $attrs['sizeSlug'] ?? 'full';
     $msrc  = '';
