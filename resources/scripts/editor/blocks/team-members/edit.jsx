@@ -1,13 +1,10 @@
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
-import { PanelBody, __experimentalDivider as Divider, RangeControl, RadioControl } from '@wordpress/components';
-import { useCallback } from '@wordpress/element';
-import { arrayMove } from 'react-sortable-hoc';
+import { PanelBody } from '@wordpress/components';
 import {
-    SortableSelectAsync,
-    loadSelectOptions,
     useDataQuery,
     ResourcesWrapper,
     decodeHtmlEntities,
+    DataQueryControls,
 } from '@secretstache/wordpress-gutenberg';
 
 import { POST_TYPE, QUERY_TYPE } from './index.jsx';
@@ -22,23 +19,6 @@ export const edit = ({ attributes, setAttributes }) => {
         curatedPosts,
         numberOfPosts,
     } = attributes;
-
-    const onQueryChange = useCallback((queryType) => setAttributes({
-        queryType,
-        curatedPosts: [],
-    }), []);
-
-    const loadMemberOptions = useCallback((inputValue) => {
-        return loadSelectOptions(inputValue, POST_TYPE.TEAM, (post) => ({
-            value: post.id,
-            label: decodeHtmlEntities(post?.title?.rendered),
-        }));
-    }, []);
-
-    const onSortEnd = useCallback(({ oldIndex, newIndex }) => {
-        const newCuratedPosts = arrayMove(curatedPosts, oldIndex, newIndex);
-        setAttributes({ curatedPosts: newCuratedPosts });
-    }, [ curatedPosts ]);
 
     const isQueryTypeAll = queryType === QUERY_TYPE.ALL;
     const isQueryTypeCurated = queryType === QUERY_TYPE.CURATED;
@@ -62,49 +42,28 @@ export const edit = ({ attributes, setAttributes }) => {
         <>
             <InspectorControls>
                 <PanelBody title="Settings">
-                    <RadioControl
-                        label="Query"
-                        selected={queryType}
-                        options={[
+                    <DataQueryControls
+                        attributes={attributes}
+                        setAttributes={setAttributes}
+                    >
+                        <DataQueryControls.QueryType options={[
                             { label: 'All', value: QUERY_TYPE.ALL },
                             { label: 'Curated', value: QUERY_TYPE.CURATED },
-                        ]}
-                        onChange={onQueryChange}
-                    />
+                        ]} />
 
-                    {
-                        ( isQueryTypeCurated ) && (
-                            <>
-                                <Divider margin={2}/>
+                        <DataQueryControls.CuratedPosts
+                            condition={isQueryTypeCurated}
+                            attributeName="curatedPosts"
+                            postType={POST_TYPE.TEAM}
+                            placeholder="Team Members to show"
+                        />
 
-                                <SortableSelectAsync
-                                    onSortEnd={onSortEnd}
-                                    value={curatedPosts}
-                                    loadOptions={loadMemberOptions}
-                                    onChange={(curatedPosts) => setAttributes({ curatedPosts })}
-                                    placeholder="Team Members to show"
-                                />
-                            </>
-                        )
-                    }
-
-                    {
-                        ( isQueryTypeAll ) && (
-                            <>
-                                <Divider margin={2}/>
-
-                                <RangeControl
-                                    label="Number of Posts"
-                                    value={numberOfPosts}
-                                    onChange={(numberOfPosts) => setAttributes({ numberOfPosts })}
-                                    min={-1}
-                                    max={12}
-                                    help="The maximum number of posts to show (-1 for no limit)"
-                                />
-                            </>
-                        )
-                    }
-
+                        <DataQueryControls.NumberOfPosts
+                            condition={!isQueryTypeCurated}
+                            attributeName="numberOfPosts"
+                            value={numberOfPosts}
+                        />
+                    </DataQueryControls>
                 </PanelBody>
             </InspectorControls>
 

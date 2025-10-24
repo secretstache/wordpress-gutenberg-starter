@@ -1803,10 +1803,10 @@
   resolved "https://registry.yarnpkg.com/@rtsao/scc/-/scc-1.1.0.tgz#927dd2fae9bc3361403ac2c7a00c32ddce9ad7e8"
   integrity sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==
 
-"@secretstache/wordpress-gutenberg@^0.6.7":
-  version "0.6.7"
-  resolved "https://registry.yarnpkg.com/@secretstache/wordpress-gutenberg/-/wordpress-gutenberg-0.6.7.tgz#cf888c77fb5d749ef88e1e3668d202da08dbbdbb"
-  integrity sha512-Yf+qbrPEZ7oKIilEX6FJgptqkOsLsVM/6OHP1ht2vVvXq4cGxhsVsIxMNnBM/2L5YdS2WLeIOnTbm8ZMVfR5Mg==
+"@secretstache/wordpress-gutenberg@^0.6.8":
+  version "0.6.8"
+  resolved "https://registry.yarnpkg.com/@secretstache/wordpress-gutenberg/-/wordpress-gutenberg-0.6.8.tgz#6a48055ae5cb43bac837d0aecd119dba78753e0e"
+  integrity sha512-aRQhkgqIpyj0HDKDkUNqua1EeEou+GRstsLUgoBlFKeDJfqBNu7d+5IIhLY4z8Qr7LT0MGC6rALISUWHDKg7UQ==
   dependencies:
     classnames "^2.5.1"
     es-toolkit "^1.12.0"
