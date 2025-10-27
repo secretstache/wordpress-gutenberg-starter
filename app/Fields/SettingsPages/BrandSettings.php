@@ -114,7 +114,7 @@ class BrandSettings {
 			])
 			
 			->addText('twitter', [
-				'label' 	=> 'Twitter X',
+				'label' 	=> 'X',
 				'prepend' 	=> 'URL',
 			])
 			
