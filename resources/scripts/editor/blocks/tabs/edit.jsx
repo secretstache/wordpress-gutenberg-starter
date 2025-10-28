@@ -5,7 +5,6 @@ import {
 } from '@wordpress/block-editor';
 import { PanelBody, RadioControl, Slot } from '@wordpress/components';
 import { useState, useRef, useEffect, useCallback, useMemo } from '@wordpress/element';
-import { useSelect } from '@wordpress/data';
 import { ColorPaletteControl, useTabs } from '@secretstache/wordpress-gutenberg';
 import classNames from 'classnames';
 import { debounce } from 'es-toolkit';
@@ -13,12 +12,12 @@ import { debounce } from 'es-toolkit';
 import { LAYOUT_TYPE, TabsContext } from './index.jsx';
 
 export const edit = ({ attributes, setAttributes, clientId }) => {
-    const { layoutType, tabItemColor } = attributes;
+    const { tabs, layoutType, tabItemColor } = attributes;
 
     const blockRef = useRef(null);
 
     const {
-        tabs,
+        tabsAttributes,
         tabsOrder,
         activeItemId,
         setActiveItemId,
@@ -30,8 +29,6 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
     useEffect(() => {
         setSlotKey((prevKey) => prevKey + 1);
     }, [ tabsOrder ]);
-
-    const tabsAttributes = useSelect((select) => select('core/block-editor').getBlock(clientId)?.innerBlocks?.map((b) => b.attributes) || [], []);
 
     const debouncedSetTabs = useMemo(() => {
         return debounce((tabs) => {
