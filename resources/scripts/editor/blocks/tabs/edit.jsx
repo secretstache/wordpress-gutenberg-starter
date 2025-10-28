@@ -4,9 +4,11 @@ import {
     useInnerBlocksProps,
 } from '@wordpress/block-editor';
 import { PanelBody, RadioControl, Slot } from '@wordpress/components';
-import { useState, useRef, useEffect, useCallback } from '@wordpress/element';
+import { useState, useRef, useEffect, useCallback, useMemo } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
 import { ColorPaletteControl, useTabs } from '@secretstache/wordpress-gutenberg';
 import classNames from 'classnames';
+import { debounce } from 'es-toolkit';
 
 import { LAYOUT_TYPE, TabsContext } from './index.jsx';
 
@@ -29,9 +31,19 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
         setSlotKey((prevKey) => prevKey + 1);
     }, [ tabsOrder ]);
 
+    const tabsAttributes = useSelect((select) => select('core/block-editor').getBlock(clientId)?.innerBlocks?.map((b) => b.attributes) || [], []);
+
+    const debouncedSetTabs = useMemo(() => {
+        return debounce((tabs) => {
+            setAttributes({ tabs });
+        }, 200);
+    }, []);
+
     useEffect(() => {
-        setAttributes({ tabs });
-    }, [ tabs ]);
+        if (!isEqual(tabsAttributes, tabs)) {
+            debouncedSetTabs(tabsAttributes);
+        }
+    }, [ tabsAttributes ]);
 
     const onLayoutTypeChange = useCallback((newLayoutType) => setAttributes({ layoutType: newLayoutType }), []);
 
