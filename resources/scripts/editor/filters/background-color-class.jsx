@@ -18,15 +18,18 @@ export const backgroundColorClassFilter = {
             VIDEO: 'video',
         };
 
-        const addBackgroundClass= (backgroundColor) => {
+        const getBackgroundClass= (backgroundColor) => {
             if (!backgroundColor) {
                 return;
             }
 
-            return [
-                darkColors.includes(backgroundColor) ? 'bg-dark' : '',
-                lightColors.includes(backgroundColor) ? 'bg-light' : '',
-            ].join(' ').trim();
+            if (darkColors.includes(backgroundColor)) {
+                return 'bg-dark';
+            }
+
+            if (lightColors.includes(backgroundColor)) {
+                return 'bg-light';
+            }
         };
 
         const withEditorBackgroundClass = createHigherOrderComponent((BlockListBlock) => {
@@ -36,7 +39,7 @@ export const backgroundColorClassFilter = {
                     return (<BlockListBlock {...props} />);
                 }
 
-                const backgroundType = typeof props.attributes.backgroundType === 'object'
+                const backgroundType = typeof props.attributes.backgroundType === 'string'
                     ? props.attributes.backgroundType
                     : BACKGROUND_TYPE.COLOR;
 
@@ -44,7 +47,9 @@ export const backgroundColorClassFilter = {
                     ? props.attributes.backgroundColor?.slug
                     : props.attributes.backgroundColor;
 
-                const backgroundClass = backgroundType === BACKGROUND_TYPE.COLOR ? addBackgroundClass(backgroundColor) : '';
+                const backgroundClass = backgroundType === BACKGROUND_TYPE.COLOR
+                    ? getBackgroundClass(backgroundColor)
+                    : '';
 
                 return (
                     <BlockListBlock {...props} className={backgroundClass} />

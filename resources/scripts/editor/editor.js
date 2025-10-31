@@ -10,7 +10,7 @@ import './plugins/header-preview.jsx';
 import './blocks/section-wrapper/index.jsx';
 import './blocks/image/index.jsx';
 
-import { addBlockCategoriesFilter, allowedBlocksForColumnFilter } from '@scripts/editor/filters/index.js';
+import { addBlockCategoriesFilter, allowedBlocksForColumnFilter, backgroundColorClassFilter } from '@scripts/editor/filters/index.js';
 import { unsetBlocks, setBlocksVariations, setBlocksStyles } from '@scripts/editor/utils/index.js';
 
 const rootBlockName = 'ssm/section-wrapper';
@@ -33,6 +33,7 @@ domReady(() => {
         [
             rootBlockVisibilityFilter,
             allowedBlocksForColumnFilter,
+            backgroundColorClassFilter,
         ],
     );
 });
