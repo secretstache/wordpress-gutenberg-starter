@@ -73,13 +73,6 @@
     "force_activation": true
   },
   {
-    "name": "SearchWP",
-    "slug": "searchwp",
-    "source": "https://www.secretstache.com/required-plugins/searchwp4.zip",
-    "required": false,
-    "force_activation": false
-  },
-  {
     "name": "User Switcher",
     "slug": "userswitcher",
     "required": false,
