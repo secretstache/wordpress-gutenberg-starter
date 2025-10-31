@@ -17,7 +17,7 @@
     @endif
 
     @if ( $background_media )
-        <div class="wp-block-ssm-section-wrapper__background {!! $overlay_color_class !!}}">
+        <div class="wp-block-ssm-section-wrapper__background {!! $overlay_color_class !!}">
 
             @if ( $background_media['type'] === 'image' && $background_media['url'] )
                 <img
