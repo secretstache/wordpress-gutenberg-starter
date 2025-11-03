@@ -33,7 +33,7 @@ require $composer;
 
 Application::configure()
     ->withProviders([
-        App\Providers\ThemeServiceProvider::class,
+        // App\Providers\ThemeServiceProvider::class,
     ])
     ->boot();
 
@@ -135,3 +135,23 @@ add_filter('rest_endpoints', function($endpoints) {
     return $endpoints;
 });
 
+/**
+ * Register ACF Fields in the REST API
+ */
+add_action( 'rest_api_init', function () {
+    $post_types = get_post_types( [ 'show_in_rest' => true ]);
+
+    foreach ( $post_types as $post_type ) {
+        register_rest_field(
+            $post_type,
+            'acf',
+            [
+                'get_callback' => function ( $object ) {
+                    $fields = function_exists( 'get_fields' ) ? get_fields( $object['id'] ) : [];
+
+                    return $fields ?: null;
+                },
+            ]
+        );
+    }
+} );
