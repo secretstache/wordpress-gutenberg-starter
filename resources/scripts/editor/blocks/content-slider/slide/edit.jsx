@@ -6,7 +6,8 @@ import classNames from 'classnames';
 
 import { SplideContext } from '../index.jsx';
 
-export const edit = ({ setAttributes, clientId }) => {
+export const edit = ({ attributes, setAttributes, clientId }) => {
+    const { parentLayoutType } = attributes;
     const { isPreview, layoutType } = useContext(SplideContext);
 
     const hasInnerBlocks = useSelect((select) => {
@@ -20,7 +21,10 @@ export const edit = ({ setAttributes, clientId }) => {
     }, [ hasInnerBlocks ]);
 
      useEffect(() => {
-        setAttributes({ parentLayoutType: layoutType });
+         if (parentLayoutType !== layoutType) {
+             setAttributes({ parentLayoutType: layoutType });
+         }
+
     }, [ layoutType ]);
 
      const blockProps = useBlockProps({
