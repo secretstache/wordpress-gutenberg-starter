@@ -1,5 +1,51 @@
-<div class="is-container" style="padding-top: 20px; padding-bottom: 20px;">
+<div class="container" style="padding-top: 20px; padding-bottom: 20px;">
+    <style>
+        .container > .ds-options {
+            counter-reset: sevens;
+        }
 
+        .container > .ds-options > li {
+            counter-increment: sevens;
+            background: #0000000a;
+            padding: 20px;
+        }
+
+        .container > .ds-options > li::before {
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 10px;
+            border-radius: 30px;
+            background: #161f50;
+            width: 30px;
+            height: 30px;
+            content: counter(sevens);
+            color: white;
+            font-weight: bold;
+            line-height: 30px;
+            text-align: center;
+        }
+
+
+        .container > .ds-options > li> strong {
+            font-size: 18px;
+        }
+
+        .container > .ds-options > li> strong svg {
+            display: inline-block;
+            vertical-align: middle;
+            width: 13px;
+            height: auto;
+        }
+
+        .container > .ds-options > li > ul {
+            margin-top: 10px;
+        }
+
+        .container > .ds-options > li + li {
+            margin-top: 10px;
+        }
+
+    </style>
     {% if component.options %}
         {% optionsTree component.options %}
     {% endif %}

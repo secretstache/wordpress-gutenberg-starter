@@ -7,7 +7,9 @@
     "bracketSameLine": true,
     "printWidth": 1000,
     "singleQuote": true,
+    "quoteProps": "consistent",
     "multilineArraysWrapThreshold": 1,
+    "singleAttributePerLine": true,
     "useTabs": false,
     "overrides": [
         {

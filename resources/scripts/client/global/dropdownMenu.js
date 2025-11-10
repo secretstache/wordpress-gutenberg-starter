@@ -13,7 +13,7 @@ class Dropdown {
         this.rootNode = domNode;
         this.openIndex = null;
         this.useArrowKeys = options?.useArrowKeys || true;
-        this.withArrowButton = options?.withArrowButton || false;
+        this.withArrowButton = options?.withArrowButton || true;
         this.topLevelNodes = [...this.rootNode.children];
         this.topLevelButtons = [];
         this.submenus = [];
@@ -42,6 +42,20 @@ class Dropdown {
             button.setAttribute('aria-controls', `id_${id}`);
             button.setAttribute('aria-label', `More ${link.textContent} pages`);
             button.classList.add('dropdown-arrow');
+
+            /* eslint-disable */
+            button.innerHTML = `
+                <svg aria-label="Open submenu icon"
+                xmlns="http://www.w3.org/2000/svg"
+                width="800px"
+                height="800px"
+                viewBox="0 0 30.727 30.727"
+                xml:space="preserve"
+                style="max-width: 100%; height: auto;">
+                <path fill="currentColor"
+                d="M29.994,10.183L15.363,24.812L0.733,10.184c-0.977-0.978-0.977-2.561,0-3.536c0.977-0.977,2.559-0.976,3.536,0 l11.095,11.093L26.461,6.647c0.977-0.976,2.559-0.976,3.535,0C30.971,7.624,30.971,9.206,29.994,10.183z">
+                </svg>`;
+            /* eslint-enable */
 
             link.insertAdjacentElement('afterend', button);
         }
@@ -192,7 +206,7 @@ class Dropdown {
             } else {
                 this.timers[index] = setTimeout(() => {
                     this.topLevelButtons[index].setAttribute('aria-expanded', false);
-                }, 500);
+                }, 300);
             }
         }
     }

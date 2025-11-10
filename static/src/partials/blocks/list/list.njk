@@ -14,6 +14,7 @@
 {% macro render( props ) %}
 
     {% set classes = ([
+      'wp-block-list',
         props.class if props.class,
         'has-text-color has-' + props.color + '-color' if props.color,
         'has-background has-' + props.background + '-background-color' if props.background,

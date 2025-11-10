@@ -12,40 +12,42 @@
 
 {% macro render( props ) %}
 
-    {% set classes = ([
-        props.class if props.class,
-        'align' + props.align if props.align,
-        'is-style-' + props.customStyle if props.customStyle
-    ]) | toClassNames %}
+  {% set classes = ([
+    props.class if props.class,
+    'align' + props.align if props.align,
+    'is-style-' + props.customStyle if props.customStyle
+  ]) | toClassNames %}
 
-    {% set styles = ([
-        props.style if props.style
-    ]) | toStyleString | safe %}
+  {% set styles = ([
+    props.style if props.style,
+    'flex-grow: 1;' if props.flexGrow,
+    'flex-basis: ' + props.flexWidth + ';' if props.flexWidth
+  ]) | toStyleString | safe %}
 
-    {%  set id = ' id="' + props.id + '"' if props.id %}
+  {%  set id = ' id="' + props.id + '"' if props.id %}
 
-    <figure class="wp-block-image{{ classes }}"{{ styles }}{{ id }}>
+  <figure class="wp-block-image{{ classes }}"{{ styles }}{{ id }}>
 
-        {% if props.hasLink %}
+    {% if props.hasLink %}
 
-        <a href="{{ root }}{{ props.url }}">
+    <a href="{{ root }}{{ props.url }}">
 
-            {% endif %}
+      {% endif %}
 
-            <img {% if props.imageStyle %} style="{{ props.imageStyle }}"{% endif %} decoding="async" src="{{ root }}{{ props.src }}" alt="img">
+      <img {% if props.imageStyle %} style="{{ props.imageStyle }}"{% endif %} decoding="async" src="{{ root }}{{ props.src }}" alt="img">
 
-            {% if props.hasLink %}
+      {% if props.hasLink %}
 
-        </a>
+    </a>
 
-        {% endif %}
+    {% endif %}
 
-        {% if props.caption %}
+    {% if props.caption %}
 
-            <figcaption class="wp-element-caption">{{ props.caption }}</figcaption>
+      <figcaption class="wp-element-caption">{{ props.caption }}</figcaption>
 
-        {% endif %}
+    {% endif %}
 
-    </figure>
+  </figure>
 
 {% endmacro %}

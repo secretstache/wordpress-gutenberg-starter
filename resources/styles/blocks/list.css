@@ -1,0 +1,27 @@
+ul.wp-block-list:where(:not([class*="is-style-"])),
+ol.wp-block-list:where(:not([class*="is-style-"])),
+ul.wp-block-list.is-style-default,
+ol.wp-block-list.is-style-default {
+    @apply pl-5;
+
+    li {
+        @apply mb-3 last:mb-0;
+
+        ul,
+        ol {
+            @apply pl-5 lg:pl-10 mt-3;
+        }
+    }
+}
+
+/* default unordered list */
+ul.wp-block-list:where(:not([class*="is-style-"])),
+ul.wp-block-list.is-style-default {
+    @apply list-disc;
+}
+
+/* default ordered list */
+ol.wp-block-list:where(:not([class*="is-style-"])),
+ol.wp-block-list.is-style-default {
+    @apply list-decimal;
+}

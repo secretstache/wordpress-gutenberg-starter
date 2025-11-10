@@ -47,7 +47,9 @@ add_action('wp_enqueue_scripts', function () {
     }
 
     echo Vite::withEntryPoints([
+        'resources/scripts/client/critical.js',
         'resources/scripts/client/app.js',
+        'resources/styles/defaultBlocksStyles.css',
         'resources/styles/app.css',
     ])->toHtml();
 });
@@ -85,6 +87,15 @@ add_filter('theme_file_path', function ($path, $file) {
         ? public_path('build/assets/theme.json')
         : $path;
 }, 10, 2);
+
+/*
+* Register the theme admin assets.
+*
+* @return void
+*/
+add_action('admin_enqueue_scripts', function () {
+    wp_enqueue_style( 'sage/admin.css', Vite::asset('resources/styles/admin.css'));
+}, 100);
 
 /**
  * Register the initial theme setup.

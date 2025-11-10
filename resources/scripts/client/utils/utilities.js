@@ -318,6 +318,8 @@ async function copyToClipboard(textToCopy) {
 }
 
 const scrollToHash = () => {
+    if (window.location.hash === '#main') return;
+
     // hash links
     let hash = window.location.hash;
 
@@ -344,8 +346,10 @@ const scrollToHash = () => {
         if (target) scrollFn(target);
     });
 
-    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    document.querySelectorAll('a[href^="#"]:not([href="#main"])').forEach((anchor) => {
         anchor.addEventListener('click', function (e) {
+            if (e.target.closest('.wp-block-ssm-horizontal-tabs, .wp-block-ssm-tabs')) return;
+
             const target = document.getElementById(this.getAttribute('href').substring(1));
 
             if (target) {
@@ -357,5 +361,5 @@ const scrollToHash = () => {
     });
 };
 
-// eslint-disable-next-line max-len
+/* eslint-disable */
 export { execute, executeAfterTransition, findShadowRoot, getElement, getTransitionDurationFromElement, isDisabled, isElement, isVisible, parseSelector, reflow, triggerTransitionEnd, setViewportUnits, PlayVideoInViewportOnly, EditableSvg, debounce, throttle, copyToClipboard, inViewport, scrollToHash };

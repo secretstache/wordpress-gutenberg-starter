@@ -12,85 +12,38 @@
 
 {% macro render( props ) %}
 
-    {% set classes = ([
-        props.class if props.class,
-        'is-cropped' if not props.notCropped,
-        'columns-' + props.columns if props.columns else 'columns-default',
-        'has-background has-' + props.background + '-background-color' if props.background,
-        'align' + props.align if props.align,
-        'is-style-' + props.customStyle if props.customStyle
-    ]) | toClassNames %}
+  {% set classes = ([
+    props.class if props.class,
+    'is-cropped' if not props.notCropped,
+    'columns-' + props.columns if props.columns else 'columns-default',
+    'has-background has-' + props.background + '-background-color' if props.background,
+    'align' + props.align if props.align,
+    'is-style-' + props.customStyle if props.customStyle
+  ]) | toClassNames %}
 
-    {% set styles = ([
-        props.style if props.style
-    ]) | toStyleString | safe %}
+  {% set styles = ([
+    props.style if props.style,
+    'row-gap:' + props.gap.row if props.gap.row,
+    'column-gap:' + props.gap.column  if props.gap.column
 
-    {%  set id = ' id="' + props.id + '"' if props.id %}
+  ]) | toStyleString | safe %}
 
-    <figure class="wp-block-gallery has-nested-images{{ classes }}"{{ styles }}{{ id }}>
+  {%  set id = ' id="' + props.id + '"' if props.id %}
 
-        {% if props.images %}
+  <figure class="wp-block-gallery has-nested-images{{ classes }}"{{ styles }}{{ id }}>
 
-            {% from "macros/blocks.njk" import block %}
+    {% if props.images %}
 
-            {% for image in props.images %}
+      {% from "macros/blocks.njk" import block %}
 
-                {{ block("image", {
-                    "src": image
-                }) }}
+      {% for image in props.images %}
 
-            {% endfor %}
+        {{ block("image", image) }}
 
-        {% endif %}
+      {% endfor %}
 
-    </figure>
+    {% endif %}
 
-{% endmacro %}
-/**
-* @param {string} class
-* @param {string} style
-* @param {array} images
-* @param {boolean} notCropped
-* @param {number} columns - 1, 2, 3, 4, 5, 6, 7, 8, 9
-* @param {string} background
-* @param {string} id
-* @param {string} align - full | left | right | center | wide
-* @param {string} customStyle
-*/
-
-{% macro render( props ) %}
-
-    {% set classes = ([
-        props.class if props.class,
-        'is-cropped' if not props.notCropped,
-        'columns-' + props.columns if props.columns else 'columns-default',
-        'has-background has-' + props.background + '-background-color' if props.background,
-        'align' + props.align if props.align,
-        'is-style-' + props.customStyle if props.customStyle
-    ]) | toClassNames %}
-
-    {% set styles = ([
-        props.style if props.style
-    ]) | toStyleString | safe %}
-
-    {%  set id = ' id="' + props.id + '"' if props.id %}
-
-    <figure class="wp-block-gallery has-nested-images{{ classes }}"{{ styles }}{{ id }}>
-
-        {% if props.images %}
-
-            {% from "macros/blocks.njk" import block %}
-
-            {% for image in props.images %}
-
-                {{ block("image", {
-                    "src": image
-                }) }}
-
-            {% endfor %}
-
-        {% endif %}
-
-    </figure>
+  </figure>
 
 {% endmacro %}

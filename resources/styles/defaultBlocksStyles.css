@@ -1,0 +1,41 @@
+/* stylelint-disable */
+/* DO NOT ADD THIS FILE IN THE EDITOR
+ * This are the copy of the default block styles. They are added to eliminate the discrepancies with the editor.
+ */
+@import "@modules/@wordpress/block-library/build-style/audio/theme.css";
+@import "@modules/@wordpress/block-library/build-style/audio/style.css";
+
+@import "@modules/@wordpress/block-library/build-style/button/style.css";
+@import "@modules/@wordpress/block-library/build-style/buttons/style.css";
+
+@import "@modules/@wordpress/block-library/build-style/columns/style.css";
+
+@import "@modules/@wordpress/block-library/build-style/embed/theme.css";
+@import "@modules/@wordpress/block-library/build-style/embed/style.css";
+
+@import "@modules/@wordpress/block-library/build-style/gallery/theme.css";
+@import "@modules/@wordpress/block-library/build-style/gallery/style.css";
+
+@import "@modules/@wordpress/block-library/build-style/group/theme.css";
+@import "@modules/@wordpress/block-library/build-style/group/style.css";
+
+@import "@modules/@wordpress/block-library/build-style/heading/style.css";
+
+@import "@modules/@wordpress/block-library/build-style/image/theme.css";
+@import "@modules/@wordpress/block-library/build-style/image/style.css";
+
+@import "@modules/@wordpress/block-library/build-style/list/style.css";
+
+@import "@modules/@wordpress/block-library/build-style/pullquote/theme.css";
+@import "@modules/@wordpress/block-library/build-style/pullquote/style.css";
+
+@import "@modules/@wordpress/block-library/build-style/separator/theme.css";
+@import "@modules/@wordpress/block-library/build-style/separator/style.css";
+
+@import "@modules/@wordpress/block-library/build-style/table/theme.css";
+@import "@modules/@wordpress/block-library/build-style/table/style.css";
+
+@import "@modules/@wordpress/block-library/build-style/video/theme.css";
+@import "@modules/@wordpress/block-library/build-style/video/style.css";
+
+/* stylelint-enable */

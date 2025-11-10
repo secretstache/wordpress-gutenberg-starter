@@ -1,5 +1,11 @@
 # Ignore artifacts:
 static/dist
+public/
 
 # Ignore files:
 resources/scripts/client/libs/
+resources/styles/libs/
+resources/styles/admin.css
+resources/styles/vendor.css
+resources/scripts/editor/
+*.cjs

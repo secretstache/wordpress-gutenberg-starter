@@ -1,0 +1,66 @@
+@theme {
+    /* Colors */
+    --color-*: initial;
+    --color-black: #000;
+    --color-white: #fff;
+
+    /* Font family */
+    --font-*: initial;
+    --font-serif: "Times New Roman", sans-serif;
+    --font-sans-serif: "Source Sans 3", sans-serif;
+
+    /* Text size */
+    --text-*: initial;
+    --text-2xl: customClamp(32, 65);
+    --text-xl: customClamp(24, 40);
+    --text-lg: customClamp(22, 37);
+    --text-base: customClamp(16, 24);
+    --text-sm: customClamp(14, 16);
+    --text-xs: customClamp(14, 15);
+
+    /* Spacings */
+    --spacing-ssm-0: 0;
+    --spacing-ssm-1: rem(32);
+    --spacing-ssm-2: rem(54);
+    --spacing-ssm-3: rem(80);
+    --spacing-ssm-4: rem(130);
+    --spacing-ssm-5: rem(154);
+    --spacing-ssm-6: rem(200);
+    --spacing-block: rem(36);
+    --spacing-column: customClamp(24, 52);
+    --spacing-container-padding: rem(24);
+
+    /* container */
+    --container-*: initial;
+    --container-default: calc(rem(1040) + var(--spacing-container-padding) * 2);
+    --container-wide: calc(rem(1200) + var(--spacing-container-padding) * 2);
+}
+
+:root {
+    --tr: 0.3s;
+
+    --body-color: var(--color-black);
+
+    --form-input-border-color: #cbd6e2;
+    --form-input-bg-color: var(--color-white);
+    --form-input-color: var(--color-white);
+    --form-input-border-radius: 0;
+    --form-row-gap: 1.875rem;
+    --form-column-gap: 1.25rem;
+    --form-checkbox-color-active: var(--color-black);
+    --form-checkbox-color: var(--color-black);
+    --form-checkbox-bg: transparent;
+
+    --error-color: red;
+
+    --text-h1: var(--text-2xl);
+    --text-h2: var(--text-xl);
+    --text-h3: var(--text-lg);
+    --text-h4: var(--text-base);
+    --text-h5: var(--text-sm);
+    --text-h6: var(--text-xs);
+
+    .bg-dark {
+        --body-color: var(--color-white);
+    }
+}

@@ -3,8 +3,8 @@
   "version": 3,
   "settings": {
     "layout": {
-      "contentSize": "1240px",
-      "wideSize": "1440px"
+      "contentSize": "var(--container-default)",
+      "wideSize": "var(--container-wide)"
     },
     "color": {
       "custom": false,
@@ -14,18 +14,7 @@
       "defaultGradients": false,
       "defaultPalette": false,
       "duotone": [],
-      "palette": [
-        {
-          "color": "#000",
-          "name": "Black",
-          "slug": "black"
-        },
-        {
-          "color": "#fff",
-          "name": "White",
-          "slug": "white"
-        }
-      ]
+      "palette": []
     },
     "custom": {
       "spacing": {},
@@ -44,54 +33,269 @@
         "rem",
         "vw",
         "vh"
+      ],
+      "defaultSpacingSizes": false,
+      "spacingSizes": [
+        {
+          "name": "0",
+          "slug": "0",
+          "size": "0px"
+        },
+        {
+          "name": "1 (4px)",
+          "slug": "1",
+          "size": "0.25rem"
+        },
+        {
+          "name": "2 (8px)",
+          "slug": "2",
+          "size": "0.5rem"
+        },
+        {
+          "name": "3 (12px)",
+          "slug": "3",
+          "size": "0.75rem"
+        },
+        {
+          "name": "4 (16px)",
+          "slug": "4",
+          "size": "1rem"
+        },
+        {
+          "name": "5 (20px)",
+          "slug": "5",
+          "size": "1.25rem"
+        },
+        {
+          "name": "6 (24px)",
+          "slug": "6",
+          "size": "1.5rem"
+        },
+        {
+          "name": "7 (28px)",
+          "slug": "7",
+          "size": "1.75rem"
+        },
+        {
+          "name": "8 (32px)",
+          "slug": "8",
+          "size": "2rem"
+        },
+        {
+          "name": "9 (36px)",
+          "slug": "9",
+          "size": "2.25rem"
+        },
+        {
+          "name": "10 (40px)",
+          "slug": "10",
+          "size": "2.5rem"
+        },
+        {
+          "name": "11 (44px)",
+          "slug": "11",
+          "size": "2.75rem"
+        },
+        {
+          "name": "12 (48px)",
+          "slug": "12",
+          "size": "3rem"
+        },
+        {
+          "name": "14 (56px)",
+          "slug": "14",
+          "size": "3.5rem"
+        },
+        {
+          "name": "16 (64px)",
+          "slug": "16",
+          "size": "4rem"
+        },
+        {
+          "name": "20 (80px)",
+          "slug": "20",
+          "size": "5rem"
+        },
+        {
+          "name": "24 (96px)",
+          "slug": "24",
+          "size": "6rem"
+        },
+        {
+          "name": "28 (112px)",
+          "slug": "28",
+          "size": "7rem"
+        },
+        {
+          "name": "32 (128px)",
+          "slug": "32",
+          "size": "8rem"
+        },
+        {
+          "name": "36 (144px)",
+          "slug": "36",
+          "size": "9rem"
+        },
+        {
+          "name": "40 (160px)",
+          "slug": "40",
+          "size": "10rem"
+        },
+        {
+          "name": "44 (176px)",
+          "slug": "44",
+          "size": "11rem"
+        },
+        {
+          "name": "48 (192px)",
+          "slug": "48",
+          "size": "12rem"
+        },
+        {
+          "name": "52 (208px)",
+          "slug": "52",
+          "size": "13rem"
+        },
+        {
+          "name": "56 (224px)",
+          "slug": "56",
+          "size": "14rem"
+        },
+        {
+          "name": "60 (240px)",
+          "slug": "60",
+          "size": "15rem"
+        },
+        {
+          "name": "64 (256px)",
+          "slug": "64",
+          "size": "16rem"
+        },
+        {
+          "name": "72 (288px)",
+          "slug": "72",
+          "size": "18rem"
+        },
+        {
+          "name": "80 (320px)",
+          "slug": "80",
+          "size": "20rem"
+        },
+        {
+          "name": "96 (384px)",
+          "slug": "96",
+          "size": "24rem"
+        },
+        {
+          "name": "px",
+          "slug": "px",
+          "size": "1px"
+        }
       ]
     },
     "typography": {
+      "defaultFontSizes": false,
       "customFontSize": false,
+      "fluid": true,
       "fontFamilies": [
         {
-          "fontFamily": "ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,\"Segoe UI\",Roboto,\"Helvetica Neue\",Arial,\"Noto Sans\",sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\",\"Segoe UI Symbol\",\"Noto Color Emoji\"",
-          "name": "Ui-sans-serif",
-          "slug": "sans"
-        },
-        {
-          "fontFamily": "ui-serif,Georgia,Cambria,\"Times New Roman\",Times,serif",
-          "name": "Ui-serif",
+          "fontFamily": "var(--font-serif)",
+          "name": "Serif",
           "slug": "serif"
         },
         {
-          "fontFamily": "ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,\"Liberation Mono\",\"Courier New\",monospace",
-          "name": "Ui-monospace",
-          "slug": "mono"
+          "fontFamily": "var(--font-sans-serif)",
+          "name": "Sans serif",
+          "slug": "sans-serif"
         }
       ],
-      "fontSizes": [
+      "fontSizes":[
         {
-          "name": "xs",
-          "size": "0.75rem",
-          "slug": "xs"
-        },
-        {
-          "name": "sm",
-          "size": "0.875rem",
-          "slug": "sm"
-        },
-        {
-          "name": "base",
-          "size": "1rem",
-          "slug": "base"
-        },
-        {
-          "name": "lg",
-          "size": "1.125rem",
-          "slug": "lg"
+          "name": "2xl",
+          "size": "var(--text-2xl)",
+          "slug": "2xl"
         },
         {
           "name": "xl",
-          "size": "1.25rem",
+          "size": "var(--text-xl)",
           "slug": "xl"
+        },
+        {
+          "name": "lg",
+          "size": "var(--text-lg)",
+          "slug": "lg"
+        },
+        {
+          "name": "base",
+          "size": "var(--text-base)",
+          "slug": "base"
+        },
+        {
+          "name": "md",
+          "size": "var(--text-md)",
+          "slug": "md"
+        },
+        {
+          "name": "sm",
+          "size": "var(--text-sm)",
+          "slug": "sm"
+        },
+        {
+          "name": "xs",
+          "size": "var(--text-xs)",
+          "slug": "xs"
+        },
+        {
+          "name": "2xs",
+          "size": "var(--text-2xs)",
+          "slug": "2xs"
+        },
+        {
+          "name": "3xs",
+          "size": "var(--text-3xs)",
+          "slug": "3xs"
+        },
+        {
+          "name": "4xs",
+          "size": "var(--text-4xs)",
+          "slug": "4xs"
+        },
+        {
+          "name": "h1",
+          "size": "var(--text-h1)",
+          "slug": "h1"
+        },
+        {
+          "name": "h2",
+          "size": "var(--text-h2)",
+          "slug": "h2"
+        },
+        {
+          "name": "h3",
+          "size": "var(--text-h3)",
+          "slug": "h3"
+        },
+        {
+          "name": "h4",
+          "size": "var(--text-h4)",
+          "slug": "h4"
+        },
+        {
+          "name": "h5",
+          "size": "var(--text-h5)",
+          "slug": "h5"
+        },
+        {
+          "name": "h6",
+          "size": "var(--text-h6)",
+          "slug": "h6"
         }
       ]
+    }
+  },
+  "styles": {
+    "spacing": {
+      "blockGap": "var(--block-margin)"
     }
   }
 }

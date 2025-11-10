@@ -1,0 +1,13 @@
+.wp-block-image {
+    &.aligncenter {
+        > div {
+            @apply md:ml-auto md:mr-auto;
+        }
+    }
+
+    &.alignright {
+        > div {
+            @apply md:ml-auto;
+        }
+    }
+}

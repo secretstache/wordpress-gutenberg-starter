@@ -2,19 +2,15 @@
 
 {% block inner %}
 
-    <div class="ds">
+    <div class="overflow-hidden">
 
-        <div class="ds__body">
+        {% include "./sidebar.njk" %}
 
-            {% include "./sidebar.njk" %}
+        <main class="ds__main h-[calc(100vh_-_64px)] overflow-auto">
 
-            <main class="ds__main">
+            {% block content %}{% endblock %}
 
-                {% block content %}{% endblock %}
-
-            </main>
-
-        </div>
+        </main>
 
     </div>
 

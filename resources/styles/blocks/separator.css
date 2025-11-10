@@ -1,0 +1,15 @@
+.wp-block-separator {
+    margin: rem(40) auto;
+    padding: 0;
+
+    &:not(.is-style-wide, .is-style-dots) {
+        width: 100% !important;
+        max-width: 80%;
+    }
+
+    &.has-background:not(.is-style-dots) {
+        box-sizing: border-box;
+        border: none;
+        height: 2px !important;
+    }
+}

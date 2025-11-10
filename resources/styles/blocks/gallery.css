@@ -1,0 +1,88 @@
+.wp-block-gallery.has-nested-images {
+    --wp--style--gallery-gap-default: 2rem;
+
+    @apply grid;
+    gap: var(--wp--style--gallery-gap-default);
+
+    @media (--max-md) {
+        gap: var(--wp--style--gallery-gap-default) !important;
+    }
+
+    figure.wp-block-image {
+        @apply block;
+
+        a {
+            @apply h-full;
+        }
+
+        img {
+            @apply w-full;
+        }
+    }
+
+    &[class*="columns-"] figure.wp-block-image:not(#individual-image) {
+        margin: 0;
+        width: 100%;
+    }
+
+    &.is-style-align-center {
+        align-items: center;
+    }
+
+    /* Default columns */
+
+    &.columns-default {
+        @apply grid-cols-3;
+    }
+
+    /* Column variations */
+
+    &.columns-1 {
+        @apply grid-cols-1;
+    }
+
+    &.columns-2 {
+        @apply grid-cols-2;
+    }
+
+    &.columns-3 {
+        @apply grid-cols-3;
+    }
+
+    &.columns-4 {
+        @apply grid-cols-2 md:grid-cols-4;
+    }
+
+    &.columns-5 {
+        @apply grid-cols-3 md:grid-cols-5;
+    }
+
+    &.columns-6 {
+        @apply grid-cols-3 md:grid-cols-6;
+    }
+
+    &.columns-7 {
+        @apply grid-cols-4 md:grid-cols-7;
+    }
+
+    &.columns-8 {
+        @apply grid-cols-4 md:grid-cols-8;
+    }
+
+    &.columns-9 {
+        @apply grid-cols-4 md:grid-cols-9;
+    }
+
+    /* Cropped images */
+
+    &.is-cropped {
+        @apply items-start;
+
+        figure.wp-block-image:not(#individual-image) {
+            img {
+                aspect-ratio: 187/124;
+                @apply w-full object-cover;
+            }
+        }
+    }
+}

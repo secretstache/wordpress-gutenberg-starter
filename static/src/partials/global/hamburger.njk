@@ -1,6 +1,24 @@
-<button class="hamburger hide-for-large" type="button" role="button" aria-label="open offcanvas menu" aria-controls="offcanvas" aria-expanded="false" >
-    <span class="show-for-sr">Menu toggle</span>
-    <span class="hamburger__line hamburger__line--1"></span>
-    <span class="hamburger__line hamburger__line--2"></span>
-    <span class="hamburger__line hamburger__line--3"></span>
+<button
+  class="hamburger
+        group
+        flex
+        items-center
+        gap-x-4
+        rounded
+        transition-colors
+        cursor-pointer
+        lg:hidden"
+  type="button"
+  aria-controls="offcanvas"
+  aria-expanded="false">
+
+  <div class="relative w-5 h-[0.875rem]">
+    <span class="sr-only">Menu toggle</span>
+    <span class="block absolute top-0 w-full h-[0.125rem] rounded bg-black transition-transform duration-300 ease-in-out
+               group-[&[aria-expanded='true']]:rotate-45 group-[&[aria-expanded='true']]:translate-y-[0.313rem]" ></span>
+    <span class="block absolute top-1/2 -translate-y-1/2 w-full h-[0.125rem] rounded bg-black transition-all duration-300 ease-in-out
+               group-[&[aria-expanded='true']]:opacity-0 group-[&[aria-expanded='true']]:-translate-x-full" ></span>
+    <span class="block absolute bottom-0 w-full h-[0.125rem] rounded bg-black transition-transform duration-300 ease-in-out
+               group-[&[aria-expanded='true']]:-rotate-45 group-[&[aria-expanded='true']]:translate-y-[-0.438rem]"></span>
+  </div>
 </button>

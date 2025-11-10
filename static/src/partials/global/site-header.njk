@@ -1,34 +1,22 @@
 {% from 'macros/common.njk' import menu %}
 
-<header class="site-header">
+<header class="site-header sticky top-0 left-0 w-full transition-all duration-300 z-50 [&.is-scrolling-down]:-translate-y-full bg-white">
 
-    <div class="grid-container">
+  <div class="container flex items-center justify-between gap-x-2 py-3 py-6">
 
-        <div class="grid-x align-justify align-middle">
+    {% include 'global/brand.njk' %}
 
-            <div class="site-header__brand cell shrink" role="banner">
+    <nav class="max-md:hidden" aria-label="primary">
+      {{ menu({
+        nav: navigation.main,
+        menuClass: 'site-header__menu is-dropdown gap-x-9 flex',
+        submenuClass: 'top-full min-w-50 bg-black p-5 text-white',
+        currentPage: page.url
+      }) }}
+    </nav>
 
-                {% include 'global/brand.njk' %}
+    {% include 'global/hamburger.njk' %}
 
-            </div>
-
-            <div class="cell shrink">
-
-                <nav class="site-header__navigation show-for-large" aria-label="Main DropdownMenu">
-                    {{ menu({
-                        nav: navigation.main,
-                        menuClass: 'menu is-dropdown',
-                        attributes: 'role="menubar"',
-                        currentPage: page.url
-                    }) }}
-                </nav>
-
-                {% include 'global/hamburger.njk' %}
-
-            </div>
-
-        </div>
-
-    </div>
+  </div>
 
 </header>

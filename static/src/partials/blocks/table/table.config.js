@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     title: 'Table',
     context: {
         innerContent: 'default',

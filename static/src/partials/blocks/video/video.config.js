@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     title: 'Video',
     context: {
         src: '/assets/video/placeholder.mp4',

@@ -1,14 +1,13 @@
 main:
-    - name: 'Home'
-      url: '/'
     - name: 'Design system'
       url: '/design-system'
       submenu:
           - name: 'Button'
-            url: '/design-system/block/button'
+            url: '/design-system/block/button/'
 
-footer:
-    - name: 'Home'
-      url: '/'
+offcanvas:
     - name: 'Design system'
       url: '/design-system'
+      submenu:
+        - name: 'Button'
+          url: '/design-system/block/button/'

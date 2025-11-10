@@ -1,16 +1,19 @@
-{% call block("columns") %}
+{{ block("heading", {
+  "level": 2,
+  "textAlign": "center",
+  "content": "Heading"
+}) }}
 
-  {% call column({
-  }) %}
-
-    {{ block("heading", {
-      "level": 2,
-      "fontSize": "h1-large",
-      "textAlign": "center",
-      "content": "Heading h1"
-    }) }}
+<p class="has-text-align-center">FourPoint Resources is a private exploration and production company based in Denver, Colorado, managed by FourPoint Energy. The team at FourPoint has decades of industry leading experience and is dedicated to creating value that makes a difference. FourPoint has fostered a culture of a dedicated and technically advanced team of professionals who are hard-working  and committed to excellence.</p>
 
 
-  {% endcall %}
-
-{% endcall %}
+{{ block("buttons", {
+  "justification": "center",
+  "buttons": [
+    {
+      "label": "Button",
+      "url": "/#"
+    }
+  ]
+})
+}}

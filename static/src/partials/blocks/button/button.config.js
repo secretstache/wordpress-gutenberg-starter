@@ -1,22 +1,16 @@
-const options = {
-    Filled: 'is-style-fill',
-    Outlined: 'is-style-outline',
-};
-
-module.exports = {
+export default {
     title: 'Button',
-    options,
+    defaultTitle: 'Default Button',
     context: {
         label: 'Button',
-        customStyle: 'fill',
         url: '/#',
     },
     variants: [
         {
-            title: 'Outline',
+            title: 'Outlined Button',
             context: {
                 label: 'Button',
-                customStyle: 'outline',
+                customStyle: 'outlined',
                 url: '/#',
             },
         },

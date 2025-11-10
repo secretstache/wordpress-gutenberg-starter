@@ -1,18 +1,17 @@
 const options = {};
 
-module.exports = {
+export default {
     title: 'Buttons',
     options,
     context: {
         buttons: [
             {
                 label: 'Button',
-                customStyle: 'fill',
                 url: '/test',
             },
             {
                 label: 'Button',
-                customStyle: 'outline',
+                customStyle: 'outlined',
                 url: '/#',
             },
         ],
@@ -25,12 +24,11 @@ module.exports = {
                 buttons: [
                     {
                         label: 'Button',
-                        customStyle: 'fill',
                         url: '/#',
                     },
                     {
                         label: 'Button',
-                        customStyle: 'outline',
+                        customStyle: 'outlined',
                         url: '/#',
                     },
                 ],
@@ -43,12 +41,11 @@ module.exports = {
                 buttons: [
                     {
                         label: 'Button',
-                        customStyle: 'fill',
                         url: '/#',
                     },
                     {
                         label: 'Button',
-                        customStyle: 'outline',
+                        customStyle: 'outlined',
                         url: '/#',
                     },
                 ],
@@ -62,12 +59,11 @@ module.exports = {
                 buttons: [
                     {
                         label: 'Button',
-                        customStyle: 'fill',
                         url: '/#',
                     },
                     {
                         label: 'Button',
-                        customStyle: 'outline',
+                        customStyle: 'outlined',
                         url: '/#',
                     },
                 ],

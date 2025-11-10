@@ -145,7 +145,6 @@ function addHandler(element, originalTypeEvent, handler, delegationFunction, one
     if (originalTypeEvent in customEvents) {
         const wrapFunction = (fn) => {
             return function (event) {
-                // eslint-disable-next-line max-len
                 if (!event.relatedTarget || (event.relatedTarget !== event.delegateTarget && !event.delegateTarget.contains(event.relatedTarget))) {
                     return fn.call(this, event);
                 }
