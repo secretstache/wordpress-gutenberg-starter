@@ -1,0 +1,25 @@
+@layer base {
+    :where(h1.wp-block-heading:not([class*="-font-size"])) {
+        @apply h1;
+    }
+
+    :where(h2.wp-block-heading:not([class*="-font-size"])) {
+        @apply h2;
+    }
+
+    :where(h3.wp-block-heading:not([class*="-font-size"])) {
+        @apply h3;
+    }
+
+    :where(h4.wp-block-heading:not([class*="-font-size"])) {
+        @apply h4;
+    }
+
+    :where(h5.wp-block-heading:not([class*="-font-size"])) {
+        @apply h5;
+    }
+
+    :where(h6.wp-block-heading:not([class*="-font-size"])) {
+        @apply h6;
+    }
+}

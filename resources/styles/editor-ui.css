@@ -1,1 +1,3 @@
 @import "@secretstache/wordpress-gutenberg/build/editor-ui.css";
+
+@import "./settings/theme.css";

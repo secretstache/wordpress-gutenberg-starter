@@ -1,0 +1,131 @@
+.wp-block-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: rem(16);
+
+    &.is-vertical {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    &.is-content-justification-left {
+        justify-content: flex-start;
+
+        &.is-vertical {
+            align-items: flex-start;
+        }
+    }
+
+    &.is-content-justification-right {
+        justify-content: flex-end;
+
+        &.is-vertical {
+            align-items: flex-end;
+        }
+    }
+
+    &.is-content-justification-center {
+        justify-content: center;
+
+        &.is-vertical {
+            align-items: center;
+        }
+    }
+
+    &.is-content-justification-space-between {
+        justify-content: space-between;
+
+        &.is-vertical {
+            align-items: stretch;
+        }
+    }
+
+    &.is-style-wide {
+        .wp-block-button {
+            min-width: rem(280);
+        }
+    }
+}
+
+.wp-block-button {
+    --button-bg: var(--color-black);
+    --button-color: var(--color-white);
+    --button-bg-hover: var(--color-white);
+    --button-color-hover: var(--color-black);
+    --button-border: transparent;
+    --button-paddings: rem(12) rem(32);
+    --button-height: rem(52);
+    --button-radius: rem(8);
+    --button-font-size: rem(14);
+
+    display: inline-block;
+    position: relative;
+
+    .wp-block-button__link {
+        display: flex;
+        position: relative;
+        justify-content: center;
+        align-items: center;
+        transition:
+            transform var(--tr),
+            color var(--tr),
+            background var(--tr),
+            border-color var(--tr);
+        cursor: pointer;
+        border: 1.5px solid;
+        border-color: var(--button-border);
+        border-radius: var(--button-radius);
+        background: var(--button-bg);
+        padding: var(--button-paddings);
+        min-height: var(--button-height);
+        color: var(--button-color);
+        font-weight: 700;
+        font-size: var(--button-font-size);
+        line-height: 1.2;
+        font-family: sans-serif;
+        letter-spacing: 0;
+        user-select: none;
+        text-align: center;
+        text-decoration: none;
+
+        &:focus,
+        &:active {
+            outline: none;
+        }
+
+        &:focus-visible {
+            outline: 1px dotted;
+        }
+
+        &:disabled,
+        &.disabled {
+            pointer-events: none;
+        }
+
+        &:hover {
+            --button-bg: var(--button-bg-hover);
+            --button-color: var(--button-color-hover);
+            --button-border: var(--color-black);
+        }
+    }
+
+    &.is-style-outlined {
+        --button-bg: transparent;
+        --button-color: var(--color-black);
+        --button-bg-hover: var(--color-black);
+        --button-color-hover: var(--color-white);
+        --button-border: var(--color-black);
+    }
+}
+
+* {
+    @variant dark {
+        .wp-block-button {
+            --button-bg: var(--color-white);
+            --button-color: var(--color-black);
+            --button-bg-hover: var(--color-white);
+            --button-color-hover: var(--color-black);
+        }
+    }
+}

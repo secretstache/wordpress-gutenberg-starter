@@ -6,6 +6,8 @@ import eslint from 'vite-plugin-eslint';
 import stylelint from 'vite-plugin-stylelint';
 import svgLoader from 'vite-plugin-svgr';
 import { resolve } from 'path';
+import { processCSSFunctions } from './shared/vite-css.js';
+import postcssCustomMedia from 'postcss-custom-media';
 
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, process.cwd(), '');
@@ -19,13 +21,35 @@ export default defineConfig(({ mode }) => {
                 credentials: false,
             },
         },
+        build: {
+            rollupOptions: {
+                output: {
+                    manualChunks: (id) => {
+                        // Keep critical.js standalone - no splitting
+                        if (id.includes('resources/scripts/client/critical')) {
+                            return 'critical';
+                        }
+                    },
+                },
+            },
+        },
+        css: {
+            postcss: {
+                plugins: [
+                    postcssCustomMedia(),
+                ],
+            },
+        },
         plugins: [
+            processCSSFunctions(),
             tailwindcss(),
             laravel({
                 input: [
+                    'resources/scripts/client/critical.js',
                     'resources/scripts/client/app.js',
                     'resources/scripts/editor/editor.js',
                     'resources/styles/app.css',
+                    'resources/styles/defaultBlocksStyles.css',
                     'resources/styles/editor-canvas.css',
                     'resources/styles/editor-ui.css',
                     'resources/styles/admin.css',
@@ -43,7 +67,11 @@ export default defineConfig(({ mode }) => {
 
             eslint({
                 include: ['resources/scripts/**/*.{js,jsx}'],
-                exclude: ['node_modules', 'public', 'static'],
+                exclude: [
+                    'node_modules',
+                    'public',
+                    'static',
+                ],
                 fix: false,
                 cache: true,
                 emitWarning: false,
@@ -53,7 +81,11 @@ export default defineConfig(({ mode }) => {
 
             stylelint({
                 include: ['resources/styles/**/*.{css}'],
-                exclude: ['node_modules', 'public', 'static'],
+                exclude: [
+                    'node_modules',
+                    'public',
+                    'static',
+                ],
                 fix: false,
                 cache: true,
                 emitWarning: true,
@@ -89,7 +121,5 @@ export default defineConfig(({ mode }) => {
                 '@modules': resolve(process.cwd(), 'node_modules'),
             },
         },
-
     };
 });
-

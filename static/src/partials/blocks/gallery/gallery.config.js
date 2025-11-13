@@ -1,10 +1,16 @@
-module.exports = {
+export default {
     title: 'Gallery',
     context: {
         images: [
-            '/assets/images/cms/placeholder.svg',
-            '/assets/images/cms/placeholder.svg',
-            '/assets/images/cms/placeholder.svg',
+            {
+                src: '/assets/images/cms/placeholder.svg',
+            },
+            {
+                src: '/assets/images/cms/placeholder.svg',
+            },
+            {
+                src: '/assets/images/cms/placeholder.svg',
+            },
         ],
     },
     variants: [
@@ -13,12 +19,42 @@ module.exports = {
             context: {
                 columns: 6,
                 images: [
-                    '/assets/images/cms/placeholder.svg',
-                    '/assets/images/cms/placeholder.svg',
-                    '/assets/images/cms/placeholder.svg',
-                    '/assets/images/cms/placeholder.svg',
-                    '/assets/images/cms/placeholder.svg',
-                    '/assets/images/cms/placeholder.svg',
+                    {
+                        src: '/assets/images/cms/placeholder.svg',
+                    },
+                    {
+                        src: '/assets/images/cms/placeholder.svg',
+                    },
+                    {
+                        src: '/assets/images/cms/placeholder.svg',
+                    },
+                    {
+                        src: '/assets/images/cms/placeholder.svg',
+                    },
+                    {
+                        src: '/assets/images/cms/placeholder.svg',
+                    },
+                    {
+                        src: '/assets/images/cms/placeholder.svg',
+                    },
+                    {
+                        src: '/assets/images/cms/placeholder.svg',
+                    },
+                    {
+                        src: '/assets/images/cms/placeholder.svg',
+                    },
+                    {
+                        src: '/assets/images/cms/placeholder.svg',
+                    },
+                    {
+                        src: '/assets/images/cms/placeholder.svg',
+                    },
+                    {
+                        src: '/assets/images/cms/placeholder.svg',
+                    },
+                    {
+                        src: '/assets/images/cms/placeholder.svg',
+                    },
                 ],
             },
         },

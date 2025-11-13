@@ -1,25 +1,16 @@
-<nav class="ds__sidebar">
+<nav class="flex relative items-center z-50 bg-[#172554] py-2 px-8 w-full min-h-16 text-white">
 
-    <h1 class="ds-title">
+    <h1 class="flex items-center mr-5 pr-5 min-h-8 text-[20px]">
 
-        <a href="{{ root }}/">DS</a>
+        <a href="{{ root }}/" class="flex absolute top-0 left-0 justify-center items-center bg-[#2d3b83] w-16 h-16 text-white no-underline">DS</a>
 
     </h1>
 
-    <button class="ds-hamburger">
-        <svg class="ds-hamburger__bars" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-        </svg>
-        <svg class="ds-hamburger__close" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-        </svg>
-    </button>
-
-    <ul role="list" class="ds-menu">
+    <ul role="list" class="ml-10 m-0 p-0 list-none flex items-center gap-5">
 
         <li class="lvl1">
 
-            <a href="{{ root }}/design-system/" class="ds-link{% if page.url == '/design-system/' %} ds-link--active{% endif %}">Base styles & utilities</a>
+            <a href="{{ root }}/design-system/" class="ds-link flex items-center gap-2 py-2 px-2 text-white font-normal text-[13px] leading-snug no-underline{% if page.url == '/design-system/' %} border-b-4 border-indigo-500 font-bold{% endif %}">Base styles & utilities</a>
 
         </li>
 
@@ -35,7 +26,7 @@
 
                     {% if page.url == lvl2.url %}
 
-                        {% set lvl1Classes = (lvl1Classes.push('is-active'), lvl1Classes) %}
+                        {% set lvl1Classes = (lvl1Classes.push('is-active', '[&>a]:border-b-4', '[&>a]:border-indigo-500', '[&>a]:font-bold'), lvl1Classes) %}
 
                     {% endif %}
 
@@ -45,7 +36,7 @@
 
                             {% if page.url == lvl3.url %}
 
-                                {% set lvl1Classes = (lvl1Classes.push('is-active'), lvl1Classes) %}
+                                {% set lvl1Classes = (lvl1Classes.push('is-active', '[&>a]:border-b-4', '[&>a]:border-indigo-500', '[&>a]:font-bold'), lvl1Classes) %}
 
                             {% endif %}
 
@@ -59,11 +50,11 @@
 
             <li class="lvl1 {{ lvl1Classes | join(" ") }}">
 
-                <a class="ds-link{% if page.url == lvl1.url %} ds-link--active{% endif %}" href="{{ root }}{{ lvl1.url }}">
+                <a class="ds-link flex items-center gap-2 py-2 px-2 text-white font-normal text-[13px] leading-snug no-underline{% if page.url == lvl1.url %} shadow-[inset_4px_0_0] shadow-indigo-600 font-bold{% endif %}" href="{{ root }}{{ lvl1.url }}">
 
                     {% if lvl1.children | length %}
 
-                        <svg viewBox="0 -0.5 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <path d="M6.113,15.495 C5.531,16.076 4.01,16.395 4.01,14.494 L4.01,1.506 C4.01,-0.333 5.531,-0.076 6.113,0.506 L12.557,6.948 C13.137,7.529 13.137,8.47 12.557,9.052 L6.113,15.495 L6.113,15.495 Z" fill="currentColor" class="si-glyph-fill"> </path> </g></svg>
+                        <svg class="transition-transform duration-500 ml-auto w-2 h-auto" viewBox="0 -0.5 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <path d="M6.113,15.495 C5.531,16.076 4.01,16.395 4.01,14.494 L4.01,1.506 C4.01,-0.333 5.531,-0.076 6.113,0.506 L12.557,6.948 C13.137,7.529 13.137,8.47 12.557,9.052 L6.113,15.495 L6.113,15.495 Z" fill="currentColor" class="si-glyph-fill"> </path> </g></svg>
 
                     {% endif %}
 
@@ -73,7 +64,7 @@
 
                 {% if lvl1.children | length %}
 
-                    <ul role="list" class="ds-menu__submenu">
+                    <ul role="list" class="overflow-auto m-0 p-0 list-none hidden absolute rounded-b-lg bg-[#172554] pt-2 pb-2 w-64 max-h-[87vh]">
 
                         {% for lvl2 in lvl1.children %}
 
@@ -85,7 +76,7 @@
 
                                 {% if page.url == lvl2.url %}
 
-                                    {% set lvl2Classes = (lvl2Classes.push('is-active'), lvl2Classes) %}
+                                    {% set lvl2Classes = (lvl2Classes.push('is-active', '[&>ul]:block', '[&>a]:font-bold', '[&>a]:bg-[#39406a]', '[&>a>svg]:rotate-90'), lvl2Classes) %}
 
                                 {% endif %}
 
@@ -93,7 +84,7 @@
 
                                     {% if page.url == lvl3.url %}
 
-                                        {% set lvl2Classes = (lvl2Classes.push('is-active'), lvl2Classes) %}
+                                        {% set lvl2Classes = (lvl2Classes.push('is-active','[&>ul]:block','[&>a]:font-bold', '[&>a]:bg-[#39406a]', '[&>a>svg]:rotate-90'), lvl2Classes) %}
 
                                     {% endif %}
 
@@ -103,13 +94,13 @@
 
                             <li class="lvl2 {{ lvl2Classes | join(" ") }}">
 
-                                <a class="ds-link{% if page.url == lvl2.url %} ds-link--active{% endif %}" href="{{ root }}{{ lvl2.url }}">
+                                <a class="ds-link flex items-center gap-2 py-2 pl-6 pr-2 text-white font-normal text-[13px] leading-snug no-underline{% if page.url == lvl2.url %} shadow-[inset_4px_0_0] shadow-indigo-600 font-bold{% endif %}" href="{{ root }}{{ lvl2.url }}">
 
                                     {{ lvl2.title }}
 
                                     {% if lvl2.children | length %}
 
-                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                        <svg class="transition-transform duration-500 ml-auto w-3 h-auto" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
 
                                     {% endif %}
 
@@ -117,11 +108,11 @@
 
                                 {% if lvl2.children | length %}
 
-                                    <ul role="list" class="ds-menu__submenu">
+                                    <ul role="list" class="hidden m-0 p-0 list-none rounded-b-lg pt-2 pb-2">
 
                                         <li class="lvl3 is-default-link">
 
-                                            <a class="ds-link{% if page.url == lvl2.url %} ds-link--active{% endif %}" href="{{ root }}{{ lvl2.url }}">
+                                            <a class="ds-link flex items-center gap-2 pl-10 pr-2 px-2 py-2 text-white font-normal text-[13px] leading-snug no-underline{% if page.url == lvl2.url %} shadow-[inset_4px_0_0] shadow-indigo-600 font-bold{% endif %}" href="{{ root }}{{ lvl2.url }}">
 
                                                 {% if lvl2.defaultTitle %}
 
@@ -141,7 +132,7 @@
 
                                             <li class="lvl3">
 
-                                                <a class="ds-link{% if page.url == lvl3.url %} ds-link--active{% endif %}" href="{{ root }}{{ lvl3.url }}">
+                                                <a class="ds-link flex items-center gap-2 py-2 pl-10 pr-2  text-white font-normal text-[13px] leading-snug no-underline{% if page.url == lvl3.url %} shadow-[inset_4px_0_0] shadow-indigo-600 font-bold{% endif %}" href="{{ root }}{{ lvl3.url }}">
                                                     {{ lvl3.title }}
                                                 </a>
 
@@ -167,21 +158,21 @@
 
         <li class="lvl1 is-parent-item">
 
-            <a href="#" class="ds-link">
+            <a href="#" class="ds-link flex items-center gap-2 py-2 px-2 text-white font-normal text-[13px] leading-snug no-underline">
 
-                <svg viewBox="0 -0.5 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <path d="M6.113,15.495 C5.531,16.076 4.01,16.395 4.01,14.494 L4.01,1.506 C4.01,-0.333 5.531,-0.076 6.113,0.506 L12.557,6.948 C13.137,7.529 13.137,8.47 12.557,9.052 L6.113,15.495 L6.113,15.495 Z" fill="currentColor" class="si-glyph-fill"> </path> </g></svg>
+                <svg class="transition-transform duration-500 ml-auto w-2 h-auto" viewBox="0 -0.5 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <path d="M6.113,15.495 C5.531,16.076 4.01,16.395 4.01,14.494 L4.01,1.506 C4.01,-0.333 5.531,-0.076 6.113,0.506 L12.557,6.948 C13.137,7.529 13.137,8.47 12.557,9.052 L6.113,15.495 L6.113,15.495 Z" fill="currentColor" class="si-glyph-fill"> </path> </g></svg>
 
                 Pages
 
             </a>
 
-            <ul role="list" class="ds-menu__submenu">
+            <ul role="list" class="m-0 p-0 list-none hidden absolute rounded-b-lg bg-[#172554] pt-2 pb-2 w-64">
 
                 {%- for page in collections.page | sortByTitle -%}
 
                     <li class="lvl2">
 
-                        <a href="{{ root }}{{ page.url }}" class="ds-link" target="_blank">
+                        <a href="{{ root }}{{ page.url }}" class="ds-link flex items-center gap-2 py-2 pl-6 pr-2 text-white font-normal text-[13px] leading-snug no-underline" target="_blank">
 
                             {{ page.data.title }}
 
@@ -199,18 +190,18 @@
 
     {% if page.url != '/design-system/' %}
 
-        <ol class="ds-tabs-nav">
-            <li><a class="ds-tabs-nav__link is-active" href="#demo">Demo</a></li>
-            <li><a class="ds-tabs-nav__link" href="#code-tab">HTML</a></li>
-            <li><a class="ds-tabs-nav__link" href="#context-tab">.njk & context</a></li>
-            <li><a class="ds-tabs-nav__link" href="#options-tab">Options</a></li>
+
+        <ol class="ds-tabs-nav flex align-middle gap-5 m-0 ml-auto pt-0 pb-0 list-none">
+            <li><a class="block p-2 text-white text-[13px] no-underline ds-tabs-nav__link" href="#demo">Demo</a></li>
+            <li><a class="block p-2 text-white text-[13px] no-underline ds-tabs-nav__link" href="#code-tab">HTML</a></li>
+            <li><a class="block p-2 text-white text-[13px] no-underline ds-tabs-nav__link" href="#context-tab">.njk & context</a></li>
+            <li><a class="block p-2 text-white text-[13px] no-underline ds-tabs-nav__link" href="#options-tab">Options</a></li>
         </ol>
 
 
-        <ul id="viewpr-list" class="viewports-sizes"></ul>
+        <ul id="viewpr-list" class="viewports-sizes flex align-center gap-3 mt-0 mr-8 mb-0 ml-auto text-[13px] list-none [&_a]:flex [&_a]:flex-col [&_a]:justify-center [&_a]:align-middle [&_a]:gap-1 [&_a]:text-indigo-500 [&_a]:text-[11px] [&_a]:leading-none [&_a]:no-underline [&_svg]:block [&_svg]:w-5 [&_svg]:h-5 [&_svg]:order-first"></ul>
 
-        <a class="ds-full-screen" target="_blank" href="{{ root }}/design-system/{{ component.type }}/full/{{ component.slug }}">Full Screen ↗</a>
-
+        <a class="ds-full-screen text-white text-[13px] no-underline" target="_blank" href="{{ root }}/design-system/{{ component.type }}/full/{{ component.slug }}">Full Screen ↗</a>
     {% endif %}
-
 </nav>
+

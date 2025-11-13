@@ -1,0 +1,77 @@
+.wp-block-video,
+.wp-block-embed {
+    display: block;
+    position: relative;
+
+    video {
+        display: block;
+        aspect-ratio: 16 / 9;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    iframe {
+        display: block;
+        aspect-ratio: 16 / 9;
+        height: auto;
+    }
+
+    .plyr__poster {
+        background-size: cover;
+    }
+
+    .plyr__controls {
+        transform: translateY(100%);
+        opacity: 0;
+        pointer-events: none;
+
+        &:focus-within {
+            opacity: 1;
+        }
+    }
+
+    .plyr--playing .plyr__controls {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: all;
+    }
+
+    .plyr--playing::after {
+        opacity: 0;
+    }
+
+    .plyr__control.plyr__control--overlaid {
+        opacity: 0.8;
+        mask-image: url("data:image/svg+xml,%3Csvg viewBox='-5 -10 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M 45,-10 C 17.406,-10 -5,12.406 -5,40 -5,67.594 17.406,90 45,90 72.594,90 95,67.594 95,40 95,12.406 72.594,-10 45,-10 Z m 0,3.125 C 70.906,-6.875 91.875,14.094 91.875,40 91.875,65.906 70.906,86.875 45,86.875 19.094,86.875 -1.875,65.906 -1.875,40 -1.875,14.094 19.094,-6.875 45,-6.875 Z M 34.809,17.313 c -0.65234,-0.0039 -1.293,0.16406 -1.8633,0.47266 -1.1328,0.61719 -1.9609,1.7852 -1.9609,3.2148 v 38.008 c 0,2.8633 3.332,4.6602 5.7305,3.1016 l 28.645,-18.637 c 2.4609,-1.6016 2.4609,-5.3438 0,-6.9453 l -28.641,-18.637 c -0.60156,-0.39062 -1.2578,-0.57031 -1.9102,-0.57812 z m -0.21094,3.0625 c 0.12891,-0.0039 0.26953,0.03516 0.41406,0.13281 l 28.648,18.637 c 0.66406,0.43359 0.66406,1.2773 0,1.707 l -28.648,18.641 c -0.46094,0.30078 -0.89844,0.07031 -0.89844,-0.48047 l -0.0039,-38.008 c 0,-0.37891 0.20703,-0.61328 0.48438,-0.625 z'/%3E%3C/svg%3E");
+        mask-size: contain;
+        mask-repeat: no-repeat;
+        transition: var(--tr);
+        background: var(--color-white);
+        width: 6.25rem;
+        height: 6.25rem;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+
+    .entry-content-asset {
+        width: 100%;
+    }
+}
+
+.wp-block-embed__wrapper {
+    position: relative;
+    margin-bottom: 1rem;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+
+    iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+}

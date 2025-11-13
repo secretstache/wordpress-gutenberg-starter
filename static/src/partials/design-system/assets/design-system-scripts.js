@@ -1,46 +1,60 @@
+const openClasses = ['is-open', 'bg-[#232a59]', '[&>ul]:block', '[&>a>svg]:rotate-90'];
+const activeClasses = ['is-active', 'bg-[#39406a]', '[&>ul]:block', '[&>a]:border-b-4', '[&>a]:border-indigo-500', 'font-bold'];
+
 window.addEventListener('click', (e) => {
-    const target = e.target;
-    if (target.classList.contains('ds-link') && target.parentElement.classList.contains('is-parent-item')) {
+    // Find the ds-link element that was clicked or is an ancestor of the clicked element
+    const dsLink = e.target.closest('.ds-link');
+
+    if (dsLink && dsLink.parentElement.classList.contains('is-parent-item')) {
         e.preventDefault();
-        target
-            .closest('ul')
-            .querySelectorAll('.is-open')
-            .forEach((item) => {
-                if (item !== target.parentElement) {
-                    item.classList.remove('is-open');
-                }
-            });
-        target.parentElement.classList.toggle('is-open');
-    } else if (target.classList.contains('ds-hamburger') || target.closest('.ds-hamburger')) {
-        document.querySelector('.ds-hamburger').classList.toggle('is-active');
+        if (dsLink.parentElement.classList.contains('is-open')) {
+            dsLink.parentElement.classList.remove(...openClasses);
+        } else {
+            dsLink
+                .closest('ul')
+                .querySelectorAll('.is-open')
+                .forEach((item) => {
+                    if (item !== dsLink.parentElement) {
+                        item.classList.remove(...openClasses);
+                    }
+                });
+            dsLink.parentElement.classList.add(...openClasses);
+        }
     } else {
         document.querySelectorAll('.is-open').forEach((item) => {
-            item.classList.remove('is-open');
+            item.classList.remove(...openClasses);
         });
-
-        document.querySelector('.ds-hamburger').classList.remove('is-active');
     }
 });
+
 
 document.querySelector('#viewpr-content iframe')?.addEventListener('load', () => {
     document.querySelector('#viewpr-content iframe').contentWindow.document?.addEventListener('click', () => {
         document.querySelectorAll('.is-open').forEach((item) => {
-            item.classList.remove('is-open');
+            item.classList.remove(...openClasses);
         });
     });
 });
 
 const tabsPanels = document.querySelector('.ds-tabs');
+const tabsActiveClasses = ['is-active', 'relative', 'font-bold', 'after:block', 'after:absolute', 'after:bottom-[-2px]', 'after:left-0', 'after:bg-indigo-500', 'after:w-full', 'after:h-1'];
+
+document.querySelectorAll('.ds-tabs-nav__link')[0]?.classList.add(...tabsActiveClasses);
 
 document.querySelectorAll('.ds-tabs-nav__link').forEach((link) => {
     link.addEventListener('click', (e) => {
         e.preventDefault();
         if (!link.classList.contains('is-active')) {
-            link.closest('.ds-tabs-nav').querySelector('.is-active')?.classList.remove('is-active');
-            link.classList.add('is-active');
+            link.closest('.ds-tabs-nav')
+                .querySelector('.is-active')
+                ?.classList.remove(...tabsActiveClasses);
+            link.classList.add(...tabsActiveClasses);
 
+            tabsPanels.querySelector('.is-active')?.classList.add('hidden');
             tabsPanels.querySelector('.is-active')?.classList.remove('is-active');
+
             tabsPanels.querySelector(link.getAttribute('href'))?.classList.add('is-active');
+            tabsPanels.querySelector(link.getAttribute('href'))?.classList.remove('hidden');
         }
     });
 });
@@ -120,7 +134,7 @@ function viewpr(params) {
             links.innerHTML = links.innerHTML + '<li><a title="' + title + '" data-portsize=' + viewports[i].size + ' href="#">' + title + '</a></li>';
         }
     }
-    links.innerHTML += '<li><a class="fr-active" data-portsize="reset" href="#">' + defaultParams.reset + '<svg><use xlink:href="#' + defaultParams.reset + '"></use></svg></a></li>';
+    links.innerHTML += '<li><a class="fr-active text-white!" data-portsize="reset" href="#">' + defaultParams.reset + '<svg><use xlink:href="#' + defaultParams.reset + '"></use></svg></a></li>';
 
     // Just Do it!
     for (var i = 0; i < linklist.length; i++) {
@@ -128,15 +142,15 @@ function viewpr(params) {
             e.preventDefault();
 
             for (var i = 0; i < activeNav.length; i++) {
-                activeNav[i].classList.remove('fr-active');
+                activeNav[i].classList.remove('fr-active', 'text-white!');
             }
 
             if (this.getAttribute('data-portsize') == 'reset') {
-                this.classList.add('fr-active');
+                this.classList.add('fr-active', 'text-white!');
                 content.style.width = initWidth;
                 content.removeAttribute('fr-data');
             } else {
-                this.classList.add('fr-active');
+                this.classList.add('fr-active', 'text-white!');
                 content.style.width = this.getAttribute('data-portsize') + 'px';
                 content.setAttribute('fr-data', 'size-' + this.getAttribute('data-portsize'));
             }

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     title: 'Group',
     context: {
         innerContent: 'default',
@@ -8,7 +8,7 @@ module.exports = {
             title: 'Centered content',
             context: {
                 innerContent: 'default',
-                contentWidth: 500,
+                contentWidth: '500px',
             },
         },
     ],

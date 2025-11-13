@@ -2,9 +2,8 @@
 * @param {string} class
 * @param {string} style
 * @param {string} color
-* @param {object} bg - color | media (image, video) | lottie
+* @param {object} bg - color | media (image, video)
 * @param {string} id
-* @param {string} align - full | wide
 * @param {string} customStyle
 */
 
@@ -12,20 +11,30 @@
 
   {% from "macros/blocks.njk" import column, block %}
 
+  {% set bgType = 'bg-light' %}
+
+  {% if props.bg.color and props.bg.color in ['black']  %}
+    {% set bgType = 'bg-dark' %}
+  {% endif %}
+
+  {% if props.bg.media.video %}
+    {% set bgType = 'bg-dark' %}
+  {% endif %}
+
   {% set classes = ([
     props.class if props.class,
-    'align' + props.align if props.align,
     'is-style-' + props.customStyle if props.customStyle,
-    'has-background' if props.bg,
-    'spacing-mt-' + props.spacing.mt  if props.spacing.mt,
-    'spacing-mb-' + props.spacing.mb if props.spacing.mb,
-    'spacing-pt-' + props.spacing.pt  if props.spacing.pt,
-    'spacing-pb-' + props.spacing.pb if props.spacing.pb,
-    'spacing-mt-mobile-' + props.spacing.mobile.mt  if props.spacing.mobile.mt,
-    'spacing-mb-mobile-' + props.spacing.mobile.mb if props.spacing.mobile.mb,
-    'spacing-pt-mobile-' + props.spacing.mobile.pt  if props.spacing.mobile.pt,
-    'spacing-pb-mobile-' + props.spacing.mobile.pb if props.spacing.mobile.pb,
-    'animate-bg-color' if props.animateBgColor
+    'has-background group/sectionWrapper' if props.bg,
+    'has-' + props.bg.color + '-background-color' if props.bg.color,
+    bgType if props.bg.color or props.bg.media.video,
+    'md:mt-ssm-' + props.spacing.mt if props.spacing.mt,
+    'md:mb-ssm-' + props.spacing.mb if props.spacing.mb,
+    'md:pt-ssm-' + props.spacing.pt if props.spacing.pt,
+    'md:pb-ssm-' + props.spacing.pb if props.spacing.pb,
+    'max-md:mt-ssm-' + props.spacing.mobile.mt if props.spacing.mobile.mt,
+    'max-md:mb-ssm-' + props.spacing.mobile.mb if props.spacing.mobile.mb,
+    'max-md:pt-ssm-' + props.spacing.mobile.pt if props.spacing.mobile.pt,
+    'max-md:pb-ssm-' + props.spacing.mobile.pb if props.spacing.mobile.pb
   ]) | toClassNames %}
 
   {% set styles = ([
@@ -34,87 +43,36 @@
 
   {%  set id = ' id="' + props.id + '"' if props.id %}
 
-  <div class="wp-block-ssm-section-wrapper{{ classes }}"{{ styles }}{{ id }}>
+  <div class="wp-block-ssm-section-wrapper flex relative w-full [&.min-h-screen]:items-center {{ classes }}"{{ styles }}{{ id }}>
 
     {% if props.bg %}
 
-        {% set colorName =  'has-' + props.bg.color + '-background-color' %}
 
-        {% set bgClasses = ([
-          'has-media' if props.bg.media,
-          colorName if props.bg.color,
-          'has-overlay' if props.bg.media.overlay,
-          'has-' + props.bg.media.overlay + '-overlay' if props.bg.media.overlay,
-          'has-crescent-top-' + props.crescent.top if props.crescent.top,
-          'has-crescent-bottom-' + props.crescent.bottom if props.crescent.bottom,
-          'fit-' + props.bg.media.fit if props.bg.media.fit,
-          'position-' + props.bg.media.position if props.bg.media.position
-        ]) | toClassNames %}
+      <div class="wp-block-ssm-section-wrapper__background absolute  pointer-events-none h-full w-full left-0 top-0 overflow-hidden">
 
-          <div class="wp-block-ssm-section-wrapper__background{{ bgClasses }}"{% if props.animateBgColor %} data-bg-color="{{ colorName }}"{% endif %}>
+        {% if props.bg.media.image %}
 
-            {% if props.angle.top == 'right' %}
-              <div class="wp-block-ssm-section-wrapper__angle-top-right">
-                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="1440px" height="60px" viewBox="0 0 1440 60" style="enable-background:new 0 0 1440 60;" preserveAspectRatio="none">
-                  <path fill="#7692AB" d="M0,60L1440,0v60H0L0,60z"/>
-                  <path fill="#BACFFC" d="M0,60l1440-40v40H0L0,60z"/>
-                </svg>
-              </div>
-            {% endif %}
+          {% set mediaClasses = ([
+            'object-' + props.bg.media.position if props.bg.media.position,
+            'object-' + props.bg.media.fit if props.bg.media.fit,
+            'object-cover h-full' if not props.bg.media.fit and not props.bg.media.position,
+            'object-contain' if not props.bg.media.fit and props.bg.media.position
+          ]) | toClassNames %}
 
-            {% if props.angle.top == 'left' %}
-              <div class="wp-block-ssm-section-wrapper__angle-top-left">
-                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="1440px" height="60px" viewBox="0 0 1440 60" style="enable-background:new 0 0 1440 60;" preserveAspectRatio="none">
-                  <path fill="#7692AB" d="M1440,60H0L0,0L1440,60L1440,60z"/>
-                  <path fill="#BACFFC" d="M1440,60H0l0-40L1440,60L1440,60z"/>
-                </svg>
-              </div>
-            {% endif %}
+          <img alt="" src="{{ root }}{{ props.bg.media.image }}" class="w-full{{ mediaClasses }}">
 
-            {% if props.angle.bottom == 'left' %}
-              <div class="wp-block-ssm-section-wrapper__angle-bottom-left">
-                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="1440px" height="60px" viewBox="0 0 1440 60" style="enable-background:new 0 0 1440 60;" preserveAspectRatio="none">
-                  <path fill="#7692AB" d="M1440,0L0,60L0,0L1440,0L1440,0z"/>
-                  <path fill="#BACFFC" d="M1440,0L0,40L0,0L1440,0L1440,0z"/>
-                </svg>
-              </div>
-            {% endif %}
+          {% elif props.bg.media.video %}
 
-            {% if props.angle.bottom == 'right' %}
-              <div class="wp-block-ssm-section-wrapper__angle-bottom-right">
-                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="1440px" height="60px" viewBox="0 0 1440 60" style="enable-background:new 0 0 1440 60;" preserveAspectRatio="none">
-                  <path fill="#7692AB" d="M0,0l1440,0v60L0,0L0,0z"/>
-                  <path fill="#BACFFC" d="M0,0l1440,0v40L0,0L0,0z"/>
-                </svg>
-              </div>
-            {% endif %}
+          <video src="{{ root }}{{ props.bg.media.video }}" autoplay playsinline muted loop class="{{ mediaClasses }}"></video>
 
-            {% if props.bg.media.image %}
+          <div class="absolute inset-0 bg-blue-navy opacity-80 mix-blend-multiply"></div>
+        {% endif %}
 
-              <img alt="" src="{{ root }}{{ props.bg.media.image }}">
-
-              {% elif props.bg.media.video %}
-
-              <video src="{{ root }}{{ props.bg.media.video }}" autoplay playsinline muted loop></video>
-
-              {% elif props.bg.media.animation %}
-
-              <lottie-player
-                autoplay
-                loop
-                mode="normal"
-                preserveAspectRatio="xMidYMid slice"
-                src="https://lottie.host/85ae39f1-6726-4318-a56e-b5c7a0790826/v5rXMGNWmU.json"
-              >
-              </lottie-player>
-
-            {% endif %}
-
-          </div>
+      </div>
 
     {% endif %}
 
-    <div class="wp-block-ssm-section-wrapper__content">
+    <div class="wp-block-ssm-section-wrapper__content relative z-20 w-full is-layout-constrained">
 
       {% if props.innerContent %}
 

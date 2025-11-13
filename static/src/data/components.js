@@ -1,7 +1,9 @@
-const slugify = require('slugify');
-const requireGlob = require('require-glob');
+import { glob } from 'glob';
+import slugify from 'slugify';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-const isBlocks = process.env.project === 'blocks';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 function convertComponent(cmp, componentType) {
     const component = { ...cmp };
@@ -18,16 +20,17 @@ function convertComponent(cmp, componentType) {
     component.preview = component.preview || 'default';
     const parentSlug = component.slug || slugify(component.title.toLowerCase());
 
-    if (component.context.innerContent) {
-        component.context.innerContent = `${componentType}s/${component.name}/context/${component.context.innerContent}.njk`;
+    if (component.context?.innerContent) {
+        component.context.innerContent = `blocks/${component.name}/context/${component.context.innerContent}.njk`;
     }
+
     // Loop the variants, returning a merged combo of component, then variant
-    variants = variants.map((variant) => {
+    variants = variants?.map((variant) => {
         const variantSlug = slugify(variant.title.toLowerCase());
         const preview = variant.preview ? variant.preview || 'default' : component.preview || 'default';
 
-        if (variant.context.innerContent) {
-            variant.context.innerContent = `${componentType}s/${component.name}/context/${variant.context.innerContent}.njk`;
+        if (variant.context?.innerContent) {
+            variant.context.innerContent = `blocks/${component.name}/context/${variant.context.innerContent}.njk`;
         }
 
         return {
@@ -43,7 +46,7 @@ function convertComponent(cmp, componentType) {
             defaultTitle: variant.defaultTitle || '',
             slug: `${parentSlug}-${variantSlug}`,
         };
-    });
+    }) || [];
 
     // Return the main component and any variants
     return [
@@ -55,19 +58,9 @@ function convertComponent(cmp, componentType) {
     ];
 }
 
-function reducer(options, tr, fileObj) {
-    const tree = { ...tr };
-    if (!fileObj || fileObj.exports.hidden) return tree;
-    if (tree.components === undefined) tree.components = [];
-    const path = fileObj.path.replaceAll('\\', '/').split('/');
-    tree.components.push({
-        ...fileObj.exports,
-        name: path[path.length - 2],
-    });
-    return tree;
-}
-
 function createMenu(groups) {
+    if (!groups || groups.length === 0) return [];
+
     const menu = groups.map((group) => {
         const [
             parent,
@@ -78,87 +71,87 @@ function createMenu(groups) {
             title: parent.title,
             defaultTitle: parent.defaultTitle,
             url: `/design-system/${parent.type}/${parent.slug}/`,
-            children: variants?.map(({ originalTitle, slug, type }) => ({ title: originalTitle, url: `/design-system/${type}/${slug}/` })) || [],
+            children: variants?.map(({ originalTitle, slug, type }) => ({
+                title: originalTitle,
+                url: `/design-system/${type}/${slug}/`
+            })) || [],
         };
     });
 
     return menu.sort((a, b) => (a.title > b.title ? 1 : -1));
 }
-function prepareMenu(modulesGroups, templatesGroups) {
-    const moduleMenu = createMenu(modulesGroups);
-
-    const finalModuleMenu = [
-        {
-            title: 'Modules',
-            url: '#',
-            children: moduleMenu,
-        },
-    ];
-
-    const templateMenu = createMenu(templatesGroups);
-
-    const finaltemplateMenu = [
-        {
-            title: 'Templates',
-            url: '#',
-            children: templateMenu,
-        },
-    ];
-
-    return finalModuleMenu.concat(finaltemplateMenu);
-}
 
 function prepareBlocksMenu(blocksGroups) {
     const blockMenu = createMenu(blocksGroups);
 
-    const finalBlockMenu = [
+    const finalBlockMenu = blockMenu.length > 0 ? [
         {
             title: 'Blocks',
             url: '#',
             children: blockMenu,
         },
-    ];
+    ] : [];
 
     return finalBlockMenu;
 }
 
-module.exports = async function () {
-    if (isBlocks) {
-        // Pull in all the config files
-        const blocks = await requireGlob('../partials/blocks/**/*.config.js', { reducer, bustCache: true });
+async function loadComponents(pattern) {
+    const files = await glob(pattern, {
+        cwd: __dirname,
+        absolute: false
+    });
 
-        // Convert the components into our required format
-        const blocksGroups = blocks.components
-            .map((cmp) => {
-                return convertComponent(cmp, 'block');
-            })
-            .filter(Boolean);
 
-        // Return the components and the menu, broken down into categories
-        return {
-            components: blocksGroups.flat(),
-            menu: prepareBlocksMenu(blocksGroups),
-        };
-    } else {
-        const modules = await requireGlob('../partials/modules/**/*.config.js', { reducer, bustCache: true });
-        const templates = await requireGlob('../partials/templates/**/*.config.js', { reducer, bustCache: true });
+    const components = await Promise.all(
+        files.map(async (file) => {
+            try {
+                // Create proper file URL for import
+                const filePath = path.resolve(__dirname, file);
+                const fileUrl = `file://${filePath.replace(/\\/g, '/')}`;
 
-        // Convert the components into our required format
-        const modulesGroups = modules.components
-            .map((cmp) => {
-                return convertComponent(cmp, 'module');
-            })
-            .filter(Boolean);
-        const templatesGroups = templates.components
-            .map((cmp) => {
-                return convertComponent(cmp, 'template');
-            })
-            .filter(Boolean);
+                // Import the module with cache busting
+                const module = await import(`${fileUrl}?update=${Date.now()}`);
 
-        // Return the components and the menu, broken down into categories
-        return {
-            components: modulesGroups.concat(templatesGroups).flat(),
-            menu: prepareMenu(modulesGroups, templatesGroups),
-        };
-    }
-};
+                // Get the default export
+                const exports = module.default || module;
+
+                // Skip hidden components
+                if (exports.hidden) {
+                    return null;
+                }
+
+                // Extract component name from path
+                const pathParts = file.replaceAll('\\', '/').split('/');
+                const name = pathParts[pathParts.length - 2];
+
+                return {
+                    ...exports,
+                    name,
+                };
+            } catch (error) {
+                console.error(`❌ Error loading ${file}:`, error);
+
+                return null;
+            }
+        })
+    );
+
+    return components.filter(Boolean);
+}
+
+export default async function () {
+    // Blocks are located at static/src/partials/blocks/
+    // From static/src/data, that's ../partials/blocks/
+    const blocks = await loadComponents('../partials/blocks/**/*.config.js');
+
+    const blocksGroups = blocks
+        .map((cmp) => convertComponent(cmp, 'block'))
+        .filter(Boolean);
+
+    const result = {
+        components: blocksGroups.flat(),
+        menu: prepareBlocksMenu(blocksGroups),
+    };
+
+    return result;
+}

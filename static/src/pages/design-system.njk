@@ -4,162 +4,299 @@ title: Home
 
 {% extends "design-system/library.njk" %}
 
-{% set backgrounds = ["black", "red"] %}
-
-{% set colors = ["black", "red"] %}
-
-
-{% set alignmentJustify = {
-  'align-left': 'justify-content: flex-start;',
-  'align-right': 'justify-content: flex-end;',
-  'align-center': 'justify-content: center;',
-  'align-justify' : 'justify-content: space-between;',
-  'align-spaced': 'justify-content: space-around;',
-  'align-self-left': 'justify-self: flex-start;',
-  'align-self-right': 'justify-self: flex-end;',
-  'align-self-center': 'justify-self: center;',
-  'align-self-justify' : 'justify-self: space-between;',
-  'align-self-spaced': 'justify-self: space-around;'
-} %}
-
-{% set alignmentVertical = {
-  'align-top': 'align-items: flex-start;',
-  'align-bottom': 'align-items: flex-end;',
-  'align-middle': 'align-items: center;',
-  'align-stretch' : 'align-items: stretch;',
-  'align-self-top': 'align-self: flex-start;',
-  'align-self-bottom': 'align-self: flex-end;',
-  'align-self-middle': 'align-self: center;',
-  'align-self-stretch' : 'align-self: stretch;'
-} %}
-
-
-{% set TextAlignment = ["left", "right", "center", "justify"] %}
-
-{% set breakpoints = ['small', 'medium', 'large'] %}
-
-{% set spacings = {
-  '0': '0',
-  '1': '4',
-  '2': '8',
-  '3': '12',
-  '4': '16',
-  '5': '20',
-  '6': '24',
-  '7': '28',
-  '8': '32',
-  '9': '36',
-  '10': '40',
-  '11': '44',
-  '12': '48',
-  '14': '56',
-  '16': '64',
-  '20': '80',
-  '24': '96',
-  '28': '112',
-  '32': '128',
-  '36': '144',
-  '40': '160',
-  '44': '176',
-  '48': '192',
-  '52': '208',
-  '56': '224',
-  '60': '240',
-  '64': '256',
-  '72': '288',
-  '80': '320',
-  '96': '384'
-} %}
-
-{% set visibilityClasses = {
-  'hide': 'display: none;',
-  'show-for-sr': 'clip: rect(0, 0, 0, 0) !important;position: absolute !important;border: 0 !important;padding: 0 !important;width: 1px !important;height: 1px !important;overflow: hidden !important;'
-} %}
-
-
 {% block content %}
 
-  <div class="ds-page" style="padding-left: 0;padding-right: 0;">
+  <script>
+    /**
+     * Get CSS custom properties by prefix
+     * @param {string} prefix - The CSS variable prefix (e.g., '--color-')
+     * @returns {Object} Object with variable names (without prefix) as keys and values
+     */
+    function getCssVariables(prefix) {
+      const rootStyles = getComputedStyle(document.documentElement);
+      const variables = {};
 
-    <div class="grid-container">
+      Array.from(rootStyles).forEach(propertyName => {
+        if (propertyName.startsWith(prefix)) {
+          const varName = propertyName.slice(prefix.length);
+          const value = rootStyles.getPropertyValue(propertyName).trim();
 
-      <h2 class="ds-block-title">Backgrounds</h2>
+          if (value) {
+            variables[varName] = value;
+          }
+        }
+      });
 
-      <table class="ds-classes-table">
-        <thead>
-        <tr>
-          <th>Color</th>
-          <th width="30%">Class</th>
-          <th>Css variable</th>
-        </tr>
-        </thead>
+      return variables;
+    }
 
-        <tbody>
+    /**
+     * Convert rem to px (assuming 16px base)
+     * @param {string} value - Value in rem (e.g., "2rem")
+     * @returns {string} Value in px (e.g., "32px")
+     */
+    function remToPx(value) {
+      const num = parseFloat(value);
+      return Math.round(num * 16) + 'px';
+    }
 
-        {% for background in backgrounds %}
-          <tr class="ds-background">
-            <td>
-              <div class="ds-background__color bg-{{ background }}"></div>
+    /**
+     * Add px conversion to rem/em values
+     * @param {string} value - CSS value that might contain rem or em
+     * @param {boolean} convertEm - Whether to convert em units (false for relative properties like letter-spacing)
+     * @returns {string} Value with px conversion added
+     */
+    function addPxConversion(value, convertEm = false) {
+      // Replace rem values with "Xrem (Ypx)"
+      value = value.replace(/([\d.]+)(rem)/g, (match, num, unit) => {
+        return `${num}${unit} (${remToPx(match)})`;
+      });
+
+      // Only convert em if specified (not for letter-spacing, since it's font-size relative)
+      if (convertEm) {
+        value = value.replace(/([\d.]+)(em)/g, (match, num, unit) => {
+          const px = Math.round(parseFloat(num) * 16);
+          return `${num}${unit} (${px}px at 16px font)`;
+        });
+      }
+
+      return value;
+    }
+
+    /**
+     * Format clamp values to human-readable format
+     * @param {string} value - CSS value (could be clamp, rem, or px)
+     * @returns {string} Formatted human-readable value
+     */
+    function formatTextSize(value) {
+      // Check if it's a clamp function
+      const clampMatch = value.match(/clamp\(([^,]+),([^,]+),([^)]+)\)/);
+
+      if (clampMatch) {
+        const minValue = clampMatch[1].trim();
+        const maxValue = clampMatch[3].trim();
+
+        // Extract rem values
+        const minRem = minValue.match(/[\d.]+rem/)?.[0];
+        const maxRem = maxValue.match(/[\d.]+rem/)?.[0];
+
+        if (minRem && maxRem) {
+          return `Mobile: ${minRem} (${remToPx(minRem)}), Desktop: ${maxRem} (${remToPx(maxRem)})`;
+        }
+
+        return value; // Fallback to original if parsing fails
+      }
+
+      // Add px conversion for rem/em values (em with note)
+      return addPxConversion(value, true);
+    }
+
+    /**
+     * Format any value that might contain rem (but not em for relative properties)
+     * @param {string} value - CSS value
+     * @returns {string} Formatted value with px conversions
+     */
+    function formatWithPxConversion(value) {
+      return addPxConversion(value, false); // Don't convert em
+    }
+
+    /**
+     * Configuration for different CSS variable types
+     */
+    const variableConfigs = [
+      {
+        prefix: '--color-',
+        heading: 'Colors',
+        classPrefix: 'bg-',
+        type: 'color'
+      },
+      {
+        prefix: '--font-',
+        heading: 'Font Family',
+        classPrefix: 'font-',
+        exclude: (name) => name.startsWith('weight-'),
+        type: 'text'
+      },
+      {
+        prefix: '--font-weight-',
+        heading: 'Font Weight',
+        classPrefix: 'font-',
+        type: 'text'
+      },
+      {
+        prefix: '--container-',
+        heading: 'Container',
+        classPrefix: 'container-',
+        type: 'text',
+        formatter: formatWithPxConversion
+      },
+      {
+        prefix: '--text-',
+        heading: 'Text Size',
+        classPrefix: 'text-',
+        exclude: (name) => name.startsWith('shadow-'),
+        type: 'text-size',
+        formatter: formatTextSize
+      },
+      {
+        prefix: '--tracking-',
+        heading: 'Letter Spacing',
+        classPrefix: 'tracking-',
+        type: 'text'
+        // No formatter - em values are relative to font-size, so no conversion
+      },
+      {
+        prefix: '--leading-',
+        heading: 'Line Height',
+        classPrefix: 'leading-',
+        type: 'text',
+        formatter: formatWithPxConversion
+      },
+      {
+        prefix: '--radius-',
+        heading: 'Border Radius',
+        classPrefix: 'rounded-',
+        type: 'text',
+        formatter: formatWithPxConversion
+      }
+    ];
+
+    /**
+     * Generate table rows for a variable type
+     * @param {Object} variables - Object with variable names and values
+     * @param {Object} config - Configuration object
+     * @returns {string} HTML string for table rows
+     */
+    function generateTableRows(variables, config) {
+      const entries = Object.entries(variables);
+
+      // Apply exclude filter if exists
+      const filteredEntries = config.exclude
+        ? entries.filter(([name]) => !config.exclude(name))
+        : entries;
+
+      // Sort alphabetically
+      const sortedEntries = filteredEntries.sort(([a], [b]) => a.localeCompare(b));
+
+      return sortedEntries.map(([name, value]) => {
+        const className = `${config.classPrefix}${name}`;
+
+        // Format value if formatter exists
+        const displayValue = config.formatter ? config.formatter(value) : value;
+
+        // For color type, add a color swatch column
+        if (config.type === 'color') {
+          return `
+          <tr>
+            <td class="w-70 py-2 border-b border-[rgba(226,232,240,0.5)] text-[12px] pr-10">
+              <div
+                class="w-full h-12 rounded border border-[#e0e0e0] inline-block align-middle mr-2"
+                style="background-color: ${value}"
+                aria-label="Color swatch for ${name}"
+              ></div>
             </td>
-            <td>bg-{{ background }}</td>
-            <td>
-              var(--{{ background }})</td>
+            <td class="py-2 border-b border-[rgba(226,232,240,0.5)] text-[12px]">.${className}</td>
+            <td class="py-2 border-b border-[rgba(226,232,240,0.5)] text-[12px]">${displayValue}</td>
           </tr>
-        {% endfor %}
+        `;
+        }
 
+        // For text-size type, apply the class without fixed text-[12px]
+        if (config.type === 'text-size') {
+          return `
+          <tr>
+            <td class="w-70 py-2 border-b border-[rgba(226,232,240,0.5)] text-[12px]">.${className}</td>
+            <td class="py-2 border-b border-[rgba(226,232,240,0.5)] ${className}">${displayValue}</td>
+          </tr>
+        `;
+        }
+
+        // For other types, apply the class to demonstrate the value
+        return `
+        <tr>
+          <td class="w-70 py-2 border-b border-[rgba(226,232,240,0.5)] text-[12px]">.${className}</td>
+          <td class="py-2 border-b border-[rgba(226,232,240,0.5)] text-[12px] ${className}">${displayValue}</td>
+        </tr>
+      `;
+      }).join('');
+    }
+
+    /**
+     * Generate a complete table section for a variable type
+     * @param {Object} config - Configuration object
+     * @returns {string} HTML string for the complete section
+     */
+    function generateSection(config) {
+      const variables = getCssVariables(config.prefix);
+
+      // Skip if no variables found
+      if (Object.keys(variables).length === 0) {
+        return '';
+      }
+
+      const tableHeaders = config.type === 'color'
+        ? `
+        <tr>
+          <th class="text-left py-2 pb-2 border-b border-[rgb(226,232,240)]">Preview</th>
+          <th class="text-left py-2 pb-2 border-b border-[rgb(226,232,240)]">Class</th>
+          <th class="text-left py-2 pb-2 border-b border-[rgb(226,232,240)]">Value</th>
+        </tr>
+      `
+        : `
+        <tr>
+          <th class="text-left py-2 pb-2 border-b border-[rgb(226,232,240)]">Class</th>
+          <th class="text-left py-2 pb-2 border-b border-[rgb(226,232,240)]">Value</th>
+        </tr>
+      `;
+
+      return `
+      <h2 class="text-[24px] font-bold text-[#6b7ad9] font-['Open_Sans',helveticaneue,helvetica,arial] mb-10 pb-2.5 border-b border-solid mt-20">
+        ${config.heading}
+      </h2>
+
+      <table class="w-full border-collapse">
+        <thead>
+          ${tableHeaders}
+        </thead>
+        <tbody>
+          ${generateTableRows(variables, config)}
         </tbody>
       </table>
+    `;
+    }
 
-      <h2 class="ds-block-title">Colors</h2>
+    /**
+     * Generate all sections
+     */
+    function generateAllSections() {
+      return variableConfigs
+        .map(config => generateSection(config))
+        .filter(section => section !== '') // Remove empty sections
+        .join('');
+    }
+  </script>
 
-      <table class="ds-classes-table">
-        <thead>
-        <tr>
-          <th>Color</th>
-          <th>Css variable</th>
-        </tr>
-        </thead>
-
-        <tbody>
-
-        {% for color in colors %}
-          <tr class="ds-background">
-            <td>
-              <div class="ds-background__color" style="background: var(--{{ color }})"></div>
-            </td>
-            <td>
-              var(--{{ color }})</td>
-          </tr>
-        {% endfor %}
-
-        </tbody>
-      </table>
-
-
-      <h2 class="ds-block-title">Typography</h2>
-
-      <div class="ds-typography">
-
-        <h1 class="has-h-1-large-font-size">h1 large heading</h1>
-        <h1>h1 heading</h1>
-        <h2>h2 heading</h2>
-        <h3>h3 heading</h3>
-        <h4>h4 heading</h4>
-        <h5>h5 heading</h5>
-        <h6>h6 heading</h6>
-
-        <p><a href="">Default text. Lorem ipsum dolor sit amet</a>, consectetur adipisicing elit. Ab architecto consectetur cumque deleniti dolorem explicabo facere hic inventore libero maxime, numquam pariatur porro repellendus saepe tempore vel voluptatem voluptatibus, voluptatum!</p>
-
-        <p class="has-body-large-font-size"><a href="">Large text. Lorem ipsum dolor sit amet</a>, consectetur adipisicing elit. Ab architecto consectetur cumque deleniti dolorem explicabo facere hic inventore libero maxime, numquam pariatur porro repellendus saepe tempore vel voluptatem voluptatibus, voluptatum!</p>
-
-        <p class="has-body-medium-font-size"><a href="">Medium text. Lorem ipsum dolor sit amet</a>, consectetur adipisicing elit. Ab architecto consectetur cumque deleniti dolorem explicabo facere hic inventore libero maxime, numquam pariatur porro repellendus saepe tempore vel voluptatem voluptatibus, voluptatum!</p>
-
-        <p class="has-body-small-font-size"><a href="">Small text. Lorem ipsum dolor sit amet</a>, consectetur adipisicing elit. Ab architecto consectetur cumque deleniti dolorem explicabo facere hic inventore libero maxime, numquam pariatur porro repellendus saepe tempore vel voluptatem voluptatibus, voluptatum!</p>
-
-        <p class="has-body-tiny-font-size"><a href="">Tiny text. Lorem ipsum dolor sit amet</a>, consectetur adipisicing elit. Ab architecto consectetur cumque deleniti dolorem explicabo facere hic inventore libero maxime, numquam pariatur porro repellendus saepe tempore vel voluptatem voluptatibus, voluptatum!</p>
+  <div class="p-10 px-0">
+    <div class="max-w-[1280px] mx-auto px-5">
+      <div id="design-system-output">
+        <!-- All sections will be injected here -->
       </div>
-
     </div>
-
   </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const outputContainer = document.getElementById('design-system-output');
+
+      if (outputContainer) {
+        outputContainer.innerHTML = generateAllSections();
+      }
+    });
+  </script>
+
+
+
 {% endblock %}
+
+
+

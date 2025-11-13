@@ -1,0 +1,105 @@
+.wp-block-table {
+    overflow-x: auto;
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    thead {
+        border-bottom: 3px solid;
+    }
+
+    tfoot {
+        border-top: 3px solid;
+    }
+
+    td,
+    th {
+        border: 1px solid;
+        padding: 0.5em;
+    }
+
+    .has-fixed-layout {
+        width: 100%;
+        table-layout: fixed;
+
+        td,
+        th {
+            word-break: break-word;
+        }
+    }
+
+    &.aligncenter,
+    &.alignleft,
+    &.alignright {
+        display: table;
+        width: auto;
+
+        td,
+        th {
+            word-break: break-word;
+        }
+    }
+
+    .has-border-color td,
+    .has-border-color th,
+    .has-border-color tr,
+    .has-border-color > * {
+        border-color: inherit;
+    }
+
+    table[style*="border-top-color"] tr:first-child,
+    table[style*="border-top-color"] tr:first-child td,
+    table[style*="border-top-color"] tr:first-child th,
+    table[style*="border-top-color"] > *,
+    table[style*="border-top-color"] > * td,
+    table[style*="border-top-color"] > * th {
+        border-top-color: inherit;
+    }
+
+    table[style*="border-top-color"] tr:not(:first-child) {
+        border-top-color: initial;
+    }
+    table[style*="border-right-color"] td:last-child,
+    table[style*="border-right-color"] th,
+    table[style*="border-right-color"] tr,
+    table[style*="border-right-color"] > * {
+        border-right-color: inherit;
+    }
+
+    table[style*="border-bottom-color"] tr:last-child,
+    table[style*="border-bottom-color"] tr:last-child td,
+    table[style*="border-bottom-color"] tr:last-child th,
+    table[style*="border-bottom-color"] > *,
+    table[style*="border-bottom-color"] > * td,
+    table[style*="border-bottom-color"] > * th {
+        border-bottom-color: inherit;
+    }
+
+    table[style*="border-bottom-color"] tr:not(:last-child) {
+        border-bottom-color: initial;
+    }
+
+    table[style*="border-left-color"] td:first-child,
+    table[style*="border-left-color"] th,
+    table[style*="border-left-color"] tr,
+    table[style*="border-left-color"] > * {
+        border-left-color: inherit;
+    }
+
+    table[style*="border-style"] td,
+    table[style*="border-style"] th,
+    table[style*="border-style"] tr,
+    table[style*="border-style"] > * {
+        border-style: inherit;
+    }
+
+    table[style*="border-width"] td,
+    table[style*="border-width"] th,
+    table[style*="border-width"] tr,
+    table[style*="border-width"] > * {
+        border-width: inherit;
+        border-style: inherit;
+    }
+}

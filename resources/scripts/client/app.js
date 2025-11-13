@@ -15,15 +15,20 @@ domReady(async () => {
     // stop autoplay video when out of viewport
     Array.from(document.querySelectorAll('video[autoplay]')).map((video) => PlayVideoInViewportOnly(video));
 
+    Header(document.querySelector('.site-header'));
+
+    DropdownMenu();
+
     const offcanvas = document.querySelector('.offcanvas');
     if (offcanvas) {
         new Offcanvas(offcanvas);
     }
 
-    const header = document.querySelector('.site-header');
-    if (header) {
-        new Header(header);
-    }
-
-    DropdownMenu();
+    // blocks
 });
+
+import.meta.glob([
+    '../../images/**',
+    '!../../images/cms/**',
+    '../../fonts/**',
+]);

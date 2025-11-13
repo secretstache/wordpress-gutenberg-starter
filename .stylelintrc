@@ -4,6 +4,12 @@
   ],
   "rules": {
     "declaration-empty-line-before": null,
-    "media-feature-range-notation": null
+    "media-feature-range-notation": null,
+    "function-no-unknown": [
+      true,
+      {
+        "ignoreFunctions": ["customClamp", "rem"]
+      }
+    ]
   }
 }

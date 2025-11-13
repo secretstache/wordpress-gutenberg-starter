@@ -3,3 +3,14 @@ title: Homepage
 layout: default
 tags: page
 ---
+{% from "macros/blocks.njk" import column, block %}
+
+{% call block("section-wrapper", {}) %}
+
+    {{ block("heading", {
+      "level": 2,
+      "fontSize": "h-1",
+      "content": "Homepage"
+    }) }}
+
+{% endcall %}

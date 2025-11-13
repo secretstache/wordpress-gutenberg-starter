@@ -1,0 +1,34 @@
+@layer base {
+    .wp-block-ssm-section-wrapper:first-of-type {
+        @apply mt-0;
+    }
+
+    .wp-block-ssm-section-wrapper:last-of-type {
+        @apply max-md:mb-ssm-3 md:mb-ssm-4;
+    }
+
+    .wp-block-ssm-section-wrapper:not(:first-of-type) {
+        @apply max-md:mt-ssm-3 md:mt-ssm-4;
+    }
+
+    .wp-block-ssm-section-wrapper.has-background {
+        @apply max-md:py-ssm-3 md:py-ssm-5;
+    }
+
+    .wp-block-ssm-section-wrapper:last-of-type.has-background {
+        @apply mb-0;
+    }
+
+    .wp-block-ssm-section-wrapper.has-background + .wp-block-ssm-section-wrapper.has-background {
+        @apply mt-0;
+    }
+
+    .wp-block-ssm-section-wrapper.has-background + .wp-block-ssm-section-wrapper:has(.wp-block-ssm-masthead:only-child),
+    .wp-block-ssm-section-wrapper:has(.wp-block-ssm-masthead:only-child) + .wp-block-ssm-section-wrapper.has-background {
+        @apply mt-0;
+    }
+
+    .wp-block-ssm-section-wrapper__content > :is(.is-layout-constrained, .is-layout-flow) {
+        padding-inline: unset;
+    }
+}

@@ -6,69 +6,104 @@ pagination:
 permalink: "design-system/{{ component.type }}/{{ component.slug }}/"
 title: "Components"
 ---
-
+{% from "macros/blocks.njk" import column, block %}
 {% extends "design-system/library.njk" %}
 
 {% block content %}
 
+  <div class="ds-tabs">
 
-    <div class="ds-tabs">
+    <div id="demo" class="hidden [&.is-active]:block is-active">
 
-        <div id="demo" class="ds-tabs__panel is-active">
+      <div class="pb-0">
 
-            <div class="ds-tabs__content">
+        <div class="bg-[#f4f4f4]">
 
-                <div class="viewport-wrapper">
+          <div id="viewpr-content" class="mx-auto bg-white min-w-0 max-w-full">
 
-                    <div id="viewpr-content" class="viewport-content">
+            <iframe src="{{ root }}/design-system/{{ component.type }}/full/{{ component.slug }}/" sandbox="allow-same-origin allow-scripts allow-forms allow-modals" style="" vspace="0" hspace="0" class="block flex-grow m-0 border-0 p-0 w-full min-h-[calc(var(--vh,1vh)*100-57px)] overflow-hidden"></iframe>
 
-                            <iframe src="{{ root }}/design-system/{{ component.type }}/full/{{ component.slug }}/" sandbox="allow-same-origin allow-scripts allow-forms allow-modals" style="" vspace="0" hspace="0"></iframe>
+            {% set comp %}
 
-                            {% set comp %}
+              {% include 'design-system/demo.njk' %}
 
-                                {% include 'design-system/demo.njk' %}
+            {% endset %}
 
-                            {% endset %}
-
-                    </div>
-
-                </div>
-
-            </div>
+          </div>
 
         </div>
 
-        <div id="code-tab" role="tabpanel" class="ds-tabs__panel">
-
-            <div class="ds-tabs__content">
-
-                {% include 'design-system/code.njk' %}
-
-            </div>
-
-        </div>
-
-        <div id="context-tab" role="tabpanel" class="ds-tabs__panel">
-
-            <div class="ds-tabs__content">
-
-                {% include 'design-system/context.njk' %}
-
-            </div>
-
-        </div>
-
-        <div id="options-tab" role="tabpanel" class="ds-tabs__panel">
-
-            <div class="ds-tabs__content">
-
-                {% include 'design-system/options.njk' %}
-
-            </div>
-
-        </div>
+      </div>
 
     </div>
 
+    <div id="code-tab" role="tabpanel" class="hidden [&.is-active]:block p-5">
+
+      <div class="pb-0">
+
+        {% include 'design-system/code.njk' %}
+
+      </div>
+
+    </div>
+
+    <div id="context-tab" role="tabpanel" class="hidden [&.is-active]:block p-5">
+
+      <div class="pb-0">
+
+        {% include 'design-system/context.njk' %}
+
+      </div>
+
+    </div>
+
+    <div id="options-tab" role="tabpanel" class="hidden [&.is-active]:block p-5">
+
+      <div class="pb-0">
+
+        {% include 'design-system/options.njk' %}
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Tab functionality
+      const tabLinks = document.querySelectorAll('.ds-tabs-nav__link');
+      const tabPanels = document.querySelectorAll('.ds-tabs > div[id]');
+
+      tabLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+
+          // Remove active class from all links
+          tabLinks.forEach(l => l.classList.remove('is-active'));
+
+          // Add active class to current link
+          this.classList.add('is-active');
+
+          // Hide all panels
+          tabPanels.forEach(panel => panel.classList.remove('is-active'));
+
+          // Show the target panel
+          const targetId = this.getAttribute('href').substring(1);
+          document.getElementById(targetId).classList.add('is-active');
+        });
+      });
+
+      // Set first tab as active by default if none is active
+      if (!document.querySelector('.ds-tabs-nav__link.is-active')) {
+        const firstTab = document.querySelector('.ds-tabs-nav__link');
+        if (firstTab) {
+          firstTab.classList.add('is-active');
+          const targetId = firstTab.getAttribute('href').substring(1);
+          document.getElementById(targetId).classList.add('is-active');
+        }
+      }
+    });
+  </script>
 
 {% endblock %}

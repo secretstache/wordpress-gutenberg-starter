@@ -1,0 +1,41 @@
+@layer utility {
+    .site-header {
+        .site-header__menu {
+            > li {
+                @apply py-2;
+
+                /* 1st level links */
+                > a {
+                    @apply relative transition-colors duration-300 block;
+                }
+
+                /* has submenu */
+                &.menu-item-has-children {
+                    /* submenu styles */
+                    ul {
+                        li {
+                            @apply mb-6 last:mb-0;
+                        }
+                    }
+
+                    &:last-of-type {
+                        > ul {
+                            @apply right-0 left-auto;
+                        }
+                    }
+
+                    [aria-expanded="true"],
+                    > a:hover {
+                        + ul {
+                            @apply visible opacity-100 pointer-events-auto;
+                        }
+                    }
+
+                    .dropdown-arrow {
+                        @apply w-3 ml-2;
+                    }
+                }
+            }
+        }
+    }
+}

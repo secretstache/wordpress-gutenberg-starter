@@ -79,9 +79,8 @@ const defaultConfig = {
         if (element.getAttribute('data-background-delimiter')) {
             backgroundImageDelimiter = element.getAttribute('data-background-delimiter');
         }
-
+        /* eslint-disable */
         if (element.getAttribute('data-background-image')) {
-            // eslint-disable-next-line max-len
             element.style.backgroundImage = `url('${element.getAttribute('data-background-image').split(backgroundImageDelimiter).join("'),url('")}')`;
         } else if (element.getAttribute('data-background-image-set')) {
             const imageSetLinks = element.getAttribute('data-background-image-set').split(backgroundImageDelimiter);
@@ -90,10 +89,10 @@ const defaultConfig = {
             if (imageSetLinks.length === 1) {
                 element.style.backgroundImage = firstUrlLink;
             } else {
-                // eslint-disable-next-line max-len
                 element.setAttribute('style', (element.getAttribute('style') || '') + `background-image: ${firstUrlLink}; background-image: -webkit-image-set(${imageSetLinks}); background-image: image-set(${imageSetLinks})`);
             }
         }
+        /* eslint-enable */
 
         if (element.getAttribute('data-toggle-class')) {
             element.classList.toggle(element.getAttribute('data-toggle-class'));

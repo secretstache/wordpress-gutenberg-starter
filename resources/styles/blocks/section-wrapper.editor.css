@@ -1,0 +1,115 @@
+:root :where(.editor-styles-wrapper) :where(.is-layout-flow) {
+    /* First section margin-top */
+    :where(.wp-block-ssm-section-wrapper:first-of-type:not([class*=" md:mt-ssm-"])) {
+        @apply md:mt-0;
+    }
+
+    :where(.wp-block-ssm-section-wrapper:first-of-type:not([class*="max-md:mt-ssm-"])) {
+        @apply max-md:mt-0;
+    }
+
+    /* Last section margin-bottom */
+    :where(.wp-block-ssm-section-wrapper:last-of-type:not([class*=" md:mb-ssm-"])) {
+        @apply md:mb-ssm-4;
+    }
+
+    :where(.wp-block-ssm-section-wrapper:last-of-type:not([class*="max-md:mb-ssm-"])) {
+        @apply max-md:mb-ssm-3;
+    }
+
+    /* All sections except the first one margin-top */
+    :where(.wp-block-ssm-section-wrapper:not(:first-of-type):not([class*=" md:mt-ssm-"])) {
+        @apply md:mt-ssm-4;
+    }
+
+    :where(.wp-block-ssm-section-wrapper:not(:first-of-type):not([class*="max-md:mt-ssm-"])) {
+        @apply max-md:mt-ssm-3;
+    }
+
+    /* Section with background paddings*/
+    :where(.wp-block-ssm-section-wrapper.has-background:not([class*=" md:pt-ssm-"])) {
+        @apply md:pt-ssm-5;
+    }
+
+    :where(.wp-block-ssm-section-wrapper.has-background:not([class*=" md:pb-ssm-"])) {
+        @apply md:pb-ssm-5;
+    }
+
+    :where(.wp-block-ssm-section-wrapper.has-background:not([class*="max-md:pt-ssm-"])) {
+        @apply max-md:pt-ssm-3;
+    }
+
+    :where(.wp-block-ssm-section-wrapper.has-background:not([class*="max-md:pb-ssm-"])) {
+        @apply max-md:pb-ssm-3;
+    }
+
+    /* Section with background last child margin-bottom*/
+    :where(.wp-block-ssm-section-wrapper:last-of-type.has-background:not([class*=" md:mb-ssm-"])) {
+        @apply md:mb-0;
+    }
+
+    :where(.wp-block-ssm-section-wrapper:last-of-type.has-background:not([class*="max-md:mb-ssm-"])) {
+        @apply max-md:mb-0;
+    }
+
+    /* Section with background + section with background margin-top */
+    :where(.wp-block-ssm-section-wrapper.has-background + .wp-block-ssm-section-wrapper.has-background:not([class*=" md:mt-ssm-"])) {
+        @apply md:mt-0;
+    }
+
+    :where(.wp-block-ssm-section-wrapper.has-background + .wp-block-ssm-section-wrapper.has-background:not([class*="max-md:mt-ssm-"])) {
+        @apply max-md:mt-0;
+    }
+
+    @media (--max-md) {
+        .max-md\:mt-ssm-1 {
+            margin-top: var(--spacing-ssm-1);
+        }
+
+        .max-md\:mt-ssm-2 {
+            margin-top: var(--spacing-ssm-2);
+        }
+
+        .max-md\:mt-ssm-3 {
+            margin-top: var(--spacing-ssm-3);
+        }
+
+        .max-md\:mt-ssm-4 {
+            margin-top: var(--spacing-ssm-4);
+        }
+
+        .max-md\:mt-ssm-5 {
+            margin-top: var(--spacing-ssm-5);
+        }
+
+        .max-md\:mt-ssm-6 {
+            margin-top: var(--spacing-ssm-6);
+        }
+    }
+
+    @media (--md) {
+        .md\:mt-ssm-1 {
+            margin-top: var(--spacing-ssm-1);
+        }
+
+        .md\:mt-ssm-2 {
+            margin-top: var(--spacing-ssm-2);
+        }
+
+        .md\:mt-ssm-3 {
+            margin-top: var(--spacing-ssm-3);
+        }
+
+        .md\:mt-ssm-4 {
+            margin-top: var(--spacing-ssm-4);
+        }
+
+        .md\:mt-ssm-5 {
+            margin-top: var(--spacing-ssm-5);
+        }
+
+        .md\:mt-ssm-6 {
+            margin-top: var(--spacing-ssm-6);
+        }
+    }
+}

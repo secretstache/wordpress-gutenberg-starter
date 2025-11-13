@@ -1,6 +1,6 @@
-module.exports = {
+export default {
     title: 'Separator',
     context: {
-        background: 'primary',
+        background: 'black',
     },
 };

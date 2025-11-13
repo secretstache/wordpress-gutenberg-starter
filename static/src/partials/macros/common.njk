@@ -6,10 +6,10 @@
 
         {% for link in props.nav %}
 
-            <li>
+            <li class="relative group/menuLi flex items-center{% if link.submenu %} menu-item-has-children{% endif %}">
 
                 {% set linkClasses = ([
-                    'peer',
+                    'peer !no-underline',
                     props.linkClass if  props.linkClass,
                     props.currentlinkClass if props.currentPage == link.url and props.currentlinkClass
                 ]) | toClassNames %}
@@ -21,12 +21,21 @@
 
                 <a href="{{ root }}{{ link.url }}" class="{{ linkClasses }}"{{ linkAttributes | safe }}>{{ link.name }}</a>
 
+              {% set submenuClasses = ([
+                'absolute left-0 z-10 invisible pointer-events-none opacity-0 transition-all duration-300',
+                props.submenuClass
+              ]) | toClassNames %}
+
+              {% set submenuLinkClasses = ([
+                props.submenuLinkClass
+              ]) | toClassNames %}
+
                 {%if link.submenu %}
                     {{ menu({
                         nav: link.submenu,
                         currentPage: props.currentPage,
-                        menuClass: props.submenuClass,
-                        linkClass: props.submenuLinkClass,
+                        menuClass: submenuClasses,
+                        linkClass: submenuLinkClasses,
                         currentlinkClass: props.submenuCurrentlinkClass
                     }) }}
 

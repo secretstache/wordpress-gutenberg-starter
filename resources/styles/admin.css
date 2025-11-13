@@ -2,11 +2,6 @@
   display: block !important;
 }
 
-.post-type-ssm_team th#team_headshot_col {
+.post-type-fpe_team th#team_headshot_col {
   width: 15%;
-}
-
-.postbox#tagsdiv-ssm_location_neighborhood,
-.postbox#tagsdiv-ssm_department {
-  display: none !important;
 }

@@ -1,0 +1,108 @@
+@layer base {
+    body {
+        color: var(--body-color);
+    }
+
+    h1 {
+        @apply h1;
+    }
+
+    h2 {
+        @apply h2;
+    }
+
+    h3 {
+        @apply h3;
+    }
+
+    h4 {
+        @apply h4;
+    }
+
+    h5 {
+        @apply h5;
+    }
+
+    h6 {
+        @apply h6;
+    }
+
+    mark {
+        @apply bg-transparent;
+    }
+
+    b,
+    strong {
+        font-weight: 700;
+    }
+
+    a {
+        color: inherit;
+        text-decoration: inherit;
+    }
+
+    :where(p) a {
+        @apply hover:underline;
+    }
+
+    :focus-visible {
+        transition: all 0.2s ease-in-out;
+        outline: 2px solid #007bff;
+        outline-offset: 2px;
+        box-shadow: 0 0 0 4px rgb(0 123 255 / 40%);
+    }
+}
+
+@layer utilities {
+    .has-2-xl-font-size {
+        @apply text-2xl;
+    }
+
+    .has-xl-font-size {
+        @apply text-xl;
+    }
+
+    .has-lg-font-size {
+        @apply text-lg;
+    }
+
+    .has-base-font-size {
+        @apply text-base;
+    }
+
+    .has-sm-font-size {
+        @apply text-sm;
+    }
+
+    .has-xs-font-size {
+        @apply text-xs;
+    }
+
+    .has-h-1-font-size {
+        @apply h1;
+    }
+
+    .has-h-2-font-size {
+        @apply h2;
+    }
+
+    .has-h-3-font-size {
+        @apply h3;
+    }
+
+    .has-h-4-font-size {
+        @apply h4;
+    }
+
+    .has-h-5-font-size {
+        @apply h5;
+    }
+
+    .has-h-6-font-size {
+        @apply h6;
+    }
+
+    .text-inherit {
+        color: inherit;
+    }
+}

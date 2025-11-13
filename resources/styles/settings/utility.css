@@ -1,0 +1,42 @@
+@utility container {
+    margin-inline: auto;
+    padding-inline: var(--spacing-container-padding);
+    max-width: var(--container-default);
+}
+
+@utility container-wide {
+    margin-inline: auto;
+    padding-inline: var(--spacing-container-padding);
+    max-width: var(--container-wide);
+}
+
+@utility container-full {
+    margin-inline: calc(50% - (var(--vw, 1vw) * 50));
+    padding-inline: var(--spacing-container-padding);
+    width: calc(var(--vw, 1vw) * 100);
+    max-width: calc(var(--vw, 1vw) * 100);
+}
+
+@utility h1 {
+    font-size: var(--text-h1);
+}
+
+@utility h2 {
+    font-size: var(--text-h2);
+}
+
+@utility h3 {
+    font-size: var(--text-h3);
+}
+
+@utility h4 {
+    font-size: var(--text-h4);
+}
+
+@utility h5 {
+    font-size: var(--text-h5);
+}
+
+@utility h6 {
+    font-size: var(--text-h6);
+}

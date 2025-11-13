@@ -95,6 +95,8 @@ export class Offcanvas extends BaseComponent {
 
             this._element.classList.add(CLASS_NAME_SHOW);
             this._element.classList.remove(CLASS_NAME_SHOWING);
+            this._element.removeAttribute('inert');
+
             EventHandler.trigger(this._element, EVENT_SHOWN, { relatedTarget });
         };
 
@@ -126,6 +128,7 @@ export class Offcanvas extends BaseComponent {
             this._element.classList.remove(CLASS_NAME_SHOW, CLASS_NAME_HIDING);
             this._element.removeAttribute('aria-modal');
             this._element.removeAttribute('role');
+            this._element.setAttribute('inert', true);
 
             if (!this._config.scroll) {
                 new ScrollbarHelper().reset();

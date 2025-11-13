@@ -1,0 +1,48 @@
+.wp-block-image {
+    @apply block relative;
+    margin-top: unset;
+    margin-bottom: unset;
+
+    img {
+        @apply block overflow-hidden;
+    }
+
+    a {
+        @apply block;
+    }
+
+    .wp-element-caption {
+        @apply mt-4;
+    }
+
+    &.aligncenter {
+        @apply text-center;
+
+        img {
+            @apply md:ml-auto md:mr-auto;
+        }
+    }
+
+    &.alignright {
+        img {
+            @apply md:ml-auto;
+        }
+    }
+
+    &.alignfull {
+        img {
+            @apply w-full;
+        }
+    }
+}
+
+.is-layout-flow > .alignright,
+.is-layout-flow > .alignleft,
+.is-layout-constrained > .alignleft,
+.is-layout-constrained > .alignright {
+    @media (--max-md) {
+        float: none !important;
+        margin-inline-start: unset !important;
+        margin-inline-end: unset !important;
+    }
+}

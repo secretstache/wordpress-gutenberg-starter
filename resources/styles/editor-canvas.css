@@ -1,8 +1,44 @@
-@import "tailwindcss";
+@import "tailwindcss" theme(static);
 @import "@secretstache/wordpress-gutenberg/build/editor-canvas.css";
+
+@import "./settings/media.css";
+@import "./settings/source.css";
+@import "./settings/theme.css";
+@import "./settings/utility.css";
+@import "./settings/variant.css";
+@import "./settings/safelist.css";
+@import "./common/layout.css";
+@import "./common/typography.css";
+@import "./common/backgrounds.css";
+
+/* globals */
+@import "./global/site-header.css";
+
+/* core blocks */
+@import "./blocks/button.css";
+@import "./blocks/columns.css";
+@import "./blocks/form.css";
+@import "./blocks/gallery.css";
+@import "./blocks/group.css";
+@import "./blocks/heading.css";
+@import "./blocks/image.css";
+@import "./blocks/list.css";
+@import "./blocks/separator.css";
+@import "./blocks/table.css";
+@import "./blocks/video.css";
+
+/* custom blocks */
+@import "./blocks/section-wrapper.css";
+@import "./blocks/section-wrapper.editor.css";
 
 .editor-styles-wrapper {
     .block-editor-block-list__layout.is-root-container {
-        @apply overflow-hidden font-sans;
+        @apply overflow-clip;
+
+        :focus-visible {
+            transition: unset;
+            outline: none;
+            box-shadow: none;
+        }
     }
 }

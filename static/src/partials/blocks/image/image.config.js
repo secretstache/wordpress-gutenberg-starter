@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     title: 'Image',
     context: {
         src: '/assets/images/cms/placeholder.svg',

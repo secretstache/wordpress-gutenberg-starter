@@ -1,0 +1,33 @@
+.wp-block-group {
+    &.has-background {
+        @apply p-4;
+    }
+
+    &.is-layout-flex {
+        @apply flex;
+
+        &.is-vertical {
+            @apply flex-col items-start;
+        }
+    }
+
+    &.is-nowrap {
+        @apply flex-nowrap;
+    }
+}
+
+.is-content-justification-space-between {
+    @apply justify-between;
+}
+
+.is-content-justification-center {
+    @apply justify-center;
+}
+
+.is-content-justification-left {
+    @apply justify-start;
+}
+
+.is-content-justification-right {
+    @apply justify-end;
+}
