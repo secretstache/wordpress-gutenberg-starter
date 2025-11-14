@@ -1,0 +1,16 @@
+{
+  "translation-revision-date": "2025-09-18 14:13+0000",
+  "generator": "manual",
+  "source": "wp-includes/js/dist/block-editor.min.js",
+  "domain": "default",
+  "locale_data": {
+    "default": {
+      "": {
+        "domain": "default",
+        "lang": "en_US",
+        "plural-forms": "nplurals=2; plural=n != 1;"
+      },
+      "Alignment option\u0004None": ["Thin"]
+    }
+  }
+}
