@@ -288,35 +288,58 @@ add_filter('block_categories_all', function ($categories) {
 * Add bg-dark & bg-light classes to blocks with the background
 */
 add_filter('render_block', function ( $block_content, $block ) {
-    $darkColors = [
+    $dark_colors = [
         'black',
     ];
 
-    $lightColors = [
-        'white',
+    $BACKGROUND_TYPE = [
+        'COLOR'     => 'color',
+        'IMAGE'     => 'image',
+        'VIDEO'     => 'video',
     ];
 
-    if ( isset( $block['attrs']['backgroundColor'] ) && ! empty( $block['attrs']['backgroundColor'] ) ) {
-
-        $background_color = $block['attrs']['backgroundColor']['slug'] ?? $block['attrs']['backgroundColor'];
-
-        $custom_dark_class = ( in_array($background_color, $darkColors) ? 'bg-dark' : null );
-        $custom_light_class = ( in_array($background_color, $lightColors) ? 'bg-light' : null );
-
-        if ( $custom_dark_class || $custom_light_class ){
-            $custom_bg_class = implode(' ', [
-                $custom_dark_class,
-                $custom_light_class,
-            ]);
-
-            $block_content = preg_replace(
-                '/(<[^>]+class="[^"]*)"/',
-                '$1 ' . $custom_bg_class . '"',
-                $block_content,
-                1
-            );
+    $get_background_class = function ( $background_type, $background_color ) use ( $dark_colors, $BACKGROUND_TYPE ) {
+        if ( empty( $background_type ) || empty( $background_color ) ) {
+            return '';
         }
+
+        switch ( $background_type ) {
+            case $BACKGROUND_TYPE['IMAGE']:
+            case $BACKGROUND_TYPE['VIDEO']:
+                return 'bg-dark';
+
+            case $BACKGROUND_TYPE['COLOR']:
+                return in_array(  $background_color, $dark_colors ) ? 'bg-dark' : 'bg-light';
+
+            default:
+                return '';
+        }
+    };
+
+    if (str_starts_with($block['blockName'], 'ssm/')) {
+        $background_type = $block['attrs']['backgroundType'] ?? $BACKGROUND_TYPE['COLOR'];
+        $background_color_attr = is_array($block['attrs']['backgroundColor'])
+            ? $block['attrs']['backgroundColor']['slug']
+            : $block['attrs']['backgroundColor'];
+
+        $background_color = !empty($background_color_attr) ? $background_color_attr : 'white';
+
+    } else {
+        $background_type = $BACKGROUND_TYPE['COLOR'];
+        $background_color = $block['attrs']['backgroundColor'] ?? null;
     }
+
+    $background_class = $get_background_class($background_type, $background_color);
+
+    if ( $background_class ) {
+        $block_content = preg_replace(
+            '/(<[^>]+class="[^"]*)"/',
+            '$1 ' . $background_class . '"',
+            $block_content,
+            1
+        );
+    }
+
 
     return $block_content;
 }, 10, 2 );

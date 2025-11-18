@@ -5,57 +5,74 @@ export const backgroundColorClassFilter = {
     add() {
         const darkColors = [
             'black',
-        ];
-
-        const lightColors = [
-            'white',
+            'black-soft',
+            'black-dark',
+            'blue-dark',
+            'blue-darkest',
+            'blue-deep',
+            'blue-steel',
+            'blue-sky',
+            'blue-ocean',
+            'blue-navy',
+            'gray-darkest',
         ];
 
         const BACKGROUND_TYPE = {
             COLOR: 'color',
-            GRADIENT: 'gradient',
             IMAGE: 'image',
             VIDEO: 'video',
         };
 
-        const getBackgroundClass= (backgroundColor) => {
-            if (!backgroundColor) {
-                return;
+        const getBackgroundClass = (backgroundType, backgroundColor) => {
+            if (!backgroundType || !backgroundColor) {
+                return '';
             }
 
-            if (darkColors.includes(backgroundColor)) {
-                return 'bg-dark';
-            }
+            switch (backgroundType) {
+                case BACKGROUND_TYPE.IMAGE:
+                case BACKGROUND_TYPE.VIDEO:
+                    return 'bg-dark';
 
-            if (lightColors.includes(backgroundColor)) {
-                return 'bg-light';
+                case BACKGROUND_TYPE.COLOR:
+                    return darkColors.includes(backgroundColor) ? 'bg-dark' : 'bg-light';
+
+                default:
+                    return '';
             }
         };
 
         const withEditorBackgroundClass = createHigherOrderComponent((BlockListBlock) => {
             // eslint-disable-next-line react/display-name
             return (props) => {
-                if (!props.attributes.backgroundColor) {
-                    return (<BlockListBlock {...props} />);
+                const { name: blockName, attributes } = props;
+
+                let backgroundClass;
+
+                if (blockName?.startsWith('ssm/')) {
+                    const backgroundType = attributes.backgroundType || BACKGROUND_TYPE.COLOR;
+                    const backgroundColorAttr = typeof attributes.backgroundColor === 'object'
+                        ? attributes.backgroundColor?.slug
+                        : attributes.backgroundColor;
+
+                    const backgroundColor = backgroundColorAttr || 'white';
+
+                    backgroundClass = getBackgroundClass(backgroundType, backgroundColor);
+                } else {
+                    const backgroundType = BACKGROUND_TYPE.COLOR;
+                    const backgroundColor = attributes.backgroundColor || null;
+
+                    backgroundClass = getBackgroundClass(backgroundType, backgroundColor);
                 }
 
-                const backgroundType = typeof props.attributes.backgroundType === 'string'
-                    ? props.attributes.backgroundType
-                    : BACKGROUND_TYPE.COLOR;
-
-                const backgroundColor = typeof props.attributes.backgroundColor === 'object'
-                    ? props.attributes.backgroundColor?.slug
-                    : props.attributes.backgroundColor;
-
-                const backgroundClass = backgroundType === BACKGROUND_TYPE.COLOR
-                    ? getBackgroundClass(backgroundColor)
-                    : '';
+                if (!backgroundClass) {
+                    return (<BlockListBlock {...props} />);
+                }
 
                 return (
                     <BlockListBlock {...props} className={backgroundClass} />
                 );
             };
-        }, 'withEditorBackgroundClass' );
+        }, 'withEditorBackgroundClass');
 
         addFilter(
             'editor.BlockListBlock',

@@ -146,7 +146,6 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
                 'has-background': hasSelectedBackground,
                 'min-h-screen': isFullViewportHeight,
                 [`bg-${backgroundColor?.slug}`]: hasSelectedBackgroundColor,
-                'bg-dark': hasSelectedBackgroundImage || hasSelectedBackgroundVideo,
             },
         ),
     });
