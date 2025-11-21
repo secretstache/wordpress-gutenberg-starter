@@ -236,4 +236,23 @@ class SSM extends Composer
 
         return implode(' ', $filtered);
     }
+
+    public static function getBackgroundToneClass(string|null $backgroundType, string|null $backgroundColor):string
+    {
+        $dark_colors = [
+            'black',
+        ];
+
+        switch ($backgroundType) {
+            case 'image':
+            case 'video':
+                return 'bg-dark';
+            case 'color':
+                return $backgroundColor
+                    ? in_array( $backgroundColor, $dark_colors ) ? 'bg-dark' : 'bg-light'
+                    : '';
+            default:
+                return '';
+        }
+    }
 }

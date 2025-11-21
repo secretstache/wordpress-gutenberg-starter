@@ -75,6 +75,7 @@ class SectionWrapper extends Block
                 'has-background' => $has_selected_background,
                 $full_viewport_height_class,
                 $spacing_classes,
+                SSM::getBackgroundToneClass($background_type, $background_color['slug'])
             ])),
             'id' => $attributes['anchor'] ?? '',
         ]);

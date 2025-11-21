@@ -6,6 +6,8 @@
 
 namespace App;
 
+use App\View\Composers\SSM;
+
 /**
  * Add "… Continued" to the excerpt.
  *
@@ -56,4 +58,52 @@ add_filter( 'render_block', function ( $html, $block ) {
 
     $updated = preg_replace_callback( $pattern, $replacement_cb, $html, 1 );
     return $updated ?: $html;
+}, 10, 2 );
+
+/**
+ * Set custom block categories & unset default categories
+ */
+add_filter('block_categories_all', function ($categories) {
+
+    foreach (get_default_block_categories() as $category) {
+        unset($categories[array_search($category['slug'], array_column($categories, 'slug'))]);
+    }
+
+    $final_categories = array_merge(
+        [
+            [
+                'slug'  => 'ssm-templates',
+                'title' => 'Templates'
+            ],
+            [
+                'slug'  => 'ssm-components',
+                'title' => 'Components'
+            ],
+        ],
+        $categories
+    );
+
+    return $final_categories;
+});
+
+/**
+ * Add bg-dark or bg-light classes to core blocks with the background
+ */
+add_filter('render_block', function ( $block_content, $block ) {
+    if (str_starts_with($block['blockName'], 'core/')) {
+        $background_color = $block['attrs']['backgroundColor'] ?? null;
+
+        $background_class = SSM::getBackgroundToneClass('color', $background_color);
+
+        if ( $background_class ) {
+            $block_content = preg_replace(
+                '/(<[^>]+class="[^"]*)"/',
+                '$1 ' . $background_class . '"',
+                $block_content,
+                1
+            );
+        }
+    }
+
+    return $block_content;
 }, 10, 2 );
