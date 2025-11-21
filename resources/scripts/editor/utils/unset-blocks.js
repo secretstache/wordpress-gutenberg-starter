@@ -81,6 +81,8 @@ export const unsetBlocks = () => {
         'yoast/faq-block',
         // save svg
         'safe-svg/svg-icon',
+        // gravity forms
+        'gravityforms/form',
     ];
 
     unsetBlocks.forEach(function (blockName) {
