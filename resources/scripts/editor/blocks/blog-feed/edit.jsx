@@ -66,7 +66,7 @@ export const edit = ({ attributes, setAttributes }) => {
                             condition={isQueryTypeByCategory}
                             attributeName="curatedTerms"
                             placeholder="Categories to show"
-                            postType={TAXONOMY.CATEGORY}
+                            taxonomy={TAXONOMY.CATEGORY}
                         />
 
                         <DataQueryControls.CuratedPosts
