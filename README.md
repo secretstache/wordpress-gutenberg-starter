@@ -9,7 +9,6 @@
 - Uses [Blade templating engine](https://laravel.com/docs/5.7/blade) to render views
 - Uses [Composer](https://getcomposer.org/) to manage dependencies
 - Uses [Yarn](https://yarnpkg.com/en/) to compile assets
-- Uses [SASS](https://sass-lang.com/) as CSS-preprocessor
 
 ## Installation
 
