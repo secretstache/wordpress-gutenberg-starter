@@ -21,7 +21,7 @@ main.content {
         margin-block-start: 0;
     }
 
-    :root :where(.is-layout-flow > *),
+    :root :where(.is-layout-flow) > *,
     :root :where(.is-layout-constrained) > * {
         margin-block: var(--spacing-block) 0;
     }
@@ -36,6 +36,8 @@ main.content {
 
     .is-layout-constrained > :where(:not(:is(.alignleft, .alignright, .alignfull))) {
         @apply container;
+        margin-inline: 0;
+        padding-inline: 0;
     }
 
     .is-layout-flow > .alignright.wp-block-image,

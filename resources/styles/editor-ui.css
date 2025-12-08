@@ -1,3 +1,11 @@
 @import "@secretstache/wordpress-gutenberg/build/editor-ui.css";
 
 @import "./settings/theme.css";
+
+.editor-styles-wrapper {
+    .block-editor-block-list__layout.is-root-container {
+        .components-button.is-primary {
+            color: var(--wp-components-color-accent-inverted, #fff);
+        }
+    }
+}

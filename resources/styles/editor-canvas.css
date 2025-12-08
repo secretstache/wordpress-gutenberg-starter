@@ -1,4 +1,9 @@
-@import "tailwindcss" theme(static);
+@layer theme, base, components, utilities;
+
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css";
+
 @import "@secretstache/wordpress-gutenberg/build/editor-canvas.css";
 
 @import "./settings/media.css";
@@ -34,11 +39,67 @@
 .editor-styles-wrapper {
     .block-editor-block-list__layout.is-root-container {
         @apply overflow-clip;
+        color: var(--body-color);
+        font-size: var(--text-base);
 
         :focus-visible {
             transition: unset;
             outline: none;
             box-shadow: none;
         }
+    }
+}
+
+:where(.editor-styles-wrapper) {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        margin: inherit;
+    }
+
+    h1 {
+        @apply h1;
+    }
+
+    h2 {
+        @apply h2;
+    }
+
+    h3 {
+        @apply h3;
+    }
+
+    h4 {
+        @apply h4;
+    }
+
+    h5 {
+        @apply h5;
+    }
+
+    h6 {
+        @apply h6;
+    }
+
+    p {
+        margin: unset;
+        font-size: unset;
+        line-height: unset;
+    }
+
+    ol,
+    ul {
+        margin: 0;
+        padding: 0;
+    }
+
+    :where(.is-layout-flow) > *,
+    :where(.is-layout-constrained) > *,
+    :where(.is-layout-flow) > p,
+    :where(.is-layout-constrained) > p {
+        margin-block: var(--spacing-block) 0;
     }
 }

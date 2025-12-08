@@ -1,70 +1,27 @@
 {% from "macros/blocks.njk" import column, block %}
-{% if component.isContainer %}
 
-    {# if has inner blocks #}
+{% if component.name != 'section-wrapper' %}
+<div class="container">
+  {% endif %}
 
-    {%  if component.type == 'template' %}
+  {% if component.isContainer %}
 
-        {% call template( component.name, component.context ) %}
+    {% call block( component.name, component.context ) %}
 
-            {% if component.containerContext %}
+      {% if component.containerContext %}
 
-                {% include component.type + 's/' + component.name + '/context/' + component.containerContext + '.njk' %}
+        {% include component.type + 's/' + component.name + '/context/' + component.containerContext + '.njk' %}
 
-            {% endif %}
+      {% endif %}
 
-        {% endcall %}
+    {% endcall %}
 
-    {% endif %}
+  {%  else %}
 
-    {%  if component.type == 'module' %}
+    {{ block(component.name, component.context) }}
 
-        {% call module( component.name, component.context ) %}
+  {% endif %}
 
-            {% if component.containerContext %}
-
-                {% include component.type + 's/' + component.name + '/context/' + component.containerContext + '.njk' %}
-
-            {% endif %}
-
-        {% endcall %}
-
-    {% endif %}
-
-     {%  if component.type == 'block' %}
-
-         {% call block( component.name, component.context ) %}
-
-             {% if component.containerContext %}
-
-                 {% include component.type + 's/' + component.name + '/context/' + component.containerContext + '.njk' %}
-
-             {% endif %}
-
-         {% endcall %}
-
-     {% endif %}
-
-{%  else %}
-
-    {# if hasn't inner block #}
-
-    {%  if component.type == 'template' %}
-
-        {{ template(component.name, component.context) }}
-
-    {% endif %}
-
-    {%  if component.type == 'module' %}
-
-        {{ module(component.name, component.context) }}
-
-    {% endif %}
-
-    {%  if component.type == 'block' %}
-
-        {{ block(component.name, component.context) }}
-
-    {% endif %}
-
+  {% if component.name != 'section-wrapper' %}
+</div>
 {% endif %}

@@ -4,6 +4,7 @@ import fs from 'fs/promises';
 import yaml from 'js-yaml';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { darkBackground } from '../shared/backgrounds.js';
 
 // Get current directory in ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -82,6 +83,16 @@ export default function (eleventyConfig) {
     /* Adds prefix to urls */
     eleventyConfig.addGlobalData('root', process.env.prefix);
     eleventyConfig.addNunjucksGlobal('root', process.env.prefix || '');
+
+    eleventyConfig.addFilter('toBgType', function (color) {
+        if (darkBackground.includes(color)) {
+            return 'bg-dark';
+        } else if (color) {
+            return 'bg-light';
+        }
+
+        return '';
+    });
 
     /* Server options */
     eleventyConfig.setServerOptions({

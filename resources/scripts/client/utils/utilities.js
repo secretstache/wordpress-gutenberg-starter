@@ -361,5 +361,42 @@ const scrollToHash = () => {
     });
 };
 
+function setHeaderHeight() {
+    const body = document.body;
+    const header = document.querySelector('.site-header');
+
+    if (header) {
+        const headerHeight = header.offsetHeight;
+        body.style.setProperty('--header-height', `${headerHeight}px`);
+    } else {
+        body.style.setProperty('--header-height', '0px');
+    }
+}
+
+/**
+ * Initialize header height tracking with resize listener
+ */
+function initHeaderHeight() {
+    // Set initial height
+    setHeaderHeight();
+
+    // Update on window resize
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            setHeaderHeight();
+        }, 100); // Debounce resize events
+    });
+
+    const header = document.querySelector('.site-header');
+    if (header && window.ResizeObserver) {
+        const resizeObserver = new ResizeObserver(() => {
+            setHeaderHeight();
+        });
+        resizeObserver.observe(header);
+    }
+}
+
 /* eslint-disable */
-export { execute, executeAfterTransition, findShadowRoot, getElement, getTransitionDurationFromElement, isDisabled, isElement, isVisible, parseSelector, reflow, triggerTransitionEnd, setViewportUnits, PlayVideoInViewportOnly, EditableSvg, debounce, throttle, copyToClipboard, inViewport, scrollToHash };
+export { execute, executeAfterTransition, findShadowRoot, getElement, getTransitionDurationFromElement, isDisabled, isElement, isVisible, parseSelector, reflow, triggerTransitionEnd, setViewportUnits, PlayVideoInViewportOnly, EditableSvg, debounce, throttle, copyToClipboard, inViewport, scrollToHash, initHeaderHeight };

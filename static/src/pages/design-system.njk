@@ -134,7 +134,7 @@ title: Home
         prefix: '--text-',
         heading: 'Text Size',
         classPrefix: 'text-',
-        exclude: (name) => name.startsWith('shadow-'),
+        exclude: (name) => name.startsWith('shadow-') || name.startsWith('h') ,
         type: 'text-size',
         formatter: formatTextSize
       },
