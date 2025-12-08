@@ -18,6 +18,7 @@
 
 /* globals */
 @import "./global/site-header.css";
+@import "./global/site-header.editor.css";
 
 /* core blocks */
 @import "./blocks/button.css";

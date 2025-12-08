@@ -1,5 +1,6 @@
 import { addFilter, removeFilter } from '@wordpress/hooks';
 import { createHigherOrderComponent } from '@wordpress/compose';
+import classNames from 'classnames';
 
 export const backgroundColorClassFilter = {
     add() {
@@ -7,62 +8,66 @@ export const backgroundColorClassFilter = {
             'black',
         ];
 
-        const lightColors = [
-            'white',
-        ];
-
         const BACKGROUND_TYPE = {
             COLOR: 'color',
-            GRADIENT: 'gradient',
             IMAGE: 'image',
             VIDEO: 'video',
         };
 
-        const getBackgroundClass= (backgroundColor) => {
-            if (!backgroundColor) {
-                return;
-            }
+        const getBackgroundClass = (backgroundType, backgroundColor) => {
+            switch (backgroundType) {
+                case BACKGROUND_TYPE.IMAGE:
+                case BACKGROUND_TYPE.VIDEO:
+                    return 'bg-dark';
 
-            if (darkColors.includes(backgroundColor)) {
-                return 'bg-dark';
-            }
+                case BACKGROUND_TYPE.COLOR:
+                    return backgroundColor
+                        ? darkColors.includes(backgroundColor)
+                            ? 'bg-dark'
+                            : 'bg-light'
+                        : '';
 
-            if (lightColors.includes(backgroundColor)) {
-                return 'bg-light';
+                default:
+                    return '';
             }
         };
 
-        const withEditorBackgroundClass = createHigherOrderComponent((BlockListBlock) => {
-            // eslint-disable-next-line react/display-name
-            return (props) => {
-                if (!props.attributes.backgroundColor) {
-                    return (<BlockListBlock {...props} />);
-                }
+        const withEditorBackgroundClass = createHigherOrderComponent(
+            (BlockListBlock) => {
+                return (props) => {
+                    const { name: blockName, attributes } = props;
 
-                const backgroundType = typeof props.attributes.backgroundType === 'string'
-                    ? props.attributes.backgroundType
-                    : BACKGROUND_TYPE.COLOR;
+                    let backgroundType;
+                    let backgroundColor;
 
-                const backgroundColor = typeof props.attributes.backgroundColor === 'object'
-                    ? props.attributes.backgroundColor?.slug
-                    : props.attributes.backgroundColor;
+                    if (blockName?.startsWith('ssm/')) {
+                        backgroundType = attributes.backgroundType || BACKGROUND_TYPE.COLOR;
+                        backgroundColor = attributes.backgroundColor?.slug;
+                    } else {
+                        backgroundType = BACKGROUND_TYPE.COLOR;
+                        backgroundColor = attributes.backgroundColor || null;
+                    }
 
-                const backgroundClass = backgroundType === BACKGROUND_TYPE.COLOR
-                    ? getBackgroundClass(backgroundColor)
-                    : '';
+                    const backgroundClass = getBackgroundClass(backgroundType, backgroundColor);
 
-                return (
-                    <BlockListBlock {...props} className={backgroundClass} />
-                );
-            };
-        }, 'withEditorBackgroundClass' );
+                    return (
+                        <BlockListBlock
+                            {...props}
+                            className={classNames(props.className, backgroundClass)}
+                        />
+                    );
+                };
+            },
+            'withEditorBackgroundClass'
+        );
 
         addFilter(
             'editor.BlockListBlock',
-            'ssm/with-editor-background-class',
-            withEditorBackgroundClass,
+            'ssm/background-color-class',
+            withEditorBackgroundClass
         );
     },
+
     remove() {
         removeFilter('editor.BlockListBlock', 'ssm/background-color-class');
     },

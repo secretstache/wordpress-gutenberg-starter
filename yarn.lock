@@ -1838,10 +1838,10 @@
   resolved "https://registry.yarnpkg.com/@rtsao/scc/-/scc-1.1.0.tgz#927dd2fae9bc3361403ac2c7a00c32ddce9ad7e8"
   integrity sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==
 
-"@secretstache/wordpress-gutenberg@^0.6.11":
-  version "0.6.11"
-  resolved "https://registry.yarnpkg.com/@secretstache/wordpress-gutenberg/-/wordpress-gutenberg-0.6.11.tgz#2f363309d0b0f214988ed92106fde43cd3d256f0"
-  integrity sha512-LhcOCiVFu1J9KmrhEtzcgFcT6A9tHz9tqhhcoLx6g5+ANJrfbasxhxFhxxi45dU74vpj7BW68mtxf+UBQaGEug==
+"@secretstache/wordpress-gutenberg@^0.6.12":
+  version "0.6.12"
+  resolved "https://registry.yarnpkg.com/@secretstache/wordpress-gutenberg/-/wordpress-gutenberg-0.6.12.tgz#569574239ecf7c9871abaa87e7c758931f6b17f5"
+  integrity sha512-FmJSCMeowPOpeAXjGdviQlNdqWeAZQVE2/uvQcHIzzmkEMtq8v0cRIW42jLoHn3KQpzTez3sTtzizHG9Rzq4rw==
   dependencies:
     classnames "^2.5.1"
     debounce-promise "^3.1.2"
@@ -7460,10 +7460,10 @@ vite-plugin-svgr@^4.3.0:
     "@svgr/core" "^8.1.0"
     "@svgr/plugin-jsx" "^8.1.0"
 
-vite@^7.1.9:
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-7.2.0.tgz#a362bc909af8b01736e56d287ce5a5d88598ad1a"
-  integrity sha512-C/Naxf8H0pBx1PA4BdpT+c/5wdqI9ILMdwjSMILw7tVIh3JsxzZqdeTLmmdaoh5MYUEOyBnM9K3o0DzoZ/fe+w==
+vite@^7.2.2:
+  version "7.2.2"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-7.2.2.tgz#17dd62eac2d0ca0fa90131c5f56e4fefb8845362"
+  integrity sha512-BxAKBWmIbrDgrokdGZH1IgkIk/5mMHDreLDmCJ0qpyJaAteP8NvMhkwr/ZCQNqNH97bw/dANTE9PDzqwJghfMQ==
   dependencies:
     esbuild "^0.25.0"
     fdir "^6.5.0"

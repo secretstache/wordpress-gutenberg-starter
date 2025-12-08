@@ -1,5 +1,5 @@
 {
-  "version": "2.0.2",
+  "version": "2.0.7",
   "name": "secretstache/wordpress-gutenberg-starter",
   "type": "wordpress-theme",
   "license": "MIT",
@@ -14,12 +14,12 @@
   },
   "require": {
     "php": ">=8.2",
+    "johnbillion/extended-cpts": "^5.1",
+    "log1x/navi": "^3.1",
     "roots/acorn": "^5.0",
     "roots/acorn-prettify": "^1.0.0",
     "secretstache/wordpress-core": "^1.0.0",
-    "johnbillion/extended-cpts": "^4.3",
-    "stoutlogic/acf-builder": "^1.9",
-    "log1x/navi": "*"
+    "stoutlogic/acf-builder": "^1.12"
   },
   "require-dev": {
     "laravel/pint": "^1.20",

@@ -21,10 +21,14 @@
   "attributes": {
     "queryType": {
       "type": "string",
-      "enum": ["latest", "by_category", "curated"],
+      "enum": [
+        "latest",
+        "by_category",
+        "curated"
+      ],
       "default": "latest"
     },
-    "selectedCategories": {
+    "curatedTerms": {
       "type": "array",
       "default": []
     },
@@ -36,26 +40,9 @@
       "type": "number",
       "default": -1
     },
-    "layoutType": {
-      "type": "string",
-      "enum": ["block-grid", "stacked"],
-      "default": "block-grid"
-    },
-    "isShowFeaturedImage": {
-      "type": "boolean",
-      "default": true
-    },
-    "isShowTitle": {
-      "type": "boolean",
-      "default": true
-    },
-    "isShowPostMeta": {
+    "isShowFilters": {
       "type": "boolean",
       "default": false
-    },
-    "columnsPerRow": {
-      "type": "number",
-      "default": 3
     }
   },
   "render": "index"

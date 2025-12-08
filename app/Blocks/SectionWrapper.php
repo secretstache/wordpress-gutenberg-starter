@@ -72,9 +72,10 @@ class SectionWrapper extends Block
 
         $wrapper_attributes = get_block_wrapper_attributes([
             'class' => implode(' ', array_filter([
-                'has-background' => $has_selected_background,
+                $has_selected_background ? 'has-background' : null,
                 $full_viewport_height_class,
                 $spacing_classes,
+                SSM::getBackgroundToneClass($background_type, $background_color['slug'])
             ])),
             'id' => $attributes['anchor'] ?? '',
         ]);

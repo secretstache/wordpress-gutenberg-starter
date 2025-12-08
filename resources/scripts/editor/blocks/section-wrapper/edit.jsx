@@ -119,18 +119,9 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
         setAttributes({ spacing });
     }, []);
 
-    const [ localFocalPoint, setLocalFocalPoint ] = useState({
-        x: focalPoint?.x || 0.5,
-        y: focalPoint?.y || 0.5
-    });
-
-    const onFocalPointChange = useCallback((newFocalPoint) => {
-        setLocalFocalPoint(newFocalPoint);
+    const onFocalPointChange = useCallback((focalPoint) => {
+        setAttributes({ focalPoint });
     }, []);
-
-    useEffect(() => {
-        setAttributes({ focalPoint: localFocalPoint });
-    }, [ localFocalPoint ]);
 
     const allowedBlocks = useAllowedBlocks(blockName, blockName);
 
@@ -155,7 +146,6 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
                 'has-background': hasSelectedBackground,
                 'min-h-screen': isFullViewportHeight,
                 [`bg-${backgroundColor?.slug}`]: hasSelectedBackgroundColor,
-                'bg-dark': hasSelectedBackgroundImage || hasSelectedBackgroundVideo,
             },
         ),
     });
@@ -311,7 +301,7 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
                                 alt={backgroundImage?.alt || 'background image'}
                                 className="w-full h-full object-cover transform transition-transform duration-100"
                                 style={{
-                                    'object-position': `${localFocalPoint.x * 100}% ${localFocalPoint.y * 100}%`,
+                                    'object-position': `${focalPoint.x * 100}% ${focalPoint.y * 100}%`,
                                 }}
                             />
                         )}
