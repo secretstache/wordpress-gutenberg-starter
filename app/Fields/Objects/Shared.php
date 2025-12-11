@@ -25,6 +25,7 @@ class Shared {
 			])
 
 			->setLocation('post_type', '==', 'page')
+				->and('page_template', '!=', 'template-dummy-page.blade.php')
 				->or('post_type', '==', 'post');
 
 		// Register Inline Styles
@@ -49,6 +50,7 @@ class Shared {
 			])
 
 			->setLocation('post_type', '==', 'page')
+				->and('page_template', '!=', 'template-dummy-page.blade.php')
 				->or('post_type', '==', 'post');
 
 		// Register Inline Scripts
