@@ -175,3 +175,16 @@ add_action('after_setup_theme', function () {
         'style',
     ]);
 }, 20);
+
+/**
+ * Load the custom translation for the block-editor
+ */
+add_action('init', function () {
+    $lang_dir = get_template_directory() . '/resources/lang';
+
+    wp_set_script_translations(
+        'wp-block-editor',
+        'default',
+        $lang_dir
+    );
+});
