@@ -184,6 +184,7 @@ function ea_disable_editor($id = false)
 
     $excluded_templates = [
         'template-legal-page.blade.php',
+        'template-dummy-page.blade.php',
     ];
 
     if (empty($id)) return false;
@@ -227,6 +228,21 @@ add_action('admin_footer', function () {
         <?php
     }
 }, 100);
+
+/**
+ * Redirect Dummy pages
+ */
+add_action('template_redirect', function () {
+    global $post;
+
+    if (is_singular('page') && ($page_template = get_post_meta($post->ID, '_wp_page_template', true)) && $page_template == 'template-dummy-page.blade.php') {
+
+        $redirect_url = ($page_redirect = get_field('page_redirect', $post->ID)) ? get_permalink($page_redirect) : home_url();
+
+        wp_redirect($redirect_url);
+        exit;
+    }
+});
 
 /**
  * Register Objects

@@ -13,6 +13,7 @@
 
 /* globals */
 @import "./global/site-header.css";
+@import "./global/offcanvas.css";
 
 /* libs */
 @import "./libs/facetwp/facetwp.css";

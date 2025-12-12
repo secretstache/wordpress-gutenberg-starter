@@ -147,7 +147,7 @@ add_action( 'rest_api_init', function () {
             'acf',
             [
                 'get_callback' => function ( $object ) {
-                    $fields = function_exists( 'get_fields' ) ? get_fields( $object['id'] ) : [];
+                    $fields = function_exists( 'get_fields' ) && !empty($object['id']) ? get_fields( $object['id'] ) : [];
 
                     return $fields ?: null;
                 },

@@ -11,10 +11,8 @@
 
   {% from "macros/blocks.njk" import column, block %}
 
-  {% set bgType = 'bg-light' %}
-
-  {% if props.bg.color and props.bg.color in ['black']  %}
-    {% set bgType = 'bg-dark' %}
+  {% if props.bg and props.bg.color %}
+    {% set bgType = (props.bg.color) | toBgType %}
   {% endif %}
 
   {% if props.bg.media.video %}
@@ -50,29 +48,31 @@
 
       <div class="wp-block-ssm-section-wrapper__background absolute  pointer-events-none h-full w-full left-0 top-0 overflow-hidden">
 
+        {% set mediaClasses = ([
+          'w-full',
+          'object-' + props.bg.media.position if props.bg.media.position,
+          'object-' + props.bg.media.fit if props.bg.media.fit,
+          'object-cover h-full' if not props.bg.media.fit and not props.bg.media.position,
+          'object-contain' if not props.bg.media.fit and props.bg.media.position
+        ]) | toClassNames %}
+
+
         {% if props.bg.media.image %}
 
-          {% set mediaClasses = ([
-            'object-' + props.bg.media.position if props.bg.media.position,
-            'object-' + props.bg.media.fit if props.bg.media.fit,
-            'object-cover h-full' if not props.bg.media.fit and not props.bg.media.position,
-            'object-contain' if not props.bg.media.fit and props.bg.media.position
-          ]) | toClassNames %}
-
-          <img alt="" src="{{ root }}{{ props.bg.media.image }}" class="w-full{{ mediaClasses }}">
+          <img alt="" src="{{ root }}{{ props.bg.media.image }}" class="{{ mediaClasses }}">
 
           {% elif props.bg.media.video %}
 
           <video src="{{ root }}{{ props.bg.media.video }}" autoplay playsinline muted loop class="{{ mediaClasses }}"></video>
 
-          <div class="absolute inset-0 bg-blue-navy opacity-80 mix-blend-multiply"></div>
+          <div class="absolute inset-0 bg-black opacity-40 mix-blend-multiply"></div>
         {% endif %}
 
       </div>
 
     {% endif %}
 
-    <div class="wp-block-ssm-section-wrapper__content relative z-20 w-full is-layout-constrained">
+    <div class="wp-block-ssm-section-wrapper__content px-container-padding relative z-20 w-full is-layout-constrained">
 
       {% if props.innerContent %}
 
