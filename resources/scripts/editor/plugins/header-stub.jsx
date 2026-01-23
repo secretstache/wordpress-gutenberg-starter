@@ -58,7 +58,7 @@ export class HeaderStubPlugin {
                 }, [ isShowHeader, headerMarkup ]);
 
                 const onIsShowHeaderChange = () => editPost({
-                    meta: {...meta, isShowHeader: !isShowHeader},
+                    meta: { ...meta, isShowHeader: !isShowHeader },
                 });
 
                 return (
