@@ -136,7 +136,7 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
         [],
     );
 
-    const isLightAppender = hasSelectedBackgroundMedia || (hasSelectedBackgroundColor && isSomeColorDark([ backgroundColor?.slug ]))
+    const isLightAppender = hasSelectedBackgroundMedia || (hasSelectedBackgroundColor && isSomeColorDark([ backgroundColor?.slug ]));
 
     const blockProps = useBlockProps({
         className: classNames(

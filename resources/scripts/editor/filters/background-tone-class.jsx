@@ -78,5 +78,5 @@ export class BackgroundToneClassFilter {
             default:
                 return '';
         }
-    };
+    }
 }
