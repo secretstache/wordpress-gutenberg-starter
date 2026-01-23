@@ -13,10 +13,10 @@ import {
     ToolbarButton,
 } from '@wordpress/components';
 import { useCallback, useMemo } from '@wordpress/element';
+import { brush , plus } from '@wordpress/icons';
 import classNames from 'classnames';
 import { LinkControl, useSlider, PreviewControl } from '@secretstache/wordpress-gutenberg';
 
-import { PlusIcon, BrushIcon } from '../../components/icons.jsx';
 import { Logo } from './components/Logo.jsx';
 
 const initLogoWall = () => {
@@ -106,7 +106,7 @@ export const edit = ({ attributes, setAttributes }) => {
 
             <BlockControls group="inline">
                 <ToolbarButton
-                    icon={BrushIcon}
+                    icon={brush}
                     label="Toggle Preview"
                     onClick={onIsPreviewChange}
                     isActive={isPreview}
@@ -170,7 +170,7 @@ export const edit = ({ attributes, setAttributes }) => {
                                                 <Button
                                                     size="small"
                                                     onClick={open}
-                                                    icon={PlusIcon}
+                                                    icon={plus}
                                                     label="Add logo"
                                                     showTooltip={true}
                                                     variant="primary"

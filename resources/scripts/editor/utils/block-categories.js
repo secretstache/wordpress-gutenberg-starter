@@ -1,0 +1,28 @@
+export const BLOCK_CATEGORIES = {
+    'ssm-templates': [
+        'core/columns',
+        'core/column',
+    ],
+    'ssm-components': [
+        'core/cover',
+        'core/heading',
+        'core/paragraph',
+        'core/list',
+        'core/image',
+        'core/list-item',
+        'core/embed',
+        'core/buttons',
+        'core/button',
+        'core/table',
+        'core/pullquote',
+        'core/separator',
+        'core/shortcode',
+        'core/html',
+        "core/video",
+        'core/details',
+        'gravityforms/form',
+        'core/group',
+        'core/gallery',
+        'core/spacer',
+    ],
+};

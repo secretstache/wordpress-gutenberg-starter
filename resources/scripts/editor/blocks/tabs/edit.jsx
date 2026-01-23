@@ -7,7 +7,7 @@ import { PanelBody, RadioControl, Slot } from '@wordpress/components';
 import { useState, useRef, useEffect, useCallback, useMemo } from '@wordpress/element';
 import { ColorPaletteControl, useTabs } from '@secretstache/wordpress-gutenberg';
 import classNames from 'classnames';
-import { debounce } from 'es-toolkit';
+import { debounce, isEqual } from 'es-toolkit';
 
 import { LAYOUT_TYPE, TabsContext } from './index.jsx';
 

@@ -1,7 +1,7 @@
 import { InnerBlocks, useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import { useContext, useEffect } from '@wordpress/element';
-import { useFilterBlocks, EmptyBlockAppender } from '@secretstache/wordpress-gutenberg';
+import { useFilterBlocks, __experimentalEmptyBlockPlaceholder as EmptyBlockPlaceholder } from '@secretstache/wordpress-gutenberg';
 import classNames from 'classnames';
 
 import { SplideContext } from '../index.jsx';
@@ -66,7 +66,11 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
                 {
                     hasInnerBlocks
                         ? <InnerBlocks.DefaultBlockAppender />
-                        : <EmptyBlockAppender title="This slide is empty" text='Use the "+" button below to add content blocks to your slide' />
+                        : <EmptyBlockPlaceholder
+                            title="This slide is empty"
+                            text='Use the "+" button below to add content blocks to your slide'
+                            clientId={clientId}
+                        />
                 }
             </div>
         </div>

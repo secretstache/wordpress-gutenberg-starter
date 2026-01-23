@@ -4,7 +4,7 @@ import {
     useBlockProps,
     useInnerBlocksProps,
 } from '@wordpress/block-editor';
-import { useCallback, useEffect, useState } from '@wordpress/element';
+import { useCallback } from '@wordpress/element';
 import {
     PanelBody,
     __experimentalDivider as Divider,
@@ -21,7 +21,7 @@ import {
     ResponsiveSpacingControl,
     ColorPaletteControl,
     getSpacingClasses,
-    EmptyBlockAppender,
+    __experimentalEmptyBlockPlaceholder as EmptyBlockPlaceholder,
     useAllowedBlocks,
     MediaControl,
 } from '@secretstache/wordpress-gutenberg';
@@ -325,7 +325,11 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
                     {
                         hasInnerBlocks
                             ? <InnerBlocks.DefaultBlockAppender/>
-                            : <EmptyBlockAppender title="This section is empty" isLight={isLightAppender} />
+                            : <EmptyBlockPlaceholder
+                                title="This section is empty"
+                                isLight={isLightAppender}
+                                clientId={clientId}
+                            />
                     }
                 </div>
             </div>
