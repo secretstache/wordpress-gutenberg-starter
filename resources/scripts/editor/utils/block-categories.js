@@ -18,7 +18,7 @@ export const BLOCK_CATEGORIES = {
         'core/separator',
         'core/shortcode',
         'core/html',
-        "core/video",
+        'core/video',
         'core/details',
         'gravityforms/form',
         'core/group',
