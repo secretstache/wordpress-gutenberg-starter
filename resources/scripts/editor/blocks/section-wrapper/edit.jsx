@@ -301,7 +301,7 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
                                 alt={backgroundImage?.alt || 'background image'}
                                 className="w-full h-full object-cover transform transition-transform duration-100"
                                 style={{
-                                    'object-position': `${focalPoint.x * 100}% ${focalPoint.y * 100}%`,
+                                    objectPosition: `${focalPoint.x * 100}% ${focalPoint.y * 100}%`,
                                 }}
                             />
                         )}
