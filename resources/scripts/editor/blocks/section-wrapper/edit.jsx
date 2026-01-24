@@ -13,6 +13,7 @@ import {
     SelectControl,
     RadioControl,
     TextControl,
+    RangeControl,
 } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 import classNames from 'classnames';
@@ -39,6 +40,7 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
         backgroundVideo,
         isIncludeOverlay,
         overlayColor,
+        overlayOpacity,
         isFullViewportHeight,
         spacing,
     } = attributes;
@@ -59,7 +61,7 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
     const hasSelectedBackgroundMedia = hasSelectedBackgroundImage || hasSelectedBackgroundVideo;
     const hasSelectedBackground = hasSelectedBackgroundColor || hasSelectedBackgroundMedia;
 
-    const hasSelectedOverlayColor = isIncludeOverlay && !!overlayColor?.slug;
+    const hasSelectedOverlayColor = !!overlayColor?.slug;
 
     const onBackgroundTypeChange = useCallback((mediaType) => {
         setAttributes({ backgroundType: mediaType });
@@ -112,6 +114,10 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
     }, []);
 
     const onIncludeOverlayChange = () => setAttributes({ isIncludeOverlay: !isIncludeOverlay });
+
+    const onOverlayOpacityChange = useCallback((overlayOpacity) => {
+        setAttributes({ overlayOpacity });
+    }, []);
 
     const onIsFullViewportHeightChange = () => setAttributes({ isFullViewportHeight: !isFullViewportHeight });
 
@@ -213,15 +219,26 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
                                     checked={isIncludeOverlay}
                                 />
 
+
                                 {
                                     isIncludeOverlay && (
-                                        <ColorPaletteControl
-                                            label="Overlay Color"
-                                            value={overlayColor?.value}
-                                            attributeName="overlayColor"
-                                            setAttributes={setAttributes}
-                                            allowedColors={['white', 'black']}
-                                        />
+                                        <>
+                                            <ColorPaletteControl
+                                                label="Overlay Color"
+                                                value={overlayColor?.value}
+                                                attributeName="overlayColor"
+                                                setAttributes={setAttributes}
+                                            />
+
+                                            <RangeControl
+                                                label="Overlay Opacity"
+                                                value={overlayOpacity}
+                                                onChange={onOverlayOpacityChange}
+                                                min={0}
+                                                max={100}
+                                                step={5}
+                                            />
+                                        </>
                                     )
                                 }
                             </>
