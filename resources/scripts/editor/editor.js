@@ -18,6 +18,9 @@ import './blocks/section-wrapper/index.jsx';
 import './blocks/image/index.jsx';
 
 document.addEventListener('DOMContentLoaded', function () {
+    updateAllBlocksApiVersion(3);
+    unsetBlocks();
+
     const rootBlockAppenderPlugin = new RootBlockAppenderPlugin();
     const rootPatternAppenderPlugin = new RootPatternAppenderPlugin();
     const headerStubPlugin = new HeaderStubPlugin();
@@ -39,10 +42,8 @@ document.addEventListener('DOMContentLoaded', function () {
             ],
             currentPostType,
             () => {
-                unsetBlocks();
                 setBlocksStyles();
                 setBlocksVariations();
-                updateAllBlocksApiVersion(3);
             }
         );
     });
