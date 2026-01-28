@@ -56,7 +56,9 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
     const isBackgroundVideoSourceFile = backgroundVideoSource === 'file';
     const isBackgroundVideoSourceExternal = backgroundVideoSource === 'external';
 
-    const hasSelectedBackgroundVideo = isBackgroundTypeVideo && ((isBackgroundVideoSourceFile && backgroundVideo?.url) || (isBackgroundVideoSourceExternal && externalBackgroundVideoUrl));
+    const hasSelectedBackgroundVideo = isBackgroundTypeVideo && (
+        (isBackgroundVideoSourceFile && backgroundVideo?.url) || (isBackgroundVideoSourceExternal && externalBackgroundVideoUrl)
+    );
 
     const hasSelectedBackgroundMedia = hasSelectedBackgroundImage || hasSelectedBackgroundVideo;
     const hasSelectedBackground = hasSelectedBackgroundColor || hasSelectedBackgroundMedia;
@@ -342,11 +344,13 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
                     {
                         hasInnerBlocks
                             ? <InnerBlocks.DefaultBlockAppender/>
-                            : <EmptyBlockPlaceholder
-                                title="This section is empty"
-                                isLight={isLightAppender}
-                                clientId={clientId}
-                            />
+                            : (
+                                <EmptyBlockPlaceholder
+                                    title="This section is empty"
+                                    isLight={isLightAppender}
+                                    clientId={clientId}
+                                />
+                            )
                     }
                 </div>
             </div>

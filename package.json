@@ -62,7 +62,10 @@
     "vite": "^7.2.2",
     "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-stylelint": "^6.0.0",
-    "vite-plugin-svgr": "^4.3.0"
+    "vite-plugin-svgr": "^4.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.46.1",
+    "@typescript-eslint/parser": "^8.46.1",
+    "typescript": "^5.9.2"
   },
   "dependencies": {
     "@secretstache/wordpress-gutenberg": "^0.7.0",

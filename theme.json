@@ -14,7 +14,18 @@
       "defaultGradients": false,
       "defaultPalette": false,
       "duotone": [],
-      "palette": []
+      "palette": [
+        {
+          "color": "#000",
+          "name": "Black",
+          "slug": "black"
+        },
+        {
+          "color": "#fff",
+          "name": "White",
+          "slug": "white"
+        }
+      ]
     },
     "custom": {
       "spacing": {},

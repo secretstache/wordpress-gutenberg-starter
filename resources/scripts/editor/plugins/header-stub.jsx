@@ -30,7 +30,7 @@ export class HeaderStubPlugin {
                 const { editPost } = useDispatch('core/editor');
 
                 useEffect(() => {
-                    fetch(`/wp-json/ssm/v1/get-header`, {
+                    fetch('/wp-json/ssm/v1/get-header', {
                         method: 'GET',
                         headers: {
                             'X-WP-Nonce': window.wpApiSettings.nonce,

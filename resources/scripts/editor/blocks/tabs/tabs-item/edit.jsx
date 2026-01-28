@@ -91,11 +91,13 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
                 {
                     hasInnerBlocks
                         ? <InnerBlocks.DefaultBlockAppender />
-                        : <EmptyBlockPlaceholder
-                            title="This tab is empty"
-                            text='Use the "+" button below to add content blocks to your tab'
-                            clientId={clientId}
-                        />
+                        : (
+                            <EmptyBlockPlaceholder
+                                title="This tab is empty"
+                                text='Use the "+" button below to add content blocks to your tab'
+                                clientId={clientId}
+                            />
+                        )
                 }
             </div>
         </>

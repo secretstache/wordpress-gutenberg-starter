@@ -61,13 +61,13 @@ export default defineConfig(({ mode }) => {
             wordpressPlugin(),
 
             wordpressThemeJson({
-                disableTailwindColors: false,
+                disableTailwindColors: true,
                 disableTailwindFonts: false,
                 disableTailwindFontSizes: false,
             }),
 
             eslint({
-                include: ['resources/scripts/**/*.{js,jsx}'],
+                include: ['resources/scripts/**/*.{js,jsx,ts,tsx}'],
                 exclude: [
                     'node_modules',
                     'public',

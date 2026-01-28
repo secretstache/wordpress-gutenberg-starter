@@ -66,11 +66,13 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
                 {
                     hasInnerBlocks
                         ? <InnerBlocks.DefaultBlockAppender />
-                        : <EmptyBlockPlaceholder
-                            title="This slide is empty"
-                            text='Use the "+" button below to add content blocks to your slide'
-                            clientId={clientId}
-                        />
+                        : (
+                            <EmptyBlockPlaceholder
+                                title="This slide is empty"
+                                text='Use the "+" button below to add content blocks to your slide'
+                                clientId={clientId}
+                            />
+                        )
                 }
             </div>
         </div>

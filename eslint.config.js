@@ -2,14 +2,18 @@ import pluginReact from 'eslint-plugin-react';
 import pluginImport from 'eslint-plugin-import';
 import pluginA11y from 'eslint-plugin-jsx-a11y';
 import pluginReactHooks from 'eslint-plugin-react-hooks';
+import tsParser from '@typescript-eslint/parser';
+import tsPlugin from '@typescript-eslint/eslint-plugin';
 
 export default [
     {
+        files: ['**/*.{js,jsx,ts,tsx}'],
         plugins: {
             'react': pluginReact,
             'import': pluginImport,
             'jsx-a11y': pluginA11y,
             'react-hooks': pluginReactHooks,
+            '@typescript-eslint': tsPlugin,
         },
         languageOptions: {
             ecmaVersion: 2022,
@@ -32,7 +36,7 @@ export default [
             'comma-dangle': 'off',
             'func-names': 'off',
             'semi': [
-                'error',
+                'warn',
                 'always',
                 {
                     omitLastInOneLineBlock: true,
@@ -43,10 +47,15 @@ export default [
             'no-shadow': 'off',
             'max-len': [
                 'warn',
-                { code: 170 },
+                { code: 170, ignoreStrings: true },
             ],
             'no-underscore-dangle': 'off',
             'no-nested-ternary': 'off',
+            'quotes': [
+                'warn',
+                'single',
+                { avoidEscape: true },
+            ],
             'radix': 'off',
             'padding-line-between-statements': [
                 'error',
@@ -98,5 +107,16 @@ export default [
             'static',
             'resources/scripts/client/libs',
         ],
+    },
+    {
+        files: ['**/*.{ts,tsx}'],
+        languageOptions: {
+            ecmaVersion: 2022,
+            sourceType: 'module',
+            parser: tsParser,
+            parserOptions: {
+                ecmaFeatures: { jsx: true },
+            },
+        },
     },
 ];
