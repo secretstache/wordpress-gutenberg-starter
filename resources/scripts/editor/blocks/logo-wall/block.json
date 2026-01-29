@@ -13,12 +13,20 @@
   "icon": "images-alt",
   "description": "",
   "supports": {
+    "align": [
+      "wide",
+      "full"
+    ],
     "spacing": {
       "margin": true,
       "padding": true
     }
   },
   "attributes": {
+    "align": {
+      "type": "string",
+      "default": "wide"
+    },
     "isPreview": {
       "type": "boolean",
       "default": false
@@ -32,10 +40,21 @@
           "id": { "type": "number" },
           "url": { "type": "string" },
           "alt": { "type": "string" },
-          "width": { "type": "string" },
-          "height": { "type": "string" },
+          "width": {
+            "anyOf": [
+              { "type": "number" },
+              { "type": "string" }
+            ]
+          },
+          "height": {
+            "anyOf": [
+              { "type": "number" },
+              { "type": "string" }
+            ]
+          },
           "linkSource": { "type": "string" },
-          "linkIsOpenInNewTab": { "type": "boolean" }
+          "linkIsOpenInNewTab": { "type": "boolean" },
+          "linkTitle": { "type": "string" }
         }
       }
     }
