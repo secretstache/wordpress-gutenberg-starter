@@ -8,7 +8,7 @@
     "accordion",
     "faq"
   ],
-  "category": "ssm-templates",
+  "category": "ssm-components",
   "example": {},
   "icon": "columns",
   "supports": {
@@ -19,6 +19,10 @@
   },
   "attributes": {
     "isOpenedByDefault": {
+      "type": "boolean",
+      "default": false
+    },
+    "isAllowedMultiple": {
       "type": "boolean",
       "default": false
     },
@@ -33,17 +37,17 @@
     "queryType": {
       "type": "string",
       "enum": [
-        "latest",
+        "all",
         "by_faq_category",
         "curated"
       ],
-      "default": "latest"
+      "default": "all"
     },
     "numberOfPosts": {
       "type": "number",
       "default": 6
     },
-    "selectedCategories": {
+    "curatedterms": {
       "type": "array",
       "default": []
     },

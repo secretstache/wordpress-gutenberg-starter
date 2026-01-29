@@ -14,7 +14,7 @@ const QUERY_TYPE = {
   CURATED: 'curated',
 };
 
-const POST_TYPE = { TESTIMONIAL: 'ktz_testimonial' };
+const POST_TYPE = { TESTIMONIAL: 'ssm_testimonial' };
 
 export const edit = ({ attributes, setAttributes }) => {
 	const {
