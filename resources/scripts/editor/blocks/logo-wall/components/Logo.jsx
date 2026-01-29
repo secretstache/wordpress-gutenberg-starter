@@ -3,7 +3,7 @@ export const Logo = ({ logo, setLink = false }) => {
         <img
             src={logo?.url}
             alt={logo?.alt || 'Logo Item'}
-            loading="lazy" 
+            loading="lazy"
             className="max-h-24 w-auto"
         />
     );
@@ -11,11 +11,11 @@ export const Logo = ({ logo, setLink = false }) => {
     return (
         logo?.linkSource && logo?.linkSource !== '#' ?(
             <a
-                href={setLink ? logo?.linkSource : "#"}
+                href={setLink ? logo?.linkSource : '#'}
                 target={setLink && logo?.linkIsOpenInNewTab ? '_blank' : '_self'}
                 rel={setLink && logo?.linkIsOpenInNewTab ? 'noopener noreferrer' : 'noopener'}
             >
-                {content} 
+                {content}
             </a>
         ) : (
             <>
