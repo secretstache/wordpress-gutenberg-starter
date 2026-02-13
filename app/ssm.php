@@ -24,6 +24,11 @@ add_action( 'admin_menu', function () {
 });
 
 /**
+ * Remove GForm Required String
+ */
+add_filter('gform_required_legend', '__return_empty_string');
+
+/**
  * Remove first SSM submenu item
  */
 add_action( 'admin_init', function () {
