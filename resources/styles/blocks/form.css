@@ -5,6 +5,10 @@
         grid-template-columns: 1fr;
     }
 
+    .gform_required_legend {
+        display: none;
+    }
+
     fieldset,
     legend {
         background: 0 0;
