@@ -4,43 +4,33 @@ import {
     InspectorControls,
     RichText,
 } from '@wordpress/block-editor';
-import { useContext, useCallback, useEffect } from '@wordpress/element';
+import { useContext, useCallback, useEffect, useState } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 import classNames from 'classnames';
-import { useAccordionItem, useFilterBlocks } from '@secretstache/wordpress-gutenberg';
+import { useAccordionItem, useChildBlockPosition, useFilterBlocks } from '@secretstache/wordpress-gutenberg';
 
-import { ToggleIcon } from '../components/icons.jsx';
 import { AccordionContext } from '../index.jsx';
 
 export const edit = ({ attributes, setAttributes, clientId }) => {
     const { title } = attributes;
-    const { setActiveItemClientId, activeItemClientId } = useContext(AccordionContext);
+    const {
+        setActiveItemClientId,
+        activeItemClientId,
+        isAllowedMultiple,
+        isOpenedByDefault,
+    } = useContext(AccordionContext);
 
     const { childBlocks } = useSelect(select => ({
         childBlocks: select('core/block-editor').getBlocks(clientId),
     }), []);
 
-    const { blockRef, toggleItem, isActive } = useAccordionItem({
+    const { blockRef, isActive, openContent, closeContent } = useAccordionItem({
         itemId: clientId,
         activeItemId: activeItemClientId,
         setActiveItemId: setActiveItemClientId,
-        contentSelector: '.wp-block-ssm-accordion__content',
+        contentSelector: '.wp-block-ssm-accordion__panel',
         heightObserverDeps: [ childBlocks ],
     });
-
-    const { isChildSelected } = useSelect((select) => {
-        const isChildSelected = select('core/block-editor').hasSelectedInnerBlock(clientId, true);
-
-        return {
-            isChildSelected,
-        };
-    }, []);
-
-    useEffect(() => {
-        if (isChildSelected) {
-            setActiveItemClientId(clientId);
-        }
-    }, [ isChildSelected ]);
 
     const allowedBlocks = useFilterBlocks((block) => {
         const isBaseBlock = block.name === 'core/block';
@@ -55,18 +45,72 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
         setAttributes({ title });
     }, []);
 
+    const [ isActiveInMultipleState, setIsActiveInMultipleState ] = useState(false);
+
+    const onClick = () => {
+        if (isAllowedMultiple) {
+            if (isActiveInMultipleState) {
+                setIsActiveInMultipleState(false);
+            } else {
+                setIsActiveInMultipleState(true);
+            }
+        } else {
+            if (isActive) {
+                setActiveItemClientId(false);
+            } else {
+                setActiveItemClientId(clientId);
+            }
+        }
+    };
+
+    useEffect(() => {
+        if (isActive) {
+            openContent();
+        } else {
+            closeContent();
+        }
+    }, [ isActive ]);
+
+    useEffect(() => {
+        if (isActiveInMultipleState) {
+            openContent();
+        } else {
+            closeContent();
+        }
+    }, [ isActiveInMultipleState ]);
+
+    useEffect(() => {
+        setActiveItemClientId(false);
+        setIsActiveInMultipleState(false);
+    }, [ isAllowedMultiple, isOpenedByDefault ]);
+
+    const { position } = useChildBlockPosition(clientId);
+
+    useEffect(() => {
+        if (isOpenedByDefault && position === 0) {
+            if (isAllowedMultiple) {
+                setIsActiveInMultipleState(true);
+            } else {
+                setActiveItemClientId(clientId);
+            }
+        }
+    }, [ isOpenedByDefault, isAllowedMultiple, position ]);
+
+    const isOpen = isActiveInMultipleState || isActive;
+
     const blockProps = useBlockProps({
-        className: classNames('wp-block-ssm-accordion__item border-[2px] border-gray-50 rounded-20 transition-all', {
-            'is-opened': isActive,
+        className: classNames('wp-block-ssm-accordion__item', {
+            'is-open': isOpen,
         }),
         ref: blockRef,
     });
 
     const innerBlocksProps = useInnerBlocksProps(
         {
-            className: 'p-6 bg-white rounded-20 *:text-gray-300 is-layout-flow',
+            className: 'px-6',
         },
         {
+            template: [ [ 'core/paragraph' ] ],
             allowedBlocks,
         },
     );
@@ -76,31 +120,28 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
             <InspectorControls />
 
             <div {...blockProps}>
-                <div
-                    className={classNames('wp-block-ssm-accordion__button flex group items-center justify-between gap-8 p-6 cursor-pointer w-full', {
-                        'is-open': isActive,
-                    })}
-                    onClick={toggleItem}
+                <button
+                    type="button"
+                    className="wp-block-ssm-accordion__trigger"
+                    onClick={onClick}
                 >
+                    <div className="min-h-0 flex items-center">
+                        <div className="wp-block-ssm-accordion__trigger-inner">
 
-                    <RichText
-                        tagName="h3"
-                        className="font-bold text-lg transition-colors"
-                        value={title}
-                        onChange={onTitleChange}
-                        placeholder="Enter title..."
-                    />
-
-                    <div className="wp-block-ssm-accordion__button-toggle min-w-8 w-8 h-8 flex group-[.is-open]:bg-white transition-colors bg-sunrise rounded-full items-center justify-center">
-                        <ToggleIcon />
-                    </div>
-                </div>
-
-                <div className="wp-block-ssm-accordion__content is-layout-flow max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
-                    <div className="pb-6 px-6">
-                        <div {...innerBlocksProps}>
-                            {innerBlocksProps.children}
+                            <RichText
+                                tagName="span"
+                                className="text-md font-bold uppercase"
+                                value={title}
+                                onChange={onTitleChange}
+                                placeholder="Enter title..."
+                            />
                         </div>
+                    </div>
+                </button>
+
+                <div className="wp-block-ssm-accordion__panel">
+                    <div {...innerBlocksProps}>
+                        {innerBlocksProps.children}
                     </div>
                 </div>
             </div>

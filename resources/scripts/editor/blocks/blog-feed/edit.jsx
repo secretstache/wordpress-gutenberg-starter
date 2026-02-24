@@ -44,7 +44,7 @@ export const edit = ({ attributes, setAttributes }) => {
 
     const { postsToShow, isResolving, isEmpty } = useDataQuery(queryConfig, [ queryType, curatedTerms, curatedPosts, numberOfPosts ]);
 
-    const onIsShowFiltersChange = () => setAttributes({ isShowFilters: !isShowFilters })
+    const onIsShowFiltersChange = () => setAttributes({ isShowFilters: !isShowFilters });
 
     return (
         <>
@@ -106,4 +106,4 @@ export const edit = ({ attributes, setAttributes }) => {
             </div>
         </>
     );
-}
+};

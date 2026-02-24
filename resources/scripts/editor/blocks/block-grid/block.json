@@ -1,0 +1,31 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "ssm/block-grid",
+  "title": "Block Grid",
+  "description": "",
+  "category": "ssm-templates",
+  "icon": "grid-view",
+  "keywords": [
+    "block",
+    "grid"
+  ],
+  "supports": {
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "align": ["wide", "full"]
+  },
+  "attributes": {
+    "columnsPerRow": {
+      "type": "number",
+      "default": 3
+    },
+    "align": {
+      "type": "string",
+      "default": "wide"
+    }
+  },
+  "render": "index"
+}

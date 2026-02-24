@@ -1,0 +1,25 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "ssm/block-grid-item",
+  "title": "Block Grid Item",
+  "description": "",
+  "category": "ssm-templates",
+  "parent": [
+    "ssm/block-grid"
+  ],
+  "icon": "grid-view",
+  "supports": {
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "reusable": false
+  },
+  "attributes": {
+    "hasInnerBlocks": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

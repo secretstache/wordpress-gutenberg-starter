@@ -4,7 +4,7 @@ import {
     useBlockProps,
     useInnerBlocksProps,
 } from '@wordpress/block-editor';
-import { useCallback, useEffect, useState } from '@wordpress/element';
+import { useCallback } from '@wordpress/element';
 import {
     PanelBody,
     __experimentalDivider as Divider,
@@ -13,6 +13,7 @@ import {
     SelectControl,
     RadioControl,
     TextControl,
+    RangeControl,
 } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 import classNames from 'classnames';
@@ -21,7 +22,7 @@ import {
     ResponsiveSpacingControl,
     ColorPaletteControl,
     getSpacingClasses,
-    EmptyBlockAppender,
+    __experimentalEmptyBlockPlaceholder as EmptyBlockPlaceholder,
     useAllowedBlocks,
     MediaControl,
 } from '@secretstache/wordpress-gutenberg';
@@ -39,6 +40,7 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
         backgroundVideo,
         isIncludeOverlay,
         overlayColor,
+        overlayOpacity,
         isFullViewportHeight,
         spacing,
     } = attributes;
@@ -54,12 +56,14 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
     const isBackgroundVideoSourceFile = backgroundVideoSource === 'file';
     const isBackgroundVideoSourceExternal = backgroundVideoSource === 'external';
 
-    const hasSelectedBackgroundVideo = isBackgroundTypeVideo && ((isBackgroundVideoSourceFile && backgroundVideo?.url) || (isBackgroundVideoSourceExternal && externalBackgroundVideoUrl));
+    const hasSelectedBackgroundVideo = isBackgroundTypeVideo && (
+        (isBackgroundVideoSourceFile && backgroundVideo?.url) || (isBackgroundVideoSourceExternal && externalBackgroundVideoUrl)
+    );
 
     const hasSelectedBackgroundMedia = hasSelectedBackgroundImage || hasSelectedBackgroundVideo;
     const hasSelectedBackground = hasSelectedBackgroundColor || hasSelectedBackgroundMedia;
 
-    const hasSelectedOverlayColor = isIncludeOverlay && !!overlayColor?.slug;
+    const hasSelectedOverlayColor = !!overlayColor?.slug;
 
     const onBackgroundTypeChange = useCallback((mediaType) => {
         setAttributes({ backgroundType: mediaType });
@@ -113,6 +117,10 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
 
     const onIncludeOverlayChange = () => setAttributes({ isIncludeOverlay: !isIncludeOverlay });
 
+    const onOverlayOpacityChange = useCallback((overlayOpacity) => {
+        setAttributes({ overlayOpacity });
+    }, []);
+
     const onIsFullViewportHeightChange = () => setAttributes({ isFullViewportHeight: !isFullViewportHeight });
 
     const onSpacingChange = useCallback((spacing) => {
@@ -136,7 +144,7 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
         [],
     );
 
-    const isLightAppender = hasSelectedBackgroundMedia || (hasSelectedBackgroundColor && isSomeColorDark([ backgroundColor?.slug ]))
+    const isLightAppender = hasSelectedBackgroundMedia || (hasSelectedBackgroundColor && isSomeColorDark([ backgroundColor?.slug ]));
 
     const blockProps = useBlockProps({
         className: classNames(
@@ -213,15 +221,26 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
                                     checked={isIncludeOverlay}
                                 />
 
+
                                 {
                                     isIncludeOverlay && (
-                                        <ColorPaletteControl
-                                            label="Overlay Color"
-                                            value={overlayColor?.value}
-                                            attributeName="overlayColor"
-                                            setAttributes={setAttributes}
-                                            allowedColors={['white', 'black']}
-                                        />
+                                        <>
+                                            <ColorPaletteControl
+                                                label="Overlay Color"
+                                                value={overlayColor?.value}
+                                                attributeName="overlayColor"
+                                                setAttributes={setAttributes}
+                                            />
+
+                                            <RangeControl
+                                                label="Overlay Opacity"
+                                                value={overlayOpacity}
+                                                onChange={onOverlayOpacityChange}
+                                                min={0}
+                                                max={100}
+                                                step={5}
+                                            />
+                                        </>
                                     )
                                 }
                             </>
@@ -301,7 +320,7 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
                                 alt={backgroundImage?.alt || 'background image'}
                                 className="w-full h-full object-cover transform transition-transform duration-100"
                                 style={{
-                                    'object-position': `${focalPoint.x * 100}% ${focalPoint.y * 100}%`,
+                                    objectPosition: `${focalPoint.x * 100}% ${focalPoint.y * 100}%`,
                                 }}
                             />
                         )}
@@ -325,7 +344,13 @@ export const edit = ({ name: blockName, attributes, setAttributes, clientId }) =
                     {
                         hasInnerBlocks
                             ? <InnerBlocks.DefaultBlockAppender/>
-                            : <EmptyBlockAppender title="This section is empty" isLight={isLightAppender} />
+                            : (
+                                <EmptyBlockPlaceholder
+                                    title="This section is empty"
+                                    isLight={isLightAppender}
+                                    clientId={clientId}
+                                />
+                            )
                     }
                 </div>
             </div>

@@ -7,4 +7,8 @@ export const setBlocksVariations = () => {
                 unregisterBlockVariation('core/embed', embed.name);
             }
         });
+
+    // Unregister heading & paragraph variations
+    unregisterBlockVariation('core/heading', 'stretchy-heading');
+    unregisterBlockVariation('core/paragraph', 'stretchy-paragraph');
 };

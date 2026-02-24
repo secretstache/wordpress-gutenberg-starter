@@ -1,0 +1,10 @@
+/resources/ @nauorama
+/static/ @nauorama
+
+/app/ @Dmitryfor
+/resources/views/ @Dmitryfor
+/resources/lang/ @fedorenkodev
+/.github/ @fedorenkodev
+
+/resources/scripts/editor/ @fedorenkodev @Bukita89
+/resources/styles/**/*editor*.css @fedorenkodev @Bukita89

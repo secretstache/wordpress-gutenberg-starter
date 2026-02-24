@@ -11,26 +11,45 @@ import {
 } from '@wordpress/components';
 import { useState, useRef, useEffect, useCallback, useMemo } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
-import classNames from 'classnames';
 import { useDataQuery, ResourcesWrapper, DataQueryControls } from '@secretstache/wordpress-gutenberg';
 
-import { DATA_SOURCE, POST_TYPE, QUERY_TYPE, TAXONOMY, AccordionContext } from './index.jsx';
+import { AccordionContext } from './index.jsx';
 import { FaqItem } from './components/FaqItem.jsx';
 
 const ALLOWED_BLOCKS = ['ssm/accordion-item'];
 
 const TEMPLATE = [
-    ['ssm/accordion-item'],
-    ['ssm/accordion-item'],
+    ['ssm/accordion-item', {}, [ ['core/paragraph'] ]],
+    ['ssm/accordion-item', {}, [ ['core/paragraph'] ]],
 ];
+
+export const TAXONOMY = {
+    FAQ_CATEGORY: 'ssm_faq_category',
+};
+
+export const POST_TYPE = {
+    FAQ: 'ssm_faq',
+};
+
+export const DATA_SOURCE = {
+    NONE: 'none',
+    FAQ: 'faq',
+};
+
+export const QUERY_TYPE = {
+    ALL: 'all',
+    BY_CATEGORY: 'by_faq_category',
+    CURATED: 'curated',
+};
 
 export const edit = ({ attributes, setAttributes, clientId }) => {
     const {
         isOpenedByDefault,
+        isAllowedMultiple,
         dataSource,
         numberOfPosts,
         queryType,
-        selectedCategories,
+        curatedTerms,
         curatedPosts,
     } = attributes;
 
@@ -45,24 +64,24 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
     const isDataSourceNone = dataSource === DATA_SOURCE.NONE;
     const isDataSourceFaq = dataSource === DATA_SOURCE.FAQ;
 
-    const isQueryTypeAll = queryType === QUERY_TYPE.LATEST;
+    const isQueryTypeAll = queryType === QUERY_TYPE.ALL;
     const isQueryTypeCurated = queryType === QUERY_TYPE.CURATED;
     const isQueryTypeByCategory = queryType === QUERY_TYPE.BY_CATEGORY;
 
-    const isEmptySelection = (isQueryTypeCurated && !curatedPosts?.length) || (isQueryTypeByCategory && !selectedCategories?.length);
+    const isEmptySelection = (isQueryTypeCurated && !curatedPosts?.length) || (isQueryTypeByCategory && !curatedTerms?.length);
 
     const queryConfig = useMemo(() => ({
         postType: POST_TYPE.FAQ,
         taxonomySlug: TAXONOMY.FAQ_CATEGORY,
-        curatedTermsIds: isQueryTypeByCategory && selectedCategories,
+        curatedTermsIds: isQueryTypeByCategory ? curatedTerms : null,
         curatedPostsIds: isQueryTypeCurated && curatedPosts?.map((post) => post.value),
         numberOfPosts: !isQueryTypeCurated ? numberOfPosts : -1,
         extraQueryArgs: (isQueryTypeAll || isQueryTypeByCategory) ? { order: 'asc', orderby: 'title' } : {},
-    }), [ queryType, selectedCategories, curatedPosts, numberOfPosts ]);
+    }), [ queryType, curatedTerms, curatedPosts, numberOfPosts ]);
 
     const { postsToShow, isResolving, isEmpty } = useDataQuery(
         isDataSourceFaq ? queryConfig : {},
-        [ dataSource, queryType, selectedCategories, curatedPosts, numberOfPosts ],
+        [ dataSource, queryType, curatedTerms, curatedPosts, numberOfPosts ],
     );
 
     useEffect(() => {
@@ -78,14 +97,16 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
         setAttributes({ isOpenedByDefault });
     }, []);
 
+    const onAllowMultipleChange = useCallback((isAllowedMultiple) => {
+        setAttributes({ isAllowedMultiple });
+    }, []);
+
     const onDataSourceChange = useCallback((dataSource) => {
         setAttributes({ dataSource });
     }, []);
 
     const blockProps = useBlockProps({
-        className: classNames('flex flex-col gap-4', {
-            'is-opened-by-default': isOpenedByDefault,
-        }),
+        className: 'h-full flex flex-col',
         ref: blockRef,
     });
 
@@ -102,6 +123,8 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
             activeItemClientId,
             setActiveItemClientId,
             dataSource,
+            isAllowedMultiple,
+            isOpenedByDefault,
         }}>
             <InspectorControls>
                 <PanelBody title="Settings">
@@ -109,6 +132,12 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
                         label="Initially opened"
                         checked={isOpenedByDefault}
                         onChange={onOpenByDefaultChange}
+                    />
+
+                    <ToggleControl
+                        label="Allow multiple"
+                        checked={isAllowedMultiple}
+                        onChange={onAllowMultipleChange}
                     />
 
                     <Divider />
@@ -132,7 +161,7 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
                                 setAttributes={setAttributes}
                             >
                                 <DataQueryControls.QueryType options={[
-                                    { label: 'All', value: QUERY_TYPE.LATEST },
+                                    { label: 'All', value: QUERY_TYPE.ALL },
                                     { label: 'By Category', value: QUERY_TYPE.BY_CATEGORY },
                                     { label: 'Curated', value: QUERY_TYPE.CURATED },
                                 ]} />
@@ -146,15 +175,16 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
 
                                 <DataQueryControls.TaxonomySelect
                                     condition={isQueryTypeByCategory}
-                                    attributeName="selectedCategories"
+                                    attributeName="curatedTerms"
                                     taxonomy={TAXONOMY.FAQ_CATEGORY}
-                                    value={selectedCategories}
+                                    value={curatedTerms}
                                 />
 
                                 <DataQueryControls.NumberOfPosts
                                     condition={!isQueryTypeCurated}
                                     attributeName="numberOfPosts"
                                     value={numberOfPosts}
+                                    hasDivider={false}
                                 />
                             </DataQueryControls>
                         </>
@@ -173,7 +203,11 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
                     >
                         {
                             postsToShow && postsToShow.length > 0 && (
-                                postsToShow.map((post) => <FaqItem key={post.id} post={post} />)
+                                postsToShow.map((post, index) => <FaqItem
+                                    key={post.id}
+                                    post={post}
+                                    position={index}
+                                />)
                             )
                         }
                     </ResourcesWrapper>
@@ -182,4 +216,3 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
         </AccordionContext.Provider>
     );
 };
-

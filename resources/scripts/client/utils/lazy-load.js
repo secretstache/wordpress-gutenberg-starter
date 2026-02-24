@@ -79,7 +79,7 @@ const defaultConfig = {
         if (element.getAttribute('data-background-delimiter')) {
             backgroundImageDelimiter = element.getAttribute('data-background-delimiter');
         }
-        /* eslint-disable */
+
         if (element.getAttribute('data-background-image')) {
             element.style.backgroundImage = `url('${element.getAttribute('data-background-image').split(backgroundImageDelimiter).join("'),url('")}')`;
         } else if (element.getAttribute('data-background-image-set')) {
@@ -92,7 +92,6 @@ const defaultConfig = {
                 element.setAttribute('style', (element.getAttribute('style') || '') + `background-image: ${firstUrlLink}; background-image: -webkit-image-set(${imageSetLinks}); background-image: image-set(${imageSetLinks})`);
             }
         }
-        /* eslint-enable */
 
         if (element.getAttribute('data-toggle-class')) {
             element.classList.toggle(element.getAttribute('data-toggle-class'));

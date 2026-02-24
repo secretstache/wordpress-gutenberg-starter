@@ -87,22 +87,37 @@ add_filter('block_categories_all', function ($categories) {
 });
 
 /**
- * Add bg-dark or bg-light classes to core blocks with the background
+ * Add bg-dark or bg-light classes to core and ssm blocks
  */
 add_filter('render_block', function ( $block_content, $block ) {
-    if (str_starts_with($block['blockName'], 'core/')) {
+    $background_class = null;
+    $is_core_block = str_starts_with($block['blockName'], 'core/');
+    $is_ssm_block = str_starts_with($block['blockName'], 'ssm/');
+
+    if ( $is_core_block ) {
         $background_color = $block['attrs']['backgroundColor'] ?? null;
+        $background_class = $background_color
+            ? SSM::getBackgroundToneClass('color', $background_color)
+            : null;
+    } elseif ( $is_ssm_block ) {
+        $background_type = $block['attrs']['backgroundType'] ?? 'color';
 
-        $background_class = SSM::getBackgroundToneClass('color', $background_color);
+        $background_color = !empty($block['attrs']['backgroundColor']['slug'])
+            ? $block['attrs']['backgroundColor']['slug']
+            : null;
 
-        if ( $background_class ) {
-            $block_content = preg_replace(
-                '/(<[^>]+class="[^"]*)"/',
-                '$1 ' . $background_class . '"',
-                $block_content,
-                1
-            );
-        }
+        $background_class = $background_color
+            ? SSM::getBackgroundToneClass($background_type, $background_color)
+            : null;
+    }
+
+    if ( $background_class ) {
+        $block_content = preg_replace(
+            '/(<[^>]+class="[^"]*)"/',
+            '$1 ' . $background_class . '"',
+            $block_content,
+            1
+        );
     }
 
     return $block_content;

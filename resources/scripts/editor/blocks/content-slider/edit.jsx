@@ -9,11 +9,11 @@ import { PanelBody, ToolbarButton } from '@wordpress/components';
 import { useCallback, useMemo, useEffect, useRef } from '@wordpress/element';
 import { getBlockContent } from '@wordpress/blocks';
 import { select, useSelect } from '@wordpress/data';
+import { brush } from '@wordpress/icons';
 import classNames from 'classnames';
 import { useSlider, PreviewControl } from '@secretstache/wordpress-gutenberg';
 
 import { SplideContext } from './index.jsx';
-import { BrushIcon } from '../../components/icons.jsx';
 
 const setupSlider = () => console.log('setup slider');
 
@@ -93,7 +93,7 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
 
             <BlockControls group="inline">
                 <ToolbarButton
-                    icon={BrushIcon}
+                    icon={brush}
                     onClick={onIsPreviewChange}
                     isActive={isPreview}
                 />

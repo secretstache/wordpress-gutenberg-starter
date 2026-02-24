@@ -72,6 +72,14 @@ export const unsetBlocks = () => {
         'core/legacy-widget',
         'core/widget-group',
         'core/code',
+        'core/accordion',
+        'core/math',
+        'core/post-comments-count',
+        'core/post-comments-link',
+        'core/term-count',
+        'core/term-name',
+        'core/terms-query',
+
         // third-party
         'real-media-library/gallery',
         'searchwp/search-form',

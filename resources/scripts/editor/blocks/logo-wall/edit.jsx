@@ -6,17 +6,18 @@ import {
     MediaUploadCheck,
     useBlockProps,
     MediaPlaceholder,
+    __experimentalLinkControl as LinkControl,
 } from '@wordpress/block-editor';
 import {
     Button,
     PanelBody,
     ToolbarButton,
 } from '@wordpress/components';
-import { useCallback, useMemo } from '@wordpress/element';
+import { useCallback, useMemo, useRef, useEffect } from '@wordpress/element';
+import { plus as plusIcon, brush as brushIcon } from '@wordpress/icons';
 import classNames from 'classnames';
-import { LinkControl, useSlider, PreviewControl } from '@secretstache/wordpress-gutenberg';
+import { PreviewControl } from '@secretstache/wordpress-gutenberg';
 
-import { PlusIcon, BrushIcon } from '../../components/icons.jsx';
 import { Logo } from './components/Logo.jsx';
 
 const initLogoWall = () => {
@@ -26,28 +27,54 @@ const initLogoWall = () => {
 export const edit = ({ attributes, setAttributes }) => {
     const { logos, isPreview } = attributes;
 
-    const { sliderElRef } = useSlider({
-        isEnabled: isPreview && logos?.length,
-        setupSlider: initLogoWall,
-    }, [ isPreview, logos ]);
-
     const onImagesSelect = useCallback((newImages) => {
-        const updatedLogos = newImages?.map((image) => ({
-            id: image.id,
-            url: image?.sizes?.full?.url || image.url,
-            alt: image.alt || '',
-            width: image?.sizes?.full?.width || '100%',
-            height: image?.sizes?.full?.height || '100%',
-            linkSource: '#',
-            linkIsOpenInNewTab: false,
-        }));
+
+        const existingById = logos?.reduce((acc, logo) => {
+            acc[logo.id] = logo;
+
+            return acc;
+        }, {}) || {};
+
+        const mergedLogos = newImages.map((image) => {
+            const existing = existingById[image.id];
+
+            return {
+                id: image.id,
+                url: image?.sizes?.full?.url || image.url,
+                alt: image.alt || '',
+                width: image?.sizes?.full?.width || '100%',
+                height: image?.sizes?.full?.height || '100%',
+                linkSource: existing?.linkSource ?? '',
+                linkIsOpenInNewTab: existing?.linkIsOpenInNewTab ?? false,
+                linkTitle: existing?.linkTitle ?? '',
+            };
+        });
+
+        setAttributes({ logos: mergedLogos });
+    }, [ logos ]);
+
+     const onLinkChange = useCallback((index, newLink) => {
+        const updatedLogos = [...logos];
+
+        updatedLogos[index] = {
+            ...updatedLogos[index],
+            linkSource: newLink?.url || '',
+            linkIsOpenInNewTab: newLink?.opensInNewTab || false,
+            linkTitle: newLink?.title ?? '',
+        };
 
         setAttributes({ logos: updatedLogos });
-    }, []);
+    }, [ logos ]);
 
-    const updateLogoAttribute = useCallback((index, attribute, value) => {
+    const onLinkRemove = useCallback((index) => {
         const updatedLogos = [...logos];
-        updatedLogos[index] = { ...updatedLogos[index], [attribute]: value };
+
+        updatedLogos[index] = {
+            ...updatedLogos[index],
+            linkSource: '',
+            linkIsOpenInNewTab: false,
+            linkTitle: '',
+        };
 
         setAttributes({ logos: updatedLogos });
     }, [ logos ]);
@@ -60,10 +87,27 @@ export const edit = ({ attributes, setAttributes }) => {
 
     const hasSelectedLogos = mediaIds?.length > 0;
 
+    const blockRef = useRef(null);
+    const sliderInstance = useRef(null);
+
+    useEffect(() => {
+        if (hasSelectedLogos && isPreview && blockRef?.current && !sliderInstance.current) {
+            sliderInstance.current = initLogoWall(blockRef.current);
+        }
+
+        return () => {
+            if (sliderInstance.current) {
+                sliderInstance.current?.destroy();
+                sliderInstance.current = null;
+            }
+        };
+    }, [ mediaIds, blockRef, isPreview ]);
+
     const blockProps = useBlockProps({
         className: classNames({
             'is-preview': isPreview,
         }),
+        ref: blockRef,
     });
 
     return (
@@ -84,18 +128,25 @@ export const edit = ({ attributes, setAttributes }) => {
                                 initialOpen={false}
                             >
                                 <LinkControl
-                                    url={{
-                                        value: logo.linkSource,
-                                        attrName: 'linkSource',
+                                    key={logo.id}
+                                    value={{
+                                        url: logo.linkSource,
+                                        opensInNewTab: logo.linkIsOpenInNewTab,
+                                        title: logo.linkTitle,
                                     }}
-                                    isOpenInNewTab={{
-                                        value: logo.linkIsOpenInNewTab,
-                                        attrName: 'linkIsOpenInNewTab',
-                                    }}
-                                    setAttributes={(updates) => {
-                                        Object.entries(updates).forEach(([key, value]) => {
-                                            updateLogoAttribute(index, key, value);
-                                        });
+                                    onChange={(newLink) => onLinkChange(index, newLink)}
+                                    onRemove={() => onLinkRemove(index)}
+                                    settings={[
+                                        {
+                                            id: 'opensInNewTab',
+                                            title: 'Open in new tab',
+                                            isToggle: true,
+                                        },
+                                    ]}
+                                    showSuggestions={true}
+                                    suggestionsQuery={{
+                                        type: 'post',
+                                        subtype: ['page', 'post'],
                                     }}
                                 />
                             </PanelBody>
@@ -106,7 +157,7 @@ export const edit = ({ attributes, setAttributes }) => {
 
             <BlockControls group="inline">
                 <ToolbarButton
-                    icon={BrushIcon}
+                    icon={brushIcon}
                     label="Toggle Preview"
                     onClick={onIsPreviewChange}
                     isActive={isPreview}
@@ -131,28 +182,28 @@ export const edit = ({ attributes, setAttributes }) => {
                 )
             }
 
-            <div {...blockProps}>
-                <div className="wp-block-ssm-logo-wall__wrapper">
-                    {
-                        hasSelectedLogos && (
-                            isPreview ? (
-                                <div className="splide" ref={sliderElRef}>
-                                    <div className="splide__track">
-                                        <div className="splide__list">
-                                            {
-                                                logos.map((logo) => (
-                                                    <div
-                                                        key={logo.id}
-                                                        className="splide__slide"
-                                                    >
-                                                        <Logo logo={logo} />
-                                                    </div>
-                                                ))
-                                            }
-                                        </div>
-                                    </div>
+            <div {...blockProps} data-logo-wall>
+                {
+                    hasSelectedLogos && (
+                        isPreview ? (
+                            <div className="splide">
+                                <div className="splide__track">
+                                    <ul className="splide__list">
+                                        {
+                                            logos.map((logo) => (
+                                                <li
+                                                    key={logo.id}
+                                                    className="splide__slide flex items-center justify-center"
+                                                >
+                                                    <Logo logo={logo} setLink={false} />
+                                                </li>
+                                            ))
+                                        }
+                                    </ul>
                                 </div>
-                            ) : (
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-6 gap-4">
                                 <MediaUploadCheck>
                                     <MediaUpload
                                         onSelect={onImagesSelect}
@@ -170,7 +221,7 @@ export const edit = ({ attributes, setAttributes }) => {
                                                 <Button
                                                     size="small"
                                                     onClick={open}
-                                                    icon={PlusIcon}
+                                                    icon={plusIcon}
                                                     label="Add logo"
                                                     showTooltip={true}
                                                     variant="primary"
@@ -179,10 +230,10 @@ export const edit = ({ attributes, setAttributes }) => {
                                         )}
                                     />
                                 </MediaUploadCheck>
-                            )
+                            </div>
                         )
-                    }
-                </div>
+                    )
+                }
 
                 {
                     !hasSelectedLogos && !isPreview && (

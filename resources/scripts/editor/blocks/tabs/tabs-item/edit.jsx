@@ -3,7 +3,7 @@ import { useSelect } from '@wordpress/data';
 import { InnerBlocks, RichText, useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import { useContext, useRef } from '@wordpress/element';
 import classNames from 'classnames';
-import { useFilterBlocks, getSlug, EmptyBlockAppender } from '@secretstache/wordpress-gutenberg';
+import { useFilterBlocks, getSlug, __experimentalEmptyBlockPlaceholder as EmptyBlockPlaceholder } from '@secretstache/wordpress-gutenberg';
 
 import { TabsContext, LAYOUT_TYPE } from '../index.jsx';
 
@@ -91,7 +91,13 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
                 {
                     hasInnerBlocks
                         ? <InnerBlocks.DefaultBlockAppender />
-                        : <EmptyBlockAppender title="This tab is empty" text='Use the "+" button below to add content blocks to your tab' />
+                        : (
+                            <EmptyBlockPlaceholder
+                                title="This tab is empty"
+                                text='Use the "+" button below to add content blocks to your tab'
+                                clientId={clientId}
+                            />
+                        )
                 }
             </div>
         </>

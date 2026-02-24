@@ -1,11 +1,22 @@
 import { addFilter, removeFilter } from '@wordpress/hooks';
 import { getBlockTypes } from '@wordpress/blocks';
 
-export const allowedBlocksForColumnFilter = {
+export class AllowedBlocksForColumnFilter {
+    name = 'ssm/allowed-blocks-for-column';
+    isAdded = false;
+
+    constructor(
+        rootBlockName = 'ssm/section-wrapper',
+        postTypes = ['page', 'post', 'ssm_design_system', 'wp_block'],
+    ) {
+        this.rootBlockName = rootBlockName;
+        this.postTypes = postTypes;
+    }
+
     add() {
         addFilter(
             'blocks.registerBlockType',
-            'ssm/allowed-blocks-for-column',
+            this.name,
             (blockSettings, blockName) => {
                 if (blockName !== 'core/column') {
                     return blockSettings;
@@ -14,7 +25,7 @@ export const allowedBlocksForColumnFilter = {
                 // get all blockTypes
                 blockSettings.allowedBlocks = getBlockTypes()
                     ?.filter((allowedBlock) => {
-                        const isRootBlock = allowedBlock.name === 'ssm/section-wrapper';
+                        const isRootBlock = allowedBlock.name === this.rootBlockName;
                         const hasParent = !!allowedBlock?.parent;
 
                         return !isRootBlock && !hasParent;
@@ -24,8 +35,12 @@ export const allowedBlocksForColumnFilter = {
                 return blockSettings;
             },
         );
-    },
+
+        this.isAdded = true;
+    }
+
     remove() {
-        removeFilter('blocks.registerBlockType', 'ssm/allowed-blocks-for-column');
-    },
-};
+        removeFilter('blocks.registerBlockType', this.name);
+        this.isAdded = false;
+    }
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "ssm/stats",
+  "title": "Stats",
+  "category": "ssm-components",
+  "icon": "chart-area",
+  "supports": {
+    "align": [
+      "wide",
+      "full"
+    ],
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "color": {
+      "text": true
+    }
+  },
+  "attributes": {
+    "prependedData": {
+      "type": "string",
+      "default": ""
+    },
+    "value": {
+      "type": "string",
+      "default": "50"
+    },
+    "appendedData": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "render": "index"
+}
