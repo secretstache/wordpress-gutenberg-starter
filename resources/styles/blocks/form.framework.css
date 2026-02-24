@@ -1,0 +1,652 @@
+/* form.framework.css */
+
+/* ============================================
+   Gravity Forms Custom Framework
+   Based on Orbital theme approach with CSS variables
+   Works on top of gravity-theme (GF 2.5)
+   ============================================ */
+
+/* ============================================
+   DEFAULT CSS VARIABLES
+   Override these in your theme file
+   ============================================ */
+
+.gform_wrapper.gravity-theme {
+    /* General Settings */
+    --gf-color-primary: #2f4054;
+    --gf-color-danger: #c02b0a;
+    --gf-font-family-primary: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --gf-font-size-primary: 15px;
+    --gf-font-style-base: normal;
+    --gf-font-weight-primary: 400;
+    --gf-letter-spacing-primary: 0;
+    --gf-line-height-primary: 1.5;
+    --gf-transition-ctrl: all 0.3s ease;
+
+    /* Form Layout */
+    --gf-form-gap-x: 16px;
+    --gf-form-gap-y: 24px;
+    --gf-form-footer-margin-y-start: 24px;
+    --gf-form-footer-gap: 8px;
+
+    /* Field Spacing */
+    --gf-field-gap-x: 12px;
+    --gf-field-gap-y: 12px;
+
+    /* Labels */
+    --gf-ctrl-label-color-primary: var(--gf-color-primary);
+    --gf-ctrl-label-font-family-primary: var(--gf-font-family-primary);
+    --gf-ctrl-label-font-size-primary: var(--gf-font-size-primary);
+    --gf-ctrl-label-font-style-primary: normal;
+    --gf-ctrl-label-font-weight-primary: 600;
+    --gf-ctrl-label-letter-spacing-primary: var(--gf-letter-spacing-primary);
+    --gf-ctrl-label-line-height-primary: var(--gf-line-height-primary);
+    --gf-ctrl-label-margin-x: 0;
+    --gf-ctrl-label-margin-y: 0;
+
+    /* Input Background */
+    --gf-ctrl-bg-color: #ffffff;
+    --gf-ctrl-bg-color-hover: var(--gf-ctrl-bg-color);
+    --gf-ctrl-bg-color-focus: var(--gf-ctrl-bg-color);
+    --gf-ctrl-bg-color-disabled: #f5f5f5;
+    --gf-ctrl-bg-color-error: var(--gf-ctrl-bg-color);
+
+    /* Input Height */
+    --gf-ctrl-size: 40px;
+
+    /* Input Border and Shadow */
+    --gf-ctrl-border-width: 1px;
+    --gf-ctrl-border-style: solid;
+    --gf-ctrl-border-color: #d0d1d3;
+    --gf-ctrl-border-color-hover: var(--gf-ctrl-border-color);
+    --gf-ctrl-border-color-focus: #5897fb;
+    --gf-ctrl-border-color-disabled: var(--gf-ctrl-border-color);
+    --gf-ctrl-border-color-error: var(--gf-color-danger);
+    --gf-ctrl-radius: 4px;
+    --gf-ctrl-shadow: none;
+
+    /* Input Text Color */
+    --gf-ctrl-color: var(--gf-color-primary);
+    --gf-ctrl-color-hover: var(--gf-ctrl-color);
+    --gf-ctrl-color-focus: var(--gf-ctrl-color);
+    --gf-ctrl-color-disabled: #999999;
+    --gf-ctrl-color-error: var(--gf-ctrl-color);
+
+    /* Input Padding */
+    --gf-ctrl-padding-x: 12px;
+    --gf-ctrl-padding-y: 8px;
+
+    /* Input Font */
+    --gf-ctrl-font-family: var(--gf-font-family-primary);
+    --gf-ctrl-font-size: var(--gf-font-size-primary);
+    --gf-ctrl-font-style: var(--gf-font-style-base);
+    --gf-ctrl-font-weight: var(--gf-font-weight-primary);
+    --gf-ctrl-letter-spacing: var(--gf-letter-spacing-primary);
+    --gf-ctrl-line-height: var(--gf-line-height-primary);
+
+    /* Input Outline */
+    --gf-ctrl-outline-color: transparent;
+    --gf-ctrl-outline-color-focus: #5897fb;
+    --gf-ctrl-outline-offset: 2px;
+    --gf-ctrl-outline-style: solid;
+    --gf-ctrl-outline-width: 0;
+    --gf-ctrl-outline-width-focus: 2px;
+
+    /* Input Transition */
+    --gf-ctrl-transition: var(--gf-transition-ctrl);
+
+    /* Input Placeholder */
+    --gf-ctrl-placeholder-color: #999999;
+    --gf-ctrl-placeholder-font-size: var(--gf-ctrl-font-size);
+    --gf-ctrl-placeholder-opacity: 1;
+    --gf-ctrl-placeholder-font-style: var(--gf-font-style-base);
+    --gf-ctrl-placeholder-font-weight: var(--gf-font-weight-primary);
+    --gf-ctrl-placeholder-font-family: var(--gf-font-family-primary);
+    --gf-ctrl-placeholder-letter-spacing: var(--gf-letter-spacing-primary);
+
+    /* Checkbox & Radio */
+    --gf-ctrl-choice-check-color: #2f4054;
+    --gf-ctrl-choice-check-color-disabled: #cccccc;
+    --gf-ctrl-choice-size: 20px;
+    --gf-ctrl-checkbox-check-radius: 3px;
+    --gf-ctrl-checkbox-check-size: 16px;
+    --gf-ctrl-radio-check-size: 10px;
+    --gf-icon-ctrl-checkbox: "✓";
+    --gf-field-choice-gap: 8px;
+    --gf-field-choice-meta-space: 16px;
+
+    /* Select Dropdown */
+    --gf-ctrl-select-icon: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23585e6a' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+    --gf-ctrl-select-icon-size: 16px;
+
+    /* Submit Button */
+    --gf-ctrl-btn-radius: 4px;
+    --gf-ctrl-btn-shadow: none;
+    --gf-ctrl-btn-size: 44px;
+    --gf-ctrl-btn-padding-x: 24px;
+    --gf-ctrl-btn-padding-y: 12px;
+    --gf-ctrl-btn-font-family: var(--gf-font-family-primary);
+    --gf-ctrl-btn-font-size: var(--gf-font-size-primary);
+    --gf-ctrl-btn-font-style: var(--gf-font-style-base);
+    --gf-ctrl-btn-font-weight: 600;
+    --gf-ctrl-btn-letter-spacing: 0;
+    --gf-ctrl-btn-line-height: 1.5;
+    --gf-ctrl-btn-text-decoration: none;
+    --gf-ctrl-btn-text-transform: none;
+    --gf-ctrl-btn-bg-color-primary: #607382;
+    --gf-ctrl-btn-bg-color-hover-primary: #4d5e6b;
+    --gf-ctrl-btn-border-color-primary: transparent;
+    --gf-ctrl-btn-border-color-hover-primary: transparent;
+    --gf-ctrl-btn-border-style-primary: solid;
+    --gf-ctrl-btn-border-width-primary: 0;
+    --gf-ctrl-btn-color-primary: #ffffff;
+    --gf-ctrl-btn-color-hover-primary: #ffffff;
+
+    /* Description Text */
+    --gf-description-color: #585e6a;
+    --gf-description-font-size: 14px;
+    --gf-description-margin-top: 8px;
+
+    /* Validation/Error Messages */
+    --gf-error-bg-color: #fff9f9;
+    --gf-error-border-color: var(--gf-color-danger);
+    --gf-error-border-width: 1px;
+    --gf-error-padding: 12px 16px;
+}
+
+/* ============================================
+   Framework Foundation - Box Sizing and Resets
+   ============================================ */
+
+.gform_wrapper.gravity-theme *,
+.gform_wrapper.gravity-theme *::before,
+.gform_wrapper.gravity-theme *::after {
+    box-sizing: border-box;
+}
+
+.gform_wrapper.gravity-theme .gfield--type-choice .gchoice,
+.gform_wrapper.gravity-themek .gfield--type-choice .ginput_container_consent {
+    display: inline-grid;
+    grid-template-columns: minmax(var(--gf-ctrl-choice-size), max-content) auto;
+    gap: var(--gf-field-choice-meta-space) 0;
+    width: 100%;
+}
+
+/* ============================================
+   INPUT FIELDS - Text, Email, Tel, etc.
+   Higher specificity to override theme 2.5
+   ============================================ */
+
+.gform_wrapper.gravity-theme .gfield input[type="text"],
+.gform_wrapper.gravity-theme .gfield input[type="email"],
+.gform_wrapper.gravity-theme .gfield input[type="tel"],
+.gform_wrapper.gravity-theme .gfield input[type="url"],
+.gform_wrapper.gravity-theme .gfield input[type="number"],
+.gform_wrapper.gravity-theme .gfield input[type="password"],
+.gform_wrapper.gravity-theme .gfield input[type="date"],
+.gform_wrapper.gravity-theme .gfield input[type="search"] {
+    transition: var(--gf-ctrl-transition);
+    outline-color: var(--gf-ctrl-outline-color);
+    outline-style: var(--gf-ctrl-outline-style);
+    outline-width: var(--gf-ctrl-outline-width);
+    outline-offset: var(--gf-ctrl-outline-offset);
+    box-shadow: var(--gf-ctrl-shadow);
+    border: var(--gf-ctrl-border-width) var(--gf-ctrl-border-style) var(--gf-ctrl-border-color);
+    border-radius: var(--gf-ctrl-radius);
+    background-color: var(--gf-ctrl-bg-color);
+    padding: var(--gf-ctrl-padding-y) var(--gf-ctrl-padding-x);
+    height: var(--gf-ctrl-size);
+    color: var(--gf-ctrl-color);
+    font-style: var(--gf-ctrl-font-style);
+    font-weight: var(--gf-ctrl-font-weight);
+    font-size: var(--gf-ctrl-font-size);
+    line-height: var(--gf-ctrl-line-height);
+    font-family: var(--gf-ctrl-font-family);
+    letter-spacing: var(--gf-ctrl-letter-spacing);
+}
+
+/* Input Hover State */
+.gform_wrapper.gravity-theme .gfield input[type="text"]:hover,
+.gform_wrapper.gravity-theme .gfield input[type="email"]:hover,
+.gform_wrapper.gravity-theme .gfield input[type="tel"]:hover,
+.gform_wrapper.gravity-theme .gfield input[type="url"]:hover,
+.gform_wrapper.gravity-theme .gfield input[type="number"]:hover,
+.gform_wrapper.gravity-theme .gfield input[type="password"]:hover,
+.gform_wrapper.gravity-theme .gfield input[type="date"]:hover,
+.gform_wrapper.gravity-theme .gfield input[type="search"]:hover {
+    border-color: var(--gf-ctrl-border-color-hover);
+    background-color: var(--gf-ctrl-bg-color-hover);
+    color: var(--gf-ctrl-color-hover);
+}
+
+/* Input Focus State */
+.gform_wrapper.gravity-theme .gfield input[type="text"]:focus,
+.gform_wrapper.gravity-theme .gfield input[type="email"]:focus,
+.gform_wrapper.gravity-theme .gfield input[type="tel"]:focus,
+.gform_wrapper.gravity-theme .gfield input[type="url"]:focus,
+.gform_wrapper.gravity-theme .gfield input[type="number"]:focus,
+.gform_wrapper.gravity-theme .gfield input[type="password"]:focus,
+.gform_wrapper.gravity-theme .gfield input[type="date"]:focus,
+.gform_wrapper.gravity-theme .gfield input[type="search"]:focus {
+    outline-color: var(--gf-ctrl-outline-color-focus);
+    outline-width: var(--gf-ctrl-outline-width-focus);
+    border-color: var(--gf-ctrl-border-color-focus);
+    background-color: var(--gf-ctrl-bg-color-focus);
+    color: var(--gf-ctrl-color-focus);
+}
+
+/* Input Disabled State */
+.gform_wrapper.gravity-theme .gfield input[type="text"]:disabled,
+.gform_wrapper.gravity-theme .gfield input[type="email"]:disabled,
+.gform_wrapper.gravity-theme .gfield input[type="tel"]:disabled,
+.gform_wrapper.gravity-theme .gfield input[type="url"]:disabled,
+.gform_wrapper.gravity-theme .gfield input[type="number"]:disabled,
+.gform_wrapper.gravity-theme .gfield input[type="password"]:disabled,
+.gform_wrapper.gravity-theme .gfield input[type="date"]:disabled,
+.gform_wrapper.gravity-theme .gfield input[type="search"]:disabled {
+    cursor: not-allowed;
+    border-color: var(--gf-ctrl-border-color-disabled);
+    background-color: var(--gf-ctrl-bg-color-disabled);
+    color: var(--gf-ctrl-color-disabled);
+}
+
+/* Input Placeholder */
+.gform_wrapper.gravity-theme .gfield input::placeholder,
+.gform_wrapper.gravity-theme .gfield textarea::placeholder {
+    opacity: var(--gf-ctrl-placeholder-opacity);
+    color: var(--gf-ctrl-placeholder-color);
+    font-style: var(--gf-ctrl-placeholder-font-style);
+    font-weight: var(--gf-ctrl-placeholder-font-weight);
+    font-size: var(--gf-ctrl-placeholder-font-size);
+    font-family: var(--gf-ctrl-placeholder-font-family);
+    letter-spacing: var(--gf-ctrl-placeholder-letter-spacing);
+}
+
+/* ============================================
+   TEXTAREA - All sizes (small, medium, large)
+   ============================================ */
+
+.gform_wrapper.gravity-theme .gfield textarea,
+.gform_wrapper.gravity-theme .gfield textarea.small,
+.gform_wrapper.gravity-theme .gfield textarea.medium,
+.gform_wrapper.gravity-theme .gfield textarea.large {
+    transition: var(--gf-ctrl-transition);
+    outline-color: var(--gf-ctrl-outline-color);
+    outline-style: var(--gf-ctrl-outline-style);
+    outline-width: var(--gf-ctrl-outline-width);
+    outline-offset: var(--gf-ctrl-outline-offset);
+    box-shadow: var(--gf-ctrl-shadow);
+    border: var(--gf-ctrl-border-width) var(--gf-ctrl-border-style) var(--gf-ctrl-border-color);
+    border-radius: var(--gf-ctrl-radius);
+    background-color: var(--gf-ctrl-bg-color);
+    padding: var(--gf-ctrl-padding-y) var(--gf-ctrl-padding-x);
+    height: var(--gf-ctrl-size);
+    color: var(--gf-ctrl-color);
+    font-style: var(--gf-ctrl-font-style);
+    font-weight: var(--gf-ctrl-font-weight);
+    font-size: var(--gf-local-font-size, var(--gf-ctrl-font-size));
+    line-height: var(--gf-ctrl-line-height);
+    font-family: var(--gf-ctrl-font-family);
+    letter-spacing: var(--gf-ctrl-letter-spacing);
+}
+
+.gform_wrapper.gravity-theme .gfield textarea:hover,
+.gform_wrapper.gravity-theme .gfield textarea.small:hover,
+.gform_wrapper.gravity-theme .gfield textarea.medium:hover,
+.gform_wrapper.gravity-theme .gfield textarea.large:hover {
+    border-color: var(--gf-ctrl-border-color-hover);
+    background-color: var(--gf-ctrl-bg-color-hover);
+    color: var(--gf-ctrl-color-hover);
+}
+
+.gform_wrapper.gravity-theme .gfield textarea:focus,
+.gform_wrapper.gravity-theme .gfield textarea.small:focus,
+.gform_wrapper.gravity-theme .gfield textarea.medium:focus,
+.gform_wrapper.gravity-theme .gfield textarea.large:focus {
+    outline-color: var(--gf-ctrl-outline-color-focus);
+    outline-width: var(--gf-ctrl-outline-width-focus);
+    border-color: var(--gf-ctrl-border-color-focus);
+    background-color: var(--gf-ctrl-bg-color-focus);
+    color: var(--gf-ctrl-color-focus);
+}
+
+.gform_wrapper.gravity-theme .gfield textarea:disabled,
+.gform_wrapper.gravity-theme .gfield textarea.small:disabled,
+.gform_wrapper.gravity-theme .gfield textarea.medium:disabled,
+.gform_wrapper.gravity-theme .gfield textarea.large:disabled {
+    cursor: not-allowed;
+    border-color: var(--gf-ctrl-border-color-disabled);
+    background-color: var(--gf-ctrl-bg-color-disabled);
+    color: var(--gf-ctrl-color-disabled);
+}
+
+/* ============================================
+   SELECT / DROPDOWN - All sizes
+   ============================================ */
+
+.gform_wrapper.gravity-theme .gfield select,
+.gform_wrapper.gravity-theme .gfield select.small,
+.gform_wrapper.gravity-theme .gfield select.medium,
+.gform_wrapper.gravity-theme .gfield select.large {
+    appearance: none;
+    transition: var(--gf-ctrl-transition);
+    outline-color: var(--gf-ctrl-outline-color);
+    outline-style: var(--gf-ctrl-outline-style);
+    outline-width: var(--gf-ctrl-outline-width);
+    outline-offset: var(--gf-ctrl-outline-offset);
+    box-shadow: var(--gf-ctrl-shadow);
+    border: var(--gf-ctrl-border-width) var(--gf-ctrl-border-style) var(--gf-ctrl-border-color);
+    border-radius: var(--gf-ctrl-radius);
+    background-image: var(--gf-ctrl-select-icon);
+    background-position: right var(--gf-ctrl-padding-x) center;
+    background-size: var(--gf-ctrl-select-icon-size);
+    background-repeat: no-repeat;
+    background-color: var(--gf-ctrl-bg-color);
+    padding: var(--gf-ctrl-padding-y) calc(var(--gf-ctrl-padding-x) + var(--gf-ctrl-select-icon-size) + 8px) var(--gf-ctrl-padding-y) var(--gf-ctrl-padding-x);
+    height: var(--gf-ctrl-size);
+    color: var(--gf-ctrl-color);
+    font-style: var(--gf-ctrl-font-style);
+    font-weight: var(--gf-ctrl-font-weight);
+    font-size: var(--gf-ctrl-font-size);
+    line-height: var(--gf-ctrl-line-height);
+    font-family: var(--gf-ctrl-font-family);
+    letter-spacing: var(--gf-ctrl-letter-spacing);
+}
+
+.gform_wrapper.gravity-theme .gfield select:hover,
+.gform_wrapper.gravity-theme .gfield select.small:hover,
+.gform_wrapper.gravity-theme .gfield select.medium:hover,
+.gform_wrapper.gravity-theme .gfield select.large:hover {
+    border-color: var(--gf-ctrl-border-color-hover);
+    background-color: var(--gf-ctrl-bg-color-hover);
+    color: var(--gf-ctrl-color-hover);
+}
+
+.gform_wrapper.gravity-theme .gfield select:focus,
+.gform_wrapper.gravity-theme .gfield select.small:focus,
+.gform_wrapper.gravity-theme .gfield select.medium:focus,
+.gform_wrapper.gravity-theme .gfield select.large:focus {
+    outline-color: var(--gf-ctrl-outline-color-focus);
+    outline-width: var(--gf-ctrl-outline-width-focus);
+    border-color: var(--gf-ctrl-border-color-focus);
+    background-color: var(--gf-ctrl-bg-color-focus);
+    color: var(--gf-ctrl-color-focus);
+}
+
+.gform_wrapper.gravity-theme .gfield select:disabled,
+.gform_wrapper.gravity-theme .gfield select.small:disabled,
+.gform_wrapper.gravity-theme .gfield select.medium:disabled,
+.gform_wrapper.gravity-theme .gfield select.large:disabled {
+    cursor: not-allowed;
+    border-color: var(--gf-ctrl-border-color-disabled);
+    background-color: var(--gf-ctrl-bg-color-disabled);
+    color: var(--gf-ctrl-color-disabled);
+}
+
+/* ============================================
+   LABELS
+   ============================================ */
+
+.gform_wrapper.gravity-theme .gfield_label,
+.gform_wrapper.gravity-theme .gform-field-label {
+    margin-inline: var(--gf-ctrl-label-margin-x);
+    margin-block: var(--gf-ctrl-label-margin-y);
+    color: var(--gf-ctrl-label-color-primary);
+    font-style: var(--gf-ctrl-label-font-style-primary);
+    font-weight: var(--gf-ctrl-label-font-weight-primary);
+    font-size: var(--gf-ctrl-label-font-size-primary);
+    line-height: var(--gf-ctrl-label-line-height-primary);
+    font-family: var(--gf-ctrl-label-font-family-primary);
+    letter-spacing: var(--gf-ctrl-label-letter-spacing-primary);
+}
+
+/* Inline Labels (for checkboxes/radios) */
+.gform_wrapper.gravity-theme .gform-field-label--type-inline {
+    --gf-ctrl-label-margin-x: 12px;
+
+    color: var(--gf-local-color, var(--gf-ctrl-label-color-primary));
+    font-style: var(--gf-local-font-style, var(--gf-ctrl-label-font-style-primary));
+    font-weight: var(--gf-local-font-weight, var(--gf-ctrl-label-font-weight-primary));
+    font-size: var(--gf-local-font-size, var(--gf-ctrl-label-font-size-primary));
+    line-height: var(--gf-local-line-height, var(--gf-ctrl-label-line-height-primary));
+    font-family: var(--gf-local-font-family, var(--gf-ctrl-label-font-family-primary));
+    letter-spacing: var(--gf-local-letter-spacing, var(--gf-ctrl-label-letter-spacing-primary));
+}
+
+/* ============================================
+   CHECKBOXES
+   ============================================ */
+
+.gform_wrapper.gravity-theme .gfield input[type="checkbox"] {
+    position: relative;
+    flex-shrink: 0;
+    appearance: none;
+    transition: var(--gf-ctrl-transition);
+    cursor: pointer;
+    outline-color: var(--gf-ctrl-outline-color);
+    outline-style: var(--gf-ctrl-outline-style);
+    outline-width: var(--gf-ctrl-outline-width);
+    outline-offset: var(--gf-ctrl-outline-offset);
+    border: var(--gf-ctrl-border-width) var(--gf-ctrl-border-style) var(--gf-ctrl-border-color);
+    border-radius: var(--gf-ctrl-checkbox-check-radius);
+    background-color: var(--gf-ctrl-bg-color);
+    width: var(--gf-ctrl-choice-size);
+    height: var(--gf-ctrl-choice-size);
+}
+
+.gform_wrapper.gravity-theme .gfield input[type="checkbox"]:hover {
+    border-color: var(--gf-ctrl-border-color-hover);
+    background-color: var(--gf-ctrl-bg-color-hover);
+}
+
+.gform_wrapper.gravity-theme .gfield input[type="checkbox"]:focus {
+    outline-color: var(--gf-ctrl-outline-color-focus);
+    outline-width: var(--gf-ctrl-outline-width-focus);
+}
+
+.gform_wrapper.gravity-theme .gfield input[type="checkbox"]:checked {
+    border-color: var(--gf-ctrl-border-color);
+    background-color: var(--gf-ctrl-bg-color);
+}
+
+.gform_wrapper.gravity-theme .gfield input[type="checkbox"]::before {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    width: var(--gf-ctrl-checkbox-check-size);
+    height: var(--gf-ctrl-checkbox-check-size);
+    content: var(--gf-icon-ctrl-checkbox);
+}
+
+.gform_wrapper.gravity-theme .gfield input[type="checkbox"]:checked::before {
+    opacity: 1;
+}
+
+.gform_wrapper.gravity-theme .gfield input[type="checkbox"]:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.gform_wrapper.gravity-theme .gfield.gf_list_2col_vertical:where(:not(.gfield--type-image_choice)) .gchoice,
+.gform_wrapper.gravity-theme .gfield.gf_list_3col_vertical:where(:not(.gfield--type-image_choice)) .gchoice,
+.gform_wrapper.gravity-theme .gfield.gf_list_4col_vertical:where(:not(.gfield--type-image_choice)) .gchoice,
+.gform_wrapper.gravity-theme .gfield.gf_list_5col_vertical:where(:not(.gfield--type-image_choice)) .gchoice {
+    page-break-inside: avoid;
+    -moz-column-break-inside: avoid;
+    display: grid;
+    break-inside: avoid;
+    padding-block-start: var(--gf-field-choice-gap);
+    inline-size: 100%;
+}
+
+.gform_wrapper.gravity-theme .gfield-choice-input + label {
+    max-width: 100%;
+}
+
+.gform_wrapper.gravity-theme .gform-field-label--type-inline {
+    --gf-local-margin-x: 12px;
+    --gf-local-margin-y: 0;
+}
+/* ============================================
+   RADIO BUTTONS
+   ============================================ */
+
+.gform_wrapper.gravity-theme .gfield input[type="radio"] {
+    position: relative;
+    flex-shrink: 0;
+    appearance: none;
+    transition: var(--gf-ctrl-transition);
+    cursor: pointer;
+    outline-color: var(--gf-ctrl-outline-color);
+    outline-style: var(--gf-ctrl-outline-style);
+    outline-width: var(--gf-ctrl-outline-width);
+    outline-offset: var(--gf-ctrl-outline-offset);
+    border: var(--gf-ctrl-border-width) var(--gf-ctrl-border-style) var(--gf-ctrl-border-color);
+    border-radius: 50%;
+    background-color: var(--gf-ctrl-bg-color);
+    width: var(--gf-ctrl-choice-size);
+    height: var(--gf-ctrl-choice-size);
+}
+
+.gform_wrapper.gravity-theme .gfield input[type="radio"]:hover {
+    border-color: var(--gf-ctrl-border-color-hover);
+    background-color: var(--gf-ctrl-bg-color-hover);
+}
+
+.gform_wrapper.gravity-theme .gfield input[type="radio"]:focus {
+    outline-color: var(--gf-ctrl-outline-color-focus);
+    outline-width: var(--gf-ctrl-outline-width-focus);
+}
+
+.gform_wrapper.gravity-theme .gfield input[type="radio"]:checked::before {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background-color: var(--gf-ctrl-choice-check-color);
+    width: var(--gf-ctrl-radio-check-size);
+    height: var(--gf-ctrl-radio-check-size);
+    content: "";
+}
+
+.gform_wrapper.gravity-theme .gfield input[type="radio"]:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ============================================
+   SUBMIT BUTTON
+   ============================================ */
+
+.gform_wrapper.gravity-theme input[type="submit"],
+.gform_wrapper.gravity-theme .gform_button,
+.gform_wrapper.gravity-theme button[type="submit"] {
+    transition: var(--gf-ctrl-transition);
+    cursor: pointer;
+    margin-block: 0;
+    box-shadow: var(--gf-ctrl-btn-shadow);
+    border: var(--gf-ctrl-btn-border-width-primary) var(--gf-ctrl-btn-border-style-primary) var(--gf-ctrl-btn-border-color-primary);
+    border-radius: var(--gf-ctrl-btn-radius);
+    background-color: var(--gf-ctrl-btn-bg-color-primary);
+    padding: var(--gf-ctrl-btn-padding-y) var(--gf-ctrl-btn-padding-x);
+    height: var(--gf-ctrl-btn-size);
+    color: var(--gf-ctrl-btn-color-primary);
+    font-style: var(--gf-ctrl-btn-font-style);
+    font-weight: var(--gf-ctrl-btn-font-weight);
+    font-size: var(--gf-ctrl-btn-font-size);
+    line-height: var(--gf-ctrl-btn-line-height);
+    font-family: var(--gf-ctrl-btn-font-family);
+    letter-spacing: var(--gf-ctrl-btn-letter-spacing);
+    text-decoration: var(--gf-ctrl-btn-text-decoration);
+    text-transform: var(--gf-ctrl-btn-text-transform);
+}
+
+.gform_wrapper.gravity-theme input[type="submit"]:hover,
+.gform_wrapper.gravity-theme .gform_button:hover,
+.gform_wrapper.gravity-theme button[type="submit"]:hover {
+    border-color: var(--gf-ctrl-btn-border-color-hover-primary);
+    background-color: var(--gf-ctrl-btn-bg-color-hover-primary);
+    color: var(--gf-ctrl-btn-color-hover-primary);
+}
+
+.gform_wrapper.gravity-theme input[type="submit"]:disabled,
+.gform_wrapper.gravity-theme .gform_button:disabled,
+.gform_wrapper.gravity-theme button[type="submit"]:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Secondary Buttons (Previous, Save) */
+.gform_wrapper.gravity-theme .gform_previous_button,
+.gform_wrapper.gravity-theme .gform_save_link {
+    border: 1px solid #d0d1d3;
+    background-color: #ffffff;
+    color: #6b7280;
+}
+
+.gform_wrapper.gravity-theme .gform_previous_button:hover,
+.gform_wrapper.gravity-theme .gform_save_link:hover {
+    border-color: var(--gf-ctrl-border-color-focus);
+    background-color: #f9fafb;
+}
+
+/* ============================================
+   DESCRIPTIONS
+   ============================================ */
+
+.gform_wrapper.gravity-theme .gfield_description,
+.gform_wrapper.gravity-theme .description {
+    margin-top: var(--gf-description-margin-top);
+    color: var(--gf-description-color);
+    font-size: var(--gf-description-font-size);
+}
+
+/* ============================================
+   VALIDATION / ERROR MESSAGES
+   ============================================ */
+
+.gform_wrapper.gravity-theme .gfield_error input[type="text"],
+.gform_wrapper.gravity-theme .gfield_error input[type="email"],
+.gform_wrapper.gravity-theme .gfield_error input[type="tel"],
+.gform_wrapper.gravity-theme .gfield_error input[type="url"],
+.gform_wrapper.gravity-theme .gfield_error input[type="number"],
+.gform_wrapper.gravity-theme .gfield_error input[type="password"],
+.gform_wrapper.gravity-theme .gfield_error select,
+.gform_wrapper.gravity-theme .gfield_error textarea {
+    border-color: var(--gf-ctrl-border-color-error);
+    background-color: var(--gf-ctrl-bg-color-error);
+}
+
+.gform_wrapper.gravity-theme .gfield_error .gfield_label,
+.gform_wrapper.gravity-theme .validation_message,
+.gform_wrapper.gravity-theme .gfield_validation_message {
+    color: var(--gf-color-danger);
+}
+
+.gform_wrapper.gravity-theme .validation_message,
+.gform_wrapper.gravity-theme .gfield_validation_message {
+    border: var(--gf-error-border-width) solid var(--gf-error-border-color);
+    background-color: var(--gf-error-bg-color);
+    padding: var(--gf-error-padding);
+}
+
+/* ============================================
+   FORM SPACING
+   ============================================ */
+
+.gform_wrapper.gravity-theme .gform_fields {
+    grid-row-gap: var(--gf-form-gap-y);
+    grid-column-gap: var(--gf-form-gap-x);
+}
+
+.gform_wrapper.gravity-theme .gform_footer,
+.gform_wrapper.gravity-theme .gform_page_footer {
+    margin-top: var(--gf-form-footer-margin-y-start) !important;
+    padding: 0 !important;
+}

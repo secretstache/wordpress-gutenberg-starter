@@ -1,15 +1,29 @@
 .wp-block-separator {
-    margin: rem(40) auto;
+    --separator-width: rem(2);
+
+    box-sizing: border-box;
+    margin-right: auto;
+    margin-left: auto;
+    border: none !important;
     padding: 0;
+    width: 100%;
+    height: var(--separator-width) !important;
 
     &:not(.is-style-wide, .is-style-dots) {
-        width: 100% !important;
-        max-width: 80%;
+        width: auto !important;
+
+        &.alignfull {
+            margin-inline: calc(50% - (var(--vw, 1vw) * 50)) !important;
+            width: calc(var(--vw, 1vw) * 100) !important;
+        }
+    }
+
+    &:not(.has-background) {
+        background: var(--color-black);
     }
 
     &.has-background:not(.is-style-dots) {
-        box-sizing: border-box;
         border: none;
-        height: 2px !important;
+        height: var(--separator-width) !important;
     }
 }

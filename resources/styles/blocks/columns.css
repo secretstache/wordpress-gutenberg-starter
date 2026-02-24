@@ -1,7 +1,8 @@
-.wp-block-columns {
+:where(.wp-block-columns) {
     display: flex;
     flex-wrap: wrap;
     align-items: unset;
+    margin-bottom: 0;
 
     &.is-layout-flex {
         gap: var(--spacing-column);

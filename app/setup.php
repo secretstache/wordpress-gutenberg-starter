@@ -49,7 +49,6 @@ add_action('wp_enqueue_scripts', function () {
     echo Vite::withEntryPoints([
         'resources/scripts/client/critical.js',
         'resources/scripts/client/app.js',
-        'resources/styles/defaultBlocksStyles.css',
         'resources/styles/app.css',
     ])->toHtml();
 });

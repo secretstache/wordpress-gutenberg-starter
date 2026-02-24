@@ -29,6 +29,8 @@ const mode = process.env.mode || 'development';
 const isDev = mode === 'development';
 const isBlocks = process.env.project === 'blocks';
 
+const root = process.env.prefix;
+
 export default function (eleventyConfig) {
     eleventyConfig.addPlugin(syntaxHighlight);
 
@@ -40,7 +42,7 @@ export default function (eleventyConfig) {
     // Copy assets to the output folder - also fix these paths
     assets.forEach((asset) => {
         eleventyConfig.addPassthroughCopy({
-            [path.resolve(__dirname, `../resources/${asset}`)]: `assets/${asset}`
+            [path.resolve(__dirname, `../resources/${asset}`)]: `assets/${asset}`,
         });
     });
 
@@ -67,10 +69,22 @@ export default function (eleventyConfig) {
     });
 
     eleventyConfig.addPairedShortcode('brace', function (content, type = 'curly') {
-        const [opening, closing] = {
-            curly: ['{{', '}}'],
-            call: ['{%', '%}'],
-            silent: ['{%-', '-%}'],
+        const [
+            opening,
+            closing,
+        ] = {
+            curly: [
+                '{{',
+                '}}',
+            ],
+            call: [
+                '{%',
+                '%}',
+            ],
+            silent: [
+                '{%-',
+                '-%}',
+            ],
         }[type];
 
         return `${opening}${content}${closing}`;
@@ -78,6 +92,14 @@ export default function (eleventyConfig) {
 
     eleventyConfig.addFilter('toRem', function (value) {
         return parseInt(value) / 16 + 'rem';
+    });
+
+    eleventyConfig.addFilter('split', function (value, delimiter = '') {
+        if (value === undefined || value === null) {
+            return [];
+        }
+
+        return String(value).split(delimiter);
     });
 
     /* Adds prefix to urls */
@@ -104,26 +126,116 @@ export default function (eleventyConfig) {
         domDiff: true,
     });
 
-    eleventyConfig.addWatchTarget("./src/**/*");
+    eleventyConfig.addWatchTarget('./src/**/*');
 
     /* Unique id */
     eleventyConfig.addNunjucksGlobal('uid', () => {
         return `${Date.now() + Math.floor(Math.random() * 1000)}`;
     });
 
-    /* Custom filters */
-    eleventyConfig.addFilter('toClassNames', function (arr) {
-        const classes = arr.filter((item) => Boolean(item)).join(' ');
-        if (classes) return ' ' + classes;
+    eleventyConfig.addNunjucksGlobal('buildClasses', function (props = {}, baseClasses = []) {
+        // Standard mappings that are the same everywhere
+        const standardMappings = {
+            color: props.color ? `has-${props.color}-color` : null,
+            background: props.background ? `has-${props.background}-background-color` : null,
+            gradient: props.gradient ? `has-${props.gradient}-gradient-background` : null,
+            fontSize: props.fontSize ? `has-${props.fontSize}-font-size` : null,
+            fontFamily: props.fontFamily ? `has-${props.fontFamily}-font-family` : null,
+            customStyle: props.customStyle ? `is-style-${props.customStyle}` : null,
+            justification: props.justification ? `is-content-justification-${props.justification}` : null,
+            stacked: props.stacked ? `is-vertical` : null,
+            align: props.align ? `align${props.align}` : null,
+            notStackedOnMobile: props.notStackedOnMobile ? `is-not-stacked-on-mobile` : null,
+            textAlign: props.textAlign ? `has-text-align-${props.textAlign}` : null,
+            verticalAlign: props.verticalAlign ? `are-vertically-aligned-${props.verticalAlign}` : null,
+            class: props.class || null,
+        };
 
-        return '';
+        // Build class array from all mappings that exist
+        const propClasses = Object.values(standardMappings).filter(Boolean);
+
+        if (props.background || props.backgroundImage || props.gradient) {
+            propClasses.push('has-background');
+        }
+
+        if (props.color) {
+            propClasses.push('has-text-color');
+        }
+
+        // Auto-add bg-dark or bg-light if background is set
+        if (props.background) {
+            const bgType = darkBackground.includes(props.background) ? 'bg-dark' : 'bg-light';
+            propClasses.push(bgType);
+        }
+
+        // Combine base classes with prop classes
+        const allClasses = [
+            ...baseClasses,
+            ...propClasses,
+        ]
+            .filter(Boolean)
+            .join(' ');
+
+        return allClasses ? ' ' + allClasses : '';
     });
 
-    eleventyConfig.addFilter('toStyleString', function (arr) {
-        const styles = arr.filter((item) => Boolean(item)).join(';');
-        if (styles) return ' style="' + styles + '"';
+    eleventyConfig.addNunjucksGlobal('buildStyles', function (props = {}, baseStyles = []) {
+        // Standard style mappings
+        const standardMappings = {
+            wrapperStyle: props.wrapperStyle || null,
+            style: props.style || null,
+            rowGap: props.rowGap ? `row-gap:${props.rowGap}` : null,
+            columnGap: props.columnGap ? `column-gap:${props.columnGap}` : null,
+            minHeight: props.minHeight ? `min-height:${props.minHeight}` : null,
+            backgroundImage: props.backgroundImage ? `background-image:url('${root + props.backgroundImage}');background-size:cover` : null,
+        };
 
-        return '';
+        // Build style array from all mappings that exist
+        const propStyles = Object.values(standardMappings).filter(Boolean);
+
+        // Remove quotes from baseStyles
+        const cleanBaseStyles = baseStyles.map((style) => (style ? style.replace(/["']/g, '') : style));
+
+        // Combine base styles with prop styles
+        const allStyles = [
+            ...cleanBaseStyles,
+            ...propStyles,
+        ]
+            .filter(Boolean)
+            .join(';');
+
+        return allStyles ? ` style="${allStyles}"` : '';
+    });
+
+    eleventyConfig.addNunjucksGlobal('buildAttributes', function (props = {}, baseAttributes = []) {
+        // Standard attribute mappings
+        const standardMappings = {
+            ariaCurrent: props.ariaCurrent ? `aria-current="${props.ariaCurrent}"` : null,
+            ariaExpanded: props.ariaExpanded !== undefined ? `aria-expanded="${props.ariaExpanded}"` : null,
+            ariaLabel: props.ariaLabel ? `aria-label="${props.ariaLabel}"` : null,
+            ariaHidden: props.ariaHidden !== undefined ? `aria-hidden="${props.ariaHidden}"` : null,
+            ariaControls: props.ariaControls ? `aria-controls="${props.ariaControls}"` : null,
+            role: props.role ? `role="${props.role}"` : null,
+            target: props.target ? `target="${props.target}"` : null,
+            rel: props.rel ? `rel="${props.rel}"` : null,
+            href: props.href ? `href="${props.href}"` : null,
+            id: props.id ? `id="${props.id}"` : null,
+            title: props.title ? `title="${props.title}"` : null,
+            disabled: props.disabled ? `disabled` : null,
+        };
+
+        // Build attribute array from all mappings that exist
+        const propAttributes = Object.values(standardMappings).filter(Boolean);
+
+        // Combine base attributes with prop attributes
+        const allAttributes = [
+            ...baseAttributes,
+            ...propAttributes,
+        ]
+            .filter(Boolean)
+            .join(' ');
+
+        return allAttributes ? ' ' + allAttributes : '';
     });
 
     function sortByTitle(values) {

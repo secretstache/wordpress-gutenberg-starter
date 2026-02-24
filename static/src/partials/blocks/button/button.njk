@@ -1,25 +1,42 @@
+/**
+* @param {string} class
+* @param {string} style
+* @param {array} color
+* @param {string} background
+* @param {boolean} fontFamily
+* @param {string} fontSize
+* @param {string} id
+* @param {string} customStyle
+*/
+
 {% macro render(props) %}
 
-  {% set wrapperClasses = ([
-    props.class if props.class,
-    'is-style-' + props.customStyle if props.customStyle
-  ]) | toClassNames %}
+  {% set wrapperClasses = buildClasses({
+    class: props.class,
+    customStyle: props.customStyle
+  }, ['']) %}
 
-  {% set buttonClasses = ([
-    'has-text-color has-' + props.color + '-color' if props.color,
-    'has-background has-' + props.background + '-background-color' if props.background,
-    'has-custom-font-size has-' + props.fontSize + '-font-size' if props.fontSize,
-    'has-' + props.fontFamily + '-family' if props.fontFamily
-  ]) | toClassNames %}
+  {% set buttonClasses = buildClasses({
+    color: props.color,
+    background: props.background,
+    fontSize: props.fontSize,
+    fontFamily: props.fontFamily
+  }, ['']) %}
 
-  {% set wrapperStyles = ([props.wrapperStyle if props.wrapperStyles]) | toStyleString | safe %}
-  {% set styles = ([props.style if props.style]) | toStyleString | safe %}
+  {% set wrapperStyles = buildStyles({
+    style: props.wrapperStyle
+  }, [])  | safe %}
+
+  {% set buttonStyles = buildStyles({
+    style: props.style
+  }, []) | safe %}
 
   {% set id = ' id="' + props.id + '"' if props.id %}
 
   <div class="wp-block-button{{ wrapperClasses }}"{{ wrapperStyles }}{{ id }}>
 
-    <a href="{{ root }}{{ props.url }}" class="wp-block-button__link{{ buttonClasses }}"{{ styles }}>
+    <a href="{{ root }}{{ props.url }}" class="wp-block-button__link{{ buttonClasses }}"{{ buttonStyles }}>
+      {% if props.image %}<img src="{{ root }}{{ props.image }}" alt="" />{% endif %}
       {{ props.label }}
     </a>
 

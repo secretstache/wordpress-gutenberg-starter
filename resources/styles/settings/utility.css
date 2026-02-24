@@ -1,20 +1,17 @@
 @utility container {
     margin-inline: auto;
-    padding-inline: var(--spacing-container-padding);
     max-width: var(--container-default);
 }
 
 @utility container-wide {
     margin-inline: auto;
-    padding-inline: var(--spacing-container-padding);
     max-width: var(--container-wide);
 }
 
 @utility container-full {
-    margin-inline: calc(50% - (var(--vw, 1vw) * 50));
-    padding-inline: var(--spacing-container-padding);
-    width: calc(var(--vw, 1vw) * 100);
-    max-width: calc(var(--vw, 1vw) * 100);
+    margin-inline: calc(50% - (var(--vw, 1vw) * 50)) !important;
+    width: var(--container-full-width) !important;
+    max-width: calc(var(--vw, 1vw) * 100) !important;
 }
 
 @utility h1 {

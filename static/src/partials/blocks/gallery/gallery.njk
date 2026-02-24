@@ -12,21 +12,12 @@
 
 {% macro render( props ) %}
 
-  {% set classes = ([
-    props.class if props.class,
+  {% set classes = buildClasses(props, [
     'is-cropped' if not props.notCropped,
-    'columns-' + props.columns if props.columns else 'columns-default',
-    'has-background has-' + props.background + '-background-color' if props.background,
-    'align' + props.align if props.align,
-    'is-style-' + props.customStyle if props.customStyle
-  ]) | toClassNames %}
+    'columns-' + props.columns if props.columns else 'columns-default'
+  ]) %}
 
-  {% set styles = ([
-    props.style if props.style,
-    'row-gap:' + props.gap.row if props.gap.row,
-    'column-gap:' + props.gap.column  if props.gap.column
-
-  ]) | toStyleString | safe %}
+  {% set styles = buildStyles(props, []) | safe %}
 
   {%  set id = ' id="' + props.id + '"' if props.id %}
 
@@ -42,6 +33,10 @@
 
       {% endfor %}
 
+    {% endif %}
+
+    {% if props.caption %}
+      <figcaption class="blocks-gallery-caption wp-element-caption">{{ props.caption }}</figcaption>
     {% endif %}
 
   </figure>

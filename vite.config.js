@@ -50,7 +50,6 @@ export default defineConfig(({ mode }) => {
                     'resources/scripts/client/app.js',
                     'resources/scripts/editor/editor.js',
                     'resources/styles/app.css',
-                    'resources/styles/defaultBlocksStyles.css',
                     'resources/styles/editor-canvas.css',
                     'resources/styles/editor-ui.css',
                     'resources/styles/admin.css',

@@ -2,71 +2,76 @@
 * @param {string} class
 * @param {string} style
 * @param {string} color
-* @param {object} bg - color | media (image, video)
+* @param {object} bg - color, image, video
 * @param {string} id
 * @param {string} customStyle
+* @param {boolean} fullHeight
+* @param {boolean} overlayColor
+* @param {boolean} overlayOpacity
 */
 
 {% macro render( props ) %}
 
-  {% from "macros/blocks.njk" import column, block %}
+  {% from "macros/blocks.njk" import  block %}
 
-  {% if props.bg and props.bg.color %}
-    {% set bgType = (props.bg.color) | toBgType %}
+  {% if props.bg.color %}
+    {% set bgType = props.bg.color | toBgType %}
   {% endif %}
 
-  {% if props.bg.media.video %}
-    {% set bgType = 'bg-dark' %}
-  {% endif %}
-
-  {% set classes = ([
-    props.class if props.class,
-    'is-style-' + props.customStyle if props.customStyle,
-    'has-background group/sectionWrapper' if props.bg,
-    'has-' + props.bg.color + '-background-color' if props.bg.color,
-    bgType if props.bg.color or props.bg.media.video,
+  {% set classes = buildClasses({
+    class: props.class,
+    customStyle: props.customStyle
+  }, [
     'md:mt-ssm-' + props.spacing.mt if props.spacing.mt,
     'md:mb-ssm-' + props.spacing.mb if props.spacing.mb,
     'md:pt-ssm-' + props.spacing.pt if props.spacing.pt,
     'md:pb-ssm-' + props.spacing.pb if props.spacing.pb,
-    'max-md:mt-ssm-' + props.spacing.mobile.mt if props.spacing.mobile.mt,
+    'max-md:mt-ssm-' + props.c.mobile.mt if props.spacing.mobile.mt,
     'max-md:mb-ssm-' + props.spacing.mobile.mb if props.spacing.mobile.mb,
     'max-md:pt-ssm-' + props.spacing.mobile.pt if props.spacing.mobile.pt,
-    'max-md:pb-ssm-' + props.spacing.mobile.pb if props.spacing.mobile.pb
-  ]) | toClassNames %}
+    'max-md:pb-ssm-' + props.spacing.mobile.pb if props.spacing.mobile.pb,
+    bgType if props.bg.color or props.bg.topography,
+    'has-background' if props.bg,
+    'min-h-screen' if props.fullHeight
+  ]) %}
 
-  {% set styles = ([
-    props.style if props.style
-  ]) | toStyleString | safe %}
+  {% set styles = buildStyles(props, []) | safe %}
 
   {%  set id = ' id="' + props.id + '"' if props.id %}
 
-  <div class="wp-block-ssm-section-wrapper flex relative w-full [&.min-h-screen]:items-center {{ classes }}"{{ styles }}{{ id }}>
+  <div class="wp-block-ssm-section-wrapper group/sectionWrapper flex relative w-full [&.min-h-screen]:items-center {{ classes }}"{{ styles }}{{ id }}>
 
     {% if props.bg %}
 
+      {% set backgroundClasses = buildClasses({
+        background: props.bg.color
+      }) %}
 
-      <div class="wp-block-ssm-section-wrapper__background absolute  pointer-events-none h-full w-full left-0 top-0 overflow-hidden">
+      <div class="wp-block-ssm-section-wrapper__background absolute pointer-events-none h-full w-full left-0 top-0 overflow-hidden{{ backgroundClasses }}">
 
-        {% set mediaClasses = ([
+        {% set mediaClasses = buildClasses({}, [
           'w-full',
           'object-' + props.bg.media.position if props.bg.media.position,
           'object-' + props.bg.media.fit if props.bg.media.fit,
           'object-cover h-full' if not props.bg.media.fit and not props.bg.media.position,
           'object-contain' if not props.bg.media.fit and props.bg.media.position
-        ]) | toClassNames %}
+        ]) %}
 
-
+        {# bg image #}
         {% if props.bg.media.image %}
-
           <img alt="" src="{{ root }}{{ props.bg.media.image }}" class="{{ mediaClasses }}">
-
-          {% elif props.bg.media.video %}
-
-          <video src="{{ root }}{{ props.bg.media.video }}" autoplay playsinline muted loop class="{{ mediaClasses }}"></video>
-
-          <div class="absolute inset-0 bg-black opacity-40 mix-blend-multiply"></div>
         {% endif %}
+
+        {# bg video #}
+        {% if props.bg.media.video %}
+          <video src="{{ root }}{{ props.bg.media.video }}" autoplay playsinline muted loop class="{{ mediaClasses }}"></video>
+        {% endif %}
+
+        {# overlay #}
+        {% set overlayColor = props.bg.overlayColor if props.bg.overlayColor else 'black' %}
+        {% set overlayOpacity = props.bg.overlayOpacity if props.bg.overlayOpacity else '40' %}
+        <div class="wp-block-ssm-section-wrapper__overlay absolute inset-0 gradient-to-r z-10 bg-[var(--overlay-bg)]" style="--overlay-bg: color-mix(in oklab, var(--color-{{ overlayColor }}) {{ overlayOpacity }}%, transparent);">
+        </div>
 
       </div>
 
@@ -75,13 +80,9 @@
     <div class="wp-block-ssm-section-wrapper__content px-container-padding relative z-20 w-full is-layout-constrained">
 
       {% if props.innerContent %}
-
         {% include props.innerContent %}
-
       {% else %}
-
-        {% if caller %}{{ caller()  }}{% endif %}
-
+        {% if caller %}{{ caller() }}{% endif %}
       {% endif %}
 
     </div>

@@ -1,27 +1,14 @@
-{% from "macros/blocks.njk" import column, block %}
+{% from "macros/blocks.njk" import block %}
 
 {% if component.name != 'section-wrapper' %}
-<div class="container">
-  {% endif %}
+<div class="{% if component.bg %} {{ component.bg | toBgType}} bg-{{ component.bg }}{% endif %}">
+  <div class="w-full py-6 px-container-padding mx-auto" style="max-width: calc(var(--container-wide) + var(--spacing-container-padding) * 2)">
 
-  {% if component.isContainer %}
-
-    {% call block( component.name, component.context ) %}
-
-      {% if component.containerContext %}
-
-        {% include component.type + 's/' + component.name + '/context/' + component.containerContext + '.njk' %}
-
-      {% endif %}
-
-    {% endcall %}
-
-  {%  else %}
+    {% endif %}
 
     {{ block(component.name, component.context) }}
 
-  {% endif %}
-
-  {% if component.name != 'section-wrapper' %}
+    {% if component.name != 'section-wrapper' %}
+  </div>
 </div>
 {% endif %}

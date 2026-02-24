@@ -8,7 +8,7 @@
     "function-no-unknown": [
       true,
       {
-        "ignoreFunctions": ["customClamp", "rem"]
+        "ignoreFunctions": ["customClamp", "rem", "-rem", "svgUri"]
       }
     ]
   }

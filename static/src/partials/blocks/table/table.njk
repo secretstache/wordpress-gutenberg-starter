@@ -12,20 +12,11 @@
 
 {% macro render( props ) %}
 
-    {% set classes = ([
-        props.class if props.class,
-        'has-text-color has-' + props.color + '-color' if props.color,
-        'has-background has-' + props.background + '-background-color' if props.background,
-        'has-' + props.fontSize + '-font-size' if props.fontSize,
-        'align' + props.align if props.align,
-        'is-style-' + props.customStyle if props.customStyle
-    ]) | toClassNames %}
+  {% set classes = buildClasses(props, []) %}
 
-    {% set styles = ([
-        props.style if props.style
-    ]) | toStyleString | safe %}
+  {% set styles = buildStyles(props, []) | safe %}
 
-    {%  set id = ' id="' + props.id + '"' if props.id %}
+  {%  set id = ' id="' + props.id + '"' if props.id %}
 
     <figure class="wp-block-table{{ classes }}"{{ styles }}{{ id }}>
 

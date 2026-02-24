@@ -2,7 +2,7 @@
 
 @include('partials.header')
 
-<main class="content" id="main">
+<main class="content flex-grow overflow-clip" id="main">
     @yield('content')
 </main>
 

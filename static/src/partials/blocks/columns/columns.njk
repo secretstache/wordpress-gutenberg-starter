@@ -15,55 +15,24 @@
 
 {% macro render( props ) %}
 
-    {% from "macros/blocks.njk" import column, block %}
+  {% from "macros/blocks.njk" import  block %}
 
-    {% if props.rowGap or props.columnGap %}
+  {% set classes = buildClasses(props, []) %}
 
-        {% set uid = uid() %}
+  {% set styles = buildStyles(props, []) | safe %}
 
-    {% endif %}
+  {%  set id = ' id="' + props.id + '"' if props.id %}
 
-    {% set classes = ([
-        props.class if props.class,
-        'has-text-color has-' + props.color + '-color' if props.color,
-        'has-background has-' + props.background + '-background-color' if props.background,
-        'has-' + props.fontSize + '-font-size' if props.fontSize,
-        'is-not-stacked-on-mobile' if props.notStackedOnMobile,
-        'are-vertically-aligned-' + props.verticalAlign if props.verticalAlign,
-        'align' + props.align if props.align,
-        'is-style-' + props.customStyle if props.customStyle,
-        'wp-container-'+ uid if props.rowGap or props.columnGap
-    ]) | toClassNames %}
+  <div class="wp-block-columns is-layout-flex {{ classes }}"{{ styles }}{{ id }}>
 
-    {% set styles = ([
-        props.style if props.style
-    ]) | toStyleString | safe %}
+    {% if props.innerContent %}
 
-    {%  set id = ' id="' + props.id + '"' if props.id %}
-
-    <div class="wp-block-columns  is-layout-flex {{ classes }}"{{ styles }}{{ id }}>
-
-        {% if props.innerContent %}
-
-            {% include props.innerContent %}
-
-        {% endif %}
-
-        {% if caller %}{{ caller()  }}{% endif %}
-
-    </div>
-
-
-    {% if props.rowGap or props.columnGap %}
-
-        <!--for static purpose only -->
-
-        <style>
-            .wp-container-{{ uid }}.wp-container-{{ uid }} {
-                gap:{% if props.rowGap %} {{ props.rowGap }}{% endif %}{% if props.columnGap %} {{ props.columnGap }}{% endif %};
-            }
-        </style>
+      {% include props.innerContent %}
 
     {% endif %}
+
+    {% if caller %}{{ caller()  }}{% endif %}
+
+  </div>
 
 {% endmacro %}
