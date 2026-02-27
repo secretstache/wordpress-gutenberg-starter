@@ -6,39 +6,31 @@ use App\View\Composers\SSM;
 
 class TeamMembers extends Block
 {
+    public const QUERY_LATEST = 'all';
+    public const QUERY_CURATED = 'curated';
+
     protected function prepareData($attributes, $content): array
     {
-        $query         = $attributes['queryType'] ?? 'all';
+        $query         = $attributes['queryType'] ?? self::QUERY_LATEST;
         $number_posts  = $attributes['numberOfPosts'] ?? -1;
         $curated_posts = $attributes['curatedPosts'] ?? [];
 
         $args = [
-            'data_source'           => 'team',
-            'query'                 => $query,
-            'number_posts'          => $query === 'curated' ? -1 : $number_posts,
-            'curated_posts'         => $curated_posts,
-            'prefix'                => 'ssm'
+            'data_source'       => 'ssm_team',
+            'query'             => $query,
+            'number_posts'      => $query === self::QUERY_CURATED ? -1 : $number_posts,
+            'curated_posts'     => $curated_posts,
+            'excluded_posts'    => [get_the_ID()],
         ];
 
-        if ($query == 'all' && $number_posts != 0) {
+        $is_empty_selection = ($query === self::QUERY_CURATED && empty($curated_posts)) ||
+            ($query !== self::QUERY_CURATED && $number_posts === 0);
 
-            $orderby_args = [
-                'meta_key'       => 'team_last_name',
-                'orderby'        => 'meta_value title',
-                'order'          => 'ASC',
-            ];
+        $posts = $is_empty_selection ? [] : SSM::getPosts($args);
 
-            $posts = SSM::getPosts($args, $orderby_args);
-
-        } elseif ($query == 'curated' && !empty($curated_posts)) {
-            $posts = SSM::getPosts($args);
-        }
-
-        $data = [
+        return [
             'wrapper_attributes'    => get_block_wrapper_attributes(),
-            'posts'                 => $posts ?? [],
+            'posts'                 => $posts,
         ];
-
-        return $data;
     }
 }

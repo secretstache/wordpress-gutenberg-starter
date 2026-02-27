@@ -23,7 +23,7 @@
       "type": "string",
       "enum": [
         "latest",
-        "by_category",
+        "category",
         "curated"
       ],
       "default": "latest"

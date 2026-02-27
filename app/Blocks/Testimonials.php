@@ -1,41 +1,36 @@
 <?php
 
 namespace App\Blocks;
+
 use App\View\Composers\SSM;
 
 class Testimonials extends Block
 {
+    public const QUERY_LATEST = 'all';
+    public const QUERY_CURATED = 'curated';
+
     protected function prepareData($attributes, $content): array
     {
-        $query              = $attributes['queryType'] ?? 'latest';
-        $number_posts       = isset($attributes['numberOfPosts']) && $query == 'latest' ? $attributes['numberOfPosts'] : -1;
-        $columns_per_row    = $attributes['columnsPerRow'] ?? 3;
-        $layout             = $attributes['layoutType'] ?? 'grid';
-        $curated_posts      = $attributes['curatedPosts'] ?? [];
+        $query         = $attributes['queryType'] ?? self::QUERY_LATEST;
+        $number_posts  = $attributes['numberOfPosts'] ?? -1;
+        $curated_posts = $attributes['curatedPosts'] ?? [];
 
-        $posts = SSM::getPosts( [
-            'data_source'       => 'testimonial',
+        $args = [
+            'data_source'       => 'ssm_testimonial',
             'query'             => $query,
-            'number_posts'      => $number_posts,
+            'number_posts'      => $query === self::QUERY_CURATED ? -1 : $number_posts,
             'curated_posts'     => $curated_posts,
-            'prefix'            => 'ssm'
-        ]);
-
-        $classes = ['wp-block-ssm-testimonials'];
-
-        $wrapper_attributes = get_block_wrapper_attributes([
-            'class' => implode(' ', $classes),
-        ]);
-
-        $data = [
-            'wrapper_attributes'    => $wrapper_attributes,
-            'query'                 => $query,
-            'number_posts'          => $number_posts,
-            'posts'                 => $posts,
-            'layout'                => $layout,
+            'excluded_posts'    => [get_the_ID()],
         ];
 
-        return $data;
-    }
+        $is_empty_selection = ($query === self::QUERY_CURATED && empty($curated_posts)) ||
+            ($query !== self::QUERY_CURATED && $number_posts === 0);
 
+        $posts = $is_empty_selection ? [] : SSM::getPosts($args);
+
+        return [
+            'wrapper_attributes'    => get_block_wrapper_attributes(),
+            'posts'                 => $posts,
+        ];
+    }
 }

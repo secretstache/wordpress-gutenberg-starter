@@ -132,74 +132,56 @@ class SSM extends Composer
 
     }
 
-    public static function getPosts( $data, $extra_args = [] )
+    public static function getPosts($data, $extra_args = [])
     {
+        $data_source = $data['data_source'] ?? 'posts';
+        $query       = $data['query'] ?? 'latest';
+        $post_type   = in_array($data_source, ['posts', 'resources'], true)
+            ? 'post'
+            : $data_source;
 
         $args = [
-            'post_type'      => ( $data['data_source'] && $data['data_source'] !== 'posts' && $data['data_source'] !== 'resources' ) ? $data['prefix'] . '_' . $data['data_source'] : 'post',
+            'post_type'      => $post_type,
             'posts_per_page' => $data['number_posts'] ?? -1,
             'post__not_in'   => $data['excluded_posts'] ?? [],
-            'status'         => 'publish',
-            'fields' 	     => 'ids',
+            'post_status'    => 'publish',
+            'fields'         => 'ids',
         ];
 
-        if( isset($data['order']) && isset($data['orderby']) && $data['query'] != 'curated' ){
+        $taxonomy = $data['taxonomy_slug'] ?? null;
+        $terms    = $data['curated_terms'] ?? [];
 
-            $orderby_args = [
-                'order'      => $data['order'],
-                'orderby'    => $data['orderby']
-            ];
+        if ($taxonomy && !empty($terms) && $query === $taxonomy) {
 
-            $args = array_merge(
-                $args,
-                $orderby_args
-            );
-
-        }
-
-        // TODO: too long and difficult to understand, refactor
-        if ( isset($data['taxonomy_slug']) && isset($data['curated_terms']) && !empty($data['curated_terms']) && $data['query'] == 'by_' . str_replace( $data['prefix'] . '_', '', $data['taxonomy_slug'] ) ) {
-
-            $taxonomy_args = [
-                'tax_query' => [
-                    [
-                        'taxonomy' => $data['taxonomy_slug'],
-                        'field'    => 'term_id',
-                        'terms'    => $data['curated_terms'],
-                    ]
+            $args['tax_query'] = [
+                [
+                    'taxonomy' => $taxonomy,
+                    'field'    => 'term_id',
+                    'terms'    => $terms,
                 ]
             ];
 
-            $args = array_merge(
-                $args,
-                $taxonomy_args
-            );
+        } elseif ($query === 'curated' && !empty($data['curated_posts'])) {
 
+            $post_in = is_array($data['curated_posts'][0])
+                ? array_column($data['curated_posts'], 'value')
+                : $data['curated_posts'];
 
-        } elseif ($data['query'] == 'curated' && isset( $data['curated_posts'] ) && !empty( $data['curated_posts'] ) ) {
+            $args['post__in'] = $post_in;
+            $args['orderby']  = 'post__in';
 
-            $post_in = is_array($data['curated_posts'][0]) ? array_column($data['curated_posts'], 'value') : $data['curated_posts'];
+        } elseif (isset($data['order'], $data['orderby']) && $query !== 'curated') {
 
-            $curated_args = [
-                'post__in'      => $post_in,
-                'orderby'       => 'post__in'
-            ];
-
-            $args = array_merge(
-                $args,
-                $curated_args
-            );
+            $args['order']   = $data['order'];
+            $args['orderby'] = $data['orderby'];
 
         }
 
-        if (!empty($extra_args) && is_array($extra_args)) {
+        if (!empty($extra_args)) {
             $args = array_merge($args, $extra_args);
         }
 
-        $posts = get_posts($args);
-
-        return $posts;
-
+        return get_posts($args);
     }
 
     public static function getSpacingClasses(
@@ -254,5 +236,22 @@ class SSM extends Composer
             default:
                 return '';
         }
+    }
+
+    public static function getPostExcerpt($post_id, $word_count = 15)
+    {
+        $post_excerpt = get_the_excerpt($post_id);
+
+        if (empty($post_excerpt)) {
+            $post_content = get_post_field('post_content', $post_id);
+
+            if (str_contains($post_content, 'material-symbols')) {
+                $post_content = preg_replace('/<[^>]*class="material-symbols[^"]*"[^>]*>.*?<\/[^>]+>/s', '', $post_content);
+            }
+
+            $post_excerpt = !empty($post_content) ? wp_trim_words($post_content, $word_count, '...') : '';
+        }
+
+        return $post_excerpt;
     }
 }

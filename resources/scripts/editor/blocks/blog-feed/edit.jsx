@@ -6,7 +6,7 @@ import { ResourcesWrapper, DataQueryControls, useDataQuery } from '@secretstache
 
 const QUERY_TYPE = {
     LATEST: 'latest',
-    BY_CATEGORY: 'by_category',
+    BY_CATEGORY: 'category',
     CURATED: 'curated',
 };
 
