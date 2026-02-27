@@ -102,4 +102,9 @@
         border-width: inherit;
         border-style: inherit;
     }
+
+    .has-fixed-layout {
+        width: 100%;
+        table-layout: fixed;
+    }
 }

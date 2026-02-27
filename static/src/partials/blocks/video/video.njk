@@ -12,35 +12,41 @@
 
 {% macro render( props ) %}
 
-    {% set classes = ([
-        props.class if props.class,
-        'align' + props.align if props.align,
-        'is-style-' + props.customStyle if props.customStyle
-    ]) | toClassNames %}
+  {% set classes = buildClasses(props, []) %}
 
-    {% set styles = ([
-        props.style if props.style
-    ]) | toStyleString | safe %}
+  {% set styles = buildStyles(props, []) | safe %}
 
-    {%  set id = ' id="' + props.id + '"' if props.id %}
+  {%  set id = ' id="' + props.id + '"' if props.id %}
 
-    {% if props.iframe %}
-        {% set src = props.src if props.src else 'https://www.youtube.com/embed/aLuj7Lw9hVk?feature=oembed' %}
+  {% if props.iframe %}
+    {% set src = props.src if props.src else 'https://www.youtube.com/embed/aLuj7Lw9hVk?feature=oembed' %}
 
-        <figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio{{ classes }}"{{ styles }}{{ id }}>
-            <div class="wp-block-embed__wrapper">
-                <iframe width="500" height="281" src="{{ src }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
-            </div>
-        </figure>
+    <figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio{{ classes }}"{{ styles }}{{ id }}>
+      <div class="wp-block-embed__wrapper">
+        <iframe width="500" height="281" src="{{ src }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe>
+      </div>
 
-    {% else %}
+      {% if props.caption %}
 
-        <figure class="wp-block-video{{ classes }}"{{ styles }}{{ id }}>
-            {% set src = props.src if props.src else 'assets/video/placeholder.mp4' %}
+        <figcaption class="wp-element-caption">{{ props.caption }}</figcaption>
 
-            <video src="{{ root }}{{ src }}"{% if props.poster %} poster="{{ root }}{{ props.poster }}"{% endif %}{% if props.attributes %} {{ props.attributes }}{% endif %}></video>
-        </figure>
+      {% endif %}
+    </figure>
 
-    {% endif %}
+  {% else %}
+
+    <figure class="wp-block-video{{ classes }}"{{ styles }}{{ id }}>
+      {% set src = props.src if props.src else 'assets/video/placeholder.mp4' %}
+
+      <video src="{{ root }}{{ src }}"{% if props.poster %} poster="{{ root }}{{ props.poster }}"{% endif %}{% if props.attributes %} {{ props.attributes }}{% endif %}></video>
+
+      {% if props.caption %}
+
+        <figcaption class="wp-element-caption">{{ props.caption }}</figcaption>
+
+      {% endif %}
+    </figure>
+
+  {% endif %}
 
 {% endmacro %}

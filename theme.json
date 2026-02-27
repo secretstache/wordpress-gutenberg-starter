@@ -2,6 +2,7 @@
   "$schema": "https://schemas.wp.org/trunk/theme.json",
   "version": 3,
   "settings": {
+    "appearanceTools": true,
     "layout": {
       "contentSize": "var(--container-default)",
       "wideSize": "var(--container-wide)"
@@ -26,13 +27,6 @@
           "slug": "white"
         }
       ]
-    },
-    "custom": {
-      "spacing": {},
-      "typography": {
-        "font-size": {},
-        "line-height": {}
-      }
     },
     "spacing": {
       "margin": true,
@@ -123,6 +117,11 @@
           "size": "4rem"
         },
         {
+          "name": "18 (72px)",
+          "slug": "18",
+          "size": "4.5rem"
+        },
+        {
           "name": "20 (80px)",
           "slug": "20",
           "size": "5rem"
@@ -210,103 +209,58 @@
       "fluid": true,
       "fontFamilies": [
         {
-          "fontFamily": "var(--font-serif)",
-          "name": "Serif",
-          "slug": "serif"
-        },
-        {
           "fontFamily": "var(--font-sans-serif)",
           "name": "Sans serif",
           "slug": "sans-serif"
         }
       ],
-      "fontSizes":[
+      "fontSizes": [
         {
-          "name": "2xl",
+          "name": "4XL",
+          "size": "var(--text-4xl)",
+          "slug": "4xl"
+        },
+        {
+          "name": "3XL",
+          "size": "var(--text-3xl)",
+          "slug": "3xl"
+        },
+        {
+          "name": "2XL",
           "size": "var(--text-2xl)",
           "slug": "2xl"
         },
         {
-          "name": "xl",
+          "name": "XL",
           "size": "var(--text-xl)",
           "slug": "xl"
         },
         {
-          "name": "lg",
+          "name": "LG",
           "size": "var(--text-lg)",
           "slug": "lg"
         },
         {
-          "name": "base",
-          "size": "var(--text-base)",
-          "slug": "base"
-        },
-        {
-          "name": "md",
+          "name": "MD",
           "size": "var(--text-md)",
           "slug": "md"
         },
         {
-          "name": "sm",
+          "name": "SM",
           "size": "var(--text-sm)",
           "slug": "sm"
         },
         {
-          "name": "xs",
+          "name": "XS",
           "size": "var(--text-xs)",
           "slug": "xs"
-        },
-        {
-          "name": "2xs",
-          "size": "var(--text-2xs)",
-          "slug": "2xs"
-        },
-        {
-          "name": "3xs",
-          "size": "var(--text-3xs)",
-          "slug": "3xs"
-        },
-        {
-          "name": "4xs",
-          "size": "var(--text-4xs)",
-          "slug": "4xs"
-        },
-        {
-          "name": "h1",
-          "size": "var(--text-h1)",
-          "slug": "h1"
-        },
-        {
-          "name": "h2",
-          "size": "var(--text-h2)",
-          "slug": "h2"
-        },
-        {
-          "name": "h3",
-          "size": "var(--text-h3)",
-          "slug": "h3"
-        },
-        {
-          "name": "h4",
-          "size": "var(--text-h4)",
-          "slug": "h4"
-        },
-        {
-          "name": "h5",
-          "size": "var(--text-h5)",
-          "slug": "h5"
-        },
-        {
-          "name": "h6",
-          "size": "var(--text-h6)",
-          "slug": "h6"
         }
       ]
     }
   },
   "styles": {
     "spacing": {
-      "blockGap": "var(--block-margin)"
+      "blockGap": "var(--spacing-block)"
     }
   }
 }

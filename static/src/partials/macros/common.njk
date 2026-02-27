@@ -1,79 +1,90 @@
 {# DropdownMenu macro #}
 {%- macro menu(props) -%}
-    {% from "macros/common.njk" import menu %}
+  {% from "macros/common.njk" import menu %}
 
-    <ul class="{{ props.menuClass }}"{% if props.attributes %} {{ props.attributes | safe }}{% endif %}>
+  {# Calculate middle + 1 position #}
+  {% set middlePosition = (props.nav | length / 2) | round(0, 'floor') %}
 
-        {% for link in props.nav %}
+  <ul class="{{ props.menuClass }}"{% if props.attributes %} {{ props.attributes | safe }}{% endif %}>
 
-            <li class="relative group/menuLi flex items-center{% if link.submenu %} menu-item-has-children{% endif %}">
+    {% for link in props.nav %}
 
-                {% set linkClasses = ([
-                    'peer !no-underline',
-                    props.linkClass if  props.linkClass,
-                    props.currentlinkClass if props.currentPage == link.url and props.currentlinkClass
-                ]) | toClassNames %}
+      {# Check if this is the middle + 1 item #}
+      {% set isMiddle = loop.index == middlePosition %}
 
-                {% set linkAttributes = ([
-                    'aria-current="page"' if  props.currentPage == link.url,
-                    'aria-expanded="false"' if link.submenu
-                ]) | toClassNames %}
+      <li class="relative group/menuLi flex items-center{% if link.submenu %} menu-item-has-children{% endif %}{% if isMiddle %} is-middle{% endif %}">
 
-                <a href="{{ root }}{{ link.url }}" class="{{ linkClasses }}"{{ linkAttributes | safe }}>{{ link.name }}</a>
+        {% set linkClasses = buildClasses({}, [
+          'peer !no-underline',
+          props.linkClass if  props.linkClass,
+          props.currentlinkClass if props.currentPage == link.url and props.currentlinkClass
+        ]) %}
 
-              {% set submenuClasses = ([
-                'absolute left-0 z-10 invisible pointer-events-none opacity-0 transition-all duration-300',
-                props.submenuClass
-              ]) | toClassNames %}
+        {% set linkAttributes = buildAttributes({
+          ariaCurrent: 'page' if props.currentPage == link.url,
+          ariaExpanded: 'false' if link.submenu
+        }) %}
 
-              {% set submenuLinkClasses = ([
-                props.submenuLinkClass
-              ]) | toClassNames %}
+        {% set href = link.url %}
+        {% if href and not href.startsWith('http') and not href.startsWith('tel:') and not href.startsWith('mailto:') %}
+          {% set href = (root or '') + href %}
+        {% endif %}
 
-                {%if link.submenu %}
-                    {{ menu({
-                        nav: link.submenu,
-                        currentPage: props.currentPage,
-                        menuClass: submenuClasses,
-                        linkClass: submenuLinkClasses,
-                        currentlinkClass: props.submenuCurrentlinkClass
-                    }) }}
+        <a href="{{ href }}" class="{{ linkClasses }}"{{ linkAttributes | safe }}>
+          {% if icon %}{{ icon | safe }}{% endif %}
+          <span>{{ link.name }}</span>
+        </a>
 
-                {% endif %}
+        {% set submenuClasses = buildClasses({}, [
+          'absolute left-0 z-10 invisible pointer-events-none opacity-0 transition-all duration-300',
+          props.submenuClass
+        ]) %}
 
-            </li>
+        {% set submenuLinkClasses = buildClasses({}, [
+          props.submenuLinkClass
+        ]) %}
 
-        {% endfor -%}
+        {% if link.submenu %}
+          {{ menu({
+            nav: link.submenu,
+            currentPage: props.currentPage,
+            menuClass: submenuClasses,
+            linkClass: submenuLinkClasses,
+            currentlinkClass: props.submenuCurrentlinkClass
+          }) }}
+        {% endif %}
 
-    </ul>
+      </li>
 
+    {% endfor -%}
+  </ul>
 {%- endmacro -%}
 
 {# Modal macro #}
 {%- macro modal(props) -%}
 
-    <div class="modal{%if props.class %}{{ props.class }}{% endif %}" id="{{ props.id }}" tabindex="-1">
+  <div class="modal{%if props.class %}{{ props.class }}{% endif %}" id="{{ props.id }}" tabindex="-1">
 
-        <div class="modal__wrapper">
+    <div class="modal__wrapper">
 
-            <div class="modal__content">
+      <div class="modal__content">
 
-                <div class="modal__header">
+        <div class="modal__header">
 
-                    <button type="button" class="modal__close-btn" data-dismiss="modal" aria-label="Close"></button>
-
-                </div>
-
-                <div class="modal__body">
-
-                    {% if caller %}{{ caller()  }}{% endif %}
-
-                </div>
-
-            </div>
+          <button type="button" class="modal__close-btn" data-dismiss="modal" aria-label="Close"></button>
 
         </div>
 
+        <div class="modal__body">
+
+          {% if caller %}{{ caller()  }}{% endif %}
+
+        </div>
+
+      </div>
+
     </div>
+
+  </div>
 
 {%- endmacro -%}

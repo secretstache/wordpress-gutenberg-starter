@@ -1,0 +1,10 @@
+.wp-block-separator {
+    &:not(.is-style-wide, .is-style-dots) {
+        width: auto !important;
+
+        &.alignfull {
+            margin-inline: calc(50% - (50vw - 15px / 2)) !important; /* 15px - scrollbar width */
+            max-width: calc(100vw - 15px) !important;
+        }
+    }
+}

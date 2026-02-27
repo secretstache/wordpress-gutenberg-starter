@@ -2,6 +2,27 @@
   display: block !important;
 }
 
-.post-type-fpe_team th#team_headshot_col {
+.post-type-ntg_team th#team_headshot_col {
   width: 15%;
+}
+
+.editor-sidebar .edit-post-meta-boxes-area .acf-postbox>.postbox-header>h2 {
+  padding-left: 15px !important;
+  color: #1e1e1e !important;
+  font-weight: 500 !important;
+  font-size: 13px !important;
+}
+
+.edit-post-meta-boxes-area .acf-postbox .acf-label label {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.4;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: calc(8px);
+  padding: 0px;
+}
+
+.edit-post-meta-boxes-area .acf-fields>.acf-field {
+  padding: 16px;
 }

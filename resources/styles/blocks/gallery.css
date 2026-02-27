@@ -22,7 +22,7 @@
 
     &[class*="columns-"] figure.wp-block-image:not(#individual-image) {
         margin: 0;
-        width: 100%;
+        width: 100% !important;
     }
 
     &.is-style-align-center {

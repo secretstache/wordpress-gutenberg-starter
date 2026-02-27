@@ -1,10 +1,9 @@
 .wp-block-image {
     @apply block relative;
-    margin-top: unset;
     margin-bottom: unset;
 
     img {
-        @apply block overflow-hidden;
+        @apply block overflow-hidden max-h-full;
     }
 
     a {
@@ -12,24 +11,36 @@
     }
 
     .wp-element-caption {
-        @apply mt-4;
+        @apply mt-4 text-left;
     }
 
     &.aligncenter {
-        @apply text-center;
+        @apply block text-center;
+
+        .wp-element-caption {
+            @apply text-center;
+        }
 
         img {
-            @apply md:ml-auto md:mr-auto;
+            @apply ml-auto mr-auto;
         }
     }
 
     &.alignright {
+        @apply block;
+
+        .wp-element-caption {
+            @apply text-right;
+        }
+
         img {
             @apply md:ml-auto;
         }
     }
 
     &.alignfull {
+        @apply block;
+
         img {
             @apply w-full;
         }

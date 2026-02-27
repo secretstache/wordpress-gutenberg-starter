@@ -10,15 +10,9 @@
 
 {% macro render(props) %}
 
-    {% set classes = ([
-        props.class if props.class,
-        'has-background has-' + props.background + '-background-color has-text-color has-' + props.background + '-color' if props.background,
-        'has-background has-' + props.gradient + '-gradient-background' if props.gradient,
-        'align' + props.align if props.align,
-        'is-style-' + props.customStyle if props.customStyle
-    ]) | toClassNames %}
+    {% set classes = buildClasses(props, []) %}
 
-    {% set styles = ([props.style if props.style]) | toStyleString | safe %}
+    {% set styles = buildStyles(props, []) | safe %}
 
     {% set id = ' id="' + props.id + '"' if props.id %}
 

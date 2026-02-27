@@ -1,5 +1,6 @@
 @layer base {
     body {
+        @apply font-sans-serif text-md;
         color: var(--body-color);
     }
 
@@ -66,8 +67,8 @@
         @apply text-lg;
     }
 
-    .has-base-font-size {
-        @apply text-base;
+    .has-md-font-size {
+        @apply text-md;
     }
 
     .has-sm-font-size {

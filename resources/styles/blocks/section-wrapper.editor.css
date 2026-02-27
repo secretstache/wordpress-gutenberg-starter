@@ -1,4 +1,8 @@
 :root :where(.editor-styles-wrapper) :where(.is-layout-flow) {
+    .wp-block-ssm-section-wrapper {
+        @apply !max-w-full !mx-0;
+    }
+
     /* First section margin-top */
     :where(.wp-block-ssm-section-wrapper:first-of-type:not([class*=" md:mt-ssm-"])) {
         @apply md:mt-0;

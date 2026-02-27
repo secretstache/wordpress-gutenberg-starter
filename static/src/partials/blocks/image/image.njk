@@ -12,17 +12,9 @@
 
 {% macro render( props ) %}
 
-  {% set classes = ([
-    props.class if props.class,
-    'align' + props.align if props.align,
-    'is-style-' + props.customStyle if props.customStyle
-  ]) | toClassNames %}
+  {% set classes = buildClasses(props, []) %}
 
-  {% set styles = ([
-    props.style if props.style,
-    'flex-grow: 1;' if props.flexGrow,
-    'flex-basis: ' + props.flexWidth + ';' if props.flexWidth
-  ]) | toStyleString | safe %}
+  {% set styles = buildStyles(props, []) | safe %}
 
   {%  set id = ' id="' + props.id + '"' if props.id %}
 

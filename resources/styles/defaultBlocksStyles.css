@@ -38,4 +38,6 @@
 @import "@modules/@wordpress/block-library/build-style/video/theme.css";
 @import "@modules/@wordpress/block-library/build-style/video/style.css";
 
+@import "@modules/@wordpress/block-library/build-style/cover/style.css";
+
 /* stylelint-enable */

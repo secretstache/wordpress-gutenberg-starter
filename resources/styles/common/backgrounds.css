@@ -1,33 +1,23 @@
 .bg-dark {
-    --body-color: var(--color-white);
+    --body-color: var(--body-color-light);
+    --heading-color: var(--heading-color-light);
     color: var(--body-color);
 
     .bg-light {
-        --body-color: var(--color-black);
+        --body-color: var(--body-color-dark);
+        --heading-color: var(--heading-color-dark);
         color: var(--body-color);
     }
 }
 
 .bg-light {
-    --body-color: var(--color-black);
-    color: var(--color-black);
+    --body-color: var(--body-color-dark);
+    --heading-color: var(--heading-color-dark);
+    color: var(--body-color);
 
     .bg-dark {
-        --body-color: var(--color-white);
+        --body-color: var(--body-color-light);
+        --heading-color: var(--heading-color-light);
         color: var(--body-color);
     }
-}
-
-.bg-light,
-.bg-light .bg-dark,
-.bg-dark,
-.bg-dark .bg-light {
-    :where([class*="has-text-color"] *, button, svg, path, .fa, .wp-block-button__svg-wrapper, span[class*="replace-"], input, select, textarea, [data-rich-text-placeholder], [class^="components-"] *) {
-        color: unset;
-    }
-}
-
-.bg-dark.dark\:text-white:not(.bg-light) {
-    --body-color: var(--color-white);
-    color: var(--body-color);
 }
