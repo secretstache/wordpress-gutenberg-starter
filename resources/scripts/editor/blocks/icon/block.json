@@ -1,0 +1,62 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "title": "Icon",
+  "name": "ssm/icon",
+  "keywords": [
+    "icon",
+    "custom"
+  ],
+  "category": "ssm-components",
+  "example": {
+    "attributes": {
+      "iconName": "star",
+      "iconType": "font"
+    }
+  },
+  "icon": "format-image",
+  "description": "Display icons with optional tiles and labels",
+  "supports": {
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "align": [
+      "left",
+      "center",
+      "right"
+    ]
+  },
+  "attributes": {
+    "iconName": {
+      "type": "string",
+      "default": ""
+    },
+    "iconType": {
+      "type": "string",
+      "enum": [
+        "font",
+        "custom"
+      ],
+      "default": "font"
+    },
+    "iconColor": {
+      "type": "object",
+      "default": {
+        "value": "#1A4072",
+        "slug": "blue"
+      }
+    },
+    "iconBgColor": {
+      "type": "object",
+      "default": {
+        "value": "#fff",
+        "slug": "white"
+      }
+    },
+    "iconSize": {
+      "type": "number",
+      "default": 24
+    }
+  }
+}
