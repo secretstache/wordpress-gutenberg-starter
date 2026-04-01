@@ -1,6 +1,3 @@
-// For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
-import storybook from "eslint-plugin-storybook";
-
 import pluginReact from 'eslint-plugin-react';
 import pluginImport from 'eslint-plugin-import';
 import pluginA11y from 'eslint-plugin-jsx-a11y';
@@ -110,4 +107,4 @@ export default [{
             ecmaFeatures: { jsx: true },
         },
     },
-}, ...storybook.configs["flat/recommended"]];
+}];

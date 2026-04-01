@@ -6,7 +6,7 @@ const nextId = () => ++_nextId;
 const COLLAPSE_DELAY = 300;
 const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled])';
 
-const ARROW_SVG = `<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 30.727 30.727"><path fill="currentColor" d="M29.994,10.183L15.363,24.812L0.733,10.184c-0.977-0.978-0.977-2.561,0-3.536c0.977-0.977,2.559-0.976,3.536,0l11.095,11.093L26.461,6.647c0.977-0.976,2.559-0.976,3.535,0C30.971,7.624,30.971,9.206,29.994,10.183z"/></svg>`;
+const ARROW_SVG = '<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 30.727 30.727"><path fill="currentColor" d="M29.994,10.183L15.363,24.812L0.733,10.184c-0.977-0.978-0.977-2.561,0-3.536c0.977-0.977,2.559-0.976,3.536,0l11.095,11.093L26.461,6.647c0.977-0.976,2.559-0.976,3.535,0C30.971,7.624,30.971,9.206,29.994,10.183z"/></svg>';
 
 export class DropdownMenu extends Component {
     static defaults = {
@@ -106,6 +106,7 @@ export class DropdownMenu extends Component {
 
         if (submenuIndex !== -1) {
             this._onMenuKeyDown(submenuIndex, event);
+
             return;
         }
 
@@ -113,6 +114,7 @@ export class DropdownMenu extends Component {
 
         if (buttonIndex !== -1 && this._submenus[buttonIndex]) {
             this._onButtonKeyDown(buttonIndex, event);
+
             return;
         }
 
@@ -138,6 +140,7 @@ export class DropdownMenu extends Component {
         if (event.key === 'Escape') {
             this._topLevelButtons[this._openIndex].focus();
             this._toggleExpand(this._openIndex, false);
+
             return;
         }
 
@@ -154,11 +157,13 @@ export class DropdownMenu extends Component {
         if (event.key === 'Enter') {
             event.preventDefault();
             this._toggleExpand(index, true);
+
             return;
         }
 
         if (event.key === 'Escape') {
             this._toggleExpand(index, false);
+
             return;
         }
 

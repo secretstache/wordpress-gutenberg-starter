@@ -9,6 +9,7 @@ export class VideoPlayer extends Component {
 
         if (!video) {
             this.destroy();
+
             return;
         }
 

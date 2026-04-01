@@ -29,6 +29,7 @@ function getObserver() {
     }
 
     _refCount++;
+
     return _observer;
 }
 

@@ -26,6 +26,7 @@ export class Offcanvas extends Component {
             clickCallback: () => {
                 if (this.options.backdrop === 'static') {
                     this.emit('offcanvas:hide-prevented');
+
                     return;
                 }
                 this.hide();

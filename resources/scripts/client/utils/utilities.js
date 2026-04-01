@@ -106,6 +106,7 @@ export const throttle = (callback, delay) => {
     return (...args) => {
         if (isThrottled) {
             pending = args;
+
             return;
         }
 

@@ -11,6 +11,7 @@
 const registries = new Map();
 const getRegistry = (Constructor) => {
     if (!registries.has(Constructor)) registries.set(Constructor, new WeakMap());
+
     return registries.get(Constructor);
 };
 

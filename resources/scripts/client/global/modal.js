@@ -33,6 +33,7 @@ export class Modal extends Component {
                 if (this.options.backdrop === 'static') {
                     this.emit('modal:hide-prevented');
                     this._shakeModal();
+
                     return;
                 }
                 this.hide();
@@ -113,10 +114,11 @@ export class Modal extends Component {
         // to avoid closing when a drag starts inside and ends outside.
         // Merged with dismiss-trigger check into one listener.
         let mousedownTarget = null;
-        this.on(this.el, 'mousedown', (e) => { mousedownTarget = e.target; });
+        this.on(this.el, 'mousedown', (e) => { mousedownTarget = e.target });
         this.on(this.el, 'click', (e) => {
             if (e.target.closest('[data-dismiss="modal"]')) {
                 this.hide();
+
                 return;
             }
 

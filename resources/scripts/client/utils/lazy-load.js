@@ -13,6 +13,7 @@ const VALID_ATTRIBUTES = ['data-src', 'data-srcset', 'data-background-image', 'd
 
 const sanitizeUrl = (url) => {
     const trimmed = url.trim();
+
     return /^javascript:/i.test(trimmed) ? '' : trimmed;
 };
 
@@ -91,6 +92,7 @@ const applyPlaceholder = (el) => {
 const getElements = (selector, root = document) => {
     if (selector instanceof Element) return [selector];
     if (selector instanceof NodeList) return [...selector];
+
     return [...root.querySelectorAll(selector)];
 };
 

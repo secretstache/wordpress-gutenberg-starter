@@ -10,7 +10,7 @@ import {
 
 import { EditProps } from '@scripts/editor/types';
 import { Attributes } from './types';
-import { useCallback } from "@wordpress/element";
+import { useCallback } from '@wordpress/element';
 
 const ALLOWED_BLOCKS = ['ssm/block-grid-item'];
 

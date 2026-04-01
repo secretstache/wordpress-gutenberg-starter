@@ -32,6 +32,7 @@ export class Backdrop {
     show(callback) {
         if (!this._config.isVisible) {
             callback?.();
+
             return;
         }
 
@@ -48,6 +49,7 @@ export class Backdrop {
     hide(callback) {
         if (!this._config.isVisible) {
             callback?.();
+
             return;
         }
 
@@ -94,6 +96,7 @@ export class Backdrop {
     _afterTransition(callback) {
         if (!this._config.isAnimated || !this._element) {
             callback?.();
+
             return;
         }
 
