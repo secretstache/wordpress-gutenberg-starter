@@ -9,7 +9,13 @@
  * data-background-image, data-background-image-set, data-toggle-class.
  */
 
-const VALID_ATTRIBUTES = ['data-src', 'data-srcset', 'data-background-image', 'data-background-image-set', 'data-toggle-class'];
+const VALID_ATTRIBUTES = [
+    'data-src',
+    'data-srcset',
+    'data-background-image',
+    'data-background-image-set',
+    'data-toggle-class',
+];
 
 const sanitizeUrl = (url) => {
     const trimmed = url.trim();
@@ -60,7 +66,10 @@ const defaultConfig = {
             if (urls.length) element.style.backgroundImage = urls.join(', ');
         } else if (element.dataset.backgroundImageSet) {
             const delimiter = element.dataset.backgroundDelimiter || ',';
-            const links = element.dataset.backgroundImageSet.split(delimiter).map((u) => sanitizeUrl(u)).filter(Boolean);
+            const links = element.dataset.backgroundImageSet
+                .split(delimiter)
+                .map((u) => sanitizeUrl(u))
+                .filter(Boolean);
             let first = links[0].substring(0, links[0].indexOf(' ')) || links[0];
             if (!first.startsWith('url(')) first = `url(${first})`;
 

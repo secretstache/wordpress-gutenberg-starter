@@ -126,7 +126,13 @@ document.addEventListener('click', (event) => {
     const trigger = event.target.closest(SELECTOR_TOGGLE);
     if (!trigger) return;
 
-    if (['A', 'AREA'].includes(trigger.tagName)) event.preventDefault();
+    if (
+        [
+            'A',
+            'AREA',
+        ].includes(trigger.tagName)
+    )
+        event.preventDefault();
 
     const targetId = trigger.getAttribute('aria-controls');
     const target = document.getElementById(targetId);
@@ -140,7 +146,11 @@ document.addEventListener('click', (event) => {
     offcanvas.toggle(trigger);
 
     // Restore focus to the trigger once the offcanvas closes.
-    target.addEventListener('offcanvas:hidden', () => {
-        if (document.body.contains(trigger)) trigger.focus();
-    }, { once: true });
+    target.addEventListener(
+        'offcanvas:hidden',
+        () => {
+            if (document.body.contains(trigger)) trigger.focus();
+        },
+        { once: true },
+    );
 });

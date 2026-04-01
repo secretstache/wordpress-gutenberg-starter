@@ -89,8 +89,8 @@ export const Paragraph = ({
         <p
             className={paragraphClass}
             style={paragraphStyle}
-            id={id || undefined}
-            >{children}
+            id={id || undefined}>
+            {children}
         </p>
     );
 };

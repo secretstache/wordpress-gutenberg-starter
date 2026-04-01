@@ -27,9 +27,7 @@ export class DropdownMenu extends Component {
         this._topLevelNodes.forEach((node) => this._initNode(node));
 
         // Cached once — menu structure doesn't change at runtime.
-        this._topLevelFocusable = this._topLevelNodes.flatMap((node) =>
-            [...node.children].filter((c) => c.tagName === 'A' || c.tagName === 'BUTTON'),
-        );
+        this._topLevelFocusable = this._topLevelNodes.flatMap((node) => [...node.children].filter((c) => c.tagName === 'A' || c.tagName === 'BUTTON'));
 
         // Two delegated mouse listeners replace 2N individual mouseover/mouseout listeners.
         // relatedTarget boundary check emulates mouseenter/mouseleave semantics (no spurious

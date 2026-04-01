@@ -5,7 +5,9 @@ import { wpSlug } from '@lib/wp-global-styles';
 const FontSizes = () => (
     <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
         {fontSizes.map(({ slug, name, size }) => (
-            <div key={slug} style={{ display: 'flex', alignItems: 'baseline', gap: '2rem' }}>
+            <div
+                key={slug}
+                style={{ display: 'flex', alignItems: 'baseline', gap: '2rem' }}>
                 <div style={{ width: '280px', flexShrink: 0, display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
                     <span style={{ fontWeight: 600, fontSize: '0.8rem' }}>{name}</span>
                     <span style={{ color: '#999', fontSize: '0.75rem' }}>{size}</span>

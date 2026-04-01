@@ -52,9 +52,7 @@ export class FocusTrap {
     }
 
     _focusableChildren() {
-        return (this._focusableCache ??= [...this._element.querySelectorAll(FOCUSABLE_SELECTOR)].filter(
-            (el) => !el.closest('[hidden]') && getComputedStyle(el).visibility !== 'hidden',
-        ));
+        return (this._focusableCache ??= [...this._element.querySelectorAll(FOCUSABLE_SELECTOR)].filter((el) => !el.closest('[hidden]') && getComputedStyle(el).visibility !== 'hidden'));
     }
 
     _handleFocusin(event) {

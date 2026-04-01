@@ -114,7 +114,9 @@ export class Modal extends Component {
         // to avoid closing when a drag starts inside and ends outside.
         // Merged with dismiss-trigger check into one listener.
         let mousedownTarget = null;
-        this.on(this.el, 'mousedown', (e) => { mousedownTarget = e.target });
+        this.on(this.el, 'mousedown', (e) => {
+            mousedownTarget = e.target;
+        });
         this.on(this.el, 'click', (e) => {
             if (e.target.closest('[data-dismiss="modal"]')) {
                 this.hide();
@@ -200,7 +202,13 @@ document.addEventListener('click', (event) => {
     const trigger = event.target.closest(SELECTOR_TOGGLE);
     if (!trigger) return;
 
-    if (['A', 'AREA'].includes(trigger.tagName)) event.preventDefault();
+    if (
+        [
+            'A',
+            'AREA',
+        ].includes(trigger.tagName)
+    )
+        event.preventDefault();
 
     const targetSelector = trigger.dataset.target || trigger.getAttribute('href');
     if (!targetSelector) return;
@@ -216,7 +224,11 @@ document.addEventListener('click', (event) => {
     modal.toggle(trigger);
 
     // Restore focus to the trigger once the modal closes.
-    target.addEventListener('modal:hidden', () => {
-        if (document.body.contains(trigger)) trigger.focus();
-    }, { once: true });
+    target.addEventListener(
+        'modal:hidden',
+        () => {
+            if (document.body.contains(trigger)) trigger.focus();
+        },
+        { once: true },
+    );
 });

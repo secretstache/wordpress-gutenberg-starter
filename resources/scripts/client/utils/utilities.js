@@ -24,7 +24,10 @@ const svgFetchCache = new Map();
 
 const fetchSvgText = (src) => {
     if (!svgFetchCache.has(src)) {
-        svgFetchCache.set(src, fetch(src).then((res) => res.text()));
+        svgFetchCache.set(
+            src,
+            fetch(src).then((res) => res.text()),
+        );
     }
 
     return svgFetchCache.get(src);
@@ -45,9 +48,7 @@ export const EditableSvg = (img) => {
             if (!svg) return;
 
             const id = img.getAttribute('id');
-            const classes = (img.getAttribute('class') ?? '')
-                .split(/\s+/)
-                .filter((c) => c && c !== 'editable-svg');
+            const classes = (img.getAttribute('class') ?? '').split(/\s+/).filter((c) => c && c !== 'editable-svg');
 
             if (id) svg.setAttribute('id', id);
             svg.classList.add(...classes, 'replaced-svg');

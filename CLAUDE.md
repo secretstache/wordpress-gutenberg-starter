@@ -8,36 +8,16 @@ WordPress theme built on [Sage](https://roots.io/sage/) with SSM Core integratio
 
 ## Commands
 
-### Root (WordPress Theme)
-
 ```bash
+# Root
 yarn dev          # Vite dev server for theme assets
-yarn build        # Build theme assets (outputs to /public/build)
-yarn lint         # Run JS, CSS, and Prettier linting
-```
+yarn build        # Build theme assets
+yarn lint         # JS, CSS, and Prettier linting
 
-### Static (React/Storybook)
-
-```bash
-cd static
-yarn install      # Install static dependencies
+# Static (run from /static)
 yarn dev          # Vite dev server for React components
 yarn storybook    # Storybook on port 6006
-yarn build-storybook  # Build Storybook
-```
-
-### Shortcuts from root
-
-```bash
-yarn static-install   # cd static && yarn install
-yarn static-build     # cd static && yarn build
-yarn static-start     # cd static && yarn dev
-```
-
-### PHP
-
-```bash
-composer install  # Install PHP dependencies
+yarn build-storybook
 ```
 
 ## Architecture
@@ -85,29 +65,10 @@ Shared between both build contexts.
 
 **Styling:** Tailwind CSS v4 throughout. CSS variables for design tokens defined in `/resources/styles/settings/`. The `theme.json` drives block editor controls.
 
-**Vite aliases (root):** `@scripts`, `@styles`, `@fonts`, `@images`, `@modules` resolve to `/resources/` subdirectories.
+**Vite aliases (root):** `@scripts`, `@styles`, `@fonts`, `@images` resolve to `/resources/` subdirectories.
 
 **Vite aliases (static):** `@theme` → `../theme.json`, `@styles` → `../resources/styles`, `@scripts` → `src/assets/scripts`, `@shared` → `../shared`, `@data` → `src/data`, `@global` → `src/global`, `@blocks` → `src/blocks`, `@layouts` → `src/layouts`, `@lib` → `src/lib`, `@pages` → `src/pages`.
 
 **REST API:** Custom endpoints registered in `functions.php` under `ssm/v1/` namespace.
 
 **ACF:** Custom fields defined in `/app/Fields/`. Options pages provide global settings (GTM, analytics, custom scripts).
-
-## Commit Messages
-
-Always use this format: `[FIX|FEATURE]{component}: {description}`
-
-- Use `[Feature]` for new functionality, `[Fix]` for bug fixes
-- Component is the affected block, file, or area (e.g. `Block grid`, `Typography`, `Header`)
-- Description is lowercase, plain English, starting with a verb
-
-## Linting & Conventions
-
-- **Prettier** (`.prettierrc`): 4-space indent, single quotes (JS/TS), double quotes (CSS), `printWidth: 1000` (no wrapping). Applies project-wide.
-- **ESLint** (`eslint.config.js`): Covers `resources/scripts/` only — the `static/` directory is ignored. Key rules: arrow-function components only (`react/function-component-definition`), blank line before every `return` (`padding-line-between-statements`), single quotes, semicolons always.
-- **Stylelint** (`.stylelintrc`): Covers `resources/styles/` only. Extends `stylelint-config-tailwindcss`. Custom functions `customClamp`, `rem`, `-rem`, `svgUri` are whitelisted.
-- Run `yarn lint` from root to auto-fix all three for theme assets. For `static/`, run `npx prettier static/src --write` and `npx eslint --no-ignore static/src --ext .ts,.tsx --fix` manually.
-
-## Gotchas
-- `/shared/` is used by both build contexts — changes affect both
-- `theme.json` is the source of truth for design tokens in the editor; CSS variables in `/resources/styles/settings/` must stay in sync   

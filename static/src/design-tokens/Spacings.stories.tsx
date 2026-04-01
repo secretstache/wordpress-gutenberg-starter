@@ -11,7 +11,9 @@ const toPx = (size: string): string => {
 const Spacings = () => (
     <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
         {spacingSizes.map(({ slug, size }) => (
-            <div key={slug} style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div
+                key={slug}
+                style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                 <div style={{ width: '380px', flexShrink: 0, display: 'flex', gap: '1rem', fontSize: '0.8rem' }}>
                     <span style={{ fontWeight: 600, width: '30px' }}>{slug}</span>
                     <span style={{ color: '#999', width: '60px' }}>{size}</span>

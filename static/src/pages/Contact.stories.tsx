@@ -8,7 +8,13 @@ const meta: Meta<typeof Contact> = {
     parameters: {
         layout: 'fullscreen',
     },
-    decorators: [(Story) => <DefaultLayout><Story /></DefaultLayout>],
+    decorators: [
+        (Story) => (
+            <DefaultLayout>
+                <Story />
+            </DefaultLayout>
+        ),
+    ],
 };
 export default meta;
 type Story = StoryObj<typeof Contact>;

@@ -61,30 +61,10 @@ export const SectionWrapper = ({ children, className, id, fullHeight = false, sp
     const isDarkBg = hasBgMedia || (bgColor ? darkBackground.includes(bgColor) : false);
 
     // ── Wrapper ──────────────────────────────────────────────────────────────
-    const wrapperClass = cx(
-        'wp-block-ssm-section-wrapper',
-        'group/sectionWrapper',
-        'flex relative w-full',
-        mt !== undefined && `md:mt-ssm-${mt}`,
-        mb !== undefined && `md:mb-ssm-${mb}`,
-        pt !== undefined && `md:pt-ssm-${pt}`,
-        pb !== undefined && `md:pb-ssm-${pb}`,
-        mmt !== undefined && `max-md:mt-ssm-${mmt}`,
-        mmb !== undefined && `max-md:mb-ssm-${mmb}`,
-        mpt !== undefined && `max-md:pt-ssm-${mpt}`,
-        mpb !== undefined && `max-md:pb-ssm-${mpb}`,
-        isDarkBg && 'bg-dark',
-        hasBackground && 'has-background',
-        fullHeight && 'min-h-screen',
-        className,
-    );
+    const wrapperClass = cx('wp-block-ssm-section-wrapper', 'group/sectionWrapper', 'flex relative w-full', mt !== undefined && `md:mt-ssm-${mt}`, mb !== undefined && `md:mb-ssm-${mb}`, pt !== undefined && `md:pt-ssm-${pt}`, pb !== undefined && `md:pb-ssm-${pb}`, mmt !== undefined && `max-md:mt-ssm-${mmt}`, mmb !== undefined && `max-md:mb-ssm-${mmb}`, mpt !== undefined && `max-md:pt-ssm-${mpt}`, mpb !== undefined && `max-md:pb-ssm-${mpb}`, isDarkBg && 'bg-dark', hasBackground && 'has-background', fullHeight && 'min-h-screen', className);
 
     // ── Background div ────────────────────────────────────────────────────────
-    const backgroundClass = cx(
-        'wp-block-ssm-section-wrapper__background',
-        'absolute pointer-events-none h-full w-full left-0 top-0 overflow-hidden',
-        bgColor && `bg-${bgColor}`,
-    );
+    const backgroundClass = cx('wp-block-ssm-section-wrapper__background', 'absolute pointer-events-none h-full w-full left-0 top-0 overflow-hidden', bgColor && `bg-${bgColor}`);
 
     // ── Media element ─────────────────────────────────────────────────────────
     const objectFit = bgMedia?.fit ? `object-${bgMedia.fit}` : bgMedia?.position ? 'object-contain' : 'object-cover h-full';
