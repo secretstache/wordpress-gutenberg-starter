@@ -1,335 +1,220 @@
-import { BaseComponent } from '../utils/base-component';
-import { EventHandler } from '../utils/dom/event-handler';
-import { SelectorEngine } from '../utils/dom/selector-engine';
-import { Backdrop } from '../utils/backdrop';
-import { enableDismissTrigger } from '../utils/enable-dismiss-trigger';
-import { FocusTrap } from '../utils/focus-trap';
-import { isVisible, reflow } from '../utils/utilities';
-import { ScrollbarHelper } from '../utils/scrollbar-helper';
+import { Component } from '../utils/component.js';
+import { Backdrop } from '../utils/backdrop.js';
+import { FocusTrap } from '../utils/focus-trap.js';
+import { Scrollbar } from '../utils/scrollbar.js';
 
-/**
- * Constants
- */
-
-const NAME = 'modal';
-const DATA_KEY = 'ssm.modal';
-const EVENT_KEY = `.${DATA_KEY}`;
-const DATA_API_KEY = '.data-api';
-const ESCAPE_KEY = 'Escape';
-
-const EVENT_HIDE = `hide${EVENT_KEY}`;
-const EVENT_HIDE_PREVENTED = `hidePrevented${EVENT_KEY}`;
-const EVENT_HIDDEN = `hidden${EVENT_KEY}`;
-const EVENT_SHOW = `show${EVENT_KEY}`;
-const EVENT_SHOWN = `shown${EVENT_KEY}`;
-const EVENT_RESIZE = `resize${EVENT_KEY}`;
-const EVENT_CLICK_DISMISS = `click.dismiss${EVENT_KEY}`;
-const EVENT_MOUSEDOWN_DISMISS = `mousedown.dismiss${EVENT_KEY}`;
-const EVENT_KEYDOWN_DISMISS = `keydown.dismiss${EVENT_KEY}`;
-const EVENT_CLICK_DATA_API = `click${EVENT_KEY}${DATA_API_KEY}`;
-
-const CLASS_NAME_OPEN = 'modal-open';
-const CLASS_NAME_SHOW = 'show';
-const CLASS_NAME_STATIC = 'modal-static';
-
-const OPEN_SELECTOR = '.modal.show';
 const SELECTOR_DIALOG = '.modal__wrapper';
-const SELECTOR_MODAL_BODY = '.modal__body';
-const SELECTOR_DATA_TOGGLE = '.js-modal-toggle';
+const SELECTOR_BODY = '.modal__body';
+const SELECTOR_TOGGLE = '.js-modal-toggle';
 
-const Config = {
-    backdrop: true,
-    focus: true,
-    keyboard: true,
-};
+export class Modal extends Component {
+    static defaults = {
+        backdrop: true, // true | false | 'static'
+        keyboard: true,
+        focus: true,
+    };
 
-/**
- * Class definition
- */
+    constructor(element, options = {}) {
+        const elOptions = {};
+        if (element.dataset.backdrop !== undefined) {
+            elOptions.backdrop = element.dataset.backdrop === 'static' ? 'static' : element.dataset.backdrop !== 'false';
+        }
+        if (element.dataset.keyboard !== undefined) elOptions.keyboard = element.dataset.keyboard !== 'false';
+        if (element.dataset.focus !== undefined) elOptions.focus = element.dataset.focus !== 'false';
 
-export class Modal extends BaseComponent {
-    constructor(element, config) {
-        super(element, config);
+        super(element, { ...elOptions, ...options });
 
-        this._dialog = SelectorEngine.findOne(SELECTOR_DIALOG, this._element);
-        this._backdrop = this._initializeBackDrop();
-        this._focustrap = this._initializeFocusTrap();
+        this._dialog = element.querySelector(SELECTOR_DIALOG);
+        this._modalBody = this._dialog?.querySelector(SELECTOR_BODY) ?? null;
+        this._backdrop = new Backdrop({
+            isVisible: Boolean(this.options.backdrop),
+            isAnimated: true,
+            clickCallback: () => {
+                if (this.options.backdrop === 'static') {
+                    this.emit('modal:hide-prevented');
+                    this._shakeModal();
+                    return;
+                }
+                this.hide();
+            },
+        });
+        this._focusTrap = new FocusTrap(element);
+        this._scrollbar = new Scrollbar();
         this._isShown = false;
         this._isTransitioning = false;
-        this._scrollBar = new ScrollbarHelper();
-        this._addEventListeners();
+
+        this._setupListeners();
     }
 
-    // Getters
-    static get Default() {
-        return Config;
-    }
-
-    static get NAME() {
-        return NAME;
-    }
-
-    // Public
     toggle(relatedTarget) {
         return this._isShown ? this.hide() : this.show(relatedTarget);
     }
 
     show(relatedTarget) {
-        if (this._isShown || this._isTransitioning) {
-            return;
-        }
+        if (this._isShown || this._isTransitioning) return;
 
-        const showEvent = EventHandler.trigger(this._element, EVENT_SHOW, {
-            relatedTarget,
-        });
-
-        if (showEvent.defaultPrevented) {
-            return;
-        }
+        if (!this.emit('modal:show', { relatedTarget })) return;
 
         this._isShown = true;
         this._isTransitioning = true;
 
-        this._scrollBar.hide();
-
-        document.body.classList.add(CLASS_NAME_OPEN);
-
+        this._scrollbar.hide();
+        document.body.classList.add('modal-open');
         this._adjustDialog();
 
         this._backdrop.show(() => this._showElement(relatedTarget));
     }
 
     hide() {
-        if (!this._isShown || this._isTransitioning) {
-            return;
-        }
+        if (!this._isShown || this._isTransitioning) return;
 
-        const hideEvent = EventHandler.trigger(this._element, EVENT_HIDE);
-
-        if (hideEvent.defaultPrevented) {
-            return;
-        }
+        if (!this.emit('modal:hide')) return;
 
         this._isShown = false;
         this._isTransitioning = true;
-        this._focustrap.deactivate();
 
-        this._element.classList.remove(CLASS_NAME_SHOW);
+        this._focusTrap.deactivate();
+        this.el.classList.remove('show');
 
-        this._queueCallback(() => this._hideModal(), this._element, true);
+        this._afterTransition(this._dialog ?? this.el, () => this._hideModal());
     }
 
-    dispose() {
-        EventHandler.off(window, EVENT_KEY);
-        EventHandler.off(this._dialog, EVENT_KEY);
-
+    destroy() {
         this._backdrop.dispose();
-        this._focustrap.deactivate();
-
-        super.dispose();
+        this._focusTrap.deactivate();
+        super.destroy();
     }
 
-    handleUpdate() {
-        this._adjustDialog();
-    }
+    _setupListeners() {
+        // Keyboard: Escape closes (or shakes for static backdrop)
+        this.on(this.el, 'keydown', (event) => {
+            if (event.key !== 'Escape') return;
 
-    // Private
-    _initializeBackDrop() {
-        return new Backdrop({
-            isVisible: Boolean(this._config.backdrop), // 'static' option will be translated to true, and booleans will keep their value,
-            isAnimated: true,
+            if (this.options.keyboard) {
+                this.hide();
+            } else {
+                this.emit('modal:hide-prevented');
+                this._shakeModal();
+            }
         });
-    }
 
-    _initializeFocusTrap() {
-        return new FocusTrap({
-            trapElement: this._element,
+        // Resize: re-adjust padding — rAF coalesces rapid resize events to one layout read per frame.
+        let resizeFrame = null;
+        this.on(window, 'resize', () => {
+            if (!this._isShown || this._isTransitioning) return;
+            if (resizeFrame) cancelAnimationFrame(resizeFrame);
+            resizeFrame = requestAnimationFrame(() => {
+                resizeFrame = null;
+                this._adjustDialog();
+            });
+        });
+
+        // Click on backdrop area (element itself, not dialog) — track mousedown+click
+        // to avoid closing when a drag starts inside and ends outside.
+        // Merged with dismiss-trigger check into one listener.
+        let mousedownTarget = null;
+        this.on(this.el, 'mousedown', (e) => { mousedownTarget = e.target; });
+        this.on(this.el, 'click', (e) => {
+            if (e.target.closest('[data-dismiss="modal"]')) {
+                this.hide();
+                return;
+            }
+
+            if (mousedownTarget === this.el && e.target === this.el) {
+                if (this.options.backdrop === 'static') {
+                    this.emit('modal:hide-prevented');
+                    this._shakeModal();
+                } else if (this.options.backdrop) {
+                    this.hide();
+                }
+            }
         });
     }
 
     _showElement(relatedTarget) {
-        // try to append dynamic modal
-        if (!document.body.contains(this._element)) {
-            document.body.append(this._element);
+        if (!document.body.contains(this.el)) {
+            document.body.append(this.el);
         }
 
-        this._element.style.display = 'block';
-        this._element.removeAttribute('aria-hidden');
-        this._element.setAttribute('aria-modal', true);
-        this._element.setAttribute('role', 'dialog');
-        this._element.scrollTop = 0;
+        this.el.style.display = 'block';
+        this.el.removeAttribute('aria-hidden');
+        this.el.setAttribute('aria-modal', 'true');
+        this.el.setAttribute('role', 'dialog');
+        this.el.scrollTop = 0;
 
-        const modalBody = SelectorEngine.findOne(SELECTOR_MODAL_BODY, this._dialog);
-        if (modalBody) {
-            modalBody.scrollTop = 0;
-        }
+        if (this._modalBody) this._modalBody.scrollTop = 0;
 
-        reflow(this._element);
+        this.el.offsetHeight; // force reflow so transition starts
 
-        this._element.classList.add(CLASS_NAME_SHOW);
+        this.el.classList.add('show');
 
-        const transitionComplete = () => {
-            if (this._config.focus) {
-                this._focustrap.activate();
-            }
-
+        this._afterTransition(this._dialog ?? this.el, () => {
+            if (this.options.focus) this._focusTrap.activate();
             this._isTransitioning = false;
-            EventHandler.trigger(this._element, EVENT_SHOWN, {
-                relatedTarget,
-            });
-        };
-
-        this._queueCallback(transitionComplete, this._dialog, true);
-    }
-
-    _addEventListeners() {
-        EventHandler.on(this._element, EVENT_KEYDOWN_DISMISS, (event) => {
-            if (event.key !== ESCAPE_KEY) {
-                return;
-            }
-
-            if (this._config.keyboard) {
-                this.hide();
-
-                return;
-            }
-
-            this._triggerBackdropTransition();
-        });
-
-        EventHandler.on(window, EVENT_RESIZE, () => {
-            if (this._isShown && !this._isTransitioning) {
-                this._adjustDialog();
-            }
-        });
-
-        EventHandler.on(this._element, EVENT_MOUSEDOWN_DISMISS, (event) => {
-            // a bad trick to segregate clicks that may start inside dialog but end outside, and avoid listen to scrollbar clicks
-            EventHandler.one(this._element, EVENT_CLICK_DISMISS, (event2) => {
-                if (this._element !== event.target || this._element !== event2.target) {
-                    return;
-                }
-
-                if (this._config.backdrop === 'static') {
-                    this._triggerBackdropTransition();
-
-                    return;
-                }
-
-                if (this._config.backdrop) {
-                    this.hide();
-                }
-            });
+            this.emit('modal:shown', { relatedTarget });
         });
     }
 
     _hideModal() {
-        this._element.style.display = 'none';
-        this._element.setAttribute('aria-hidden', true);
-        this._element.removeAttribute('aria-modal');
-        this._element.removeAttribute('role');
+        this.el.style.display = 'none';
+        this.el.setAttribute('aria-hidden', 'true');
+        this.el.removeAttribute('aria-modal');
+        this.el.removeAttribute('role');
         this._isTransitioning = false;
 
         this._backdrop.hide(() => {
-            document.body.classList.remove(CLASS_NAME_OPEN);
+            document.body.classList.remove('modal-open');
             this._resetAdjustments();
-            this._scrollBar.reset();
-            EventHandler.trigger(this._element, EVENT_HIDDEN);
+            this._scrollbar.restore();
+            this.emit('modal:hidden');
         });
     }
 
-    _triggerBackdropTransition() {
-        const hideEvent = EventHandler.trigger(this._element, EVENT_HIDE_PREVENTED);
-        if (hideEvent.defaultPrevented) {
-            return;
-        }
-
-        const isModalOverflowing = this._element.scrollHeight > document.documentElement.clientHeight;
-        const initialOverflowY = this._element.style.overflowY;
-        // return if the following background transition hasn't yet completed
-        if (initialOverflowY === 'hidden' || this._element.classList.contains(CLASS_NAME_STATIC)) {
-            return;
-        }
-
-        if (!isModalOverflowing) {
-            this._element.style.overflowY = 'hidden';
-        }
-
-        this._element.classList.add(CLASS_NAME_STATIC);
-        this._queueCallback(() => {
-            this._element.classList.remove(CLASS_NAME_STATIC);
-            this._queueCallback(() => {
-                this._element.style.overflowY = initialOverflowY;
-            }, this._dialog);
-        }, this._dialog);
-
-        this._element.focus();
+    _shakeModal() {
+        this.el.classList.add('modal-static');
+        this._afterTransition(this._dialog ?? this.el, () => {
+            this.el.classList.remove('modal-static');
+        });
+        this.el.focus();
     }
 
-    /**
-     * The following methods are used to handle overflowing modals
-     */
-
     _adjustDialog() {
-        const isModalOverflowing = this._element.scrollHeight > document.documentElement.clientHeight;
-        const scrollbarWidth = this._scrollBar.getWidth();
+        const isModalOverflowing = this.el.scrollHeight > document.documentElement.clientHeight;
+        const scrollbarWidth = this._scrollbar.getWidth();
         const isBodyOverflowing = scrollbarWidth > 0;
 
-        if (isBodyOverflowing && !isModalOverflowing) {
-            const property = 'paddingRight';
-            this._element.style[property] = `${scrollbarWidth}px`;
-        }
-
-        if (!isBodyOverflowing && isModalOverflowing) {
-            const property = 'paddingLeft';
-            this._element.style[property] = `${scrollbarWidth}px`;
-        }
+        this.el.style.paddingRight = isBodyOverflowing && !isModalOverflowing ? `${scrollbarWidth}px` : '';
+        this.el.style.paddingLeft = !isBodyOverflowing && isModalOverflowing ? `${scrollbarWidth}px` : '';
     }
 
     _resetAdjustments() {
-        this._element.style.paddingLeft = '';
-        this._element.style.paddingRight = '';
+        this.el.style.paddingLeft = '';
+        this.el.style.paddingRight = '';
     }
 }
 
-/**
- * Data API implementation
- */
+// Wire up [data-target] toggle buttons via event delegation.
+document.addEventListener('click', (event) => {
+    const trigger = event.target.closest(SELECTOR_TOGGLE);
+    if (!trigger) return;
 
-EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (event) {
-    const target = SelectorEngine.getElementFromSelector(this);
+    if (['A', 'AREA'].includes(trigger.tagName)) event.preventDefault();
 
-    if (
-        [
-            'A',
-            'AREA',
-        ].includes(this.tagName)
-    ) {
-        event.preventDefault();
-    }
+    const targetSelector = trigger.dataset.target || trigger.getAttribute('href');
+    if (!targetSelector) return;
 
-    EventHandler.one(target, EVENT_SHOW, (showEvent) => {
-        if (showEvent.defaultPrevented) {
-            // only register focus restorer if modal will actually get shown
-            return;
-        }
+    const target = document.querySelector(targetSelector);
+    if (!target) return;
 
-        EventHandler.one(target, EVENT_HIDDEN, () => {
-            if (isVisible(this)) {
-                this.focus();
-            }
-        });
-    });
+    // Close any other open modal first.
+    const open = document.querySelector('.modal.show');
+    if (open && open !== target) Modal.getInstance(open)?.hide();
 
-    // avoid conflict when clicking modal toggler while another one is open
-    const alreadyOpen = SelectorEngine.findOne(OPEN_SELECTOR);
-    if (alreadyOpen) {
-        Modal.getInstance(alreadyOpen).hide();
-    }
+    const modal = Modal.getOrCreate(target);
+    modal.toggle(trigger);
 
-    const data = Modal.getOrCreateInstance(target);
-
-    data.toggle(this);
+    // Restore focus to the trigger once the modal closes.
+    target.addEventListener('modal:hidden', () => {
+        if (document.body.contains(trigger)) trigger.focus();
+    }, { once: true });
 });
-
-enableDismissTrigger(Modal);

@@ -1,3 +1,12 @@
+/* Overlay gradient utilities — consumed via --gradient-from / --gradient-to CSS vars */
+.gradient-to-b {
+    background-image: linear-gradient(to bottom, var(--gradient-from, transparent), var(--gradient-to, transparent));
+}
+
+.gradient-to-r {
+    background-image: linear-gradient(to right, var(--gradient-from, transparent), var(--gradient-to, transparent));
+}
+
 /* First section margin-top */
 .wp-block-ssm-section-wrapper:first-of-type:not([class*=" md:mt-ssm-"]) {
     @apply md:mt-0;

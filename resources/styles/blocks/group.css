@@ -3,14 +3,6 @@
         @apply p-4;
     }
 
-    &.is-layout-flex {
-        @apply flex;
-
-        &.is-vertical {
-            @apply flex-col items-start;
-        }
-    }
-
     &.is-nowrap {
         @apply flex-nowrap;
     }

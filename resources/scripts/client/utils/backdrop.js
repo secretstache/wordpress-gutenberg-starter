@@ -1,125 +1,118 @@
-import { EventHandler } from './dom/event-handler.js';
-import { execute, executeAfterTransition, reflow } from './utilities.js';
+/**
+ * Backdrop — managed overlay element used by modals and offcanvas.
+ *
+ * Usage:
+ *   const bd = new Backdrop({ isVisible: true, isAnimated: true, clickCallback: () => modal.hide() });
+ *   bd.show();
+ *   bd.hide(() => doSomethingAfter());
+ *   bd.dispose();
+ */
 
-const NAME = 'backdrop';
-const CLASS_NAME_FADE = 'fade';
-const CLASS_NAME_SHOW = 'show';
-const EVENT_MOUSEDOWN = `mousedown.ssm.${NAME}`;
+const CLASS_FADE = 'fade';
+const CLASS_SHOW = 'show';
 
-const Default = {
+const DEFAULTS = {
     className: 'modal-backdrop',
-    clickCallback: null,
     isAnimated: false,
-    isVisible: true, // if false, we use the backdrop helper without adding any element to the dom
-    rootElement: document.body, // give the choice to place backdrop under different elements
+    isVisible: true,
+    rootElement: document.body,
+    clickCallback: null,
 };
 
+const forceReflow = (el) => void el.offsetHeight;
+
 export class Backdrop {
-    constructor(config) {
-        this._config = this._getConfig(config);
-        this._isAppended = false;
+    constructor(config = {}) {
+        this._config = { ...DEFAULTS, ...config };
         this._element = null;
+        this._isAppended = false;
+        this._clickHandler = null;
     }
 
-    // Getters
-    static get Default() {
-        return Default;
-    }
-
-    static get NAME() {
-        return NAME;
-    }
-
-    // Public
     show(callback) {
         if (!this._config.isVisible) {
-            execute(callback);
-
+            callback?.();
             return;
         }
 
         this._append();
 
-        const element = this._getElement();
         if (this._config.isAnimated) {
-            reflow(element);
+            forceReflow(this._element);
         }
 
-        element.classList.add(CLASS_NAME_SHOW);
-
-        this._emulateAnimation(() => {
-            execute(callback);
-        });
+        this._element.classList.add(CLASS_SHOW);
+        this._afterTransition(callback);
     }
 
     hide(callback) {
         if (!this._config.isVisible) {
-            execute(callback);
-
+            callback?.();
             return;
         }
 
-        this._getElement().classList.remove(CLASS_NAME_SHOW);
-
-        this._emulateAnimation(() => {
+        this._element.classList.remove(CLASS_SHOW);
+        this._afterTransition(() => {
             this.dispose();
-            execute(callback);
+            callback?.();
         });
     }
 
     dispose() {
-        if (!this._isAppended) {
-            return;
+        if (!this._isAppended) return;
+
+        if (this._clickHandler) {
+            this._element.removeEventListener('mousedown', this._clickHandler);
+            this._clickHandler = null;
         }
 
-        EventHandler.off(this._element, EVENT_MOUSEDOWN);
-
         this._element.remove();
+        this._element = null;
         this._isAppended = false;
     }
 
-    // Private
-    _getElement() {
-        if (!this._element) {
-            const backdrop = document.createElement('div');
-            backdrop.className = this._config.className;
-
-            if (this._config.isAnimated) {
-                backdrop.classList.add(CLASS_NAME_FADE);
-            }
-
-            this._element = backdrop;
-        }
-
-        return this._element;
-    }
-
-    _getConfig(config) {
-        config = {
-            ...this.constructor.Default,
-            ...(typeof config === 'object' ? config : {}),
-        };
-
-        return config;
-    }
-
     _append() {
-        if (this._isAppended) {
-            return;
+        if (this._isAppended) return;
+
+        const el = document.createElement('div');
+        el.className = this._config.className;
+
+        if (this._config.isAnimated) {
+            el.classList.add(CLASS_FADE);
         }
 
-        const element = this._getElement();
+        if (this._config.clickCallback) {
+            this._clickHandler = () => this._config.clickCallback();
+            el.addEventListener('mousedown', this._clickHandler);
+        }
 
-        this._config.rootElement.append(element);
-
-        EventHandler.on(element, EVENT_MOUSEDOWN, () => {
-            execute(this._config.clickCallback);
-        });
-
+        this._config.rootElement.append(el);
+        this._element = el;
         this._isAppended = true;
     }
 
-    _emulateAnimation(callback) {
-        executeAfterTransition(callback, this._getElement(), this._config.isAnimated);
+    _afterTransition(callback) {
+        if (!this._config.isAnimated || !this._element) {
+            callback?.();
+            return;
+        }
+
+        const el = this._element;
+        const { transitionDuration, transitionDelay } = getComputedStyle(el);
+        const duration = (parseFloat(transitionDuration) + parseFloat(transitionDelay)) * 1000 + 5;
+
+        let called = false;
+
+        const handler = ({ target }) => {
+            if (target !== el) return;
+            called = true;
+            el.removeEventListener('transitionend', handler);
+            callback?.();
+        };
+
+        el.addEventListener('transitionend', handler);
+        setTimeout(() => {
+            if (!called) el.dispatchEvent(new Event('transitionend'));
+        }, duration);
     }
 }

@@ -1,96 +1,81 @@
-import { EventHandler } from './dom/event-handler.js';
-import { SelectorEngine } from './dom/selector-engine.js';
+/**
+ * FocusTrap — keeps keyboard focus contained within a given element.
+ *
+ * Usage:
+ *   const trap = new FocusTrap(dialogElement);
+ *   trap.activate();   // begin trapping; autofocuses the element
+ *   trap.deactivate(); // stop trapping
+ */
 
-const NAME = 'focustrap';
-const DATA_KEY = 'ssm.focustrap';
-const EVENT_KEY = `.${DATA_KEY}`;
-const EVENT_FOCUSIN = `focusin${EVENT_KEY}`;
-const EVENT_KEYDOWN_TAB = `keydown.tab${EVENT_KEY}`;
-
-const TAB_KEY = 'Tab';
-const TAB_NAV_FORWARD = 'forward';
-const TAB_NAV_BACKWARD = 'backward';
-
-const Default = {
-    autofocus: true,
-    trapElement: null, // The element to trap focus inside of
-};
+const FOCUSABLE_SELECTOR = [
+    'a[href]',
+    'button:not([disabled])',
+    'input:not([disabled])',
+    'select:not([disabled])',
+    'textarea:not([disabled])',
+    '[tabindex]:not([tabindex="-1"])',
+    'details > summary',
+].join(', ');
 
 export class FocusTrap {
-    constructor(config) {
-        this._config = this._getConfig(config);
+    constructor(element) {
+        this._element = element;
         this._isActive = false;
-        this._lastTabNavDirection = null;
+        this._lastTabNavBackward = false;
+        this._focusinHandler = this._handleFocusin.bind(this);
+        this._keydownHandler = this._handleKeydown.bind(this);
+        this._focusableCache = null;
     }
 
-    // Getters
-    static get Default() {
-        return Default;
-    }
+    activate(autofocus = true) {
+        if (this._isActive) return;
 
-    static get NAME() {
-        return NAME;
-    }
+        this._focusableCache = null;
 
-    // Public
-    activate() {
-        if (this._isActive) {
-            return;
+        if (autofocus) {
+            this._element.focus();
         }
 
-        if (this._config.autofocus) {
-            this._config.trapElement.focus();
-        }
-
-        EventHandler.off(document, EVENT_KEY); // guard against infinite focus loop
-        EventHandler.on(document, EVENT_FOCUSIN, (event) => this._handleFocusin(event));
-        EventHandler.on(document, EVENT_KEYDOWN_TAB, (event) => this._handleKeydown(event));
-
+        document.addEventListener('focusin', this._focusinHandler);
+        document.addEventListener('keydown', this._keydownHandler);
         this._isActive = true;
     }
 
     deactivate() {
-        if (!this._isActive) {
-            return;
-        }
+        if (!this._isActive) return;
 
+        this._focusableCache = null;
+
+        document.removeEventListener('focusin', this._focusinHandler);
+        document.removeEventListener('keydown', this._keydownHandler);
         this._isActive = false;
-        EventHandler.off(document, EVENT_KEY);
     }
 
-    // Private
-    _handleFocusin(event) {
-        const { trapElement } = this._config;
+    _focusableChildren() {
+        return (this._focusableCache ??= [...this._element.querySelectorAll(FOCUSABLE_SELECTOR)].filter(
+            (el) => !el.closest('[hidden]') && getComputedStyle(el).visibility !== 'hidden',
+        ));
+    }
 
-        if (event.target === document || event.target === trapElement || trapElement.contains(event.target)) {
+    _handleFocusin(event) {
+        if (event.target === document || event.target === this._element || this._element.contains(event.target)) {
             return;
         }
 
-        const elements = SelectorEngine.focusableChildren(trapElement);
+        const focusable = this._focusableChildren();
 
-        if (elements.length === 0) {
-            trapElement.focus();
-        } else if (this._lastTabNavDirection === TAB_NAV_BACKWARD) {
-            elements[elements.length - 1].focus();
+        if (focusable.length === 0) {
+            this._element.focus();
+        } else if (this._lastTabNavBackward) {
+            focusable[focusable.length - 1].focus();
         } else {
-            elements[0].focus();
+            focusable[0].focus();
         }
     }
 
     _handleKeydown(event) {
-        if (event.key !== TAB_KEY) {
-            return;
+        if (event.key === 'Tab') {
+            this._lastTabNavBackward = event.shiftKey;
         }
-
-        this._lastTabNavDirection = event.shiftKey ? TAB_NAV_BACKWARD : TAB_NAV_FORWARD;
-    }
-
-    _getConfig(config) {
-        config = {
-            ...this.constructor.Default,
-            ...(typeof config === 'object' ? config : {}),
-        };
-
-        return config;
     }
 }

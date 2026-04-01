@@ -1,55 +1,24 @@
 import Plyr from 'plyr';
+import { Component } from '../utils/component.js';
 
-const VIDEO_SELECTOR = '.wp-block-video, .wp-block-embed';
+export class VideoPlayer extends Component {
+    constructor(element, options = {}) {
+        super(element, options);
 
-export const Video = () => {
-    const autoplayVideos = new Map(); // Store video elements and their players
+        const video = element.querySelector('video') || element.querySelector('.wp-block-embed__wrapper');
 
-    // Create single IntersectionObserver for all autoplay videos
-    const observer = new IntersectionObserver(
-        (entries) => {
-            entries.forEach((entry) => {
-                const player = autoplayVideos.get(entry.target);
-
-                if (!player) return;
-
-                if (entry.intersectionRatio > 0 || entry.isIntersecting) {
-                    setTimeout(() => {
-                        player.autoplay = true;
-                        player.muted = true;
-                        player.volume = 0;
-
-                        if (!player.playing) {
-                            player.play();
-                        }
-                    }, 100);
-                } else {
-                    if (player.playing) {
-                        player.pause();
-                    }
-                }
-            });
-        },
-        {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0,
-        },
-    );
-
-    document.querySelectorAll(VIDEO_SELECTOR).forEach((el) => {
-        const video = el.querySelector('video') || el.querySelector('.wp-block-embed__wrapper');
-
-        if (!video) return;
+        if (!video) {
+            this.destroy();
+            return;
+        }
 
         const hasControls = video.hasAttribute('controls');
         const hasAutoplay = video.hasAttribute('autoplay');
 
-        const player = new Plyr(video, {
-            hideControls: false,
-        });
+        this._player = new Plyr(video, { hideControls: false });
+        this._observer = null;
 
-        player.on('ready', (event) => {
+        this._player.on('ready', (event) => {
             const instance = event.detail.plyr;
 
             if (hasControls) {
@@ -57,14 +26,35 @@ export const Video = () => {
             }
 
             if (video.hasAttribute('muted')) {
-                player.muted = true;
-                player.volume = 0;
+                this._player.muted = true;
+                this._player.volume = 0;
             }
 
             if (hasAutoplay) {
-                autoplayVideos.set(video, player);
-                observer.observe(video);
+                this._observer = new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach((entry) => {
+                            if (entry.isIntersecting) {
+                                this._player.muted = true;
+                                this._player.volume = 0;
+
+                                if (!this._player.playing) this._player.play();
+                            } else {
+                                if (this._player.playing) this._player.pause();
+                            }
+                        });
+                    },
+                    { threshold: 0 },
+                );
+
+                this._observer.observe(video);
             }
         });
-    });
-};
+    }
+
+    destroy() {
+        this._observer?.disconnect();
+        this._player?.destroy();
+        super.destroy();
+    }
+}

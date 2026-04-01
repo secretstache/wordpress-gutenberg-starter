@@ -1,3 +1,4 @@
 @source "../../resources/**/*.{php,blade.php,js,svg}";
 @source "../../app/**/*.php";
-@source "../../static/src/**/*.{njk,js,html}";
+@source "../../static/src/**/*.{js,jsx,html}";
+@source "../../shared/**/*.js";

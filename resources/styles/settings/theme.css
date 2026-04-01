@@ -11,6 +11,7 @@
 
     /* Text size */
     --text-*: initial;
+    --text-3xl: customClamp(48, 80);
     --text-2xl: customClamp(32, 65);
     --text-xl: customClamp(24, 40);
     --text-lg: customClamp(22, 37);

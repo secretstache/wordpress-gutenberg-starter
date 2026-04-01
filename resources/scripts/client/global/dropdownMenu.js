@@ -1,217 +1,222 @@
-export const DropdownMenu = () => {
-    const menus = document.querySelectorAll('.is-dropdown');
+import { Component } from '../utils/component.js';
 
-    menus.forEach((menu) => {
-        new Dropdown(menu, {
-            topLevelClickable: true,
+let _nextId = 0;
+const nextId = () => ++_nextId;
+
+const COLLAPSE_DELAY = 300;
+const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled])';
+
+const ARROW_SVG = `<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 30.727 30.727"><path fill="currentColor" d="M29.994,10.183L15.363,24.812L0.733,10.184c-0.977-0.978-0.977-2.561,0-3.536c0.977-0.977,2.559-0.976,3.536,0l11.095,11.093L26.461,6.647c0.977-0.976,2.559-0.976,3.535,0C30.971,7.624,30.971,9.206,29.994,10.183z"/></svg>`;
+
+export class DropdownMenu extends Component {
+    static defaults = {
+        useArrowKeys: true,
+        withArrowButton: true,
+        topLevelClickable: false,
+    };
+
+    constructor(element, options = {}) {
+        super(element, options);
+
+        this._openIndex = null;
+        this._topLevelNodes = [...element.children];
+        this._topLevelButtons = [];
+        this._submenus = [];
+        this._timers = new Array(this._topLevelNodes.length).fill(null);
+
+        this._topLevelNodes.forEach((node) => this._initNode(node));
+
+        // Cached once — menu structure doesn't change at runtime.
+        this._topLevelFocusable = this._topLevelNodes.flatMap((node) =>
+            [...node.children].filter((c) => c.tagName === 'A' || c.tagName === 'BUTTON'),
+        );
+
+        // Two delegated mouse listeners replace 2N individual mouseover/mouseout listeners.
+        // relatedTarget boundary check emulates mouseenter/mouseleave semantics (no spurious
+        // firings when the pointer moves between child elements within the same node).
+        this.on(element, 'mouseover', (e) => {
+            const me = /** @type {MouseEvent} */ (e);
+            const index = this._nodeIndexOf(/** @type {Element} */ (me.target));
+            if (index !== -1 && !this._topLevelNodes[index].contains(me.relatedTarget)) {
+                this._toggleExpand(index, true);
+            }
         });
-    });
-};
 
-class Dropdown {
-    constructor(domNode, options) {
-        this.rootNode = domNode;
-        this.openIndex = null;
-        this.useArrowKeys = options?.useArrowKeys || true;
-        this.withArrowButton = options?.withArrowButton || true;
-        this.topLevelNodes = [...this.rootNode.children];
-        this.topLevelButtons = [];
-        this.submenus = [];
-        this.timers = new Array(this.topLevelNodes.length).fill(null);
-        this.focusableElements = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
-
-        this.topLevelNodes.forEach((node, index) => {
-            this.initNode(node, index);
+        this.on(element, 'mouseout', (e) => {
+            const me = /** @type {MouseEvent} */ (e);
+            const index = this._nodeIndexOf(/** @type {Element} */ (me.target));
+            if (index !== -1 && !this._topLevelNodes[index].contains(me.relatedTarget)) {
+                this._toggleExpand(index, false);
+            }
         });
 
-        this.rootNode.addEventListener('focusout', this.onBlur.bind(this));
-        this.rootNode.addEventListener('keydown', this.onLinkKeyDown.bind(this));
+        // Single delegated keydown replaces 1 root + N button + N submenu listeners.
+        this.on(element, 'keydown', this._onKeyDown.bind(this));
+
+        // Single delegated click prevents default on arrow buttons (replaces N listeners).
+        this.on(element, 'click', (e) => {
+            if (e.target instanceof Element && e.target.closest('.dropdown-arrow')) e.preventDefault();
+        });
+
+        this.on(element, 'focusout', this._onBlur.bind(this));
     }
 
-    initNode(node, index) {
+    destroy() {
+        this._timers.forEach((t) => t && clearTimeout(t));
+        super.destroy();
+    }
+
+    // Returns the index of the top-level node that contains `target`, or -1.
+    _nodeIndexOf(target) {
+        return this._topLevelNodes.findIndex((node) => node.contains(target));
+    }
+
+    _initNode(node) {
         const submenu = node.querySelector('ul');
 
-        // create arrow button
-        if (this.withArrowButton && submenu) {
+        if (this.options.withArrowButton && submenu && !node.querySelector('.dropdown-arrow')) {
             const link = node.querySelector('a');
-            const id = uid();
+            const id = nextId();
 
             const button = document.createElement('button');
-            button.setAttribute('type', 'button');
+            button.type = 'button';
             button.setAttribute('aria-expanded', 'false');
-            button.setAttribute('aria-controls', `id_${id}`);
-            button.setAttribute('aria-label', `More ${link.textContent} pages`);
-            button.classList.add('dropdown-arrow');
+            button.setAttribute('aria-controls', `dropdown-${id}`);
+            button.setAttribute('aria-label', `More ${link?.textContent.trim() ?? ''} pages`);
+            button.className = 'dropdown-arrow';
+            button.innerHTML = ARROW_SVG;
 
-            /* eslint-disable */
-            button.innerHTML = `
-                <svg aria-label="Open submenu icon"
-                xmlns="http://www.w3.org/2000/svg"
-                width="800px"
-                height="800px"
-                viewBox="0 0 30.727 30.727"
-                xml:space="preserve"
-                style="max-width: 100%; height: auto;">
-                <path fill="currentColor"
-                d="M29.994,10.183L15.363,24.812L0.733,10.184c-0.977-0.978-0.977-2.561,0-3.536c0.977-0.977,2.559-0.976,3.536,0 l11.095,11.093L26.461,6.647c0.977-0.976,2.559-0.976,3.535,0C30.971,7.624,30.971,9.206,29.994,10.183z">
-                </svg>`;
-            /* eslint-enable */
-
-            link.insertAdjacentElement('afterend', button);
+            if (!submenu.id) submenu.id = `dropdown-${id}`;
+            link?.insertAdjacentElement('afterend', button);
         }
 
-        const button = node.querySelector('button') ? node.querySelector('button') : node.querySelector('a');
+        const button = node.querySelector('button') ?? node.querySelector('a');
 
-        this.submenus.push(submenu ? submenu : null);
-        this.topLevelButtons.push(button);
+        this._submenus.push(submenu ?? null);
+        this._topLevelButtons.push(button);
 
-        // if menu item has submenu
         if (button && submenu) {
-            // collapse submenus
             button.setAttribute('aria-expanded', 'false');
-
-            // events
-            node.addEventListener('mouseover', () => {
-                this.toggleExpand(index, true);
-            });
-            node.addEventListener('mouseout', () => {
-                this.toggleExpand(index, false);
-            });
-            button.addEventListener('click', (e) => {
-                e.preventDefault();
-            });
-            button.addEventListener('keydown', this.onButtonKeyDown.bind(this, index));
-            submenu.addEventListener('keydown', this.onMenuKeyDown.bind(this, index));
         }
     }
 
-    onLinkKeyDown(event) {
-        const focusableElements = this.topLevelNodes
-            .map((node) => {
-                return Array.from(node.children).filter((child) => child.tagName === 'A' || child.tagName === 'BUTTON');
-            })
-            .flat();
+    // Single entry point for all keydown events — routes to the right handler.
+    _onKeyDown(event) {
+        const submenuIndex = this._submenus.findIndex((s) => s?.contains(event.target));
 
-        const targetLinkIndex = focusableElements.indexOf(document.activeElement);
-
-        if (this.openIndex !== null && targetLinkIndex !== -1 && (event.key === 'ArrowLeft' || event.key === 'ArrowRight')) {
-            this.toggleExpand(this.openIndex, false);
-        }
-
-        this.controlFocusByKey(event, focusableElements, targetLinkIndex);
-    }
-
-    onMenuKeyDown(index, event) {
-        if (this.openIndex === null) {
+        if (submenuIndex !== -1) {
+            this._onMenuKeyDown(submenuIndex, event);
             return;
         }
 
-        const menuLinks = Array.from(this.submenus[this.openIndex].querySelectorAll(this.focusableElements));
-        const currentIndex = menuLinks.indexOf(document.activeElement);
-        const firstFocusableElement = menuLinks[0];
-        const lastFocusableElement = menuLinks[menuLinks.length - 1];
+        const buttonIndex = this._topLevelButtons.indexOf(event.target);
 
-        // close on escape
-        if (event.key === 'Escape') {
-            this.topLevelButtons[this.openIndex].focus();
-            this.toggleExpand(this.openIndex, false);
+        if (buttonIndex !== -1 && this._submenus[buttonIndex]) {
+            this._onButtonKeyDown(buttonIndex, event);
+            return;
         }
 
-        // handle arrow key navigation within menu links
-        this.controlFocusByKey(event, menuLinks, currentIndex);
+        this._onLinkKeyDown(event);
+    }
 
-        // stay within the submenu on tab press
-        let isTabPressed = event.key === 'Tab';
+    _onLinkKeyDown(event) {
+        const targetIndex = this._topLevelFocusable.indexOf(document.activeElement);
 
-        if (!isTabPressed) return;
+        if (this._openIndex !== null && targetIndex !== -1 && (event.key === 'ArrowLeft' || event.key === 'ArrowRight')) {
+            this._toggleExpand(this._openIndex, false);
+        }
 
-        if (document.activeElement === lastFocusableElement) {
-            firstFocusableElement.focus();
+        this._controlFocusByKey(event, this._topLevelFocusable, targetIndex);
+    }
+
+    _onMenuKeyDown(index, event) {
+        if (this._openIndex === null) return;
+
+        const menuLinks = [...this._submenus[this._openIndex].querySelectorAll(FOCUSABLE_SELECTOR)];
+        const currentIndex = menuLinks.indexOf(document.activeElement);
+
+        if (event.key === 'Escape') {
+            this._topLevelButtons[this._openIndex].focus();
+            this._toggleExpand(this._openIndex, false);
+            return;
+        }
+
+        this._controlFocusByKey(event, menuLinks, currentIndex);
+
+        // Wrap focus at the last item.
+        if (event.key === 'Tab' && document.activeElement === menuLinks[menuLinks.length - 1]) {
             event.preventDefault();
+            menuLinks[0]?.focus();
         }
     }
 
-    onButtonKeyDown(index, event) {
-        const targetButtonIndex = this.topLevelButtons.indexOf(document.activeElement);
-
+    _onButtonKeyDown(index, event) {
         if (event.key === 'Enter') {
             event.preventDefault();
-            this.toggleExpand(index, true);
+            this._toggleExpand(index, true);
+            return;
         }
 
-        // close on escape
         if (event.key === 'Escape') {
-            this.toggleExpand(index, false);
+            this._toggleExpand(index, false);
+            return;
         }
 
-        // move focus into the open menu if the current menu is open
-        else if (this.openIndex === targetButtonIndex && event.key === 'ArrowDown') {
+        if (this._openIndex === index && event.key === 'ArrowDown') {
             event.preventDefault();
-            this.submenus[this.openIndex].querySelector('a').focus();
+            this._submenus[this._openIndex]?.querySelector('a')?.focus();
         }
     }
 
-    onBlur(event) {
-        const menuContainsFocus = this.rootNode.contains(event.relatedTarget);
-        if (!menuContainsFocus && this.openIndex !== null) {
-            this.toggleExpand(this.openIndex, false);
+    _onBlur(event) {
+        if (!this.el.contains(event.relatedTarget) && this._openIndex !== null) {
+            this._toggleExpand(this._openIndex, false);
         }
     }
 
-    controlFocusByKey(keyboardEvent, nodeList, currentIndex) {
-        switch (keyboardEvent.key) {
+    _controlFocusByKey(event, nodeList, currentIndex) {
+        switch (event.key) {
             case 'ArrowUp':
             case 'ArrowLeft':
-                keyboardEvent.preventDefault();
-                if (currentIndex > -1) {
-                    const prevIndex = Math.max(0, currentIndex - 1);
-                    nodeList[prevIndex].focus();
-                }
+                event.preventDefault();
+                if (currentIndex > -1) nodeList[Math.max(0, currentIndex - 1)]?.focus();
                 break;
             case 'ArrowDown':
             case 'ArrowRight':
-                keyboardEvent.preventDefault();
-                if (currentIndex > -1) {
-                    const nextIndex = Math.min(nodeList.length - 1, currentIndex + 1);
-                    nodeList[nextIndex].focus();
-                }
+                event.preventDefault();
+                if (currentIndex > -1) nodeList[Math.min(nodeList.length - 1, currentIndex + 1)]?.focus();
                 break;
             case 'Home':
-                keyboardEvent.preventDefault();
-                nodeList[0].focus();
+                event.preventDefault();
+                nodeList[0]?.focus();
                 break;
             case 'End':
-                keyboardEvent.preventDefault();
-                nodeList[nodeList.length - 1].focus();
+                event.preventDefault();
+                nodeList[nodeList.length - 1]?.focus();
                 break;
         }
     }
 
-    toggleExpand(index, expanded) {
-        // close open menu, if applicable
-        if (this.openIndex !== index) {
-            this.toggleExpand(this.openIndex, false);
+    _toggleExpand(index, expanded) {
+        // Close the previously open item before opening a new one.
+        if (this._openIndex !== null && this._openIndex !== index) {
+            this._toggleExpand(this._openIndex, false);
         }
 
-        // handle menu at called index
-        if (this.topLevelButtons[index]) {
-            this.openIndex = expanded ? index : null;
+        const button = this._topLevelButtons[index];
+        if (!button) return;
 
-            if (expanded) {
-                this.topLevelButtons[index].setAttribute('aria-expanded', true);
-
-                if (this.timers[index]) {
-                    clearTimeout(this.timers[index]);
-                }
-            } else {
-                this.timers[index] = setTimeout(() => {
-                    this.topLevelButtons[index].setAttribute('aria-expanded', false);
-                }, 300);
-            }
+        if (expanded) {
+            this._openIndex = index;
+            clearTimeout(this._timers[index]);
+            this._timers[index] = null;
+            button.setAttribute('aria-expanded', 'true');
+        } else {
+            this._timers[index] = setTimeout(() => {
+                button.setAttribute('aria-expanded', 'false');
+                if (this._openIndex === index) this._openIndex = null;
+                this._timers[index] = null;
+            }, COLLAPSE_DELAY);
         }
     }
 }
-
-const uid = () => {
-    return `${Date.now() + Math.floor(Math.random() * 100)}`;
-};

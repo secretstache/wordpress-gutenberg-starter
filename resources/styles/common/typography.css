@@ -1,4 +1,7 @@
 @layer base {
+    html {
+        line-height: 1.2;
+    }
     body {
         @apply font-sans-serif text-md;
         color: var(--body-color);

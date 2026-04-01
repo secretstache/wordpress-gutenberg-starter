@@ -102,7 +102,7 @@
         }
     }
 
-    &.is-style-outlined {
+    &.is-style-outline {
         --button-bg: transparent;
         --button-color: var(--color-black);
         --button-bg-hover: var(--color-black);

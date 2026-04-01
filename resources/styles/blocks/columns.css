@@ -1,11 +1,16 @@
-:where(.wp-block-columns) {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: unset;
-    margin-bottom: 0;
+.wp-block-columns {
+    @media (--md) {
+        &.are-vertically-aligned-center {
+            align-items: center !important;
+        }
 
-    &.is-layout-flex {
-        gap: var(--spacing-column);
+        &.are-vertically-aligned-top {
+            align-items: start !important;
+        }
+
+        &.are-vertically-aligned-bottom {
+            align-items: end !important;
+        }
     }
 
     .wp-block-column {
@@ -54,10 +59,8 @@
         padding: rem(16);
     }
 
-    &:not(.is-not-stacked-on-mobile) {
-        flex-wrap: wrap !important;
-
-        @media (--md) {
+    &.is-not-stacked-on-mobile {
+        @media (--max-md) {
             flex-wrap: nowrap !important;
         }
     }

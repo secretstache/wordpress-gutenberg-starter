@@ -1,402 +1,177 @@
-const MILLISECONDS_MULTIPLIER = 1000;
-const TRANSITION_END = 'transitionend';
-
 /**
- * Properly escape IDs selectors to handle weird IDs
- * @param {string} selector
- * @returns {string}
+ * Sets --vw and --vh CSS custom properties on <html>, updated on resize.
+ * Uses requestAnimationFrame to coalesce multiple ResizeObserver callbacks
+ * within the same frame into a single DOM write.
  */
-const parseSelector = (selector) => {
-    if (selector && window.CSS && window.CSS.escape) {
-        // document.querySelector needs escaping to handle IDs (html5+) containing for instance /
-        selector = selector.replace(/#([^\s"#']+)/g, (match, id) => `#${CSS.escape(id)}`);
-    }
+export const setViewportUnits = () => {
+    let frame = null;
 
-    return selector;
-};
+    const update = () => {
+        if (frame) cancelAnimationFrame(frame);
 
-const getTransitionDurationFromElement = (element) => {
-    if (!element) {
-        return 0;
-    }
-
-    // Get transition-duration of the element
-    let { transitionDuration, transitionDelay } = window.getComputedStyle(element);
-
-    const floatTransitionDuration = Number.parseFloat(transitionDuration);
-    const floatTransitionDelay = Number.parseFloat(transitionDelay);
-
-    // Return 0 if element or transition duration is not found
-    if (!floatTransitionDuration && !floatTransitionDelay) {
-        return 0;
-    }
-
-    // If multiple durations are defined, take the first
-    transitionDuration = transitionDuration.split(',')[0];
-    transitionDelay = transitionDelay.split(',')[0];
-
-    return (Number.parseFloat(transitionDuration) + Number.parseFloat(transitionDelay)) * MILLISECONDS_MULTIPLIER;
-};
-
-const triggerTransitionEnd = (element) => {
-    element.dispatchEvent(new Event(TRANSITION_END));
-};
-
-const isElement = (object) => {
-    if (!object || typeof object !== 'object') {
-        return false;
-    }
-
-    if (typeof object.jquery !== 'undefined') {
-        object = object[0];
-    }
-
-    return typeof object.nodeType !== 'undefined';
-};
-
-const getElement = (object) => {
-    // it's a jQuery object or a node element
-    if (isElement(object)) {
-        return object.jquery ? object[0] : object;
-    }
-
-    if (typeof object === 'string' && object.length > 0) {
-        return document.querySelector(parseSelector(object));
-    }
-
-    return null;
-};
-
-const isVisible = (element) => {
-    if (!isElement(element) || element.getClientRects().length === 0) {
-        return false;
-    }
-
-    const elementIsVisible = getComputedStyle(element).getPropertyValue('visibility') === 'visible';
-    // Handle `details` element as its content may falsie appear visible when it is closed
-    const closedDetails = element.closest('details:not([open])');
-
-    if (!closedDetails) {
-        return elementIsVisible;
-    }
-
-    if (closedDetails !== element) {
-        const summary = element.closest('summary');
-        if (summary && summary.parentNode !== closedDetails) {
-            return false;
-        }
-
-        if (summary === null) {
-            return false;
-        }
-    }
-
-    return elementIsVisible;
-};
-
-const isDisabled = (element) => {
-    if (!element || element.nodeType !== Node.ELEMENT_NODE) {
-        return true;
-    }
-
-    if (element.classList.contains('disabled')) {
-        return true;
-    }
-
-    if (typeof element.disabled !== 'undefined') {
-        return element.disabled;
-    }
-
-    return element.hasAttribute('disabled') && element.getAttribute('disabled') !== 'false';
-};
-
-const findShadowRoot = (element) => {
-    if (!document.documentElement.attachShadow) {
-        return null;
-    }
-
-    // Can find the shadow root otherwise it'll return the document
-    if (typeof element.getRootNode === 'function') {
-        const root = element.getRootNode();
-
-        return root instanceof ShadowRoot ? root : null;
-    }
-
-    if (element instanceof ShadowRoot) {
-        return element;
-    }
-
-    // when we don't find a shadow root
-    if (!element.parentNode) {
-        return null;
-    }
-
-    return findShadowRoot(element.parentNode);
-};
-
-/**
- * Trick to restart an element's animation
- *
- * @param {HTMLElement} element
- * @return void
- *
- * @see https://www.charistheo.io/blog/2021/02/restart-a-css-animation-with-javascript/#restarting-a-css-animation
- */
-const reflow = (element) => {
-    element.offsetHeight;
-};
-
-const execute = (possibleCallback, args = [], defaultValue = possibleCallback) => {
-    return typeof possibleCallback === 'function' ? possibleCallback(...args) : defaultValue;
-};
-
-const executeAfterTransition = (callback, transitionElement, waitForTransition = true) => {
-    if (!waitForTransition) {
-        execute(callback);
-
-        return;
-    }
-
-    const durationPadding = 5;
-    const emulatedDuration = getTransitionDurationFromElement(transitionElement) + durationPadding;
-
-    let called = false;
-
-    const handler = ({ target }) => {
-        if (target !== transitionElement) {
-            return;
-        }
-
-        called = true;
-        transitionElement.removeEventListener(TRANSITION_END, handler);
-        execute(callback);
-    };
-
-    transitionElement.addEventListener(TRANSITION_END, handler);
-    setTimeout(() => {
-        if (!called) {
-            triggerTransitionEnd(transitionElement);
-        }
-    }, emulatedDuration);
-};
-
-const setViewportUnits = () => {
-    const fn = () => {
-        const vw = document.documentElement.clientWidth / 100;
-        const vh = document.documentElement.clientHeight / 100;
-        document.documentElement.style.setProperty('--vw', `${vw}px`);
-        document.documentElement.style.setProperty('--vh', `${vh}px`);
-    };
-
-    const resizeObserver = new ResizeObserver(() => fn());
-    resizeObserver.observe(document.body, {
-        childlist: true,
-        subtree: true,
-    });
-};
-
-const support = (type) => window && window[type];
-
-const onVideoIntersection = () => (entries) => {
-    entries.forEach((entry) => {
-        const video = entry.target;
-
-        if (video.classList.contains('lazy-load')) {
-            if (!video.dataset.loaded) return;
-        }
-
-        if (entry.intersectionRatio > 0 || entry.isIntersecting) {
-            video.play();
-        } else {
-            const playPromise = video.play();
-
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    video.pause();
-                });
-            }
-        }
-    });
-};
-
-const PlayVideoInViewportOnly = (video) => {
-    if (support('IntersectionObserver')) {
-        const observer = new IntersectionObserver(onVideoIntersection(), {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0,
+        frame = requestAnimationFrame(() => {
+            frame = null;
+            document.documentElement.style.setProperty('--vw', `${document.documentElement.clientWidth / 100}px`);
+            document.documentElement.style.setProperty('--vh', `${document.documentElement.clientHeight / 100}px`);
         });
+    };
 
-        observer.observe(video);
-    }
+    new ResizeObserver(update).observe(document.body);
 };
 
-const EditableSvg = (img) => {
-    const imgID = img.getAttribute('id');
-    const imgClass = img.getAttribute('class');
-    const imgURL = img.getAttribute('src');
+// Cache fetch Promises by src so duplicate SVG srcs share one network request.
+const svgFetchCache = new Map();
 
-    fetch(imgURL)
-        .then((response) => response.text())
+const fetchSvgText = (src) => {
+    if (!svgFetchCache.has(src)) {
+        svgFetchCache.set(src, fetch(src).then((res) => res.text()));
+    }
+
+    return svgFetchCache.get(src);
+};
+
+/**
+ * Inlines an SVG referenced by <img class="editable-svg"> so it can be styled with CSS.
+ * Deduplicates network requests — multiple images sharing the same src resolve from one fetch.
+ * @param {HTMLImageElement} img
+ */
+export const EditableSvg = (img) => {
+    const src = img.getAttribute('src');
+    if (!src) return;
+
+    fetchSvgText(src)
         .then((data) => {
-            // let svg = data.querySelector('svg');
-            const parser = new DOMParser();
-            const html = parser.parseFromString(data, 'image/svg+xml');
-            let svg = html.querySelector('svg');
+            const svg = new DOMParser().parseFromString(data, 'image/svg+xml').querySelector('svg');
+            if (!svg) return;
 
-            if (typeof imgID !== 'undefined') {
-                svg.setAttribute('id', imgID);
-            }
+            const id = img.getAttribute('id');
+            const classes = (img.getAttribute('class') ?? '')
+                .split(/\s+/)
+                .filter((c) => c && c !== 'editable-svg');
 
-            if (typeof imgClass !== 'undefined') {
-                svg.classList.add(imgClass, 'replaced-svg');
-                svg.classList.remove(imgClass, 'editable-svg');
-            }
+            if (id) svg.setAttribute('id', id);
+            svg.classList.add(...classes, 'replaced-svg');
+            if (!data.includes(' a:')) svg.removeAttribute('xmlns:a');
 
-            svg.removeAttribute('xmlns:a');
-
-            if (!svg.getAttribute('viewBox') && svg.getAttribute('height') && svg.getAttribute('width')) {
-                svg.setAttribute('viewBox', '0 0 ' + svg.getAttribute('width') + ' ' + svg.getAttribute('height'));
+            if (!svg.getAttribute('viewBox') && svg.getAttribute('width') && svg.getAttribute('height')) {
+                svg.setAttribute('viewBox', `0 0 ${svg.getAttribute('width')} ${svg.getAttribute('height')}`);
             }
 
             img.replaceWith(svg);
-        });
+        })
+        .catch((err) => console.error('[EditableSvg] Failed to load SVG:', src, err));
 };
 
-const debounce = (callback, wait) => {
-    let timeoutId = null;
+/**
+ * Debounces a function — delays execution until `wait` ms after the last call.
+ * @param {Function} callback
+ * @param {number} wait
+ * @returns {Function}
+ */
+export const debounce = (callback, wait) => {
+    let timer = null;
 
     return (...args) => {
-        window.clearTimeout(timeoutId);
-        timeoutId = window.setTimeout(() => {
-            callback.apply(null, args);
-        }, wait);
+        clearTimeout(timer);
+        timer = setTimeout(() => callback(...args), wait);
     };
 };
 
-const throttle = (callback, delay) => {
-    let isThrottled = false,
-        args,
-        context;
+/**
+ * Throttles a function — executes at most once every `delay` ms.
+ * Queues the last call so the final invocation is never skipped.
+ * @param {Function} callback
+ * @param {number} delay
+ * @returns {Function}
+ */
+export const throttle = (callback, delay) => {
+    let isThrottled = false;
+    let pending = null;
 
-    function wrapper() {
-        if (isThrottled) {
-            args = arguments;
-            context = this;
-
-            return;
-        }
-
+    const invoke = (...args) => {
         isThrottled = true;
-        callback.apply(this, arguments);
+        callback(...args);
 
         setTimeout(() => {
             isThrottled = false;
-            if (args) {
-                wrapper.apply(context, args);
-                args = context = null;
+
+            if (pending !== null) {
+                const queued = pending;
+                pending = null;
+                invoke(...queued);
             }
         }, delay);
-    }
+    };
 
-    return wrapper;
-};
-
-const inViewport = (el, callback, options) => {
-    const observer = new IntersectionObserver(callback, { ...options });
-    observer.observe(el);
-};
-
-async function copyToClipboard(textToCopy) {
-    try {
-        if (navigator?.clipboard?.writeText) {
-            await navigator.clipboard.writeText(textToCopy);
+    return (...args) => {
+        if (isThrottled) {
+            pending = args;
+            return;
         }
-    } catch (err) {
-        console.error(err);
-    }
-}
 
-const scrollToHash = () => {
+        invoke(...args);
+    };
+};
+
+/**
+ * Copies text to the clipboard.
+ * @param {string} text
+ */
+export const copyToClipboard = async (text) => {
+    try {
+        await navigator.clipboard.writeText(text);
+    } catch (err) {
+        console.error('[copyToClipboard]', err);
+    }
+};
+
+// Delay before smooth-scrolling after a hash link click (allows layout to settle).
+const SCROLL_DELAY_MS = 500;
+
+/**
+ * Smooth-scrolls to the element matching window.location.hash on page load,
+ * and wires up all in-page anchor clicks to do the same.
+ * Accounts for fixed header height.
+ */
+export const scrollToHash = () => {
     if (window.location.hash === '#main') return;
 
-    // hash links
-    let hash = window.location.hash;
+    const hash = window.location.hash;
 
     if (hash) {
-        window.location.hash = '';
+        // Clear hash immediately so the browser doesn't jump to the anchor.
+        history.replaceState(null, '', window.location.pathname + window.location.search);
     }
 
-    const scrollFn = (target) => {
-        const headerOffset = document.querySelector('.site-header')?.offsetHeight || 0;
-        const elementPosition = target.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.scrollY - headerOffset;
+    let _header = null;
+    const getHeader = () => (_header ??= document.querySelector('.site-header'));
 
-        setTimeout(function () {
-            window.scrollTo({
-                top: offsetPosition,
-                behavior: 'smooth',
-            });
-        }, 500);
+    const scrollTo = (target) => {
+        const headerOffset = getHeader()?.offsetHeight ?? 0;
+        const top = target.getBoundingClientRect().top + window.scrollY - headerOffset;
+
+        setTimeout(() => window.scrollTo({ top, behavior: 'smooth' }), SCROLL_DELAY_MS);
     };
 
     window.addEventListener('load', () => {
+        if (!hash) return;
         const target = document.getElementById(hash.substring(1));
-
-        if (target) scrollFn(target);
+        if (target) scrollTo(target);
     });
 
-    document.querySelectorAll('a[href^="#"]:not([href="#main"])').forEach((anchor) => {
-        anchor.addEventListener('click', function (e) {
-            if (e.target.closest('.wp-block-ssm-horizontal-tabs, .wp-block-ssm-tabs')) return;
+    // One delegated listener handles all current and future in-page anchors.
+    document.addEventListener('click', (e) => {
+        const anchor = e.target.closest('a[href^="#"]:not([href="#main"])');
+        if (!anchor) return;
+        if (e.target.closest('.wp-block-ssm-horizontal-tabs, .wp-block-ssm-tabs')) return;
 
-            const target = document.getElementById(this.getAttribute('href').substring(1));
+        const id = anchor.getAttribute('href').substring(1);
+        const target = document.getElementById(id);
 
-            if (target) {
-                e.preventDefault();
-                e.stopPropagation();
-                scrollFn(target);
-            }
-        });
+        if (target) {
+            e.preventDefault();
+            e.stopPropagation();
+            scrollTo(target);
+        }
     });
 };
-
-function setHeaderHeight() {
-    const body = document.body;
-    const header = document.querySelector('.site-header');
-
-    if (header) {
-        const headerHeight = header.offsetHeight;
-        body.style.setProperty('--header-height', `${headerHeight}px`);
-    } else {
-        body.style.setProperty('--header-height', '0px');
-    }
-}
-
-/**
- * Initialize header height tracking with resize listener
- */
-function initHeaderHeight() {
-    // Set initial height
-    setHeaderHeight();
-
-    // Update on window resize
-    let resizeTimeout;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
-            setHeaderHeight();
-        }, 100); // Debounce resize events
-    });
-
-    const header = document.querySelector('.site-header');
-    if (header && window.ResizeObserver) {
-        const resizeObserver = new ResizeObserver(() => {
-            setHeaderHeight();
-        });
-        resizeObserver.observe(header);
-    }
-}
-
-/* eslint-disable */
-export { execute, executeAfterTransition, findShadowRoot, getElement, getTransitionDurationFromElement, isDisabled, isElement, isVisible, parseSelector, reflow, triggerTransitionEnd, setViewportUnits, PlayVideoInViewportOnly, EditableSvg, debounce, throttle, copyToClipboard, inViewport, scrollToHash, initHeaderHeight };

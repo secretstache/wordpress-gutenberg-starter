@@ -1,205 +1,150 @@
 /**
- * Detect IE browser
- * @const {boolean}
- * @private
- */
-const isIE = typeof document !== 'undefined' && document.documentMode;
-
-/**
+ * LazyLoad — IntersectionObserver-based lazy loader for images, videos, and background images.
  *
- * @param {string} type
+ * Usage:
+ *   const loader = LazyLoad('.lazy-load');
+ *   loader.observe();
  *
+ * Supports data attributes: data-src, data-srcset, data-poster,
+ * data-background-image, data-background-image-set, data-toggle-class.
  */
-const support = (type) => window && window[type];
 
-const validAttribute = [
-    'data-iesrc',
-    'data-alt',
-    'data-src',
-    'data-srcset',
-    'data-background-image',
-    'data-toggle-class',
-];
+const VALID_ATTRIBUTES = ['data-src', 'data-srcset', 'data-background-image', 'data-background-image-set', 'data-toggle-class'];
+
+const sanitizeUrl = (url) => {
+    const trimmed = url.trim();
+    return /^javascript:/i.test(trimmed) ? '' : trimmed;
+};
 
 const defaultConfig = {
     rootMargin: '0px',
     threshold: 0,
     enableAutoReload: false,
+
     load(element) {
-        if (element.nodeName.toLowerCase() === 'picture') {
+        const tag = element.nodeName.toLowerCase();
+
+        // <picture> — create/find inner <img> and apply alt
+        if (tag === 'picture') {
             let img = element.querySelector('img');
-            let append = false;
 
-            if (img === null) {
+            if (!img) {
                 img = document.createElement('img');
-                append = true;
-            }
-
-            if (isIE && element.getAttribute('data-iesrc')) {
-                img.src = element.getAttribute('data-iesrc');
-            }
-
-            if (element.getAttribute('data-alt')) {
-                img.alt = element.getAttribute('data-alt');
-            }
-
-            if (append) {
                 element.append(img);
             }
+
+            if (element.dataset.alt) img.alt = element.dataset.alt;
         }
 
-        if (element.nodeName.toLowerCase() === 'video' && !element.getAttribute('data-src')) {
-            if (element.children) {
-                const childs = element.children;
-                let childSrc;
-                for (let i = 0; i <= childs.length - 1; i++) {
-                    childSrc = childs[i].getAttribute('data-src');
-                    if (childSrc) {
-                        childs[i].src = childSrc;
-                    }
-                }
-
-                element.load();
-            }
+        // <video> without data-src — load <source> children
+        if (tag === 'video' && !element.dataset.src) {
+            [...element.children].forEach((source) => {
+                if (source.dataset.src) source.src = source.dataset.src;
+            });
+            element.load();
         }
 
-        if (element.getAttribute('data-poster')) {
-            element.poster = element.getAttribute('data-poster');
-        }
+        if (element.dataset.poster) element.poster = element.dataset.poster;
+        if (element.dataset.src) element.src = element.dataset.src;
+        if (element.dataset.srcset) element.srcset = element.dataset.srcset;
 
-        if (element.getAttribute('data-src')) {
-            element.src = element.getAttribute('data-src');
-        }
+        // Background image (comma-delimited list)
+        if (element.dataset.backgroundImage) {
+            const delimiter = element.dataset.backgroundDelimiter || ',';
+            const urls = element.dataset.backgroundImage
+                .split(delimiter)
+                .map((u) => sanitizeUrl(u))
+                .filter(Boolean)
+                .map((u) => `url('${u}')`);
+            if (urls.length) element.style.backgroundImage = urls.join(', ');
+        } else if (element.dataset.backgroundImageSet) {
+            const delimiter = element.dataset.backgroundDelimiter || ',';
+            const links = element.dataset.backgroundImageSet.split(delimiter).map((u) => sanitizeUrl(u)).filter(Boolean);
+            let first = links[0].substring(0, links[0].indexOf(' ')) || links[0];
+            if (!first.startsWith('url(')) first = `url(${first})`;
 
-        if (element.getAttribute('data-srcset')) {
-            element.setAttribute('srcset', element.getAttribute('data-srcset'));
-        }
-
-        let backgroundImageDelimiter = ',';
-        if (element.getAttribute('data-background-delimiter')) {
-            backgroundImageDelimiter = element.getAttribute('data-background-delimiter');
-        }
-
-        if (element.getAttribute('data-background-image')) {
-            element.style.backgroundImage = `url('${element.getAttribute('data-background-image').split(backgroundImageDelimiter).join("'),url('")}')`;
-        } else if (element.getAttribute('data-background-image-set')) {
-            const imageSetLinks = element.getAttribute('data-background-image-set').split(backgroundImageDelimiter);
-            let firstUrlLink = imageSetLinks[0].substr(0, imageSetLinks[0].indexOf(' ')) || imageSetLinks[0]; // Substring before ... 1x
-            firstUrlLink = firstUrlLink.indexOf('url(') === -1 ? `url(${firstUrlLink})` : firstUrlLink;
-            if (imageSetLinks.length === 1) {
-                element.style.backgroundImage = firstUrlLink;
+            if (links.length === 1) {
+                element.style.backgroundImage = first;
             } else {
-                element.setAttribute('style', (element.getAttribute('style') || '') + `background-image: ${firstUrlLink}; background-image: -webkit-image-set(${imageSetLinks}); background-image: image-set(${imageSetLinks})`);
+                element.style.setProperty('background-image', `image-set(${links})`);
             }
         }
 
-        if (element.getAttribute('data-toggle-class')) {
-            element.classList.toggle(element.getAttribute('data-toggle-class'));
+        if (element.dataset.toggleClass) {
+            element.classList.toggle(element.dataset.toggleClass);
         }
     },
+
     loaded() {},
 };
 
-function markAsLoaded(element) {
-    element.setAttribute('data-loaded', true);
-}
+const _loaded = new WeakSet();
+const markLoaded = (el) => _loaded.add(el);
+const isLoaded = (el) => _loaded.has(el);
 
-function preLoad(element) {
-    if (element.getAttribute('data-placeholder-background')) {
-        element.style.background = element.getAttribute('data-placeholder-background');
+const applyPlaceholder = (el) => {
+    if (el.dataset.placeholderBackground) {
+        el.style.background = el.dataset.placeholderBackground;
     }
-}
+};
 
-const isLoaded = (element) => element.getAttribute('data-loaded') === 'true';
+const getElements = (selector, root = document) => {
+    if (selector instanceof Element) return [selector];
+    if (selector instanceof NodeList) return [...selector];
+    return [...root.querySelectorAll(selector)];
+};
 
 const onIntersection = (load, loaded) => (entries, observer) => {
     entries.forEach((entry) => {
-        if (entry.intersectionRatio > 0 || entry.isIntersecting) {
-            observer.unobserve(entry.target);
+        if (!(entry.intersectionRatio > 0 || entry.isIntersecting)) return;
 
-            if (!isLoaded(entry.target)) {
-                load(entry.target);
-                markAsLoaded(entry.target);
-                loaded(entry.target);
-            }
+        observer.unobserve(entry.target);
+
+        if (!isLoaded(entry.target)) {
+            load(entry.target);
+            markLoaded(entry.target);
+            loaded(entry.target);
         }
     });
 };
 
 const onMutation = (load) => (entries) => {
     entries.forEach((entry) => {
-        if (isLoaded(entry.target) && entry.type === 'attributes' && validAttribute.indexOf(entry.attributeName) > -1) {
+        if (isLoaded(entry.target) && entry.type === 'attributes' && VALID_ATTRIBUTES.includes(entry.attributeName)) {
             load(entry.target);
         }
     });
 };
 
-const getElements = (selector, root = document) => {
-    if (selector instanceof Element) {
-        return [selector];
-    }
-
-    if (selector instanceof NodeList) {
-        return selector;
-    }
-
-    return root.querySelectorAll(selector);
-};
-
 export const LazyLoad = (selector = '.lazy-load', options = {}) => {
-    const { root, rootMargin, threshold, enableAutoReload, load, loaded } = Object.assign({}, defaultConfig, options);
+    const config = { ...defaultConfig, ...options };
+    const { root, rootMargin, threshold, enableAutoReload, load, loaded } = config;
 
-    let observer;
-    let mutationObserver;
-    if (support('IntersectionObserver')) {
-        observer = new IntersectionObserver(onIntersection(load, loaded), {
-            root,
-            rootMargin,
-            threshold,
-        });
-    }
+    const observer = new IntersectionObserver(onIntersection(load, loaded), { root, rootMargin, threshold });
+    const mutationObserver = enableAutoReload ? new MutationObserver(onMutation(load)) : null;
 
-    if (support('MutationObserver') && enableAutoReload) {
-        mutationObserver = new MutationObserver(onMutation(load, loaded));
-    }
-
-    const elements = getElements(selector, root);
-    for (let i = 0; i < elements.length; i++) {
-        preLoad(elements[i]);
-    }
+    getElements(selector, root).forEach(applyPlaceholder);
 
     return {
         observe() {
-            const elements = getElements(selector, root);
+            getElements(selector, root).forEach((el) => {
+                if (isLoaded(el)) return;
 
-            for (let i = 0; i < elements.length; i++) {
-                if (isLoaded(elements[i])) {
-                    continue;
+                if (mutationObserver) {
+                    mutationObserver.observe(el, { subtree: true, attributes: true, attributeFilter: VALID_ATTRIBUTES });
                 }
 
-                if (observer) {
-                    if (mutationObserver && enableAutoReload) {
-                        mutationObserver.observe(elements[i], { subtree: true, attributes: true, attributeFilter: validAttribute });
-                    }
-
-                    observer.observe(elements[i]);
-                    continue;
-                }
-
-                load(elements[i]);
-                markAsLoaded(elements[i]);
-                loaded(elements[i]);
-            }
+                observer.observe(el);
+            });
         },
-        triggerLoad(element) {
-            if (isLoaded(element)) {
-                return;
-            }
 
+        triggerLoad(element) {
+            if (isLoaded(element)) return;
             load(element);
-            markAsLoaded(element);
+            markLoaded(element);
             loaded(element);
         },
+
         observer,
         mutationObserver,
     };

@@ -12,14 +12,15 @@
 @import "./common/backgrounds.css";
 
 /* globals */
+@import "./global/menu.css";
 @import "./global/site-header.css";
 @import "./global/offcanvas.css";
 
 /* libs */
 @import "./libs/facetwp/facetwp.css";
+@import "plyr/dist/plyr.css";
 
 /* core blocks */
-@import "./blocks/wp-blocks-settings.css";
 @import "./blocks/button.css";
 @import "./blocks/columns.css";
 @import "./blocks/form.css";

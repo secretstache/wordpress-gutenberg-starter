@@ -216,11 +216,6 @@
       ],
       "fontSizes": [
         {
-          "name": "4XL",
-          "size": "var(--text-4xl)",
-          "slug": "4xl"
-        },
-        {
           "name": "3XL",
           "size": "var(--text-3xl)",
           "slug": "3xl"

@@ -1,31 +1,34 @@
 import domReady from '@wordpress/dom-ready';
+import { setViewportUnits, scrollToHash, EditableSvg } from './utils/utilities.js';
 
-import { setViewportUnits, PlayVideoInViewportOnly, EditableSvg, scrollToHash } from './utils/utilities.js';
-import { Offcanvas } from './global/offcanvas';
-import { Header } from './global/header';
-import { DropdownMenu } from './global/dropdownMenu';
-
-domReady(async () => {
+export async function initComponents() {
     setViewportUnits();
-
     scrollToHash();
+    document.querySelectorAll('.editable-svg').forEach((img) => EditableSvg(img));
 
-    Array.from(document.querySelectorAll('.editable-svg')).map((img) => EditableSvg(img));
-
-    // stop autoplay video when out of viewport
-    Array.from(document.querySelectorAll('video[autoplay]')).map((video) => PlayVideoInViewportOnly(video));
-
-    Header(document.querySelector('.site-header'));
-
-    DropdownMenu();
-
+    // globals
+    const header = document.querySelector('.site-header');
     const offcanvas = document.querySelector('.offcanvas');
-    if (offcanvas) {
-        new Offcanvas(offcanvas);
-    }
+    const dropdowns = [...document.querySelectorAll('.is-dropdown')];
+    const modals = [...document.querySelectorAll('.modal')];
 
     // blocks
-});
+    const videos = [...document.querySelectorAll('.wp-block-video, .wp-block-embed')];
+
+    const results = await Promise.all(
+        [
+            header && import('./global/header.js').then(({ Header }) => Header.getOrCreate(header)),
+            offcanvas && import('./global/offcanvas.js').then(({ Offcanvas }) => Offcanvas.getOrCreate(offcanvas)),
+            dropdowns.length && import('./global/dropdownMenu.js').then(({ DropdownMenu }) => dropdowns.map((el) => DropdownMenu.getOrCreate(el, { topLevelClickable: true }))),
+            modals.length && import('./global/modal.js').then(({ Modal }) => modals.map((el) => Modal.getOrCreate(el))),
+            videos.length && import('./blocks/video.js').then(({ VideoPlayer }) => videos.map((el) => VideoPlayer.getOrCreate(el))),
+        ].filter(Boolean),
+    );
+
+    return results.flat();
+}
+
+domReady(initComponents);
 
 import.meta.glob([
     '../../images/**',

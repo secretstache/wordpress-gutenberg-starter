@@ -1,3 +1,1 @@
-document.addEventListener('DOMContentLoaded', (evt) => {
-    // these scripts will be excluded from WP rocket
-});
+// Scripts in this file are excluded from WP Rocket optimization.

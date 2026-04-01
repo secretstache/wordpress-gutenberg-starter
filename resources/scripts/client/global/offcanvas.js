@@ -1,237 +1,145 @@
-import { BaseComponent } from '../utils/base-component';
-import { EventHandler } from '../utils/dom/event-handler';
-import { Backdrop } from '../utils/backdrop';
-import { enableDismissTrigger } from '../utils/enable-dismiss-trigger';
-import { FocusTrap } from '../utils/focus-trap';
-import { ScrollbarHelper } from '../utils/scrollbar-helper';
-import { isDisabled, isVisible } from '../utils/utilities';
+import { Component } from '../utils/component.js';
+import { Backdrop } from '../utils/backdrop.js';
+import { FocusTrap } from '../utils/focus-trap.js';
+import { Scrollbar } from '../utils/scrollbar.js';
 
-/**
- * Constants
- */
+const SELECTOR_TOGGLE = '[aria-controls="offcanvas"]';
 
-const NAME = 'offcanvas';
-const DATA_KEY = 'ssm.offcanvas';
-const EVENT_KEY = `.${DATA_KEY}`;
-const DATA_API_KEY = '.data-api';
-const ESCAPE_KEY = 'Escape';
+export class Offcanvas extends Component {
+    static defaults = {
+        backdrop: true, // true | false | 'static'
+        keyboard: true,
+        scroll: false,
+    };
 
-const CLASS_NAME_SHOW = 'show';
-const CLASS_NAME_SHOWING = 'showing';
-const CLASS_NAME_HIDING = 'hiding';
-const CLASS_NAME_BACKDROP = 'offcanvas-backdrop';
-const OPEN_SELECTOR = '.offcanvas.show';
-
-const EVENT_SHOW = `show${EVENT_KEY}`;
-const EVENT_SHOWN = `shown${EVENT_KEY}`;
-const EVENT_HIDE = `hide${EVENT_KEY}`;
-const EVENT_HIDE_PREVENTED = `hidePrevented${EVENT_KEY}`;
-const EVENT_HIDDEN = `hidden${EVENT_KEY}`;
-const EVENT_CLICK_DATA_API = `click${EVENT_KEY}${DATA_API_KEY}`;
-const EVENT_KEYDOWN_DISMISS = `keydown.dismiss${EVENT_KEY}`;
-
-const SELECTOR_DATA_TOGGLE = '[aria-controls="offcanvas"]';
-
-const Config = {
-    backdrop: true,
-    keyboard: true,
-    scroll: false,
-};
-
-/**
- * Class definition
- */
-
-export class Offcanvas extends BaseComponent {
-    constructor(element, config) {
-        super(element, config);
+    constructor(element, options = {}) {
+        super(element, options);
 
         this._isShown = false;
-        this._backdrop = this._initializeBackDrop();
-        this._focustrap = this._initializeFocusTrap();
-        this._addEventListeners();
+        this._scrollbar = new Scrollbar();
+        this._focusTrap = new FocusTrap(element);
+        this._backdrop = new Backdrop({
+            className: 'offcanvas-backdrop',
+            isVisible: Boolean(this.options.backdrop),
+            isAnimated: true,
+            rootElement: element.parentNode ?? document.body,
+            clickCallback: () => {
+                if (this.options.backdrop === 'static') {
+                    this.emit('offcanvas:hide-prevented');
+                    return;
+                }
+                this.hide();
+            },
+        });
+
+        this._setupListeners();
     }
 
-    // Getters
-    static get Default() {
-        return Config;
-    }
-
-    static get NAME() {
-        return NAME;
-    }
-
-    // Public
     toggle(relatedTarget) {
         return this._isShown ? this.hide() : this.show(relatedTarget);
     }
 
     show(relatedTarget) {
-        if (this._isShown) {
-            return;
-        }
+        if (this._isShown) return;
 
-        const showEvent = EventHandler.trigger(this._element, EVENT_SHOW, { relatedTarget });
-
-        if (showEvent.defaultPrevented) {
-            return;
-        }
+        if (!this.emit('offcanvas:show', { relatedTarget })) return;
 
         this._isShown = true;
+
+        if (!this.options.scroll) this._scrollbar.hide();
+
         this._backdrop.show();
 
-        if (!this._config.scroll) {
-            new ScrollbarHelper().hide();
-        }
+        this.el.setAttribute('aria-modal', 'true');
+        this.el.setAttribute('role', 'dialog');
+        this.el.removeAttribute('inert');
+        this.el.classList.add('showing');
 
-        this._element.setAttribute('aria-modal', true);
-        this._element.setAttribute('role', 'dialog');
-        this._element.classList.add(CLASS_NAME_SHOWING);
-
-        const completeCallBack = () => {
-            if (!this._config.scroll || this._config.backdrop) {
-                this._focustrap.activate();
+        this._afterTransition(this.el, () => {
+            if (!this.options.scroll || this.options.backdrop) {
+                this._focusTrap.activate();
             }
 
-            this._element.classList.add(CLASS_NAME_SHOW);
-            this._element.classList.remove(CLASS_NAME_SHOWING);
-            this._element.removeAttribute('inert');
-
-            EventHandler.trigger(this._element, EVENT_SHOWN, { relatedTarget });
-        };
-
-        this._queueCallback(completeCallBack, this._element, true);
-
-        document.querySelectorAll(SELECTOR_DATA_TOGGLE).forEach((item) => {
-            item.setAttribute('aria-expanded', true);
+            this.el.classList.replace('showing', 'show');
+            this.emit('offcanvas:shown', { relatedTarget });
         });
+
+        this._toggleButtons.forEach((el) => el.setAttribute('aria-expanded', 'true'));
     }
 
     hide() {
-        if (!this._isShown) {
-            return;
-        }
+        if (!this._isShown) return;
 
-        const hideEvent = EventHandler.trigger(this._element, EVENT_HIDE);
+        if (!this.emit('offcanvas:hide')) return;
 
-        if (hideEvent.defaultPrevented) {
-            return;
-        }
-
-        this._focustrap.deactivate();
-        this._element.blur();
+        this._focusTrap.deactivate();
+        this.el.blur();
         this._isShown = false;
-        this._element.classList.add(CLASS_NAME_HIDING);
+        this.el.classList.add('hiding');
         this._backdrop.hide();
 
-        const completeCallback = () => {
-            this._element.classList.remove(CLASS_NAME_SHOW, CLASS_NAME_HIDING);
-            this._element.removeAttribute('aria-modal');
-            this._element.removeAttribute('role');
-            this._element.setAttribute('inert', true);
+        this._afterTransition(this.el, () => {
+            this.el.classList.remove('show', 'hiding');
+            this.el.removeAttribute('aria-modal');
+            this.el.removeAttribute('role');
+            this.el.setAttribute('inert', '');
 
-            if (!this._config.scroll) {
-                new ScrollbarHelper().reset();
-            }
+            if (!this.options.scroll) this._scrollbar.restore();
 
-            EventHandler.trigger(this._element, EVENT_HIDDEN);
-        };
-
-        this._queueCallback(completeCallback, this._element, true);
-
-        document.querySelectorAll(SELECTOR_DATA_TOGGLE).forEach((item) => {
-            item.setAttribute('aria-expanded', false);
+            this.emit('offcanvas:hidden');
         });
+
+        this._toggleButtons.forEach((el) => el.setAttribute('aria-expanded', 'false'));
     }
 
-    dispose() {
+    destroy() {
         this._backdrop.dispose();
-        this._focustrap.deactivate();
-        super.dispose();
+        this._focusTrap.deactivate();
+        super.destroy();
     }
 
-    // Private
-    _initializeBackDrop() {
-        const clickCallback = () => {
-            if (this._config.backdrop === 'static') {
-                EventHandler.trigger(this._element, EVENT_HIDE_PREVENTED);
-
-                return;
-            }
-
-            this.hide();
-        };
-
-        // 'static' option will be translated to true, and booleans will keep their value
-        const isVisible = Boolean(this._config.backdrop);
-
-        return new Backdrop({
-            className: CLASS_NAME_BACKDROP,
-            isVisible,
-            isAnimated: true,
-            rootElement: this._element.parentNode,
-            clickCallback: isVisible ? clickCallback : null,
-        });
+    // Lazily cached — queried once on first show/hide, not on every call.
+    get _toggleButtons() {
+        return (this._toggleButtonsCache ??= [...document.querySelectorAll(SELECTOR_TOGGLE)]);
     }
 
-    _initializeFocusTrap() {
-        return new FocusTrap({
-            trapElement: this._element,
-        });
-    }
+    _setupListeners() {
+        this.on(this.el, 'keydown', (event) => {
+            if (event.key !== 'Escape') return;
 
-    _addEventListeners() {
-        EventHandler.on(this._element, EVENT_KEYDOWN_DISMISS, (event) => {
-            if (event.key !== ESCAPE_KEY) {
-                return;
-            }
-
-            if (this._config.keyboard) {
+            if (this.options.keyboard) {
                 this.hide();
-
-                return;
+            } else {
+                this.emit('offcanvas:hide-prevented');
             }
+        });
 
-            EventHandler.trigger(this._element, EVENT_HIDE_PREVENTED);
+        this.on(this.el, 'click', (e) => {
+            if (e.target.closest('[data-dismiss="offcanvas"]')) this.hide();
         });
     }
 }
 
-/**
- * Data API implementation
- */
+// Wire up [aria-controls] toggle buttons via event delegation.
+document.addEventListener('click', (event) => {
+    const trigger = event.target.closest(SELECTOR_TOGGLE);
+    if (!trigger) return;
 
-EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (event) {
-    const target = document.querySelector('#' + this.getAttribute('aria-controls'));
+    if (['A', 'AREA'].includes(trigger.tagName)) event.preventDefault();
 
-    if (
-        [
-            'A',
-            'AREA',
-        ].includes(this.tagName)
-    ) {
-        event.preventDefault();
-    }
+    const targetId = trigger.getAttribute('aria-controls');
+    const target = document.getElementById(targetId);
+    if (!target) return;
 
-    if (isDisabled(this)) {
-        return;
-    }
+    // Close any other open offcanvas first.
+    const open = document.querySelector('.offcanvas.show');
+    if (open && open !== target) Offcanvas.getInstance(open)?.hide();
 
-    EventHandler.one(target, EVENT_HIDDEN, () => {
-        // focus on trigger when it is closed
-        if (isVisible(this)) {
-            this.focus();
-        }
-    });
+    const offcanvas = Offcanvas.getOrCreate(target);
+    offcanvas.toggle(trigger);
 
-    // avoid conflict when clicking a toggler of an offcanvas, while another is open
-    const alreadyOpen = document.querySelector(OPEN_SELECTOR);
-    if (alreadyOpen && alreadyOpen !== target) {
-        Offcanvas.getInstance(alreadyOpen).hide();
-    }
-
-    const data = Offcanvas.getOrCreateInstance(target);
-    data.toggle(this);
+    // Restore focus to the trigger once the offcanvas closes.
+    target.addEventListener('offcanvas:hidden', () => {
+        if (document.body.contains(trigger)) trigger.focus();
+    }, { once: true });
 });
-
-enableDismissTrigger(Offcanvas);
