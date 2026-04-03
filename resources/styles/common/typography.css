@@ -3,7 +3,7 @@
         line-height: 1.2;
     }
     body {
-        @apply font-sans-serif text-md;
+        @apply font-sans-serif text-sm;
         color: var(--body-color);
     }
 
@@ -58,6 +58,10 @@
 }
 
 @layer utilities {
+    .has-3-xl-font-size {
+        @apply text-3xl;
+    }
+
     .has-2-xl-font-size {
         @apply text-2xl;
     }

@@ -1,13 +1,14 @@
 import { Menu } from '@global/menu/Menu';
-import { mainMenu } from '@data/navigation';
+import { footerMenu } from '@data/navigation';
 
 export const SiteFooter = (): JSX.Element => {
     return (
-        <footer className="bg-black text-white">
+        <footer className="bg-black bg-dark px-container-padding py-6">
             <div className="container">
                 <Menu
-                    items={mainMenu}
-                    menuClass="flex flex-col"
+                    items={footerMenu}
+                    variant="horizontal"
+                    className="gap-x-4"
                 />
             </div>
         </footer>

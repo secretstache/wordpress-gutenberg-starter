@@ -22,6 +22,12 @@ export const Home = () => {
                 <Heading
                     content="Section Heading"
                     level={2}
+                    fontSize="2xl"
+                />
+                <Heading
+                    content="Section Heading 3xl"
+                    level={2}
+                    fontSize="3xl"
                 />
                 <Buttons>
                     <Button

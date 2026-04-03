@@ -6,8 +6,8 @@ import { mainMenu } from '@data/navigation';
 
 export const SiteHeader = (): JSX.Element => {
     return (
-        <header className="site-header sticky top-0 left-0 w-full transition-all duration-300 z-50 [&.is-scrolling-down]:-translate-y-full bg-white">
-            <div className="container flex items-center justify-between gap-x-2 py-3 py-6">
+        <header className="site-header sticky top-0 left-0 w-full transition-all duration-300 z-50 [&.is-scrolling-down]:-translate-y-full bg-white py-3 px-container-padding">
+            <div className="container flex items-center justify-between gap-x-2">
                 <Link
                     to="/"
                     className="flex items-center mr-auto">
@@ -18,16 +18,20 @@ export const SiteHeader = (): JSX.Element => {
                 </Link>
 
                 <nav
-                    className="max-md:hidden"
+                    className="max-lg:hidden"
                     aria-label="primary">
                     <Menu
                         items={mainMenu}
-                        menuClass="site-header__menu is-dropdown gap-x-9 flex"
-                        submenuClass="top-full min-w-50 bg-black p-5 text-white"
+                        variant="dropdown"
+                        className="gap-x-9"
+                        submenuClass="bg-black bg-dark p-4 min-w-50"
                     />
                 </nav>
 
-                <Hamburger />
+                <Hamburger
+                    controls="offcanvas"
+                    expanded={false}
+                />
             </div>
         </header>
     );

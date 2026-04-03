@@ -48,5 +48,5 @@ export default meta;
 type Story = StoryObj<typeof Heading>;
 
 export const Default: Story = {
-    args: { content: 'The quick brown fox jumps over the lazy dog', level: 2 },
+    args: { content: 'The quick brown fox jumps over the lazy dog', level: 2 , fontSize: '3xl'},
 };

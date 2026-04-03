@@ -63,13 +63,21 @@ const preview: Preview = {
             return <Story />;
         }) as Decorator,
 
-        ((Story) => {
+        ((Story, context) => {
             useEffect(() => {
+                // Capture pre-JS HTML before initComponents modifies the DOM.
+                // useLayoutEffect fires synchronously after render, before useEffect,
+                // so the snapshot is guaranteed to be pre-JS.
+                if (context.parameters?.html?.preJs) {
+                    const root = document.getElementById('storybook-root');
+                    if (root) (window as any).__sbPreJsHtml__ = root.innerHTML;
+                }
+
                 let instances: { destroy(): void }[] = [];
 
                 import('../src/assets/scripts/app.js').then(({ initComponents }) => {
-                    initComponents().then((insts: { destroy(): void }[]) => {
-                        instances = insts.filter(Boolean);
+                    initComponents().then((insts: unknown[]) => {
+                        instances = insts.filter(Boolean) as { destroy(): void }[];
                     });
                 });
 
@@ -105,6 +113,7 @@ const preview: Preview = {
         },
         html: {
             removeEmptyComments: true,
+            transform: (code: string) => code.replace(/ data-discover="true"/g, ''),
         },
         controls: {
             matchers: {

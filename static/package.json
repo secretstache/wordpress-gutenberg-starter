@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite & storybook dev -p 6006",
+    "vite": "vite",
+    "storybook": "storybook dev -p 6006",
     "build": "VITE_PREFIX=/static/ vite build && storybook build --output-dir dist/storybook",
     "test": "vitest run",
     "test:watch": "vitest"

@@ -13,6 +13,7 @@
  */
 import type React from 'react';
 import { fontSizeMap, fontFamilyMap, resolveSpacing } from './theme';
+import { wpSlug } from './wp-global-styles';
 import { darkBackground } from '@shared/backgrounds.js';
 
 // --- internal helpers -------------------------------------------------------
@@ -184,8 +185,8 @@ export interface TypographyPropsInput {
 export function getTypographyProps({ fontFamily, fontSize, fontWeight, fontStyle, textTransform, textDecoration, letterSpacing, lineHeight }: TypographyPropsInput = {}): { className: string | undefined; style: React.CSSProperties } {
     const className = cx(fontFamily && `has-${fontFamily.toLowerCase().replace(/\s+/g, '-')}-font-family`, fontSizeCls(fontSize));
 
-    const resolvedFontSize = fontSize ? fontSizeMap.get(fontSize) : undefined;
-    const resolvedFontFamily = fontFamily ? fontFamilyMap.get(fontFamily) : undefined;
+    const resolvedFontSize = fontSize ? (fontSizeMap.has(fontSize) ? `var(--wp--preset--font-size--${wpSlug(fontSize)})` : fontSize) : undefined;
+    const resolvedFontFamily = fontFamily ? (fontFamilyMap.has(fontFamily) ? `var(--wp--preset--font-family--${fontFamily})` : fontFamily) : undefined;
 
     const inlineStyle: React.CSSProperties = {
         ...(resolvedFontSize && { fontSize: resolvedFontSize }),

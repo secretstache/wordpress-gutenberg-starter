@@ -27,3 +27,9 @@ export const offcanvasMenu: MenuItem[] = [
     { label: 'Blog', url: '/blog' },
     { label: 'Contact', url: '/contact' },
 ];
+
+
+export const footerMenu: MenuItem[] = [
+    { label: 'Privacy policy', url: '/' },
+    { label: 'Terms', url: '/' },
+];

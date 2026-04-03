@@ -18,9 +18,9 @@ export default defineConfig({
     },
   },
   plugins: [
+    processCSSFunctions(),
     tailwindcss(),
     react(),
-    processCSSFunctions(),
   ],
   resolve: {
     alias: {

@@ -17,7 +17,7 @@
     --text-lg: customClamp(22, 37);
     --text-md: customClamp(16, 24);
     --text-sm: customClamp(14, 16);
-    --text-xs: customClamp(14, 15);
+    --text-xs: customClamp(14, 12);
 
     /* Spacings */
     --spacing-ssm-0: 0;

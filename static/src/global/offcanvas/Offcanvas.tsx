@@ -1,3 +1,4 @@
+import { Hamburger } from '@global/hamburger/Hamburger';
 import { Menu } from '@global/menu/Menu';
 import { offcanvasMenu } from '@data/navigation';
 
@@ -8,35 +9,27 @@ export interface OffcanvasProps {
 export const Offcanvas = ({ isOpen = false }: OffcanvasProps) => {
     return (
         <div
-            className={`offcanvas group overflow-y-auto overflow-x-hidden bg-white [&.show]:translate-y-0 [&.show]:opacity-100 [&.show]:pointer-events-auto w-full -translate-y-full transition-all ease-linear duration-300 pointer-events-none opacity-0 fixed right-0 z-[1000] h-full${isOpen ? ' show' : ''}`}
+            className={`offcanvas group/offcanvas w-full h-full overflow-y-auto overflow-x-hidden bg-white [&.show]:translate-y-0 [&.show]:opacity-100 [&.show]:pointer-events-auto -translate-y-full transition-all ease-linear duration-300 pointer-events-none opacity-0 fixed left-0 top-0 z-1000 px-container-padding ${isOpen ? ' show' : ''}`}
             id="offcanvas"
             aria-label="offcanvas"
             aria-modal="true"
             role="dialog"
             inert={!isOpen || undefined}>
-            <div className="container relative h-full px-5 mx-auto">
+            <div className="container relative h-full mx-auto">
                 <div className="offcanvas-header flex items-center pt-6 pb-8">
-                    <button
-                        className="hamburger ml-auto cursor-pointer group flex items-center gap-x-1 rounded-lg transition-colors"
-                        type="button"
-                        aria-label="Close navigation menu"
-                        data-dismiss="offcanvas">
-                        <div className="relative w-5 h-[0.875rem]">
-                            <span
-                                aria-hidden="true"
-                                className="sr-only">
-                                Menu toggle
-                            </span>
-                            <span className="block absolute top-0 w-full h-[0.125rem] bg-black transition-transform duration-300 ease-in-out rotate-45 translate-y-[0.313rem]" />
-                            <span className="block absolute bottom-0 w-full h-[0.125rem] bg-black transition-transform duration-300 ease-in-out -rotate-45 translate-y-[-0.438rem]" />
-                        </div>
-                    </button>
+                    <Hamburger
+                        label="Close navigation menu"
+                        dismiss="offcanvas"
+                        open={true}
+                        className="ml-auto"
+                    />
                 </div>
 
                 <nav aria-label="mobile">
                     <Menu
                         items={offcanvasMenu}
-                        menuClass="flex flex-col"
+                        className="gap-y-4 text-center"
+                        variant="vertical"
                     />
                 </nav>
             </div>
