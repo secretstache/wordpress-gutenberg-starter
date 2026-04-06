@@ -189,6 +189,28 @@ Add new tokens in the correct location within the file:
 
 ---
 
+## Step 4.5 — Add Google Fonts to `index.php`
+
+For each font family extracted from Figma, check whether it is available on Google Fonts.
+
+If **any** of the fonts are on Google Fonts:
+
+1. Build a single combined `<link>` tag that loads all Google-hosted fonts in one request. Use the `family` query parameter with `+` for spaces and `|` to separate multiple families. Request all weights present in the Figma design.
+
+```html
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+```
+
+2. Open `index.php` and add those `<link>` tags inside `<head>`, **before** `<?php wp_head(); ?>`.
+
+If a font is **not** on Google Fonts (custom, licensed, or self-hosted), skip it here — note it to the user so they can add it manually.
+
+If Google Fonts links already exist in `index.php`, update them to include any new families rather than duplicating the tags.
+
+---
+
 ## Step 5 — Write `theme.json`
 
 Add new entries to the relevant arrays. Follow the exact same JSON structure as the existing entries.
@@ -291,4 +313,5 @@ New size `--text-4xl` → available as `text-4xl`.
 - [ ] `resources/styles/settings/theme.css` — vars in correct section inside `@theme {}`; other tokens in `:root`
 - [ ] `theme.json` — `styles.spacing.blockGap` updated if `--spacing-block` changed; new palette/font/size entries added; `size` always references CSS var
 - [ ] `shared/backgrounds.js` — dark colour slugs added if applicable
+- [ ] Google Fonts checked for each font family — `<link>` tags added to `index.php` before `<?php wp_head(); ?>` for any Google-hosted fonts; non-Google fonts noted to user
 - [ ] No arbitrary values anywhere — every design value is a named token in `theme.css`
