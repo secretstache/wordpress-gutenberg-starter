@@ -116,7 +116,11 @@ function buildProps({
           }
         : {};
 
-    return { ...rest, spacing, bg };
+    return {
+        ...rest,
+        ...(Object.keys(spacing).length && { spacing }),
+        ...(Object.keys(bg).length && { bg }),
+    };
 }
 
 const meta: Meta<any> = {

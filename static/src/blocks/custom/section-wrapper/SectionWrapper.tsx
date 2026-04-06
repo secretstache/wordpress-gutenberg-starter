@@ -82,7 +82,7 @@ export const SectionWrapper = ({ children, className, id, fullHeight = false, sp
     } as React.CSSProperties;
 
     return (
-        <div
+        <section
             className={wrapperClass}
             id={id}>
             {hasBackground && (
@@ -114,7 +114,7 @@ export const SectionWrapper = ({ children, className, id, fullHeight = false, sp
             )}
 
             <div className="wp-block-ssm-section-wrapper__content px-container-padding relative z-20 w-full is-layout-constrained">{children}</div>
-        </div>
+        </section>
     );
 };
 

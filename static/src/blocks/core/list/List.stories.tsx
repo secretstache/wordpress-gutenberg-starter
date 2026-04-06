@@ -3,14 +3,6 @@ import { List } from './List';
 import { ListItem } from '@blocks/core/list-item/ListItem';
 import { colorArgTypes, typographyArgTypes, paddingArgTypes, fullMarginArgTypes, borderArgTypes, blockArgTypes } from '@lib/storybook-helpers';
 
-const DefaultItems = () => (
-    <>
-        <ListItem content="First list item" />
-        <ListItem content="Second list item" />
-        <ListItem content="Third list item" />
-    </>
-);
-
 const meta: Meta<typeof List> = {
     title: 'Blocks/Core/List',
     component: List,
@@ -63,7 +55,9 @@ type Story = StoryObj<typeof List>;
 export const Unordered: Story = {
     render: (args) => (
         <List {...args}>
-            <DefaultItems />
+            <ListItem content="First list item" />
+            <ListItem content="Second list item" />
+            <ListItem content="Third list item" />
         </List>
     ),
     args: { ordered: false },
@@ -72,7 +66,9 @@ export const Unordered: Story = {
 export const Ordered: Story = {
     render: (args) => (
         <List {...args}>
-            <DefaultItems />
+            <ListItem content="First list item" />
+            <ListItem content="Second list item" />
+            <ListItem content="Third list item" />
         </List>
     ),
     args: { ordered: true },

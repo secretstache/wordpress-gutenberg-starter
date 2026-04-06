@@ -31,6 +31,7 @@ export const SiteHeader = (): JSX.Element => {
                 <Hamburger
                     controls="offcanvas"
                     expanded={false}
+                    className="lg:hidden"
                 />
             </div>
         </header>

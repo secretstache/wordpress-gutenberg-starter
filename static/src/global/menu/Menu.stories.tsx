@@ -9,7 +9,7 @@ const meta: Meta<typeof Menu> = {
     parameters: {
         html: {
             preJs: true,
-            transform: () => (window as any).__sbPreJsHtml__ ?? '',
+            transform: () => ((window as any).__sbPreJsHtml__ ?? '').replace(/ data-discover="true"/g, ''),
         },
         docs: {
             source: {

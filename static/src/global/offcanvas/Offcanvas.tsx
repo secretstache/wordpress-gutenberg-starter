@@ -1,4 +1,3 @@
-import { Hamburger } from '@global/hamburger/Hamburger';
 import { Menu } from '@global/menu/Menu';
 import { offcanvasMenu } from '@data/navigation';
 
@@ -17,12 +16,16 @@ export const Offcanvas = ({ isOpen = false }: OffcanvasProps) => {
             inert={!isOpen || undefined}>
             <div className="container relative h-full mx-auto">
                 <div className="offcanvas-header flex items-center pt-6 pb-8">
-                    <Hamburger
-                        label="Close navigation menu"
-                        dismiss="offcanvas"
-                        open={true}
-                        className="ml-auto"
-                    />
+                    <button
+                        className="close-button ml-auto cursor-pointer flex items-center justify-center w-8 h-8 rounded-lg transition-colors"
+                        type="button"
+                        aria-label="Close navigation menu"
+                        data-dismiss="offcanvas">
+                        <span aria-hidden="true" className="block relative w-5 h-5">
+                            <span className="block absolute top-1/2 left-0 w-full h-0.5 bg-black rotate-45 -translate-y-1/2" />
+                            <span className="block absolute top-1/2 left-0 w-full h-0.5 bg-black -rotate-45 -translate-y-1/2" />
+                        </span>
+                    </button>
                 </div>
 
                 <nav aria-label="mobile">
