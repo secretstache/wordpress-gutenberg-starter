@@ -44,5 +44,5 @@ export default meta;
 type Story = StoryObj<typeof Video>;
 
 export const Default: Story = {
-    args: { src: '/video/placeholder.mp4', controls: true, preload: 'metadata' },
+    args: { src: 'assets/video/placeholder.mp4', controls: true, preload: 'metadata' },
 };

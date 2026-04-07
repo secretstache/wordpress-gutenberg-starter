@@ -9,13 +9,13 @@ export const Home = () => {
             <SectionWrapper
                 bg={{
                     media: {
-                        video: '/video/placeholder.mp4',
+                        video: 'assets/video/placeholder.mp4',
                     },
                     overlay: {
                         from: 'black',
-                        fromOpacity: 50,
+                        fromOpacity: 60,
                         to: 'black',
-                        toOpacity: 0,
+                        toOpacity: 20,
                     },
                 }}
                 spacing={{}}>

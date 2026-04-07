@@ -268,7 +268,7 @@ export const ColorBackground: Story = {
 // ─── With Image Background ───────────────────────────────────────────────────
 export const ImageBackground: Story = {
     args: {
-        bgImage: '/images/cms/placeholder.svg',
+        bgImage: 'assets/images/cms/placeholder.svg',
         overlayFrom: 'black',
         overlayFromOpacity: 60,
         overlayTo: 'black',
@@ -280,7 +280,7 @@ export const ImageBackground: Story = {
 // ─── With Video Background ───────────────────────────────────────────────────
 export const VideoBackground: Story = {
     args: {
-        bgVideo: '/video/placeholder.mp4',
+        bgVideo: 'assets/video/placeholder.mp4',
         overlayFrom: 'black',
         overlayFromOpacity: 50,
         overlayTo: 'black',

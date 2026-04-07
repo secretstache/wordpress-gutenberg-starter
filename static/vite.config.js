@@ -5,6 +5,7 @@ import { resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { processCSSFunctions } from '../shared/vite-css.js';
 import postcssCustomMedia from 'postcss-custom-media';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
@@ -21,6 +22,13 @@ export default defineConfig({
     processCSSFunctions(),
     tailwindcss(),
     react(),
+    viteStaticCopy({
+      targets: [
+        { src: resolve(__dirname, '../resources/fonts'), dest: 'assets', rename: { stripBase: 1 }, },
+        { src: resolve(__dirname, '../resources/images'), dest: 'assets', rename: { stripBase: 1 }, },
+        { src: resolve(__dirname, '../resources/video'), dest: 'assets', rename: { stripBase: 1 }, },
+      ],
+    }),
   ],
   resolve: {
     alias: {
@@ -36,7 +44,7 @@ export default defineConfig({
       '@pages':   resolve(__dirname, 'src/pages'),
     },
   },
-  publicDir: resolve(__dirname, '../resources'),
+  publicDir: false,
   server: {
     historyApiFallback: true,
   },

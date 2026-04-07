@@ -55,15 +55,15 @@ export const Default: Story = {
     render: (args) => (
         <Gallery {...args}>
             <Image
-                url="/images/cms/placeholder.svg"
+                url="assets/images/cms/placeholder.svg"
                 alt="Gallery image 1"
             />
             <Image
-                url="/images/cms/placeholder.svg"
+                url="assets/images/cms/placeholder.svg"
                 alt="Gallery image 2"
             />
             <Image
-                url="/images/cms/placeholder.svg"
+                url="assets/images/cms/placeholder.svg"
                 alt="Gallery image 3"
             />
         </Gallery>

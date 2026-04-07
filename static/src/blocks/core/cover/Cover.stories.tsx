@@ -154,7 +154,7 @@ export const ImageBackground: Story = {
         </Cover>
     ),
     args: {
-        url: '/images/cms/placeholder.svg',
+        url: 'assets/images/cms/placeholder.svg',
         backgroundType: 'image',
         overlayColor: 'black',
         dimRatio: 50,

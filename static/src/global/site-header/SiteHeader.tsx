@@ -9,10 +9,10 @@ export const SiteHeader = (): JSX.Element => {
         <header className="site-header sticky top-0 left-0 w-full transition-all duration-300 z-50 [&.is-scrolling-down]:-translate-y-full bg-white py-3 px-container-padding">
             <div className="container flex items-center justify-between gap-x-2">
                 <Link
-                    to="/"
+                    to=""
                     className="flex items-center mr-auto">
                     <img
-                        src={url('/images/cms/logo-placeholder.svg')}
+                        src={url('assets/images/cms/logo-placeholder.svg')}
                         alt="Logo"
                     />
                 </Link>

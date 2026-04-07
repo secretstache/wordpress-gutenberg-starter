@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Default as DefaultLayout } from '@layouts/Default';
 import { Home } from '@pages/Home';
 import { Contact } from '@pages/Contact';
+import { NotFound } from '@pages/NotFound';
 import { injectWpGlobalStyles } from '@lib/wp-global-styles';
 import './index.css';
 
@@ -25,6 +26,10 @@ const App = () => {
                     <Route
                         path="/contact"
                         element={<Contact />}
+                    />
+                    <Route
+                        path="*"
+                        element={<NotFound />}
                     />
                 </Routes>
             </DefaultLayout>

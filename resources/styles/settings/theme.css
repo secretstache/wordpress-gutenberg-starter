@@ -40,6 +40,9 @@
 :root {
     --tr: 0.3s;
 
+    --body-bg: var(--color-white);
+    --body-bg-dark: var(--color-black);
+
     --body-color-light: var(--color-white);
     --body-color-dark: var(--color-black);
     --body-color: var(--body-color-dark);

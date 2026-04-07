@@ -210,8 +210,13 @@
       "fontFamilies": [
         {
           "fontFamily": "var(--font-sans-serif)",
-          "name": "Sans serif",
+          "name": "Source Sans 3",
           "slug": "sans-serif"
+        },
+        {
+          "fontFamily": "var(--font-serif)",
+          "name": "Times New Roman",
+          "slug": "serif"
         }
       ],
       "fontSizes": [

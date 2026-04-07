@@ -83,5 +83,5 @@ export default meta;
 type Story = StoryObj<typeof Image>;
 
 export const Default: Story = {
-    args: { url: '/images/cms/placeholder.svg', alt: 'Placeholder image' },
+    args: { url: 'assets/images/cms/placeholder.svg', alt: 'Placeholder image' },
 };

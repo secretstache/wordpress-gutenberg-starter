@@ -3,7 +3,7 @@
         line-height: 1.2;
     }
     body {
-        @apply font-sans-serif text-sm;
+        @apply font-sans-serif text-sm bg-[--body-bg];
         color: var(--body-color);
     }
 

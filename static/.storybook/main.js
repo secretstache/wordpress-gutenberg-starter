@@ -1,7 +1,11 @@
 /** @type { import('@storybook/react-vite').StorybookConfig } */
 const config = {
     stories: ['../src/**/*.stories.@(jsx|tsx)'],
-    staticDirs: ['../../resources'],
+    staticDirs: [
+        { from: '../../resources/fonts', to: '/assets/fonts' },
+        { from: '../../resources/images', to: '/assets/images' },
+        { from: '../../resources/video', to: '/assets/video' },
+    ],
     addons: [
         '@storybook/addon-docs',
         '@whitespace/storybook-addon-html',

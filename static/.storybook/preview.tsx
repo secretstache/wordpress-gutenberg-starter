@@ -15,29 +15,13 @@ const LAYOUT_CLASSES = [
     'px-container-padding',
 ];
 
-export const globalTypes = {
-    background: {
-        name: 'Background',
-        toolbar: {
-            icon: 'circlehollow',
-            items: [
-                { value: 'light', title: 'Light', icon: 'sun' },
-                { value: 'dark', title: 'Dark', icon: 'moon' },
-            ],
-            dynamicTitle: true,
-        },
-        defaultValue: 'light',
-    },
-};
-
 const preview: Preview = {
     decorators: [
         // Apply bg-dark bg-black to <body> when Dark background is selected
         ((Story, context) => {
-            const isDark = context.globals['background'] === 'dark';
+            const isDark = context.globals['backgrounds'].value === 'dark';
             useEffect(() => {
                 document.body.classList.toggle('bg-dark', isDark);
-                document.body.classList.toggle('bg-black', isDark);
             }, [isDark]);
 
             return <Story />;
@@ -94,7 +78,17 @@ const preview: Preview = {
         }) as Decorator,
     ],
     parameters: {
-        backgrounds: { disabled: true },
+        backgrounds: {
+            options: {
+                dark: { name: 'Dark', value: 'var(--body-bg-dark)' },
+                light: { name: 'Light', value: 'var(--body-bg)' },
+            },
+            grid: {
+                cellSize: 20,
+                opacity: 0.5,
+                cellAmount: 5,
+            },
+        },
         viewport: {
             options: {
                 'sm': { name: 'Small mobile', styles: { width: '320px', height: '568px' } },
