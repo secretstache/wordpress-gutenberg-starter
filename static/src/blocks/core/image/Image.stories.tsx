@@ -1,27 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Image } from './Image';
-import { fullMarginArgTypes, borderArgTypes, shadowArgType, blockArgTypes } from '@lib/storybook-helpers';
-
-const ASPECT_RATIO_OPTIONS = [
-    'auto',
-    '1',
-    '4/3',
-    '3/4',
-    '3/2',
-    '2/3',
-    '16/9',
-    '9/16',
-];
-const ASPECT_RATIO_LABELS: Record<string, string> = {
-    'auto': 'Original',
-    '1': 'Square - 1:1',
-    '4/3': 'Standard - 4:3',
-    '3/4': 'Portrait - 3:4',
-    '3/2': 'Classic - 3:2',
-    '2/3': 'Classic Portrait - 2:3',
-    '16/9': 'Wide - 16:9',
-    '9/16': 'Tall - 9:16',
-};
+import { fullMarginArgTypes, borderArgTypes, shadowArgType, blockArgTypes, aspectRatioArgType } from '@lib/storybook-helpers';
 
 const meta: Meta<typeof Image> = {
     title: 'Blocks/Core/Image',
@@ -51,11 +30,7 @@ const meta: Meta<typeof Image> = {
         // Dimensions
         width: { control: 'text', table: { category: 'Dimensions' } },
         height: { control: 'text', table: { category: 'Dimensions' } },
-        aspectRatio: {
-            control: { type: 'select', labels: ASPECT_RATIO_LABELS },
-            options: ASPECT_RATIO_OPTIONS,
-            table: { category: 'Dimensions' },
-        },
+        ...aspectRatioArgType,
         scale: {
             control: 'select',
             options: [

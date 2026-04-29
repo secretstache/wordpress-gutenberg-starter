@@ -1,5 +1,5 @@
 import type React from 'react';
-import { cx, getColorProps, getBorderProps, getSpacingProps, getTypographyProps, getAlignClass } from '@lib/block-props';
+import { cx, getColorProps, getBorderProps, getSpacingProps, getTypographyProps, getAlignClass, getCustomStyleClass } from '@lib/block-props';
 export interface HeadingProps {
     // Content
     content?: string;
@@ -32,6 +32,7 @@ export interface HeadingProps {
     borderWidth?: string;
     borderStyle?: string;
     // Block
+    customStyle?: string;
     className?: string;
     id?: string;
 }
@@ -42,6 +43,7 @@ export const Heading = ({
     level = 2,
     textAlign,
     align,
+    customStyle,
     className,
     id,
     // named slugs
@@ -76,7 +78,7 @@ export const Heading = ({
     const spacingProps = getSpacingProps({ paddingTop, paddingBottom, paddingLeft, paddingRight, marginTop, marginBottom });
     const typographyProps = getTypographyProps({ fontFamily, fontSize, fontWeight, fontStyle, textTransform, textDecoration, letterSpacing, lineHeight });
 
-    const headingClass = cx('wp-block-heading', getAlignClass({ align }), colorProps.className, borderProps.className, typographyProps.className, textAlign && `has-text-align-${textAlign}`, fontSize && 'has-custom-font-size', className);
+    const headingClass = cx('wp-block-heading', getAlignClass({ align }), colorProps.className, borderProps.className, typographyProps.className, textAlign && `has-text-align-${textAlign}`, fontSize && 'has-custom-font-size', getCustomStyleClass({ customStyle }), className);
 
     const headingStyle = {
         ...borderProps.style,

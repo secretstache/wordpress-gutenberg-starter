@@ -1,5 +1,5 @@
 import type React from 'react';
-import { cx, getColorProps, getBorderProps, getSpacingProps, getTypographyProps, getAlignClass } from '@lib/block-props';
+import { cx, getColorProps, getBorderProps, getSpacingProps, getTypographyProps, getAlignClass, getCustomStyleClass } from '@lib/block-props';
 export interface ListProps {
     // Content
     ordered?: boolean;
@@ -35,6 +35,7 @@ export interface ListProps {
     borderWidth?: string;
     borderStyle?: string;
     // Block
+    customStyle?: string;
     className?: string;
     id?: string;
     // Children
@@ -49,6 +50,7 @@ export const List = ({
     reversed,
     start,
     id,
+    customStyle,
     className,
     align,
     // named slugs
@@ -85,7 +87,7 @@ export const List = ({
     const spacingProps = getSpacingProps({ paddingTop, paddingBottom, paddingLeft, paddingRight, marginTop, marginBottom, marginLeft, marginRight });
     const typographyProps = getTypographyProps({ fontFamily, fontSize, fontWeight, fontStyle, textTransform, textDecoration, letterSpacing, lineHeight });
 
-    const cls = cx('wp-block-list', getAlignClass({ align }), colorProps.className, borderProps.className, typographyProps.className, className);
+    const cls = cx('wp-block-list', getAlignClass({ align }), colorProps.className, borderProps.className, typographyProps.className, getCustomStyleClass({ customStyle }), className);
 
     const inlineStyle = {
         ...(ordered && type && type !== 'decimal' && { listStyleType: type }),

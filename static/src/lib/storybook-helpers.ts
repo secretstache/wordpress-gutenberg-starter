@@ -97,6 +97,37 @@ export const fullMarginArgTypes = {
     marginRight: spacingArgType('margin right'),
 };
 
+export const aspectRatioOptions = [
+    'auto',
+    '1',
+    '4/3',
+    '3/4',
+    '3/2',
+    '2/3',
+    '16/9',
+    '9/16',
+];
+
+export const aspectRatioLabels: Record<string, string> = {
+    'auto': 'Original',
+    '1': 'Square - 1:1',
+    '4/3': 'Standard - 4:3',
+    '3/4': 'Portrait - 3:4',
+    '3/2': 'Classic - 3:2',
+    '2/3': 'Classic Portrait - 2:3',
+    '16/9': 'Wide - 16:9',
+    '9/16': 'Tall - 9:16',
+};
+
+/** Aspect ratio preset select control. */
+export const aspectRatioArgType = {
+    aspectRatio: {
+        control: { type: 'select' as const, labels: aspectRatioLabels },
+        options: aspectRatioOptions,
+        table: { category: 'Dimensions' },
+    },
+};
+
 /**
  * Block-level alignment (wide + full).
  * Use for blocks that support alignwide / alignfull.

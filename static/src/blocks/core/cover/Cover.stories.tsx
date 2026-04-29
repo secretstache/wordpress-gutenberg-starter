@@ -2,29 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Cover } from './Cover';
 import { Heading } from '@blocks/core/heading/Heading';
 import { Paragraph } from '@blocks/core/paragraph/Paragraph';
-import { colorArgTypes, typographyArgTypes, paddingArgTypes, marginArgTypes, borderArgTypes, shadowArgType, blockArgTypes, colorSlugs, spacingArgType } from '@lib/storybook-helpers';
+import { colorArgTypes, typographyArgTypes, paddingArgTypes, marginArgTypes, borderArgTypes, shadowArgType, blockArgTypes, colorSlugs, spacingArgType, aspectRatioArgType } from '@lib/storybook-helpers';
 import { colorLabels } from '@lib/theme';
-
-const ASPECT_RATIO_OPTIONS = [
-    'auto',
-    '1',
-    '4/3',
-    '3/4',
-    '3/2',
-    '2/3',
-    '16/9',
-    '9/16',
-];
-const ASPECT_RATIO_LABELS = {
-    'auto': 'Original',
-    '1': 'Square - 1:1',
-    '4/3': 'Standard - 4:3',
-    '3/4': 'Portrait - 3:4',
-    '3/2': 'Classic - 3:2',
-    '2/3': 'Classic Portrait - 2:3',
-    '16/9': 'Wide - 16:9',
-    '9/16': 'Tall - 9:16',
-};
 
 const CONTENT_POSITIONS = [
     'top left',
@@ -101,12 +80,7 @@ const meta: Meta<typeof Cover> = {
         // Dimensions
         minHeight: { control: 'text', description: 'Min-height (e.g. 400px, 50vh, 100%)', table: { category: 'Dimensions' } },
         fullHeight: { control: 'boolean', description: 'min-height: 100vh; aspect-ratio: unset', table: { category: 'Dimensions' } },
-        aspectRatio: {
-            control: { type: 'select', labels: ASPECT_RATIO_LABELS },
-            options: ASPECT_RATIO_OPTIONS,
-            description: 'min-height: unset; aspect-ratio: …',
-            table: { category: 'Dimensions' },
-        },
+        ...aspectRatioArgType,
 
         // Border
         ...borderArgTypes,

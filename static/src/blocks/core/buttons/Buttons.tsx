@@ -1,5 +1,5 @@
 import type React from 'react';
-import { cx, getColorProps, getBorderProps, getSpacingProps, getTypographyProps, getBlockGapStyle, getAlignClass } from '@lib/block-props';
+import { cx, getColorProps, getBorderProps, getSpacingProps, getTypographyProps, getBlockGapStyle, getAlignClass, getCustomStyleClass } from '@lib/block-props';
 export interface ButtonsProps {
     // Colors
     backgroundColor?: string;
@@ -33,6 +33,7 @@ export interface ButtonsProps {
     borderWidth?: string;
     borderStyle?: string;
     // Block
+    customStyle?: string;
     className?: string;
     id?: string;
     // Children
@@ -43,6 +44,7 @@ export interface ButtonsProps {
 export const Buttons = ({
     children,
     align,
+    customStyle,
     className,
     id,
     // named slugs — no textColor: Buttons block disables text color support
@@ -83,7 +85,7 @@ export const Buttons = ({
     const typographyProps = getTypographyProps({ fontFamily, fontSize, fontWeight, fontStyle, textTransform, textDecoration, letterSpacing, lineHeight });
     const gapStyle = getBlockGapStyle(undefined, blockSpacingVertical, blockSpacingHorizontal);
 
-    const wrapperClass = cx('wp-block-buttons', 'is-layout-flex', 'wp-block-buttons-is-layout-flex', getAlignClass({ align }), colorProps.className, borderProps.className, typographyProps.className, orientation && `is-${orientation}`, justification && `is-content-justification-${justification}`, verticalAlignment && `is-vertically-aligned-${verticalAlignment}`, flexWrap === 'nowrap' && 'is-nowrap', fontSize && 'has-custom-font-size', className);
+    const wrapperClass = cx('wp-block-buttons', 'is-layout-flex', 'wp-block-buttons-is-layout-flex', getAlignClass({ align }), colorProps.className, borderProps.className, typographyProps.className, orientation && `is-${orientation}`, justification && `is-content-justification-${justification}`, verticalAlignment && `is-vertically-aligned-${verticalAlignment}`, flexWrap === 'nowrap' && 'is-nowrap', fontSize && 'has-custom-font-size', getCustomStyleClass({ customStyle }), className);
 
     const wrapperStyle = {
         ...borderProps.style,

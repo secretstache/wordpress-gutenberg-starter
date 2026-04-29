@@ -1,4 +1,4 @@
-import { cx, getBorderProps, getShadowProps, getSpacingProps, getAlignClass } from '@lib/block-props';
+import { cx, getBorderProps, getShadowProps, getSpacingProps, getAlignClass, getCustomStyleClass } from '@lib/block-props';
 import { url as resolveUrl } from '@lib/url';
 export interface ImageProps {
     // Content
@@ -27,6 +27,7 @@ export interface ImageProps {
     // Shadow
     shadow?: string;
     // Block
+    customStyle?: string;
     className?: string;
     id?: string;
 }
@@ -48,6 +49,7 @@ export const Image = ({
     scale,
     // block
     align,
+    customStyle,
     className,
     id,
     // border + shadow apply to <img>, margin to <figure>
@@ -68,7 +70,7 @@ export const Image = ({
 
     const hasBorder = !!(borderProps.className || (borderProps.style && Object.keys(borderProps.style).length > 0));
 
-    const figureClass = cx('wp-block-image', getAlignClass({ align }), (width || height) && 'is-resized', hasBorder && 'has-custom-border', className);
+    const figureClass = cx('wp-block-image', getAlignClass({ align }), (width || height) && 'is-resized', hasBorder && 'has-custom-border', getCustomStyleClass({ customStyle }), className);
 
     const figureStyle = { ...spacingProps.style };
 

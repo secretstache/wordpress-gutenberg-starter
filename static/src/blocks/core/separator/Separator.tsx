@@ -1,4 +1,4 @@
-import { cx, getSpacingProps, getAlignClass, styleOrUndefined } from '@lib/block-props';
+import { cx, getSpacingProps, getAlignClass, getCustomStyleClass, styleOrUndefined } from '@lib/block-props';
 import { resolveColor } from '@lib/theme';
 export interface SeparatorProps {
     // Content
@@ -11,6 +11,7 @@ export interface SeparatorProps {
     // Layout / other
     align?: 'center' | 'wide' | 'full';
     // Block
+    customStyle?: string;
     className?: string;
     id?: string;
 }
@@ -19,6 +20,7 @@ export interface SeparatorProps {
 export const Separator = ({
     tagName: Tag = 'hr',
     backgroundColor,
+    customStyle,
     className,
     id,
     align,
@@ -29,7 +31,7 @@ export const Separator = ({
     const resolvedColor = backgroundColor ? resolveColor(backgroundColor) : undefined;
     const spacingProps = getSpacingProps({ marginTop, marginBottom });
 
-    const blockClass = cx('wp-block-separator', backgroundColor && 'has-text-color', backgroundColor && `has-${backgroundColor}-color`, backgroundColor && `has-${backgroundColor}-background-color`, backgroundColor && 'has-background', 'has-alpha-channel-opacity', getAlignClass({ align }), className);
+    const blockClass = cx('wp-block-separator', backgroundColor && 'has-text-color', backgroundColor && `has-${backgroundColor}-color`, backgroundColor && `has-${backgroundColor}-background-color`, backgroundColor && 'has-background', 'has-alpha-channel-opacity', getAlignClass({ align }), getCustomStyleClass({ customStyle }), className);
 
     const blockStyle = {
         ...(resolvedColor && { backgroundColor: resolvedColor }),

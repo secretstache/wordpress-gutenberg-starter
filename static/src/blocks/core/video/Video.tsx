@@ -1,4 +1,4 @@
-import { cx, getSpacingProps, getAlignClass, styleOrUndefined } from '@lib/block-props';
+import { cx, getSpacingProps, getAlignClass, getCustomStyleClass, styleOrUndefined } from '@lib/block-props';
 import { url } from '@lib/url';
 
 export interface VideoTrack {
@@ -33,6 +33,7 @@ export interface VideoProps {
     // Layout / other
     align?: 'left' | 'center' | 'right' | 'wide' | 'full';
     // Block
+    customStyle?: string;
     className?: string;
     id?: string;
 }
@@ -50,6 +51,7 @@ export const Video = ({
     tracks = [],
     caption,
     align,
+    customStyle,
     className,
     id,
     // spacing
@@ -64,7 +66,7 @@ export const Video = ({
 }: VideoProps) => {
     const spacingProps = getSpacingProps({ paddingTop, paddingBottom, paddingLeft, paddingRight, marginTop, marginBottom, marginLeft, marginRight });
 
-    const figureClass = cx('wp-block-video', getAlignClass({ align }), className);
+    const figureClass = cx('wp-block-video', getAlignClass({ align }), getCustomStyleClass({ customStyle }), className);
 
     return (
         <figure

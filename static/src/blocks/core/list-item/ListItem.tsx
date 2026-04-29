@@ -1,5 +1,5 @@
 import type React from 'react';
-import { cx, getColorProps, getBorderProps, getSpacingProps, getTypographyProps } from '@lib/block-props';
+import { cx, getColorProps, getBorderProps, getSpacingProps, getTypographyProps, getCustomStyleClass } from '@lib/block-props';
 export interface ListItemProps {
     // Content
     content?: string;
@@ -30,6 +30,7 @@ export interface ListItemProps {
     borderWidth?: string;
     borderStyle?: string;
     // Block
+    customStyle?: string;
     className?: string;
     id?: string;
     // Children
@@ -41,6 +42,7 @@ export const ListItem = ({
     content = '',
     children,
     id,
+    customStyle,
     className,
     // named slugs
     textColor,
@@ -74,7 +76,7 @@ export const ListItem = ({
     const spacingProps = getSpacingProps({ paddingTop, paddingBottom, paddingLeft, paddingRight, marginTop, marginBottom, marginLeft, marginRight });
     const typographyProps = getTypographyProps({ fontFamily, fontSize, fontWeight, fontStyle, textTransform, textDecoration, letterSpacing, lineHeight });
 
-    const cls = cx(colorProps.className, borderProps.className, typographyProps.className, className);
+    const cls = cx(colorProps.className, borderProps.className, typographyProps.className, getCustomStyleClass({ customStyle }), className);
 
     const inlineStyle = {
         ...borderProps.style,

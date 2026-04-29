@@ -1,5 +1,5 @@
 .wp-block-separator {
-    --separator-width: rem(2);
+    --separator-width: toRem(2);
 
     box-sizing: border-box;
     margin-right: auto;

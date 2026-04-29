@@ -1,15 +1,15 @@
-const rem = (px) => {
+const toRem = (px) => {
     if (px === 0) return '0';
 
-    return `${(parseFloat(px) / 16).toFixed(4).replace(/\.?0+$/, '')}rem `;
+    return `${(parseFloat(px) / 16).toFixed(4).replace(/\.?0+$/, '')}rem`;
 };
 
 const customClamp = (minSize, maxSize, minBreakpoint = 480, maxBreakpoint = 1024, unit = 'vw') => {
     const slope = (maxSize - minSize) / (maxBreakpoint - minBreakpoint);
     const slopeToUnit = slope * 100;
-    const interceptRem = rem(minSize - slope * minBreakpoint);
-    const minSizeRem = rem(minSize);
-    const maxSizeRem = rem(maxSize);
+    const interceptRem = toRem(minSize - slope * minBreakpoint);
+    const minSizeRem = toRem(minSize);
+    const maxSizeRem = toRem(maxSize);
 
     return `clamp(${minSizeRem}, ${slopeToUnit}${unit} + ${interceptRem}, ${maxSizeRem})`;
 };
@@ -45,8 +45,8 @@ export function processCSSFunctions() {
             const normalizedId = id.split('?')[0];
 
             if (normalizedId.endsWith('.css')) {
-                // Replace rem() function calls
-                code = code.replace(/rem\((\d+)\)/g, (match, px) => rem(parseInt(px)));
+                // Replace toRem() function calls
+                code = code.replace(/toRem\((\d+)\)/g, (match, px) => toRem(parseInt(px)));
 
                 // Replace customClamp() function calls
                 code = code.replace(/customClamp\((\d+),\s*(\d+)(?:,\s*(\d+))?(?:,\s*(\d+))?(?:,\s*['"]?(\w+)['"]?)?\)/g, (match, min, max, minBp, maxBp, unit) => {

@@ -1,34 +1,33 @@
-@layer base {
-    .wp-block-heading {
-        color: var(--heading-color);
-    }
-    h1.wp-block-heading:not([class*="-font-size"]),
-    .wp-block-heading.has-7-xl-font-size {
-        @apply h1;
-    }
+.wp-block-heading {
+    color: var(--heading-color);
+}
 
-    h2.wp-block-heading:not([class*="-font-size"]),
-    .wp-block-heading.has-6-xl-font-size {
-        @apply h2;
-    }
+h1.wp-block-heading:not([class*="-font-size"]),
+.wp-block-heading.has-7-xl-font-size {
+    @apply h1;
+}
 
-    h3.wp-block-heading:not([class*="-font-size"]),
-    .wp-block-heading.has-5-xl-font-size {
-        @apply h3;
-    }
+h2.wp-block-heading:not([class*="-font-size"]),
+.wp-block-heading.has-6-xl-font-size {
+    @apply h2;
+}
 
-    h4.wp-block-heading:not([class*="-font-size"]),
-    .wp-block-heading.has-4-xl-font-size {
-        @apply h4;
-    }
+h3.wp-block-heading:not([class*="-font-size"]),
+.wp-block-heading.has-5-xl-font-size {
+    @apply h3;
+}
 
-    h5.wp-block-heading:not([class*="-font-size"]),
-    .wp-block-heading.has-3-xl-font-size {
-        @apply h5;
-    }
+h4.wp-block-heading:not([class*="-font-size"]),
+.wp-block-heading.has-4-xl-font-size {
+    @apply h4;
+}
 
-    h6.wp-block-heading:not([class*="-font-size"]),
-    .wp-block-heading.has-2-xl-font-size {
-        @apply h6;
-    }
+h5.wp-block-heading:not([class*="-font-size"]),
+.wp-block-heading.has-3-xl-font-size {
+    @apply h5;
+}
+
+h6.wp-block-heading:not([class*="-font-size"]),
+.wp-block-heading.has-2-xl-font-size {
+    @apply h6;
 }

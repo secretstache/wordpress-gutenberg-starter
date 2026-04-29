@@ -151,6 +151,28 @@ Wait for user confirmation. If any token is marked **update**, ask explicitly be
 
 ---
 
+## Step 3.5 — Add BugHerd Script (if provided)
+
+If the user provides a BugHerd `<script>` tag, add it to both:
+
+1. **`static/index.html`** — inside `<head>`, before `</head>`:
+
+```html
+<script type="text/javascript" src="https://www.bugherd.com/sidebarv2.js?apikey=APIKEY" async="true"></script>
+```
+
+2. **`static/.storybook/preview-head.html`** — at the top of the file, before any existing `<style>` tags:
+
+```html
+<script type="text/javascript" src="https://www.bugherd.com/sidebarv2.js?apikey=APIKEY" async="true"></script>
+```
+
+Use the exact `<script>` tag the user provided — do not alter the `apikey` or any attributes.
+
+If neither file contains an existing BugHerd script, add it. If one already exists (same `apikey`), skip. If one exists with a different `apikey`, replace it.
+
+---
+
 ## Step 4 — Write `resources/styles/settings/theme.css`
 
 Add new tokens in the correct location within the file:
@@ -159,6 +181,16 @@ Add new tokens in the correct location within the file:
 - **Font families** → inside `@theme { }`, under `/* Font family */`, with `--font-{slug}: {stack};`
 - **Font sizes** → inside `@theme { }`, under `/* Text size */`, with `--text-{slug}: {value};`. Use `customClamp(min, max)` for fluid sizes if the project already uses that pattern.
 - **Other reusable tokens** → in `:root { }` at the bottom of the file
+
+### Step 4a — Update `resources/styles/settings/safelist.css`
+
+After adding or updating any colours, update the `@source inline(...)` line that safelists `bg-*` and `text-*` utilities to include every colour slug (new and existing, including `black` and `white`):
+
+```css
+@source inline("{!,}{bg,text}-{black,white,navy,sand}");
+```
+
+List every colour slug inside the `{…}` group. This ensures Tailwind generates the utility classes even when they are not referenced directly in scanned source files.
 
 ```css
 @theme {
@@ -189,13 +221,13 @@ Add new tokens in the correct location within the file:
 
 ---
 
-## Step 4.5 — Add Google Fonts to `index.php`
+## Step 4.5 — Add Google Fonts to `index.php`, `static/index.html`, and Storybook
 
 For each font family extracted from Figma, check whether it is available on Google Fonts.
 
 If **any** of the fonts are on Google Fonts:
 
-1. Build a single combined `<link>` tag that loads all Google-hosted fonts in one request. Use the `family` query parameter with `+` for spaces and `|` to separate multiple families. Request all weights present in the Figma design.
+1. Build a single combined set of `<link>` tags that loads all Google-hosted fonts in one request. Use the `family` query parameter with `+` for spaces and `|` to separate multiple families. Request all weights present in the Figma design.
 
 ```html
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -203,11 +235,15 @@ If **any** of the fonts are on Google Fonts:
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 ```
 
-2. Open `index.php` and add those `<link>` tags inside `<head>`, **before** `<?php wp_head(); ?>`.
+2. Add those `<link>` tags to **all three** of the following files:
+
+  - **`index.php`** — inside `<head>`, before `<?php wp_head(); ?>`
+  - **`static/index.html`** — inside `<head>`, before the BugHerd `<script>` tag (or before `</head>` if no BugHerd script)
+  - **`static/.storybook/preview-head.html`** — at the top of the file, before the BugHerd `<script>` tag (or before any `<style>` tags)
 
 If a font is **not** on Google Fonts (custom, licensed, or self-hosted), skip it here — note it to the user so they can add it manually.
 
-If Google Fonts links already exist in `index.php`, update them to include any new families rather than duplicating the tags.
+If Google Fonts links already exist in any of these files, update them to include any new families rather than duplicating the tags.
 
 ---
 
@@ -302,6 +338,7 @@ New size `--text-4xl` → available as `text-4xl`.
 
 ## Final Checklist
 
+- [ ] BugHerd script added to `static/index.html` and `static/.storybook/preview-head.html` if provided by user
 - [ ] Both theme files + `shared/backgrounds.js` read before fetching Figma
 - [ ] All Figma links fetched via MCP; colors, fonts, sizes, and spacing extracted
 - [ ] Cross-reference complete; plan shown to user with `add / update / keep / skip` per token
@@ -311,7 +348,8 @@ New size `--text-4xl` → available as `text-4xl`.
 - [ ] `--spacing-container-padding`, `--spacing-column`, `--spacing-block` all present — values updated to match design
 - [ ] All font sizes use `customClamp(minPx, maxPx)` — no static px/rem values for `--text-*`
 - [ ] `resources/styles/settings/theme.css` — vars in correct section inside `@theme {}`; other tokens in `:root`
+- [ ] `resources/styles/settings/safelist.css` — `{bg,text}-{…}` inline source updated to include all colour slugs (new and existing)
 - [ ] `theme.json` — `styles.spacing.blockGap` updated if `--spacing-block` changed; new palette/font/size entries added; `size` always references CSS var
 - [ ] `shared/backgrounds.js` — dark colour slugs added if applicable
-- [ ] Google Fonts checked for each font family — `<link>` tags added to `index.php` before `<?php wp_head(); ?>` for any Google-hosted fonts; non-Google fonts noted to user
+- [ ] Google Fonts checked for each font family — `<link>` tags added to `index.php`, `static/index.html`, and `static/.storybook/preview-head.html` for any Google-hosted fonts; non-Google fonts noted to user
 - [ ] No arbitrary values anywhere — every design value is a named token in `theme.css`

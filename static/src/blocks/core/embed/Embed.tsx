@@ -1,4 +1,4 @@
-import { cx, getSpacingProps, getAlignClass, styleOrUndefined } from '@lib/block-props';
+import { cx, getSpacingProps, getAlignClass, getCustomStyleClass, styleOrUndefined } from '@lib/block-props';
 
 // --- Provider detection -----------------------------------------------------
 
@@ -70,6 +70,7 @@ export interface EmbedProps {
     // Layout / other
     align?: 'left' | 'center' | 'right' | 'wide' | 'full';
     // Block
+    customStyle?: string;
     className?: string;
     id?: string;
 }
@@ -87,6 +88,7 @@ export const Embed = ({
     // iframe title (comes from oEmbed response in WP; provide via prop here)
     title,
     align,
+    customStyle,
     className,
     id,
     // spacing
@@ -105,7 +107,7 @@ export const Embed = ({
 
     const spacingProps = getSpacingProps({ marginTop, marginBottom, marginLeft, marginRight });
 
-    const figureClass = cx('wp-block-embed', type && `is-type-${type}`, providerNameSlug && `is-provider-${providerNameSlug}`, providerNameSlug && `wp-block-embed-${providerNameSlug}`, aspectRatio && `wp-embed-aspect-${aspectRatio}`, aspectRatio && 'wp-has-aspect-ratio', getAlignClass({ align }), className);
+    const figureClass = cx('wp-block-embed', type && `is-type-${type}`, providerNameSlug && `is-provider-${providerNameSlug}`, providerNameSlug && `wp-block-embed-${providerNameSlug}`, aspectRatio && `wp-embed-aspect-${aspectRatio}`, aspectRatio && 'wp-has-aspect-ratio', getAlignClass({ align }), getCustomStyleClass({ customStyle }), className);
 
     return (
         <figure

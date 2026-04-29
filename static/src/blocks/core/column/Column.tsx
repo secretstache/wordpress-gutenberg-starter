@@ -1,6 +1,6 @@
 import type React from 'react';
 import { useId } from 'react';
-import { cx, getColorProps, getBorderProps, getSpacingProps, getShadowProps, getTypographyProps, buildFlowBlockGapCSS, buildConstrainedLayoutCSS } from '@lib/block-props';
+import { cx, getColorProps, getBorderProps, getSpacingProps, getShadowProps, getTypographyProps, getCustomStyleClass, buildFlowBlockGapCSS, buildConstrainedLayoutCSS } from '@lib/block-props';
 import { resolveSpacing } from '@lib/theme';
 export interface ColumnProps {
     // Colors
@@ -35,6 +35,7 @@ export interface ColumnProps {
     // Shadow
     shadow?: string;
     // Block
+    customStyle?: string;
     className?: string;
     id?: string;
     // Children
@@ -50,6 +51,7 @@ export const Column = ({
     useContentWidth,
     contentWidth,
     justifyContent,
+    customStyle,
     className,
     id,
     // named slugs
@@ -103,7 +105,7 @@ export const Column = ({
 
     const layoutClass = constrainedCSS ? 'is-layout-constrained' : 'is-layout-flow';
 
-    const blockClass = cx('wp-block-column', layoutClass, verticalAlignment && `is-vertically-aligned-${verticalAlignment}`, scopedCSS && scopeId, colorProps.className, borderProps.className, typographyProps.className, className);
+    const blockClass = cx('wp-block-column', layoutClass, verticalAlignment && `is-vertically-aligned-${verticalAlignment}`, scopedCSS && scopeId, colorProps.className, borderProps.className, typographyProps.className, getCustomStyleClass({ customStyle }), className);
 
     let flexBasis;
     if (width && /\d/.test(width)) {

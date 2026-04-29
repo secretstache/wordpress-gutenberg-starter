@@ -77,6 +77,17 @@ Go directly to the Final Checklist after writing.
 Fetch the design via the Figma MCP tool, or read the image. From the design, determine:
 
 - What **content** the block needs to display (text fields, images, icons, links, lists)
+
+#### Image assets — always do this when a Figma design is provided
+
+After fetching the design context, identify all photo/image asset URLs returned (constants named `imgPropertyImage*`, `imgPhoto*`, `imgHero*`, etc. — skip SVG icons and vectors). For each one:
+
+1. `curl -sL <url> -o <name>.tmp` — download the asset
+2. `cwebp -q 80 <name>.tmp -o <name>.webp` — convert to WebP at quality 80
+3. Save to `resources/images/cms/` and delete the `.tmp` file
+4. Reference as `assets/images/cms/<name>.webp` in Storybook stories
+
+Use descriptive file names based on content (e.g. `gallery-exterior-1.webp`, `hero-living-room.webp`).
 - What **visual variants** exist (size, style, alignment, colour scheme)
 - Whether the block is a **layout container** that wraps other content (→ needs `children`)
 - Whether any behaviour requires **client-side JavaScript** (carousels, scroll triggers, third-party embeds). Don't use React-specific JS — this is a static view of a WordPress block.
@@ -229,6 +240,8 @@ Structure rules:
 - Conditional rendering: `{prop && <el>...</el>}` for optional content, never render empty elements
 - Images: always use `url()` from `@lib/url` for `src`
 
+**No React state (`useState`, `useReducer`, etc.)** — Static block components render as plain HTML in WordPress with no React runtime. Any interactive state (open/closed, active tab, current slide) must be managed by the client JS (`Component` class in `resources/scripts/client/blocks/`), which adds/removes CSS classes on the element. Use Tailwind's `group-[&.is-open]/name` or `[&.is-active]` arbitrary variant selectors to style those states purely in the TSX markup — no `useState` needed.
+
 ```tsx
 export const {BlockName} = ({
     title,
@@ -292,6 +305,7 @@ export default {BlockName};
 | SSM spacing (section-level) | Tailwind class: `pt-ssm-3`, `mt-ssm-1` |
 | WP block editor spacing | Pass as prop → `getSpacingProps()` → inline style |
 | A colour/font/size NOT in the theme | Add it to `theme.css` (and `theme.json` if editor-selectable) first, then use the token |
+| Raw pixel values in inline styles | Wrap in `rem()` — e.g. `{ fontSize: 'rem(14)' }`. Never use bare `px` values. |
 
 ### Import reference
 
@@ -403,6 +417,15 @@ export { {BlockName} } from './{BlockName}';
 
 Import the file in `resources/styles/app.css` and `resources/styles/editor-canvas.css`.
 
+### CSS authoring rules — always follow these
+
+| Rule | Details |
+|------|---------|
+| **No raw pixels** | Wrap every pixel value in `rem()` — e.g. `rem(14)` not `14px`. This is a custom PostCSS function available throughout the project. |
+| **Tailwind v4 via `@apply`** | Default to `@apply` with Tailwind v4 utilities. Fall back to plain CSS only when no utility maps cleanly (e.g. custom aspect ratios, `calc()` expressions using CSS variables). |
+| **Transitions** | Always use Tailwind transition utilities (`transition-colors`, `transition-all`, etc.) via `@apply`. Never write a plain `transition:` declaration. |
+| **Dark background — always required** | Every interactive element (buttons, arrows, links, icons, form controls) **must** have dark-mode styles. Use the `* { @variant dark { .selector { ... } } }` pattern at the end of the CSS file. The `dark` variant is defined in `resources/styles/settings/variant.css` as `.bg-dark` on body/ancestor. Typical mapping: borders/text `dark-blue → white`; hover fill `dark-blue → white` with text inverting to `dark-blue`. See `button.css` for the reference implementation. |
+
 ---
 
 ## Step 7 — Client JavaScript (only if needed)
@@ -475,3 +498,5 @@ const {blockName}Els = [...document.querySelectorAll('.wp-block-ssm-{folder}')];
 - [ ] `index.ts` — single-line named re-export
 - [ ] `resources/styles/blocks/{folder}.css` — only if Tailwind is insufficient; imported in `app.css` and `editor-canvas.css`
 - [ ] `resources/scripts/client/blocks/{folder}.js` — only if interactive JS is needed; extends `Component`, registered in `app.js` via dynamic import + `getOrCreate()`
+- [ ] **Dark background** — every interactive element has a `* { @variant dark { ... } }` block; colours invert correctly against `.bg-dark`
+- [ ] No React state (`useState`, `useReducer`, etc.) is used

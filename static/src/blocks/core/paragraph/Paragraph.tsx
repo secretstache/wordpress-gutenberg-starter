@@ -1,5 +1,5 @@
 import type React from 'react';
-import { cx, getColorProps, getBorderProps, getSpacingProps, getTypographyProps, getAlignClass } from '@lib/block-props';
+import { cx, getColorProps, getBorderProps, getSpacingProps, getTypographyProps, getAlignClass, getCustomStyleClass } from '@lib/block-props';
 export interface ParagraphProps {
     // Content
     children?: React.ReactNode;
@@ -32,6 +32,7 @@ export interface ParagraphProps {
     borderWidth?: string;
     borderStyle?: string;
     // Block
+    customStyle?: string;
     className?: string;
     id?: string;
 }
@@ -42,6 +43,7 @@ export const Paragraph = ({
     dropCap = false,
     textAlign,
     align,
+    customStyle,
     className,
     id,
     // named slugs
@@ -77,7 +79,7 @@ export const Paragraph = ({
     // Drop cap is suppressed when text is centered or right-aligned (matches WP logic)
     const hasDropCap = textAlign === 'center' || textAlign === 'right' ? false : dropCap;
 
-    const paragraphClass = cx(getAlignClass({ align }), colorProps.className, borderProps.className, typographyProps.className, textAlign && `has-text-align-${textAlign}`, hasDropCap && 'has-drop-cap', fontSize && 'has-custom-font-size', className);
+    const paragraphClass = cx(getAlignClass({ align }), colorProps.className, borderProps.className, typographyProps.className, textAlign && `has-text-align-${textAlign}`, hasDropCap && 'has-drop-cap', fontSize && 'has-custom-font-size', getCustomStyleClass({ customStyle }), className);
 
     const paragraphStyle = {
         ...borderProps.style,

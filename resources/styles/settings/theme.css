@@ -1,4 +1,4 @@
-@theme {
+@theme inline {
     /* Colors */
     --color-*: initial;
     --color-black: #000;
@@ -21,20 +21,20 @@
 
     /* Spacings */
     --spacing-ssm-0: 0;
-    --spacing-ssm-1: rem(32);
-    --spacing-ssm-2: rem(54);
-    --spacing-ssm-3: rem(80);
-    --spacing-ssm-4: rem(130);
-    --spacing-ssm-5: rem(154);
-    --spacing-ssm-6: rem(200);
-    --spacing-block: rem(36);
+    --spacing-ssm-1: toRem(32);
+    --spacing-ssm-2: toRem(54);
+    --spacing-ssm-3: toRem(80);
+    --spacing-ssm-4: toRem(130);
+    --spacing-ssm-5: toRem(154);
+    --spacing-ssm-6: toRem(200);
+    --spacing-block: toRem(36);
     --spacing-column: customClamp(24, 52);
-    --spacing-container-padding: rem(24);
+    --spacing-container-padding: toRem(24);
 
     /* container */
     --container-*: initial;
-    --container-default: rem(1200);
-    --container-wide: rem(1440);
+    --container-default: toRem(1200);
+    --container-wide: toRem(1440);
 }
 
 :root {

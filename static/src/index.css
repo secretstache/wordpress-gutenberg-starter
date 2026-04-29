@@ -1,2 +1,3 @@
 @import "@wordpress/block-library/build-style/style.css";
+@import "./css/gravityforms/gravity.css";
 @import "../../resources/styles/app.css";

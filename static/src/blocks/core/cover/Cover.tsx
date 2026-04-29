@@ -1,6 +1,6 @@
 import type React from 'react';
 import { useId } from 'react';
-import { cx, getColorProps, getBorderProps, getSpacingProps, getShadowProps, getTypographyProps, getAlignClass, buildFlowBlockGapCSS, buildConstrainedLayoutCSS } from '@lib/block-props';
+import { cx, getColorProps, getBorderProps, getSpacingProps, getShadowProps, getTypographyProps, getAlignClass, getCustomStyleClass, buildFlowBlockGapCSS, buildConstrainedLayoutCSS } from '@lib/block-props';
 import { resolveColor, resolveSpacing } from '@lib/theme';
 import { url as resolveUrl } from '@lib/url';
 // --- Helpers inlined from ./shared.js (avoids WP-specific imports) -----------
@@ -80,6 +80,7 @@ export interface CoverProps {
     // Shadow
     shadow?: string;
     // Block
+    customStyle?: string;
     className?: string;
     id?: string;
     // Children
@@ -91,6 +92,7 @@ export const Cover = ({
     children,
     tagName = 'div',
     id,
+    customStyle,
     className,
     align,
     // media
@@ -160,7 +162,7 @@ export const Cover = ({
 
     const backgroundImage = url ? `url(${url})` : undefined;
 
-    const blockClass = cx('wp-block-cover', hasParallax && 'has-parallax', isRepeated && 'is-repeated', !isContentPositionCenter(contentPosition) && 'has-custom-content-position', getPositionClassName(contentPosition), getAlignClass({ align }), colorProps.className, borderProps.className, typographyProps.className, className);
+    const blockClass = cx('wp-block-cover', hasParallax && 'has-parallax', isRepeated && 'is-repeated', !isContentPositionCenter(contentPosition) && 'has-custom-content-position', getPositionClassName(contentPosition), getAlignClass({ align }), colorProps.className, borderProps.className, typographyProps.className, getCustomStyleClass({ customStyle }), className);
 
     const blockStyle = {
         minHeight: minHeightValue || undefined,

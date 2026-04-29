@@ -1,5 +1,5 @@
 import type React from 'react';
-import { cx, getColorProps, getBorderProps, getSpacingProps, getBlockGapStyle, getAlignClass, styleOrUndefined } from '@lib/block-props';
+import { cx, getColorProps, getBorderProps, getSpacingProps, getBlockGapStyle, getAlignClass, getCustomStyleClass, styleOrUndefined } from '@lib/block-props';
 export interface GalleryProps {
     // Content
     caption?: string;
@@ -26,6 +26,7 @@ export interface GalleryProps {
     borderWidth?: string;
     borderStyle?: string;
     // Block
+    customStyle?: string;
     className?: string;
     id?: string;
     // Children
@@ -40,6 +41,7 @@ export const Gallery = ({
     caption,
     align,
     id,
+    customStyle,
     className,
     // block supports — no text color
     backgroundColor,
@@ -66,7 +68,7 @@ export const Gallery = ({
     const spacingProps = getSpacingProps({ paddingTop, paddingBottom, paddingLeft, paddingRight, marginTop, marginBottom, marginLeft, marginRight });
     const gapStyle = getBlockGapStyle(undefined, blockSpacingRow, blockSpacingColumn);
 
-    const cls = cx('wp-block-gallery', 'has-nested-images', columns !== undefined ? `columns-${columns}` : 'columns-default', imageCrop && 'is-cropped', getAlignClass({ align }), colorProps.className, borderProps.className, className);
+    const cls = cx('wp-block-gallery', 'has-nested-images', columns !== undefined ? `columns-${columns}` : 'columns-default', imageCrop && 'is-cropped', getAlignClass({ align }), colorProps.className, borderProps.className, getCustomStyleClass({ customStyle }), className);
 
     const inlineStyle = {
         ...borderProps.style,

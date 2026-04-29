@@ -24,8 +24,8 @@
 
     /* form */
     --gf-form-gap-x: 0;
-    --gf-form-gap-y: rem(24);
-    --gf-form-footer-margin-y-start: rem(56);
+    --gf-form-gap-y: toRem(24);
+    --gf-form-footer-margin-y-start: toRem(56);
     --gf-form-footer-gap: 8px;
     --gf-field-gap-x: 12px;
     --gf-field-gap-y: 12px;
@@ -39,7 +39,7 @@
     --gf-label-req-gap: 6px;
 
     @media (--md) {
-        --gf-form-gap-x: rem(32);
+        --gf-form-gap-x: toRem(32);
     }
 
     /* labels */
@@ -59,7 +59,7 @@
     --gf-ctrl-bg-color-error: var(--gf-ctrl-bg-color);
 
     /* input height */
-    --gf-ctrl-size: rem(59);
+    --gf-ctrl-size: toRem(59);
 
     /* input border and shadow */
     --gf-ctrl-border-width: 1px;
@@ -80,8 +80,8 @@
     --gf-ctrl-color-error: var(--gf-ctrl-color);
 
     /* input padding */
-    --gf-ctrl-padding-x: rem(16);
-    --gf-ctrl-padding-y: rem(10);
+    --gf-ctrl-padding-x: toRem(16);
+    --gf-ctrl-padding-y: toRem(10);
 
     /* input font */
     --gf-ctrl-font-family: var(--gf-font-family-primary);
@@ -114,22 +114,22 @@
     /* checkbox & radio */
     --gf-ctrl-choice-check-color: var(--color-black);
     --gf-ctrl-choice-check-color-disabled: var(--gf-ctrl-choice-check-color);
-    --gf-ctrl-choice-size: rem(24);
+    --gf-ctrl-choice-size: toRem(24);
     --gf-ctrl-checkbox-check-radius: 0;
-    --gf-ctrl-checkbox-check-size: rem(20);
-    --gf-ctrl-radio-check-size: rem(20);
+    --gf-ctrl-checkbox-check-size: toRem(20);
+    --gf-ctrl-radio-check-size: toRem(20);
     --gf-icon-ctrl-checkbox: "";
 
     /* select */
     --gf-ctrl-select-icon: svgUri('<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_1414_37841)"><path d="M16 8L11.707 12.293L7.414 8L6 9.414L11.707 15.121L17.414 9.414L16 8Z" fill="#1C1B1C"/></g><defs><clipPath id="clip0_1414_37841"><rect width="24" height="24" fill="white"/></clipPath></defs></svg>');
-    --gf-ctrl-select-icon-size: rem(24);
+    --gf-ctrl-select-icon-size: toRem(24);
 
     /* submit button */
     --gf-ctrl-btn-radius: 0;
     --gf-ctrl-btn-shadow: none;
-    --gf-ctrl-btn-size: rem(52);
-    --gf-ctrl-btn-padding-x: rem(24);
-    --gf-ctrl-btn-padding-y: rem(16);
+    --gf-ctrl-btn-size: toRem(52);
+    --gf-ctrl-btn-padding-x: toRem(24);
+    --gf-ctrl-btn-padding-y: toRem(16);
     --gf-ctrl-btn-font-family: var(--gf-font-family-primary);
     --gf-ctrl-btn-font-size: var(--theme-font-size-primary);
     --gf-ctrl-btn-font-style: var(--gf-font-style-base);
@@ -148,9 +148,9 @@
     --gf-ctrl-btn-color-hover-primary: var(--theme-color-secondary);
 
     textarea {
-        --gf-ctrl-size: rem(240);
+        --gf-ctrl-size: toRem(240);
         --gf-ctrl-font-size: var(--theme-font-size-tertiary);
-        --gf-ctrl-padding-y: rem(16);
+        --gf-ctrl-padding-y: toRem(16);
         --gf-ctrl-placeholder-font-size: var(--gf-ctrl-font-size);
     }
 
@@ -165,8 +165,8 @@
             mask: svgUri('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><!--!Font Awesome Free v7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M530.8 134.1C545.1 144.5 548.3 164.5 537.9 178.8L281.9 530.8C276.4 538.4 267.9 543.1 258.5 543.9C249.1 544.7 240 541.2 233.4 534.6L105.4 406.6C92.9 394.1 92.9 373.8 105.4 361.3C117.9 348.8 138.2 348.8 150.7 361.3L252.2 462.8L486.2 141.1C496.6 126.8 516.6 123.6 530.9 134z"/></svg>') no-repeat;
             mask-size: contain;
             background: var(--gf-ctrl-choice-check-color);
-            width: rem(16);
-            height: rem(16);
+            width: toRem(16);
+            height: toRem(16);
         }
     }
 
@@ -209,12 +209,12 @@
     .subscribe-form {
         --gf-form-gap-y: 0;
         --gf-form-gap-x: 0;
-        --gf-form-footer-margin-y-start: rem(20);
+        --gf-form-footer-margin-y-start: toRem(20);
 
-        --gf-ctrl-border-width: rem(4);
+        --gf-ctrl-border-width: toRem(4);
         --gf-ctrl-font-weight: 600;
         --gf-ctrl-placeholder-font-weight: var(--gf-ctrl-font-weight);
-        --gf-ctrl-size: rem(69);
+        --gf-ctrl-size: toRem(69);
 
         .gform_fields {
             border: var(--gf-ctrl-border-width) var(--gf-ctrl-border-style) var(--gf-ctrl-border-color);
@@ -222,16 +222,14 @@
     }
 }
 
-* {
+.gform_wrapper.gravity-theme {
     @variant dark {
-        .gform_wrapper.gravity-theme {
-            --gf-ctrl-btn-bg-color-hover-primary: var(--color-white);
-            --gf-ctrl-btn-color-hover-primary: var(--theme-color-primary);
+        --gf-ctrl-btn-bg-color-hover-primary: var(--color-white);
+        --gf-ctrl-btn-color-hover-primary: var(--theme-color-primary);
 
-            input[type="checkbox"] {
-                --gf-ctrl-border-color: var(--color-white);
-                --gf-ctrl-bg-color: var(--color-white);
-            }
+        input[type="checkbox"] {
+            --gf-ctrl-border-color: var(--color-white);
+            --gf-ctrl-bg-color: var(--color-white);
         }
     }
 }

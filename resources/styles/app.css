@@ -1,4 +1,4 @@
-@import "tailwindcss" theme(static);
+@import "tailwindcss";
 
 @import "./settings/media.css";
 @import "./settings/source.css";

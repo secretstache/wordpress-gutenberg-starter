@@ -1,5 +1,5 @@
 import type React from 'react';
-import { cx, getColorProps, getBorderProps, getSpacingProps, getTypographyProps, getAlignClass, styleOrUndefined } from '@lib/block-props';
+import { cx, getColorProps, getBorderProps, getSpacingProps, getTypographyProps, getAlignClass, getCustomStyleClass, styleOrUndefined } from '@lib/block-props';
 
 // ─── Inner components ────────────────────────────────────────────────────────
 
@@ -85,6 +85,7 @@ export interface TableProps {
     borderWidth?: string;
     borderStyle?: string;
     // Block
+    customStyle?: string;
     className?: string;
     id?: string;
     // Children
@@ -130,6 +131,7 @@ export const Table = ({
     marginLeft,
     marginRight,
     align,
+    customStyle,
     className,
     id,
     children,
@@ -139,7 +141,7 @@ export const Table = ({
     const spacingProps = getSpacingProps({ paddingTop, paddingBottom, paddingLeft, paddingRight, marginTop, marginBottom, marginLeft, marginRight });
     const typographyProps = getTypographyProps({ fontFamily, fontSize, fontWeight, fontStyle, textTransform, textDecoration, letterSpacing, lineHeight });
 
-    const figureClass = cx('wp-block-table', getAlignClass({ align }), typographyProps.className, className);
+    const figureClass = cx('wp-block-table', getAlignClass({ align }), typographyProps.className, getCustomStyleClass({ customStyle }), className);
 
     const figureStyle = {
         ...spacingProps.style,

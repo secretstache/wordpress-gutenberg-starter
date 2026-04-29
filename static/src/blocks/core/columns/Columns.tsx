@@ -1,5 +1,5 @@
 import type React from 'react';
-import { cx, getColorProps, getBorderProps, getSpacingProps, getShadowProps, getTypographyProps, getBlockGapStyle, getAlignClass } from '@lib/block-props';
+import { cx, getColorProps, getBorderProps, getSpacingProps, getShadowProps, getTypographyProps, getBlockGapStyle, getAlignClass, getCustomStyleClass } from '@lib/block-props';
 export interface ColumnsProps {
     // Colors
     textColor?: string;
@@ -34,6 +34,7 @@ export interface ColumnsProps {
     // Shadow
     shadow?: string;
     // Block
+    customStyle?: string;
     className?: string;
     id?: string;
     // Children
@@ -46,6 +47,7 @@ export const Columns = ({
     verticalAlignment,
     isStackedOnMobile = true,
     align,
+    customStyle,
     className,
     id,
     // named slugs
@@ -85,7 +87,7 @@ export const Columns = ({
     const typographyProps = getTypographyProps({ fontFamily, fontSize, fontWeight, fontStyle, textTransform, textDecoration, letterSpacing, lineHeight });
     const gapStyle = getBlockGapStyle(undefined, blockSpacingRow, blockSpacingColumn);
 
-    const blockClass = cx('wp-block-columns', 'is-layout-flex', verticalAlignment && `are-vertically-aligned-${verticalAlignment}`, !isStackedOnMobile && 'is-not-stacked-on-mobile', getAlignClass({ align }), colorProps.className, borderProps.className, typographyProps.className, className);
+    const blockClass = cx('wp-block-columns', 'is-layout-flex', verticalAlignment && `are-vertically-aligned-${verticalAlignment}`, !isStackedOnMobile && 'is-not-stacked-on-mobile', getAlignClass({ align }), colorProps.className, borderProps.className, typographyProps.className, getCustomStyleClass({ customStyle }), className);
 
     const blockStyle = {
         ...borderProps.style,

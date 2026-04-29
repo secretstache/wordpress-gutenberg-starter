@@ -1,6 +1,6 @@
 import type React from 'react';
 import { useId } from 'react';
-import { cx, getColorProps, getBorderProps, getSpacingProps, getShadowProps, getTypographyProps, getBlockGapStyle, getAlignClass, styleOrUndefined, buildConstrainedLayoutCSS, type ConstrainedLayout } from '@lib/block-props';
+import { cx, getColorProps, getBorderProps, getSpacingProps, getShadowProps, getTypographyProps, getBlockGapStyle, getAlignClass, getCustomStyleClass, styleOrUndefined, buildConstrainedLayoutCSS, type ConstrainedLayout } from '@lib/block-props';
 import { resolveSpacing } from '@lib/theme';
 // Mirrors CSS value maps from @wordpress/block-editor/src/layouts/flex.js
 const justifyContentMap: Record<string, string> = { 'left': 'flex-start', 'right': 'flex-end', 'center': 'center', 'space-between': 'space-between' };
@@ -157,6 +157,7 @@ export interface GroupProps {
     // Shadow
     shadow?: string;
     // Block
+    customStyle?: string;
     className?: string;
     id?: string;
     // Children
@@ -181,6 +182,7 @@ export const Group = ({
     gridItemPosition,
     // Common
     align,
+    customStyle,
     className,
     id,
     // named slugs
@@ -244,7 +246,7 @@ export const Group = ({
 
     const constrainedCSS = buildConstrainedLayoutCSS(scopeId, layout as ConstrainedLayout | undefined, blockGapValue);
 
-    const cls = cx('wp-block-group', resolveLayoutClasses(layout), constrainedCSS && scopeId, getAlignClass({ align }), colorProps.className, borderProps.className, typographyProps.className, className);
+    const cls = cx('wp-block-group', resolveLayoutClasses(layout), constrainedCSS && scopeId, getAlignClass({ align }), colorProps.className, borderProps.className, typographyProps.className, getCustomStyleClass({ customStyle }), className);
 
     const inlineStyle = {
         ...borderProps.style,
