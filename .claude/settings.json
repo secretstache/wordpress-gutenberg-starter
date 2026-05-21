@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:storybook.js.org)",
+      "Bash(curl -sv http://localhost:6006/mcp)",
+      "Bash(curl -s --max-time 5 http://localhost:6006/)",
+      "Bash(curl -s --max-time 5 http://localhost:6006/mcp)",
+      "Bash(curl -s --max-time 5 http://localhost:6006/index.json)",
+      "Bash(curl -s --max-time 5 http://localhost:6006/storybook-addon-mcp)",
+      "Bash(curl -s --max-time 5 \"http://localhost:6006/mcp?sessionId=test\")",
+      "Bash(curl -s --max-time 5 -X POST http://localhost:6006/mcp -H \"Content-Type: application/json\" -d '{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"initialize\",\"params\":{\"protocolVersion\":\"2024-11-05\",\"capabilities\":{},\"clientInfo\":{\"name\":\"test\",\"version\":\"1.0\"}}}')",
+      "mcp__storybook__get-documentation-for-story",
+      "mcp__storybook__get-documentation",
+      "mcp__storybook__list-all-documentation"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "storybook"
+  ]
+}
