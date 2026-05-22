@@ -21,10 +21,10 @@ Generates `docs/ui-breakdown.yml` from the static component library, waits for d
 1. Call `mcp__storybook__list-all-documentation` to get all stories.
 2. Collect entries whose `title` starts with `Blocks/Custom/` or `Blocks/Core/`.
 3. For each entry, extract:
-   - `id` — the Storybook story ID
-   - `title` — e.g. `Blocks/Custom/Accordion`
-   - Component name — last segment of `title` (e.g. `Accordion`)
-   - Block slug — kebab-case of the component name (e.g. `accordion`)
+  - `id` — the Storybook story ID
+  - `title` — e.g. `Blocks/Custom/Accordion`
+  - Component name — last segment of `title` (e.g. `Accordion`)
+  - Block slug — kebab-case of the component name (e.g. `accordion`)
 
 **Fallback: TSX files** (if Storybook is not running)
 
@@ -73,20 +73,28 @@ Read `static/src/blocks/custom/{slug}/{ComponentName}.tsx` (or the `core/` equiv
 
 Apply this mapping to every prop:
 
-| Static prop type | `type` value |
-|---|---|
-| `boolean` | `ToggleControl` |
-| `string` free text | `TextControl` |
-| `string` URL / link+tab | `LinkControl` |
-| `string` enum 2–4 options | `ToggleGroupControl` |
-| `string` enum 5+ options | `SelectControl` |
-| `{ value, slug }` color | `ColorPaletteControl` |
-| `{ id, url, alt }` media | `MediaControl` |
-| `number` | `RangeControl` |
-| preview toggle (data-query blocks) | `PreviewControl` |
-| spacing props (all collapsed) | `ResponsiveSpacingControl` (single entry) |
-| `ReactNode` / `children` | `InnerBlocks` |
-| `Item[]` complex array | child block via `inner_blocks` |
+| Static prop type | `type` / `control` value | Notes |
+|---|---|---|
+| `boolean` | `ToggleControl` | InspectorControls |
+| `string` visible inline content (title, label, heading shown in block body) | `RichText` | inline in block markup — add `tag:` (h2/h3/p/span) if not default span |
+| `string` config / sidebar text (year, URL label, secondary text) | `TextControl` | InspectorControls |
+| `string` URL / link+tab | `LinkControl` | generates `__experimentalLinkControl` |
+| `string` enum 2–4 options | `ToggleGroupControl` | InspectorControls |
+| `string` enum 5+ options | `SelectControl` | InspectorControls |
+| `{ value, slug }` color | `ColorPaletteControl` | InspectorControls |
+| `{ id, url, alt }` media | `MediaControl` | InspectorControls |
+| `number` | `RangeControl` | InspectorControls |
+| preview toggle (data-query blocks) | `PreviewControl` | InspectorControls |
+| spacing props (all collapsed) | `ResponsiveSpacingControl` (single entry) | InspectorControls |
+| `ReactNode` / `children` | `InnerBlocks` | block markup |
+| `Item[]` complex array | child block via `inner_blocks` | — |
+
+**RichText decision rule:**
+- Use `control: RichText` when the editor would click the text directly in the block canvas to edit it (the text is the primary visible content of the item — a label, title, or heading inside the card/button/item).
+- Use `TextControl` when the text is a configuration value the editor would change from the sidebar (year, URL label, secondary identifier).
+- Quick check: click in canvas → `RichText`. Go to sidebar → `TextControl`.
+
+**`inline_fields` for parent blocks:** If the parent block itself has inline-editable text (outside child blocks), add an `inline_fields` array at the block level with `{name, tag, placeholder}` entries. These generate `<RichText>` in the parent's `edit.jsx` — NOT in InspectorControls.
 
 **Boolean naming:** Boolean props get the `is` prefix in block attributes (e.g. TSX `openFirstOnLoad` → attribute `isOpenedByDefault`).
 
@@ -108,32 +116,32 @@ One YAML key per block. The block slug is the top-level key — no `slug:` field
 
 ```yaml
 {slug}:
-  render: server-side | client-side | innerblocks-parent
-  php_wrapper: true   # only when block needs "render":"index" PHP + save:()=><InnerBlocks.Content />
-  controls:
-    - label: Layout
-      type: ToggleGroupControl
-      attr: layout
-      options: [option-a, option-b]
-      default: option-a
-    - label: Image
-      type: MediaControl
-      attr: image
-    - label: Open First on Load
-      type: ToggleControl
-      attr: isOpenedByDefault
-    - label: Spacing
-      type: ResponsiveSpacingControl
-  inner_blocks:
-    - slug: {child-slug}
-      attrs:
-        - {name: title, type: string, control: RichText}
-        - {name: image, type: object, control: MediaControl}
-        - {name: content, control: InnerBlocks}
-  data_source:
-    type: cpt | taxonomy
-    name: {post_type_or_taxonomy_slug}
-    query_attrs: [queryType, numberOfPosts, curatedTerms, curatedPosts]
+render: server-side | client-side | innerblocks-parent
+php_wrapper: true   # only when block needs "render":"index" PHP + save:()=><InnerBlocks.Content />
+controls:
+  - label: Layout
+    type: ToggleGroupControl
+    attr: layout
+    options: [option-a, option-b]
+    default: option-a
+  - label: Image
+    type: MediaControl
+    attr: image
+  - label: Open First on Load
+    type: ToggleControl
+    attr: isOpenedByDefault
+  - label: Spacing
+    type: ResponsiveSpacingControl
+inner_blocks:
+  - slug: {child-slug}
+    attrs:
+      - {name: title, type: string, control: RichText}
+      - {name: image, type: object, control: MediaControl}
+      - {name: content, control: InnerBlocks}
+data_source:
+  type: cpt | taxonomy
+  name: {post_type_or_taxonomy_slug}
+  query_attrs: [queryType, numberOfPosts, curatedTerms, curatedPosts]
 ```
 
 **Schema rules:**
@@ -182,11 +190,11 @@ Wait for the user to reply `ready` (or any explicit confirmation), then proceed 
    ```
 
 4. **For each block, one at a time:**
-   - Check if `static/src/blocks/custom/{slug}/` exists:
-     - **Yes** → apply the full **migrate-static workflow** (all steps). Step 0 will read `docs/ui-breakdown.yml` automatically and use the YAML spec as the source of truth.
-     - **No** → apply the full **register-block workflow** (all steps), using the YAML spec entry as the requirements source instead of gathering requirements from the user.
-   - Complete the block fully before moving to the next.
-   - Report `✓ {slug} — done` after each block.
+  - Check if `static/src/blocks/custom/{slug}/` exists:
+    - **Yes** → apply the full **migrate-static workflow** (all steps). Step 0 will read `docs/ui-breakdown.yml` automatically and use the YAML spec as the source of truth.
+    - **No** → apply the full **register-block workflow** (all steps), using the YAML spec entry as the requirements source instead of gathering requirements from the user.
+  - Complete the block fully before moving to the next.
+  - Report `✓ {slug} — done` after each block.
 
 5. **Final summary** — list all files created or updated across all blocks.
 

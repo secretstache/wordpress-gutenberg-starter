@@ -19,14 +19,14 @@ Before reading the static component, check whether a spec entry already exists f
 1. Check if `docs/ui-breakdown.yml` exists in the project root.
 2. If it exists, look for a top-level key matching the block slug (e.g. `accordion:`, `blog-feed:`).
 3. **If a spec entry is found:**
-   - Use `controls` as the authoritative attribute/control plan — do not re-derive controls from TSX props.
-   - Use `inner_blocks` (if present) to determine child block structure and attributes.
-   - Use `data_source` (if present) to determine render strategy and query config.
-   - Use `render` to determine whether this is `server-side`, `client-side`, or `innerblocks-parent`.
-   - Check for `php_wrapper: true` — if present, the block needs both `"render":"index"` in block.json AND `save: () => <InnerBlocks.Content />`.
-   - Check for `skip: true` — if present, stop immediately and inform the user this block is marked to skip.
-   - Still read the TSX component (Step 0-B below), but **only for the HTML structure** to migrate to Blade — not for prop→control decisions.
-   - Log: `"Found spec entry for ssm/{slug} in docs/ui-breakdown.yml — using YAML spec."`
+  - Use `controls` as the authoritative attribute/control plan — do not re-derive controls from TSX props.
+  - Use `inner_blocks` (if present) to determine child block structure and attributes.
+  - Use `data_source` (if present) to determine render strategy and query config.
+  - Use `render` to determine whether this is `server-side`, `client-side`, or `innerblocks-parent`.
+  - Check for `php_wrapper: true` — if present, the block needs both `"render":"index"` in block.json AND `save: () => <InnerBlocks.Content />`.
+  - Check for `skip: true` — if present, stop immediately and inform the user this block is marked to skip.
+  - Still read the TSX component (Step 0-B below), but **only for the HTML structure** to migrate to Blade — not for prop→control decisions.
+  - Log: `"Found spec entry for ssm/{slug} in docs/ui-breakdown.yml — using YAML spec."`
 4. **If no spec entry is found**, fall back to TSX-based inference (Step 0-B below — behavior unchanged).
 
 ---
@@ -84,13 +84,43 @@ Apply these rules to every prop found in the static template:
 | Attribute | Editor control |
 |-----------|---------------|
 | `boolean` | `<ToggleControl>` |
-| `string` free text | `<TextControl>` |
+| `string` visible inline content (title, label, heading in block body) | `<RichText>` inline in markup — see RichText rules below |
+| `string` config / sidebar text (year, URL label, secondary text) | `<TextControl>` |
 | `string` HTML content | `<RichText>` in edit, `<RichText.Content>` in save |
 | `string` enum with 2–4 options | `<ToggleGroupControl>` (use `__experimentalToggleGroupControl`) |
 | `string` enum with 5+ options | `<RadioControl>` |
 | `object {value, slug}` color | `<ColorPaletteControl>` from `@secretstache/wordpress-gutenberg` |
 | `object {id, url, alt}` media | `<MediaControl>` from `@secretstache/wordpress-gutenberg` |
 | `number` bounded | `<RangeControl>` with min/max/step |
+
+**RichText decision rule:**
+- Use `<RichText>` (not TextControl) when the text is the primary visible content the editor clicks directly in the canvas to edit — a label, title, or heading shown inside the card/button/item.
+- Use `<TextControl>` in InspectorControls when the text is a config value the editor would change from the sidebar (year, URL label, secondary text).
+
+**RichText generation rules (when spec or TSX indicates RichText):**
+
+When an `inner_blocks` attr has `control: RichText` (from `docs/ui-breakdown.yml`) OR the TSX child component has a string prop that maps to inline text:
+
+```jsx
+// edit.jsx of the child block — inline in markup, NOT in InspectorControls
+import { RichText } from '@wordpress/block-editor';
+
+<RichText
+    tagName="{tag from spec, default: span}"
+    value={title}
+    onChange={(value) => setAttributes({ title: value })}
+    placeholder="Enter title..."
+/>
+```
+
+```jsx
+// save.jsx of the child block (only when block has a save function, not PHP render)
+import { RichText } from '@wordpress/block-editor';
+
+<RichText.Content tagName="{tag}" value={title} />
+```
+
+When the spec has `inline_fields` at the parent block level, apply the same pattern in the **parent** block's `edit.jsx` and `save.jsx`.
 
 **Boolean attribute naming:** Boolean TSX props must be prefixed with `is` in `block.json`. Rename if needed for clarity (e.g. TSX prop `openFirstOnLoad` → block attribute `isOpenedByDefault`).
 
@@ -412,10 +442,10 @@ import { RichText } from '@wordpress/block-editor';
 
 // In the canvas preview (NOT inside InspectorControls):
 <RichText
-    tagName="span"
-    value={title}
-    onChange={(title) => setAttributes({ title })}
-    placeholder="Enter title..."
+  tagName="span"
+  value={title}
+  onChange={(title) => setAttributes({ title })}
+  placeholder="Enter title..."
 />
 ```
 

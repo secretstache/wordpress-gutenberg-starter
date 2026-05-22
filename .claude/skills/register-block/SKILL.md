@@ -154,8 +154,8 @@ import { edit } from './edit.jsx';
 import blockMetadata from './block.json';
 
 registerBlockType(blockMetadata, {
-    edit,
-    save: () => <InnerBlocks.Content />,
+  edit,
+  save: () => <InnerBlocks.Content />,
 });
 ```
 
@@ -180,14 +180,14 @@ import { edit } from './edit.jsx';
 import blockMetadata from './block.json';
 
 registerBlockType(blockMetadata, {
-    edit,
-    save: () => <InnerBlocks.Content />,
-    __experimentalLabel: (attributes, { context }) => {
-        const customName = attributes?.metadata?.name;
-        if (context === 'list-view' && (customName || attributes.title)) {
-            return customName || attributes.title;
-        }
-    },
+  edit,
+  save: () => <InnerBlocks.Content />,
+  __experimentalLabel: (attributes, { context }) => {
+    const customName = attributes?.metadata?.name;
+    if (context === 'list-view' && (customName || attributes.title)) {
+      return customName || attributes.title;
+    }
+  },
 });
 ```
 
@@ -244,8 +244,8 @@ import blockMetadata from './block.json';
 import './timeline-item/index.jsx'; // ← child registers itself
 
 registerBlockType(blockMetadata, {
-    edit,
-    save: () => <InnerBlocks.Content />,
+  edit,
+  save: () => <InnerBlocks.Content />,
 });
 ```
 
@@ -253,37 +253,37 @@ registerBlockType(blockMetadata, {
 
 ```jsx
 import {
-    InnerBlocks,
-    useBlockProps,
-    useInnerBlocksProps,
+  InnerBlocks,
+  useBlockProps,
+  useInnerBlocksProps,
 } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import { __experimentalEmptyBlockPlaceholder as EmptyBlockPlaceholder } from '@secretstache/wordpress-gutenberg';
 
 export const edit = ({ clientId }) => {
-    const hasInnerBlocks = useSelect(
-        (select) => select('core/block-editor').getBlockOrder(clientId).length > 0,
-        [],
-    );
+  const hasInnerBlocks = useSelect(
+    (select) => select('core/block-editor').getBlockOrder(clientId).length > 0,
+    [],
+  );
 
-    const blockProps = useBlockProps();
+  const blockProps = useBlockProps();
 
-    const innerBlocksProps = useInnerBlocksProps(
-        { className: 'wp-block-ssm-timeline__slides' },
-        { allowedBlocks: ['ssm/timeline-item'], renderAppender: false },
-    );
+  const innerBlocksProps = useInnerBlocksProps(
+    { className: 'wp-block-ssm-timeline__slides' },
+    { allowedBlocks: ['ssm/timeline-item'], renderAppender: false },
+  );
 
-    return (
-        <div {...blockProps}>
-            <div {...innerBlocksProps}>
-                {innerBlocksProps.children}
-                {hasInnerBlocks
-                    ? <InnerBlocks.DefaultBlockAppender />
-                    : <EmptyBlockPlaceholder title="No items yet" clientId={clientId} />
-                }
-            </div>
-        </div>
-    );
+  return (
+    <div {...blockProps}>
+      <div {...innerBlocksProps}>
+        {innerBlocksProps.children}
+        {hasInnerBlocks
+          ? <InnerBlocks.DefaultBlockAppender />
+          : <EmptyBlockPlaceholder title="No items yet" clientId={clientId} />
+        }
+      </div>
+    </div>
+  );
 };
 ```
 
@@ -295,11 +295,11 @@ import { useMemo, useCallback } from '@wordpress/element';
 // Attributes: url (string), linkIsOpenInNewTab (boolean)
 const linkValue = useMemo(() => ({ url, opensInNewTab: linkIsOpenInNewTab }), [url, linkIsOpenInNewTab]);
 <LinkControl
-    value={linkValue}
-    onChange={(link) => setAttributes({ url: link?.url || '', linkIsOpenInNewTab: link?.opensInNewTab || false })}
-    onRemove={() => setAttributes({ url: '', linkIsOpenInNewTab: false })}
-    settings={[{ id: 'opensInNewTab', title: 'Open in new tab', isToggle: true }]}
-    showInitialSuggestions={true}
+  value={linkValue}
+  onChange={(link) => setAttributes({ url: link?.url || '', linkIsOpenInNewTab: link?.opensInNewTab || false })}
+  onRemove={() => setAttributes({ url: '', linkIsOpenInNewTab: false })}
+  settings={[{ id: 'opensInNewTab', title: 'Open in new tab', isToggle: true }]}
+  showInitialSuggestions={true}
 />
 ```
 In save.jsx: `<a href={url || '#'} {...(linkIsOpenInNewTab && { target: '_blank', rel: 'noreferrer noopener' })}>`
@@ -308,48 +308,48 @@ In save.jsx: `<a href={url || '#'} {...(linkIsOpenInNewTab && { target: '_blank'
 
 ```jsx
 import {
-    useBlockProps,
-    useInnerBlocksProps,
-    InspectorControls,
+  useBlockProps,
+  useInnerBlocksProps,
+  InspectorControls,
 } from '@wordpress/block-editor';
 import { PanelBody, __experimentalNumberControl as NumberControl } from '@wordpress/components';
 import { useCallback } from '@wordpress/element';
 
 const ALLOWED_BLOCKS = ['core/image', 'core/heading', 'core/paragraph'];
 const TEMPLATE = [
-    ['core/image', {}],
-    ['core/heading', { level: 3, placeholder: 'Headline' }],
-    ['core/paragraph', { placeholder: 'Description...' }],
+  ['core/image', {}],
+  ['core/heading', { level: 3, placeholder: 'Headline' }],
+  ['core/paragraph', { placeholder: 'Description...' }],
 ];
 
 export const edit = ({ attributes, setAttributes }) => {
-    const { year } = attributes;
+  const { year } = attributes;
 
-    const onYearChange = useCallback(
-        (value) => setAttributes({ year: value !== '' ? parseInt(value, 10) : null }),
-        [],
-    );
+  const onYearChange = useCallback(
+    (value) => setAttributes({ year: value !== '' ? parseInt(value, 10) : null }),
+    [],
+  );
 
-    const blockProps = useBlockProps();
-    const innerBlocksProps = useInnerBlocksProps(
-        { className: 'wp-block-ssm-timeline-item__content' },
-        { allowedBlocks: ALLOWED_BLOCKS, template: TEMPLATE },
-    );
+  const blockProps = useBlockProps();
+  const innerBlocksProps = useInnerBlocksProps(
+    { className: 'wp-block-ssm-timeline-item__content' },
+    { allowedBlocks: ALLOWED_BLOCKS, template: TEMPLATE },
+  );
 
-    return (
-        <>
-            <InspectorControls>
-                <PanelBody title="Settings">
-                    <NumberControl label="Year" value={year ?? ''} onChange={onYearChange} />
-                </PanelBody>
-            </InspectorControls>
+  return (
+    <>
+      <InspectorControls>
+        <PanelBody title="Settings">
+          <NumberControl label="Year" value={year ?? ''} onChange={onYearChange} />
+        </PanelBody>
+      </InspectorControls>
 
-            <div {...blockProps}>
-                {year && <div className="wp-block-ssm-timeline-item__year">{year}</div>}
-                <div {...innerBlocksProps} />
-            </div>
-        </>
-    );
+      <div {...blockProps}>
+        {year && <div className="wp-block-ssm-timeline-item__year">{year}</div>}
+        <div {...innerBlocksProps} />
+      </div>
+    </>
+  );
 };
 ```
 
@@ -370,68 +370,68 @@ The edit component has two parts: **InspectorControls** (sidebar) and the **bloc
 ```jsx
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import {
-    PanelBody,
-    ToggleControl,
-    TextControl,
-    RangeControl,
-    __experimentalToggleGroupControl as ToggleGroupControl,
-    __experimentalToggleGroupControlOption as ToggleGroupControlOption,
-    __experimentalDivider as Divider,
+  PanelBody,
+  ToggleControl,
+  TextControl,
+  RangeControl,
+  __experimentalToggleGroupControl as ToggleGroupControl,
+  __experimentalToggleGroupControlOption as ToggleGroupControlOption,
+  __experimentalDivider as Divider,
 } from '@wordpress/components';
 import { useCallback } from '@wordpress/element';
 import { ColorPaletteControl, MediaControl } from '@secretstache/wordpress-gutenberg';
 
 export const edit = ({ attributes, setAttributes }) => {
-    const { isEnabled, label, size, accentColor } = attributes;
+  const { isEnabled, label, size, accentColor } = attributes;
 
-    const blockProps = useBlockProps({
-        className: 'wp-block-ssm-block-slug',
-    });
+  const blockProps = useBlockProps({
+    className: 'wp-block-ssm-block-slug',
+  });
 
-    const onSizeChange = useCallback((size) => {
-        setAttributes({ size });
-    }, []);
+  const onSizeChange = useCallback((size) => {
+    setAttributes({ size });
+  }, []);
 
-    return (
-        <>
-            <InspectorControls>
-                <PanelBody title="Settings">
+  return (
+    <>
+      <InspectorControls>
+        <PanelBody title="Settings">
 
-                    <ToggleControl
-                        label="Enable feature"
-                        checked={isEnabled}
-                        onChange={(isEnabled) => setAttributes({ isEnabled })}
-                    />
+          <ToggleControl
+            label="Enable feature"
+            checked={isEnabled}
+            onChange={(isEnabled) => setAttributes({ isEnabled })}
+          />
 
-                    <Divider />
+          <Divider />
 
-                    <ToggleGroupControl
-                        isBlock
-                        label="Size"
-                        value={size}
-                        onChange={onSizeChange}
-                    >
-                        <ToggleGroupControlOption value="default" label="Default" />
-                        <ToggleGroupControlOption value="large" label="Large" />
-                    </ToggleGroupControl>
+          <ToggleGroupControl
+            isBlock
+            label="Size"
+            value={size}
+            onChange={onSizeChange}
+          >
+            <ToggleGroupControlOption value="default" label="Default" />
+            <ToggleGroupControlOption value="large" label="Large" />
+          </ToggleGroupControl>
 
-                    <Divider />
+          <Divider />
 
-                    <ColorPaletteControl
-                        label="Accent Color"
-                        value={accentColor?.value}
-                        attributeName="accentColor"
-                        setAttributes={setAttributes}
-                    />
+          <ColorPaletteControl
+            label="Accent Color"
+            value={accentColor?.value}
+            attributeName="accentColor"
+            setAttributes={setAttributes}
+          />
 
-                </PanelBody>
-            </InspectorControls>
+        </PanelBody>
+      </InspectorControls>
 
-            <div {...blockProps}>
-                {/* Preview placeholder — no static template yet */}
-            </div>
-        </>
-    );
+      <div {...blockProps}>
+        {/* Preview placeholder — no static template yet */}
+      </div>
+    </>
+  );
 };
 ```
 
@@ -449,10 +449,10 @@ export const edit = ({ attributes, setAttributes }) => {
 import { RichText } from '@wordpress/block-editor';
 
 <RichText
-    tagName="span"
-    value={title}
-    onChange={(title) => setAttributes({ title })}
-    placeholder="Enter title..."
+  tagName="span"
+  value={title}
+  onChange={(title) => setAttributes({ title })}
+  placeholder="Enter title..."
 />
 ```
 
@@ -467,9 +467,9 @@ const TEMPLATE = [['ssm/child-block', {}]];
 
 const blockProps = useBlockProps();
 const innerBlocksProps = useInnerBlocksProps(blockProps, {
-    allowedBlocks: ALLOWED_BLOCKS,
-    template: TEMPLATE,
-    renderAppender: InnerBlocks.DefaultBlockAppender,
+  allowedBlocks: ALLOWED_BLOCKS,
+  template: TEMPLATE,
+  renderAppender: InnerBlocks.DefaultBlockAppender,
 });
 
 return <div {...innerBlocksProps} />;
@@ -480,9 +480,9 @@ return <div {...innerBlocksProps} />;
 import { select } from '@wordpress/data';
 import { useMemo } from '@wordpress/element';
 import {
-    ResourcesWrapper,
-    DataQueryControls,
-    useDataQuery,
+  ResourcesWrapper,
+  DataQueryControls,
+  useDataQuery,
 } from '@secretstache/wordpress-gutenberg';
 
 // Define constants locally (not imported from index.jsx):
@@ -496,21 +496,21 @@ const isQueryTypeCurated    = queryType === QUERY_TYPE.CURATED;
 const isQueryTypeByCategory = queryType === QUERY_TYPE.BY_CATEGORY;
 
 const isEmptySelection =
-    (isQueryTypeCurated && !curatedPosts?.length) ||
-    (isQueryTypeByCategory && !curatedTerms?.length);
+  (isQueryTypeCurated && !curatedPosts?.length) ||
+  (isQueryTypeByCategory && !curatedTerms?.length);
 
 const queryConfig = useMemo(() => ({
-    postType: POST_TYPE.ITEM,
-    taxonomySlug: TAXONOMY.CATEGORY,
-    curatedTermsIds: isQueryTypeByCategory && curatedTerms,
-    curatedPostsIds: isQueryTypeCurated && curatedPosts?.map((post) => post.value),
-    numberOfPosts: !isQueryTypeCurated ? numberOfPosts : -1,
-    extraQueryArgs: {},
+  postType: POST_TYPE.ITEM,
+  taxonomySlug: TAXONOMY.CATEGORY,
+  curatedTermsIds: isQueryTypeByCategory && curatedTerms,
+  curatedPostsIds: isQueryTypeCurated && curatedPosts?.map((post) => post.value),
+  numberOfPosts: !isQueryTypeCurated ? numberOfPosts : -1,
+  extraQueryArgs: {},
 }), [queryType, curatedTerms, curatedPosts, numberOfPosts]);
 
 const { postsToShow, isResolving, isEmpty } = useDataQuery(
-    queryConfig,
-    [queryType, curatedTerms, curatedPosts, numberOfPosts],
+  queryConfig,
+  [queryType, curatedTerms, curatedPosts, numberOfPosts],
 );
 ```
 
@@ -521,7 +521,7 @@ import { ToolbarButton } from '@wordpress/components';
 import { replace } from '@wordpress/icons';
 
 <BlockControls>
-    <ToolbarButton icon={replace} label="Change image" onClick={openModal} />
+  <ToolbarButton icon={replace} label="Change image" onClick={openModal} />
 </BlockControls>
 ```
 
@@ -533,19 +533,19 @@ import { replace } from '@wordpress/icons';
 import { useBlockProps } from '@wordpress/block-editor';
 
 export const save = ({ attributes }) => {
-    const { title, size, accentColor } = attributes;
+  const { title, size, accentColor } = attributes;
 
-    if (!title) return null;
+  if (!title) return null;
 
-    const blockProps = useBlockProps.save({
-        className: 'wp-block-ssm-block-slug',
-    });
+  const blockProps = useBlockProps.save({
+    className: 'wp-block-ssm-block-slug',
+  });
 
-    return (
-        <div {...blockProps}>
-            {/* Placeholder — update when static template is ready */}
-        </div>
-    );
+  return (
+    <div {...blockProps}>
+      {/* Placeholder — update when static template is ready */}
+    </div>
+  );
 };
 ```
 
@@ -796,15 +796,15 @@ Skipping `editor-canvas.css` means all block styles, including `:root` CSS varia
 ```jsx
 className={classNames({ 'gradient-to-b': isBackgroundTypeGradient && hasGradient })}
 style={isBackgroundTypeGradient && hasGradient ? {
-    '--gradient-from': `color-mix(in oklab, var(--color-${gradientFromColor?.slug}) ${gradientFromOpacity}%, transparent)`,
-    '--gradient-to':   `color-mix(in oklab, var(--color-${gradientToColor?.slug}) ${gradientToOpacity}%, transparent)`,
+  '--gradient-from': `color-mix(in oklab, var(--color-${gradientFromColor?.slug}) ${gradientFromOpacity}%, transparent)`,
+  '--gradient-to':   `color-mix(in oklab, var(--color-${gradientToColor?.slug}) ${gradientToOpacity}%, transparent)`,
 } : {}}
 ```
 
 **Required CSS utility** (add to block's `.css` file if not present):
 ```css
 .gradient-to-b {
-    background-image: linear-gradient(to bottom, var(--gradient-from), var(--gradient-to));
+  background-image: linear-gradient(to bottom, var(--gradient-from), var(--gradient-to));
 }
 ```
 
@@ -828,27 +828,27 @@ style={isBackgroundTypeGradient && hasGradient ? {
 ```jsx
 <ToggleControl label="Include Overlay" onChange={onIncludeOverlayChange} checked={isIncludeOverlay} />
 {isIncludeOverlay && (
-    <>
-        <RadioControl label="Overlay Type" selected={overlayType}
-            options={[{ label: 'Solid', value: 'solid' }, { label: 'Gradient', value: 'gradient' }]}
-            onChange={onOverlayTypeChange}
-        />
-        {isOverlayTypeSolid && (
-            <>
-                <ColorPaletteControl label="Overlay Color" value={overlayColor?.value} attributeName="overlayColor" setAttributes={setAttributes} />
-                <RangeControl label="Opacity" value={overlayOpacity} onChange={onOverlayOpacityChange} min={0} max={100} step={5} />
-            </>
-        )}
-        {isOverlayTypeGradient && (
-            <>
-                <ColorPaletteControl label="From Color" value={overlayGradientFromColor?.value} attributeName="overlayGradientFromColor" setAttributes={setAttributes} />
-                <RangeControl label="From Opacity" value={overlayGradientFromOpacity} onChange={onOverlayGradientFromOpacityChange} min={0} max={100} step={5} />
-                <Divider />
-                <ColorPaletteControl label="To Color" value={overlayGradientToColor?.value} attributeName="overlayGradientToColor" setAttributes={setAttributes} />
-                <RangeControl label="To Opacity" value={overlayGradientToOpacity} onChange={onOverlayGradientToOpacityChange} min={0} max={100} step={5} />
-            </>
-        )}
-    </>
+  <>
+    <RadioControl label="Overlay Type" selected={overlayType}
+                  options={[{ label: 'Solid', value: 'solid' }, { label: 'Gradient', value: 'gradient' }]}
+                  onChange={onOverlayTypeChange}
+    />
+    {isOverlayTypeSolid && (
+      <>
+        <ColorPaletteControl label="Overlay Color" value={overlayColor?.value} attributeName="overlayColor" setAttributes={setAttributes} />
+        <RangeControl label="Opacity" value={overlayOpacity} onChange={onOverlayOpacityChange} min={0} max={100} step={5} />
+      </>
+    )}
+    {isOverlayTypeGradient && (
+      <>
+        <ColorPaletteControl label="From Color" value={overlayGradientFromColor?.value} attributeName="overlayGradientFromColor" setAttributes={setAttributes} />
+        <RangeControl label="From Opacity" value={overlayGradientFromOpacity} onChange={onOverlayGradientFromOpacityChange} min={0} max={100} step={5} />
+        <Divider />
+        <ColorPaletteControl label="To Color" value={overlayGradientToColor?.value} attributeName="overlayGradientToColor" setAttributes={setAttributes} />
+        <RangeControl label="To Opacity" value={overlayGradientToOpacity} onChange={onOverlayGradientToOpacityChange} min={0} max={100} step={5} />
+      </>
+    )}
+  </>
 )}
 ```
 
@@ -856,15 +856,15 @@ style={isBackgroundTypeGradient && hasGradient ? {
 ```jsx
 {/* Solid overlay */}
 {isIncludeOverlay && isOverlayTypeSolid && (
-    <div className="absolute inset-0 z-10"
-        style={{ backgroundColor: `color-mix(in oklab, var(--color-${overlayColor?.slug}) ${overlayOpacity}%, transparent)` }} />
+  <div className="absolute inset-0 z-10"
+       style={{ backgroundColor: `color-mix(in oklab, var(--color-${overlayColor?.slug}) ${overlayOpacity}%, transparent)` }} />
 )}
 {/* Gradient overlay */}
 {isIncludeOverlay && isOverlayTypeGradient && (
-    <div className="absolute inset-0 gradient-to-b z-10" style={{
-        '--gradient-from': `color-mix(in oklab, var(--color-${overlayGradientFromColor?.slug}) ${overlayGradientFromOpacity}%, transparent)`,
-        '--gradient-to':   `color-mix(in oklab, var(--color-${overlayGradientToColor?.slug}) ${overlayGradientToOpacity}%, transparent)`,
-    }} />
+  <div className="absolute inset-0 gradient-to-b z-10" style={{
+    '--gradient-from': `color-mix(in oklab, var(--color-${overlayGradientFromColor?.slug}) ${overlayGradientFromOpacity}%, transparent)`,
+    '--gradient-to':   `color-mix(in oklab, var(--color-${overlayGradientToColor?.slug}) ${overlayGradientToOpacity}%, transparent)`,
+  }} />
 )}
 ```
 
