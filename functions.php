@@ -73,15 +73,6 @@ add_filter('upload_mimes', function ($mimes) {
     return $mimes;
 });
 
-add_action('init', function () {
-    register_post_meta( 'page', 'isShowHeader', array(
-        'show_in_rest' => true,
-        'single' => true,
-        'type' => 'boolean',
-        'default' => true,
-    ));
-});
-
 add_action( 'init', function () {
 
     $post_types = ['page', 'post'];
