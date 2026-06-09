@@ -82,6 +82,7 @@ export class HeaderStubPlugin {
 
     unregister() {
         unregisterPlugin(this.name);
+        this.removeHeader();
         this.isRegistered = false;
     }
 
