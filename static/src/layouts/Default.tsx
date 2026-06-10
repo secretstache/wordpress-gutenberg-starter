@@ -12,7 +12,7 @@ export const Default = ({ children }: DefaultProps) => {
         <>
             <SiteHeader />
             <Offcanvas />
-            <main>{children}</main>
+            <main className="content flex-grow overflow-clip" id="main">{children}</main>
             <SiteFooter />
         </>
     );

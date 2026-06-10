@@ -136,6 +136,16 @@
     > :where(:not(:is(.alignleft, .alignright, .alignfull))) {
         @apply container;
     }
+
+    > :where(.alignwide) {
+        max-width: var(--wp--style--global--wide-size) !important;
+    }
+
+    > :where(.alignfull) {
+        margin-inline: calc(50% - (var(--vw, 1vw) * 50)) !important;
+        width: var(--container-full-width) !important;
+        max-width: calc(var(--vw, 1vw) * 100) !important;
+    }
 }
 
 :where(.editor-styles-wrapper .block-editor-block-list__layout.is-root-container) {
