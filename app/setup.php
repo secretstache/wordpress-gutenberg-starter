@@ -58,16 +58,18 @@ add_action('wp_enqueue_scripts', function () {
  *
  * @return void
  */
-add_filter('admin_head', function () {
+add_action('admin_head', function () {
     if (! get_current_screen()?->is_block_editor()) {
         return;
     }
 
-    $dependencies = json_decode(Vite::content('editor.deps.json'));
+    if (! Vite::isRunningHot()) {
+        $dependencies = json_decode(Vite::content('editor.deps.json'));
 
-    foreach ($dependencies as $dependency) {
-        if (! wp_script_is($dependency)) {
-            wp_enqueue_script($dependency);
+        foreach ($dependencies as $dependency) {
+            if (! wp_script_is($dependency)) {
+                wp_enqueue_script($dependency);
+            }
         }
     }
 
@@ -95,6 +97,12 @@ add_filter('theme_file_path', function ($path, $file) {
 add_action('admin_enqueue_scripts', function () {
     wp_enqueue_style( 'sage/admin.css', Vite::asset('resources/styles/admin.css'));
 }, 100);
+/**
+ * Disable on-demand block asset loading.
+ *
+ * @link https://core.trac.wordpress.org/ticket/61965
+ */
+add_filter('should_load_separate_core_block_assets', '__return_false');
 
 /**
  * Register the initial theme setup.

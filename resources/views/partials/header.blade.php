@@ -6,7 +6,7 @@
 
 <header @class([
     'site-header',
-    'site-header--editor' => $is_editor,
+    'site-header--editor absolute alignfull' => $is_editor ?? false,
 ])>
 
 	<div class="grid-container">

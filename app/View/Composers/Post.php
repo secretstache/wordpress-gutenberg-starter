@@ -19,8 +19,6 @@ class Post extends Composer
 
     /**
      * Retrieve the post title.
-     *
-     * @return string
      */
     public function title(): string
     {
@@ -57,8 +55,6 @@ class Post extends Composer
 
     /**
      * Retrieve the pagination links.
-     *
-     * @return string
      */
     public function pagination(): string
     {

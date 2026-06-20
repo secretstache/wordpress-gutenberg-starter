@@ -1,9 +1,9 @@
 /node_modules
 /vendor
-/public
 /storage
+/public/*
+!/public/.gitkeep
 .env
-.budfiles
 npm-debug.log
 yarn-error.log
 .DS_Store
