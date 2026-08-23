@@ -11,7 +11,7 @@ import {
 } from '@secretstache/wordpress-gutenberg';
 
 import { BackgroundToneClassFilter } from '@scripts/editor/filters/index.js';
-import { HeaderStubPlugin } from '@scripts/editor/plugins/index.js';
+import { HeaderStubPlugin, RootPasteAppenderPlugin } from '@scripts/editor/plugins/index.js';
 import { unsetBlocks, setBlocksVariations, setBlocksStyles, DARK_COLORS, BLOCK_CATEGORIES } from '@scripts/editor/utils/index.js';
 
 import './blocks/section-wrapper/index.jsx';
@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const rootBlockAppenderPlugin = new RootBlockAppenderPlugin();
     const rootPatternAppenderPlugin = new RootPatternAppenderPlugin();
+    const rootPasteAppenderPlugin = new RootPasteAppenderPlugin();
     const headerStubPlugin = new HeaderStubPlugin();
 
     const rootBlockFilter = new RootBlockFilter();
@@ -31,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const backgroundToneClassFilter = new BackgroundToneClassFilter(DARK_COLORS);
 
     subscribeForPostTypeChange((currentPostType) => {
-        setPostTypePlugins([ rootBlockAppenderPlugin, rootPatternAppenderPlugin, headerStubPlugin ], currentPostType);
+        setPostTypePlugins([ rootBlockAppenderPlugin, rootPatternAppenderPlugin, rootPasteAppenderPlugin, headerStubPlugin ], currentPostType);
 
         setPostTypeFilters(
             [

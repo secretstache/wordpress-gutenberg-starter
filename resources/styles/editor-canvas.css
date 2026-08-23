@@ -50,7 +50,8 @@
         }
 
         &:has(.root-block-appender),
-        &:has(.root-pattern-appender) {
+        &:has(.root-pattern-appender),
+        &:has(.root-paste-appender) {
             margin-bottom: 3rem;
             padding-bottom: 200px;
 
@@ -124,6 +125,70 @@
             &:hover::after {
                 visibility: visible;
                 opacity: 1;
+            }
+        }
+
+        .root-paste-appender {
+            position: absolute;
+            bottom: 30px;
+            left: 72.5%;
+            margin: unset !important;
+            box-shadow: none;
+            border: 1px solid #000;
+            border-left: none;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            width: 12.5%;
+
+            &::after {
+                position: absolute;
+                bottom: -30px;
+                left: 50%;
+                transform: translateX(-50%);
+                visibility: hidden;
+                opacity: 0;
+                z-index: 1;
+                transition: opacity 0.3s;
+                border-radius: 2px;
+                background: #000;
+                padding: 4px 8px;
+                width: max-content;
+                max-width: 200px;
+                content: attr(data-tooltip);
+                color: #f0f0f0;
+                font-size: 12px;
+                line-height: 1.4;
+                font-family:
+                    -apple-system,
+                    BlinkMacSystemFont,
+                    Segoe UI,
+                    Roboto,
+                    Oxygen-Sans,
+                    Ubuntu,
+                    Cantarell,
+                    Helvetica Neue,
+                    sans-serif;
+                text-align: center;
+                white-space: nowrap;
+            }
+
+            &:hover::after {
+                visibility: visible;
+                opacity: 1;
+            }
+        }
+
+        /* Three-button layout: needs the extra :has() to out-rank the package's two-button rules */
+        &:has(> .root-block-appender):has(> .root-pattern-appender):has(> .root-paste-appender) {
+            > .root-block-appender {
+                width: 45%;
+            }
+
+            > .root-pattern-appender {
+                left: 60%;
+                width: 12.5%;
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
             }
         }
     }
