@@ -1,0 +1,61 @@
+/* ============================================================
+   Layer 1 — Structural
+   Defines how each variant behaves. Do not put colors,
+   backgrounds or other visual design here.
+   ============================================================ */
+
+.menu {
+    &.is-dropdown {
+        @apply flex;
+
+        > li {
+            @apply relative py-2;
+
+            > a {
+                @apply block transition-colors;
+                transition-duration: var(--tr);
+            }
+
+            &.menu-item-has-children {
+                @apply flex items-center;
+
+                ul {
+                    @apply absolute top-full left-0 z-10;
+                    @apply invisible opacity-0 pointer-events-none;
+                    transition:
+                        opacity var(--tr),
+                        visibility var(--tr);
+
+                    li {
+                        @apply mb-3 last:mb-0;
+                    }
+                }
+
+                /* last item: align submenu to the right so it doesn't overflow */
+                &:last-of-type > ul {
+                    @apply right-0 left-auto;
+                }
+
+                /* open on hover or when arrow button is expanded */
+                [aria-expanded="true"],
+                > a:hover {
+                    + ul {
+                        @apply visible opacity-100 pointer-events-auto;
+                    }
+                }
+
+                .dropdown-arrow {
+                    @apply w-3 ml-2;
+                }
+            }
+        }
+    }
+
+    &.is-horizontal {
+        @apply flex flex-wrap;
+    }
+
+    &.is-vertical {
+        @apply flex flex-col;
+    }
+}

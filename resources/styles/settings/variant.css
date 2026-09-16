@@ -1,1 +1,0 @@
-@custom-variant dark (&:is(&.bg-dark, .bg-dark *:not(.bg-light *)));

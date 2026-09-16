@@ -4,12 +4,17 @@ ul.wp-block-list.is-style-default,
 ol.wp-block-list.is-style-default {
     @apply pl-5;
 
+    /* Row spacing as a gap between siblings (`+ li`) rather than a margin on every
+       row undone on the last (`mb-3 last:mb-0`) — no trailing space to cancel, and
+       nothing to re-cancel when a list style wants tighter rows. */
     li {
-        @apply mb-3 last:mb-0;
-
         ul,
         ol {
             @apply pl-5 lg:pl-10 mt-3;
+        }
+
+        + li {
+            @apply mt-3;
         }
     }
 }

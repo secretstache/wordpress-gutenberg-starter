@@ -1,34 +1,35 @@
-@layer base {
-    .wp-block-heading {
-        color: var(--heading-color);
-    }
-    h1.wp-block-heading:not([class*="-font-size"]),
-    .wp-block-heading.has-7-xl-font-size {
-        @apply h1;
-    }
+.wp-block-heading {
+    color: var(--heading-color);
+}
 
-    h2.wp-block-heading:not([class*="-font-size"]),
-    .wp-block-heading.has-6-xl-font-size {
-        @apply h2;
-    }
+/* Default size per heading level, applied only when the block carries no explicit
+   font-size class.
 
-    h3.wp-block-heading:not([class*="-font-size"]),
-    .wp-block-heading.has-5-xl-font-size {
-        @apply h3;
-    }
+   The `has-*-font-size` classes are owned by common/font-sizes.css — do not re-map
+   them here. These selectors are more specific than the utilities, so any mapping
+   added here would silently win and a slug would mean one size on a heading and a
+   different one everywhere else. The `:not()` guard is what hands control back: pick
+   a size in the editor and this rule steps aside. */
+h1.wp-block-heading:not([class*="-font-size"]) {
+    @apply h1;
+}
 
-    h4.wp-block-heading:not([class*="-font-size"]),
-    .wp-block-heading.has-4-xl-font-size {
-        @apply h4;
-    }
+h2.wp-block-heading:not([class*="-font-size"]) {
+    @apply h2;
+}
 
-    h5.wp-block-heading:not([class*="-font-size"]),
-    .wp-block-heading.has-3-xl-font-size {
-        @apply h5;
-    }
+h3.wp-block-heading:not([class*="-font-size"]) {
+    @apply h3;
+}
 
-    h6.wp-block-heading:not([class*="-font-size"]),
-    .wp-block-heading.has-2-xl-font-size {
-        @apply h6;
-    }
+h4.wp-block-heading:not([class*="-font-size"]) {
+    @apply h4;
+}
+
+h5.wp-block-heading:not([class*="-font-size"]) {
+    @apply h5;
+}
+
+h6.wp-block-heading:not([class*="-font-size"]) {
+    @apply h6;
 }

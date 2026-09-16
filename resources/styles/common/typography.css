@@ -1,6 +1,9 @@
 @layer base {
+    html {
+        line-height: 1.2;
+    }
     body {
-        @apply font-sans-serif text-md;
+        @apply font-sans-serif text-sm bg-(--body-bg);
         color: var(--body-color);
     }
 
@@ -55,54 +58,8 @@
 }
 
 @layer utilities {
-    .has-2-xl-font-size {
-        @apply text-2xl;
-    }
-
-    .has-xl-font-size {
-        @apply text-xl;
-    }
-
-    .has-lg-font-size {
-        @apply text-lg;
-    }
-
-    .has-md-font-size {
-        @apply text-md;
-    }
-
-    .has-sm-font-size {
-        @apply text-sm;
-    }
-
-    .has-xs-font-size {
-        @apply text-xs;
-    }
-
-    .has-h-1-font-size {
-        @apply h1;
-    }
-
-    .has-h-2-font-size {
-        @apply h2;
-    }
-
-    .has-h-3-font-size {
-        @apply h3;
-    }
-
-    .has-h-4-font-size {
-        @apply h4;
-    }
-
-    .has-h-5-font-size {
-        @apply h5;
-    }
-
-    .has-h-6-font-size {
-        @apply h6;
-    }
-
+    /* The .has-*-font-size classes live in common/font-sizes.css — shared with the
+       editor canvas, which does not import this file. */
     .text-inherit {
         color: inherit;
     }

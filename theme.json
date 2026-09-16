@@ -210,16 +210,16 @@
       "fontFamilies": [
         {
           "fontFamily": "var(--font-sans-serif)",
-          "name": "Sans serif",
+          "name": "Source Sans 3",
           "slug": "sans-serif"
+        },
+        {
+          "fontFamily": "var(--font-serif)",
+          "name": "Times New Roman",
+          "slug": "serif"
         }
       ],
       "fontSizes": [
-        {
-          "name": "4XL",
-          "size": "var(--text-4xl)",
-          "slug": "4xl"
-        },
         {
           "name": "3XL",
           "size": "var(--text-3xl)",

@@ -10,10 +10,10 @@
 @import "./settings/source.css";
 @import "./settings/theme.css";
 @import "./settings/utility.css";
-@import "./settings/variant.css";
 @import "./settings/safelist.css";
 @import "./common/layout.css";
 @import "./common/backgrounds.css";
+@import "./common/font-sizes.css";
 
 /* globals */
 @import "./global/site-header.css";
@@ -200,6 +200,16 @@
 
     > :where(:not(:is(.alignleft, .alignright, .alignfull))) {
         @apply container;
+    }
+
+    > :where(.alignwide) {
+        max-width: var(--wp--style--global--wide-size) !important;
+    }
+
+    > :where(.alignfull) {
+        margin-inline: calc(50% - (var(--vw, 1vw) * 50)) !important;
+        width: var(--container-full-width) !important;
+        max-width: calc(var(--vw, 1vw) * 100) !important;
     }
 }
 
