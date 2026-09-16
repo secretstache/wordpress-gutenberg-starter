@@ -1,22 +1,37 @@
-import { inViewport } from '../utils/utilities';
+import { Component } from '../utils/component.js';
 
 const ANIMATED_CLASS = 'is-animated';
-const GALLERY_SELECTOR = `.has-animation:not(.${ANIMATED_CLASS})`;
 
-function Animations() {
-    Array.from(document.querySelectorAll(GALLERY_SELECTOR)).forEach((group) => {
-        inViewport(group, addAnimatedClass, { threshold: 0, rootMargin: '-50% 0% -50% 0%' });
-    });
+let _observer = null;
+
+function getObserver() {
+    if (!_observer) {
+        _observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add(ANIMATED_CLASS);
+                    _observer.unobserve(entry.target);
+                });
+            },
+            {
+                threshold: 0,
+                rootMargin: '-50% 0% -50% 0%',
+            },
+        );
+    }
+
+    return _observer;
 }
 
-function addAnimatedClass(entries) {
-    entries.forEach((entry) => {
-        const group = entry.target;
+export class Animation extends Component {
+    constructor(element, options = {}) {
+        super(element, options);
+        getObserver().observe(element);
+    }
 
-        if (entry.isIntersecting) {
-            group.classList.add(ANIMATED_CLASS);
-        }
-    });
+    destroy() {
+        getObserver().unobserve(this.el);
+        super.destroy();
+    }
 }
-
-export { Animations };

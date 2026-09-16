@@ -10,13 +10,13 @@
     "build": "vite build",
     "static-install": "yarn --cwd ./static install",
     "static-build": "yarn --cwd ./static build",
-    "static-start": "yarn --cwd ./static start",
+    "static-start": "yarn --cwd ./static dev",
     "lint": "npm-run-all lint:js:fix lint:css:fix prettier:fix",
     "lint:js": "eslint resources/scripts --ignore-pattern 'resources/scripts/client/libs/*'",
     "lint:js:fix": "yarn lint:js --fix",
     "lint:css": "npx stylelint resources/styles/",
     "lint:css:fix": "yarn lint:css --fix",
-    "prettier": "npx prettier resources/scripts/client resources/styles/ --check",
+    "prettier": "npx prettier resources/scripts/client resources/styles/ static/src --check",
     "prettier:fix": "yarn prettier --write",
     "clean-assets": "rimraf \"resources/scripts/client/app.js resources/fonts/* resources/styles/{*,!editor} resources/video/* resources/images/*\""
   },
@@ -73,6 +73,7 @@
     "@splidejs/splide-extension-auto-scroll": "^0.5.3",
     "@splidejs/splide-extension-intersection": "^0.2.0",
     "classnames": "^2.3.2",
-    "es-toolkit": "^1.41.0"
+    "es-toolkit": "^1.41.0",
+    "plyr": "^3.8.4"
   }
 }

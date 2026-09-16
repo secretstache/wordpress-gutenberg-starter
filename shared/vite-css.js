@@ -1,15 +1,15 @@
-const rem = (px) => {
+const toRem = (px) => {
     if (px === 0) return '0';
 
-    return `${(parseFloat(px) / 16).toFixed(4).replace(/\.?0+$/, '')}rem `;
+    return `${(parseFloat(px) / 16).toFixed(4).replace(/\.?0+$/, '')}rem`;
 };
 
 const customClamp = (minSize, maxSize, minBreakpoint = 480, maxBreakpoint = 1024, unit = 'vw') => {
     const slope = (maxSize - minSize) / (maxBreakpoint - minBreakpoint);
     const slopeToUnit = slope * 100;
-    const interceptRem = rem(minSize - slope * minBreakpoint);
-    const minSizeRem = rem(minSize);
-    const maxSizeRem = rem(maxSize);
+    const interceptRem = toRem(minSize - slope * minBreakpoint);
+    const minSizeRem = toRem(minSize);
+    const maxSizeRem = toRem(maxSize);
 
     return `clamp(${minSizeRem}, ${slopeToUnit}${unit} + ${interceptRem}, ${maxSizeRem})`;
 };
@@ -45,8 +45,16 @@ export function processCSSFunctions() {
             const normalizedId = id.split('?')[0];
 
             if (normalizedId.endsWith('.css')) {
-                // Replace rem() function calls
-                code = code.replace(/rem\((\d+)\)/g, (match, px) => rem(parseInt(px)));
+                // `@tailwindcss/vite` is `enforce: 'pre'`, so it bundles and minifies
+                // the CSS before this transform runs. Its minifier sees `toRem(...)`
+                // and `customClamp(...)` as unknown functions and drops the whitespace
+                // that separated them from the next value — `toRem(12) toRem(20)`
+                // arrives here as `toRem(12)toRem(20)`, and substituting in place would
+                // splice the values into `0.75rem1.25rem`. Restore the separator first.
+                code = code.replace(/((?:toRem|customClamp)\([^()]*\))(?=[\w.#-])/g, '$1 ');
+
+                // Replace toRem() function calls
+                code = code.replace(/toRem\((\d+)\)/g, (match, px) => toRem(parseInt(px)));
 
                 // Replace customClamp() function calls
                 code = code.replace(/customClamp\((\d+),\s*(\d+)(?:,\s*(\d+))?(?:,\s*(\d+))?(?:,\s*['"]?(\w+)['"]?)?\)/g, (match, min, max, minBp, maxBp, unit) => {

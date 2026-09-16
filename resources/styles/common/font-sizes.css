@@ -1,0 +1,42 @@
+/**
+ * Font-size classes emitted by WordPress for each theme.json `fontSizes` slug.
+ *
+ * Shared by app.css and editor-canvas.css so the block editor matches the front end.
+ * WordPress prints its own `.has-{slug}-font-size` presets from theme.json, but those
+ * resolve to the raw preset value — this maps each slug onto the matching Tailwind
+ * `text-*` token so both sides read one scale.
+ *
+ * These are the only owners of `.has-*-font-size`. Never re-map a slug in a block's
+ * own file: a selector like `.wp-block-heading.has-2-xl-font-size` is more specific
+ * and would silently win, so the same class would mean two different sizes depending
+ * on which block it landed on.
+ */
+@layer utilities {
+    .has-3-xl-font-size {
+        @apply text-3xl;
+    }
+
+    .has-2-xl-font-size {
+        @apply text-2xl;
+    }
+
+    .has-xl-font-size {
+        @apply text-xl;
+    }
+
+    .has-lg-font-size {
+        @apply text-lg;
+    }
+
+    .has-md-font-size {
+        @apply text-md;
+    }
+
+    .has-sm-font-size {
+        @apply text-sm;
+    }
+
+    .has-xs-font-size {
+        @apply text-xs;
+    }
+}

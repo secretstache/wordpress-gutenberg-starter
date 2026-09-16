@@ -1,25 +1,26 @@
-@import "tailwindcss" theme(static);
+@import "tailwindcss";
 
 @import "./settings/media.css";
 @import "./settings/source.css";
 @import "./settings/theme.css";
 @import "./settings/utility.css";
-@import "./settings/variant.css";
 @import "./settings/safelist.css";
 
 @import "./common/layout.css";
 @import "./common/typography.css";
+@import "./common/font-sizes.css";
 @import "./common/backgrounds.css";
 
 /* globals */
+@import "./global/menu.css";
 @import "./global/site-header.css";
 @import "./global/offcanvas.css";
 
 /* libs */
 @import "./libs/facetwp/facetwp.css";
+@import "plyr/dist/plyr.css";
 
 /* core blocks */
-@import "./blocks/wp-blocks-settings.css";
 @import "./blocks/button.css";
 @import "./blocks/columns.css";
 @import "./blocks/form.css";

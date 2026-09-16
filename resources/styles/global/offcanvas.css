@@ -6,3 +6,12 @@
     width: 100vw;
     height: 100vh;
 }
+
+/* Near-zero rather than `none`: Offcanvas sequences the focus trap and the
+   show/hide classes off the transition, so the transition has to still fire. */
+@media (prefers-reduced-motion: reduce) {
+    .offcanvas,
+    .offcanvas-backdrop {
+        transition-duration: 1ms;
+    }
+}

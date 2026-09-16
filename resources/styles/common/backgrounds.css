@@ -1,23 +1,54 @@
+/**
+ * Background contexts.
+ *
+ * `.bg-light` / `.bg-dark` mark what a subtree sits on. Everything that changes with
+ * the background is an inherited custom property declared here (or on these same two
+ * selectors in a component's own file) — never a variant baked into the component's
+ * selector.
+ *
+ * That split is the whole mechanism. Custom properties inherit, so the *nearest*
+ * context ancestor wins by proximity: a light island inside a dark section
+ * redeclares them on itself and owns its entire subtree, at any nesting depth, with
+ * no descendant selector to out-specify and no `:not()` escape hatch to maintain.
+ *
+ * Both rules are flat, single-class selectors on purpose. A nested form
+ * (`.bg-dark { .bg-light { … } }`) or a variant like
+ * `&:is(.bg-dark *:not(.bg-light *))` only ever describes one level of alternation —
+ * dark > light > dark breaks it, because the inner dark is still inside a
+ * `.bg-light *`. Proximity has no such limit.
+ *
+ * Each context declares the *full* set, never a partial override, so a context
+ * nested in a modified one (say a dark section inside a branded section) resets
+ * cleanly instead of inheriting half of it.
+ *
+ * `--ctx-bg` / `--ctx-fg` are the surface pair: the color the context paints and the
+ * color that reads on top of it. Components that invert with the background —
+ * buttons, form controls — build from these rather than naming black and white.
+ * `--body-color` / `--heading-color` stay separate because copy and chrome need not
+ * be the same ink (a design may set body text to a grey and buttons to full black).
+ *
+ * Light is stated last so it wins when both classes land on one element, which
+ * happens on blocks that carry their own background color (a cover, a group).
+ */
+
 .bg-dark {
+    --ctx-bg: var(--body-bg-dark);
+    --ctx-fg: var(--body-color-light);
+
     --body-color: var(--body-color-light);
     --heading-color: var(--heading-color-light);
-    color: var(--body-color);
-
-    .bg-light {
-        --body-color: var(--body-color-dark);
-        --heading-color: var(--heading-color-dark);
-        color: var(--body-color);
-    }
 }
 
+:root,
 .bg-light {
+    --ctx-bg: var(--body-bg-light);
+    --ctx-fg: var(--body-color-dark);
+
     --body-color: var(--body-color-dark);
     --heading-color: var(--heading-color-dark);
-    color: var(--body-color);
+}
 
-    .bg-dark {
-        --body-color: var(--body-color-light);
-        --heading-color: var(--heading-color-light);
-        color: var(--body-color);
-    }
+.bg-dark,
+.bg-light {
+    color: var(--body-color);
 }

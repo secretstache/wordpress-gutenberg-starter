@@ -1,10 +1,10 @@
 .facetwp-pager {
     display: flex;
-    margin-top: rem(62);
+    margin-top: toRem(62);
     justify-content: center;
-    gap: rem(8);
+    gap: toRem(8);
     align-items: center;
-    font-size: rem(18);
+    font-size: toRem(18);
     font-weight: 700;
 
     .facetwp-page {
@@ -14,10 +14,10 @@
         align-items: center;
 
         &:not(.next, .prev) {
-            width: rem(50);
-            height: rem(50);
-            border-radius: rem(3);
-            border: rem(1) solid #D9D9D9;
+            width: toRem(50);
+            height: toRem(50);
+            border-radius: toRem(3);
+            border: toRem(1) solid #D9D9D9;
             justify-content: center;
             color: var(--color-blue-primary);
             background: #E6E6E6;
@@ -30,8 +30,8 @@
 
             &.active {
                 border: none;
-                width: rem(54);
-                height: rem(54);
+                width: toRem(54);
+                height: toRem(54);
                 background: var(--color-blue-dark);
                 color: var(--color-white);
             }
@@ -40,15 +40,15 @@
         &.next, &.prev {
             text-transform: uppercase;
             color: var(--color-blue-primary);
-            gap: rem(6);
+            gap: toRem(6);
 
             &:hover {
                 &::before {
-                    transform: translateX(-rem(4));
+                    transform: translateX(-toRem(4));
                 }
 
                 &::after {
-                    transform: translateX(rem(4));
+                    transform: translateX(toRem(4));
                 }
             }
 
@@ -56,15 +56,15 @@
                 content: '';
                 transition: transform 0.3s ease;
                 display: block;
-                width: rem(15);
-                height: rem(13);
+                width: toRem(15);
+                height: toRem(13);
                 background-size: contain;
             }
         }
 
         &.prev {
             @media (--md) {
-                margin-right: rem(16);
+                margin-right: toRem(16);
             }
 
             &::before {
@@ -78,7 +78,7 @@
 
         &.next {
             @media (--md) {
-                margin-left: rem(16);
+                margin-left: toRem(16);
             }
 
             &::before {

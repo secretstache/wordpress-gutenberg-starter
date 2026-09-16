@@ -1,72 +1,40 @@
-import { throttle } from '../utils/utilities';
+import { Component } from '../utils/component.js';
 
-const CLASSES = {
-    scrolling_down: 'is-scrolling-down',
-    sticky: 'is-sticky',
-};
+const STICKY_THRESHOLD = 0;
 
-export const Header = (header) => {
-    if (!header) return () => {};
+export class Header extends Component {
+    constructor(element, options = {}) {
+        super(element, options);
 
-    const headerScrollingClass = toggleScrollingClass(header);
-    const headerStickyClass = toggleStickyClass(header);
+        this._lastScrollTop = 0;
+        this._headerHeight = element.offsetHeight;
 
-    // Return combined cleanup function
-    return () => {
-        headerScrollingClass.cleanup();
-        headerStickyClass.cleanup();
-    };
-};
+        this.on(window, 'scroll', this._handleScroll.bind(this), { passive: true });
 
-const toggleScrollingClass = (header) => {
-    let lastScrollTop = 0;
-    const siteHeaderHeight = header.offsetHeight;
+        this._resizeObserver = new ResizeObserver(() => {
+            this._headerHeight = element.offsetHeight;
+        });
+        this._resizeObserver.observe(element);
 
-    const handleScroll = () => {
-        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        this._handleScroll();
+    }
 
-        // Determine scroll direction and check against header height
-        if (scrollTop > lastScrollTop && scrollTop >= siteHeaderHeight) {
-            // Scrolling down and past header height - add class
-            header.classList.add(CLASSES.scrolling_down);
+    destroy() {
+        this._resizeObserver.disconnect();
+        super.destroy();
+    }
+
+    _handleScroll() {
+        const scrollTop = Math.max(0, window.scrollY);
+
+        this.el.classList.toggle('is-sticky', scrollTop > STICKY_THRESHOLD);
+
+        if (scrollTop > this._lastScrollTop && scrollTop >= this._headerHeight) {
+            this.el.classList.add('is-scrolling-down');
         } else {
-            // Scrolling up or not past header height - remove class
-            header.classList.remove(CLASSES.scrolling_down);
+            this.el.classList.remove('is-scrolling-down');
         }
 
-        // Update scroll position
-        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-    };
-
-    // Add event listeners
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    return {
-        cleanup: () => {
-            window.removeEventListener('scroll', handleScroll);
-        },
-    };
-};
-
-const toggleStickyClass = (header) => {
-    const sticky = 0;
-
-    const stickyHeader = () => {
-        if (window.scrollY > sticky) {
-            header.classList.add(CLASSES.sticky);
-        } else {
-            header.classList.remove(CLASSES.sticky);
-        }
-    };
-
-    stickyHeader();
-
-    const scrollCallback = throttle(stickyHeader, 100);
-    window.addEventListener('scroll', scrollCallback);
-
-    return {
-        cleanup: () => {
-            window.removeEventListener('scroll', scrollCallback);
-        },
-    };
-};
+        this._lastScrollTop = scrollTop;
+    }
+}

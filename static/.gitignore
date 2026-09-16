@@ -1,7 +1,5 @@
-/node_modules
-/vendor
-/dist
-npm-debug.log
+node_modules
+dist
+storybook-static
 yarn-error.log
 .DS_Store
-/.idea
