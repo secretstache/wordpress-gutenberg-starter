@@ -15,25 +15,43 @@
 }
 
 @utility h1 {
+    font-family: var(--font-family-headings);
     font-size: var(--text-h1);
+    line-height: var(--text-h1--line-height);
+    font-weight: var(--font-weight-h1);
 }
 
 @utility h2 {
+    font-family: var(--font-family-headings);
     font-size: var(--text-h2);
+    line-height: var(--text-h2--line-height);
+    font-weight: var(--font-weight-h2);
 }
 
 @utility h3 {
+    font-family: var(--font-family-headings);
     font-size: var(--text-h3);
+    line-height: var(--text-h3--line-height);
+    font-weight: var(--font-weight-h3);
 }
 
 @utility h4 {
+    font-family: var(--font-family-headings);
     font-size: var(--text-h4);
+    line-height: var(--text-h4--line-height);
+    font-weight: var(--font-weight-h4);
 }
 
 @utility h5 {
+    font-family: var(--font-family-headings);
     font-size: var(--text-h5);
+    line-height: var(--text-h5--line-height);
+    font-weight: var(--font-weight-h5);
 }
 
 @utility h6 {
+    font-family: var(--font-family-headings);
     font-size: var(--text-h6);
+    line-height: var(--text-h6--line-height);
+    font-weight: var(--font-weight-h6);
 }

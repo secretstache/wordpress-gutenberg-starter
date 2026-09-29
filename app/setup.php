@@ -195,3 +195,28 @@ add_action('init', function () {
         $lang_dir
     );
 });
+
+
+/*
+* De-register replaceMetaViewport from SSM Core
+*
+*/
+add_action( 'init', function() {
+
+    global $wp_filter;
+
+    foreach( (array)$wp_filter['wp_head'][10] as $id => $data ) {
+
+        if ( isset( $data['function'] ) && is_array( $data['function'] ) && $data['function'][1] == 'replaceMetaViewport' ) {
+
+            if ( is_a( $wp_filter['wp_head'], 'WP_Hook' ) ) {
+                unset( $wp_filter['wp_head']->callbacks[10][$id] );
+            } else {
+                unset( $wp_filter['wp_head'][10][$id] );
+            }
+
+        }
+
+    }
+
+}, 999 );

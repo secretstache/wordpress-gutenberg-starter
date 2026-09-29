@@ -18,33 +18,25 @@
     @apply max-md:mt-ssm-3;
 }
 
-/* First section margin-top.
-   Only a *background* section hugs the header. Its own padding already holds the
-   content off the top edge, so the margin would only open a stripe of page
-   background between the header and the section's color — the seam this rule exists
-   to close.
+/* Last section margin-bottom */
+:is(.wp-block-ssm-section-wrapper:last-of-type:not(.wp-block-block > *, :has(~ .wp-block-block)), .wp-block-block:not(:has(~ .wp-block-ssm-section-wrapper, ~ .wp-block-block)) > .wp-block-ssm-section-wrapper:last-of-type):not([class*=" md:mb-ssm-"]) {
+    @apply md:mb-ssm-5;
+}
 
-   A plain first section has no such padding: dropping its margin pins the first
-   heading against the header, which is what the old unconditional `:first-of-type`
-   rule did. So it keeps the standard gap like any other section.
+:is(.wp-block-ssm-section-wrapper:last-of-type:not(.wp-block-block > *, :has(~ .wp-block-block)), .wp-block-block:not(:has(~ .wp-block-ssm-section-wrapper, ~ .wp-block-block)) > .wp-block-ssm-section-wrapper:last-of-type):not([class*="max-md:mb-ssm-"]) {
+    @apply max-md:mb-ssm-3;
+}
 
-   Outranks the default above on specificity (four components to two), so source
-   order is not load-bearing. */
-.wp-block-ssm-section-wrapper:first-of-type.has-background:not([class*=" md:mt-ssm-"]) {
+/* First section margin-top — dropped only when the section brings its own top
+   padding (a background, a grid pattern, or an explicit pt-ssm-* value) so its
+   edge sits flush under the header. A first section with no padding keeps the
+   default margin, otherwise its content collides with the header/breadcrumbs. */
+:is(.wp-block-ssm-section-wrapper:first-of-type:not(.wp-block-block > *, .wp-block-block ~ *), .wp-block-block:not(.wp-block-ssm-section-wrapper ~ *, .wp-block-block ~ *) > .wp-block-ssm-section-wrapper:first-of-type):not([class*=" md:mt-ssm-"]):is(.has-background, .has-pattern, [class*=" md:pt-ssm-"]:not([class~="md:pt-ssm-0"])) {
     @apply md:mt-0;
 }
 
-.wp-block-ssm-section-wrapper:first-of-type.has-background:not([class*="max-md:mt-ssm-"]) {
+:is(.wp-block-ssm-section-wrapper:first-of-type:not(.wp-block-block > *, .wp-block-block ~ *), .wp-block-block:not(.wp-block-ssm-section-wrapper ~ *, .wp-block-block ~ *) > .wp-block-ssm-section-wrapper:first-of-type):not([class*="max-md:mt-ssm-"]):is(.has-background, .has-pattern, [class*="max-md:pt-ssm-"]:not([class~="max-md:pt-ssm-0"])) {
     @apply max-md:mt-0;
-}
-
-/* Last section margin-bottom */
-.wp-block-ssm-section-wrapper:last-of-type:not([class*=" md:mb-ssm-"]) {
-    @apply md:mb-ssm-4;
-}
-
-.wp-block-ssm-section-wrapper:last-of-type:not([class*="max-md:mb-ssm-"]) {
-    @apply max-md:mb-ssm-3;
 }
 
 /* Section with background paddings*/
@@ -65,11 +57,11 @@
 }
 
 /* Section with background last child margin-bottom */
-.wp-block-ssm-section-wrapper:last-of-type.has-background:not([class*=" md:mb-ssm-"]) {
+:is(.wp-block-ssm-section-wrapper:last-of-type:not(.wp-block-block > *, :has(~ .wp-block-block)), .wp-block-block:not(:has(~ .wp-block-ssm-section-wrapper, ~ .wp-block-block)) > .wp-block-ssm-section-wrapper:last-of-type).has-background:not([class*=" md:mb-ssm-"]) {
     @apply md:mb-0;
 }
 
-.wp-block-ssm-section-wrapper:last-of-type.has-background:not([class*="max-md:mb-ssm-"]) {
+:is(.wp-block-ssm-section-wrapper:last-of-type:not(.wp-block-block > *, :has(~ .wp-block-block)), .wp-block-block:not(:has(~ .wp-block-ssm-section-wrapper, ~ .wp-block-block)) > .wp-block-ssm-section-wrapper:last-of-type).has-background:not([class*="max-md:mb-ssm-"]) {
     @apply max-md:mb-0;
 }
 

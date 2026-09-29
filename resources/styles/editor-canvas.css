@@ -186,10 +186,15 @@
 
             > .root-pattern-appender {
                 left: 60%;
-                width: 12.5%;
                 border-top-right-radius: 0;
                 border-bottom-right-radius: 0;
+                width: 12.5%;
             }
+        }
+
+        > .block-library-block__reusable-block-container {
+            margin: 0 !important;
+            max-width: 100% !important;
         }
     }
 }

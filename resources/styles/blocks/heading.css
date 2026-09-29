@@ -33,3 +33,34 @@ h5.wp-block-heading:not([class*="-font-size"]) {
 h6.wp-block-heading:not([class*="-font-size"]) {
     @apply h6;
 }
+
+h1.wp-block-heading,
+h2.wp-block-heading,
+h3.wp-block-heading,
+h4.wp-block-heading,
+h5.wp-block-heading,
+h6.wp-block-heading {
+    &.has-3-xl-font-size {
+        @apply h1;
+    }
+
+    &.has-2-xl-font-size {
+        @apply h2;
+    }
+
+    &.has-xl-font-size {
+        @apply h3;
+    }
+
+    &.has-lg-font-size {
+        @apply h4;
+    }
+
+    &.has-md-font-size {
+        @apply h5;
+    }
+
+    &.has-sm-font-size {
+        @apply h6;
+    }
+}
