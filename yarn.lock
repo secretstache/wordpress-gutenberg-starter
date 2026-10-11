@@ -1723,10 +1723,10 @@
   resolved "https://registry.yarnpkg.com/@rtsao/scc/-/scc-1.1.0.tgz#927dd2fae9bc3361403ac2c7a00c32ddce9ad7e8"
   integrity sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==
 
-"@secretstache/wordpress-gutenberg@^0.7.1":
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/@secretstache/wordpress-gutenberg/-/wordpress-gutenberg-0.7.1.tgz#2ce94b11223932ccad919be0ae7a54ee101d82eb"
-  integrity sha512-SopUBAzzvihhT7AOvELG8oWynCuqY/bWA6YZaHETDq2xG/0XnuVrbUEGif9yh9ZZ8iscD8ounvoHg7Zi0NRrMQ==
+"@secretstache/wordpress-gutenberg@^0.7.2":
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/@secretstache/wordpress-gutenberg/-/wordpress-gutenberg-0.7.2.tgz#de83ba94960f02c0738735cc63c4f3ec4560c365"
+  integrity sha512-c5a0+tb7KAf+EdVp63lPvBG9bVISt/B43S7EQBJhCaaF4CwL0NtYpnzLuguon2JJg7E/Ho40Vr9uxK0Idn40zg==
   dependencies:
     classnames "^2.5.1"
     debounce-promise "^3.1.2"

@@ -68,7 +68,7 @@
     "vite-plugin-svgr": "^4.5.0"
   },
   "dependencies": {
-    "@secretstache/wordpress-gutenberg": "^0.7.1",
+    "@secretstache/wordpress-gutenberg": "^0.7.2",
     "@splidejs/splide": "^4.1.4",
     "@splidejs/splide-extension-auto-scroll": "^0.5.3",
     "@splidejs/splide-extension-intersection": "^0.2.0",
