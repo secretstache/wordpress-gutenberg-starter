@@ -14,7 +14,7 @@ The static React component is the primary source of truth. Read it first — it 
 
 ## Step 0 — Check for Spec Entry in `docs/ui-breakdown.yml`
 
-Before reading the static component, check whether a spec entry already exists from a previous `/prepare-editor-structure` run:
+Before reading the static component, check whether a hand-authored spec entry already exists (see `docs/ui-breakdown-guide.md` for the format):
 
 1. Check if `docs/ui-breakdown.yml` exists in the project root.
 2. If it exists, look for a top-level key matching the block slug (e.g. `accordion:`, `blog-feed:`).
