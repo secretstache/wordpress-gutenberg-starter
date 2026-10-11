@@ -17,6 +17,7 @@ const config = {
         '@storybook/addon-designs',
         '@storybook/addon-a11y',
         '@storybook/addon-vitest',
+        '@storybook/addon-mcp',
     ],
     framework: {
         name: '@storybook/react-vite',
