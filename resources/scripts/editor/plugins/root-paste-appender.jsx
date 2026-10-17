@@ -59,11 +59,14 @@ export class RootPasteAppenderPlugin {
             const blocks = (html || plainText) ? pasteHandler({ HTML: html, plainText, mode: 'BLOCKS' }) : [];
 
             // insertBlocks doesn't enforce the root allowed-blocks restriction, so
-            // reject anything that isn't a root block (all-or-nothing, no silent drops)
-            if (!Array.isArray(blocks) || !blocks.length || blocks.some((block) => block.name !== this.rootBlockName)) {
+            // reject anything that isn't a root block or a synced pattern (core/block)
+            // (all-or-nothing, no silent drops)
+            const allowedNames = [this.rootBlockName, 'core/block'];
+
+            if (!Array.isArray(blocks) || !blocks.length || blocks.some((block) => !allowedNames.includes(block.name))) {
                 dispatch('core/notices').createNotice(
                     'error',
-                    'Only rows can be pasted here. Copy the row(s) first (Ctrl/Cmd+C).',
+                    'Only rows and patterns can be pasted here. Copy the row(s) or pattern first (Ctrl/Cmd+C).',
                     { type: 'snackbar' },
                 );
 
