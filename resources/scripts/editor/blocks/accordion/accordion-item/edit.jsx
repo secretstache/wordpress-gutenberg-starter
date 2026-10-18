@@ -4,7 +4,7 @@ import {
     InspectorControls,
     RichText,
 } from '@wordpress/block-editor';
-import { useContext, useCallback, useEffect, useState } from '@wordpress/element';
+import { useContext, useCallback, useEffect, useRef, useState } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 import classNames from 'classnames';
 import { useAccordionItem, useChildBlockPosition, useFilterBlocks } from '@secretstache/wordpress-gutenberg';
@@ -20,9 +20,14 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
         isOpenedByDefault,
     } = useContext(AccordionContext);
 
-    const { childBlocks } = useSelect(select => ({
-        childBlocks: select('core/block-editor').getBlocks(clientId),
-    }), []);
+    const { childBlocks, isSelectedWithin } = useSelect(select => {
+        const blockEditor = select('core/block-editor');
+
+        return {
+            childBlocks: blockEditor.getBlocks(clientId),
+            isSelectedWithin: blockEditor.isBlockSelected(clientId) || blockEditor.hasSelectedInnerBlock(clientId, true),
+        };
+    }, [ clientId ]);
 
     const { blockRef, isActive, openContent, closeContent } = useAccordionItem({
         itemId: clientId,
@@ -47,7 +52,13 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
 
     const [ isActiveInMultipleState, setIsActiveInMultipleState ] = useState(false);
 
+    // Selecting the item or any of its blocks (title, canvas, List View) opens it. Clicking the
+    // trigger selects the block on mousedown, so the trigger flags that to keep its own toggle working.
+    const skipAutoOpen = useRef(false);
+
     const onClick = () => {
+        skipAutoOpen.current = false;
+
         if (isAllowedMultiple) {
             if (isActiveInMultipleState) {
                 setIsActiveInMultipleState(false);
@@ -83,6 +94,22 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
         setActiveItemClientId(false);
         setIsActiveInMultipleState(false);
     }, [ isAllowedMultiple, isOpenedByDefault ]);
+
+    useEffect(() => {
+        if (!isSelectedWithin) return;
+
+        if (skipAutoOpen.current) {
+            skipAutoOpen.current = false;
+
+            return;
+        }
+
+        if (isAllowedMultiple) {
+            setIsActiveInMultipleState(true);
+        } else {
+            setActiveItemClientId(clientId);
+        }
+    }, [ isSelectedWithin ]);
 
     const { position } = useChildBlockPosition(clientId);
 
@@ -123,6 +150,7 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
                 <button
                     type="button"
                     className="wp-block-ssm-accordion__trigger"
+                    onMouseDown={() => { skipAutoOpen.current = true; }}
                     onClick={onClick}
                 >
                     <div className="min-h-0 flex items-center">
