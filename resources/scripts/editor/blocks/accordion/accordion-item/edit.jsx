@@ -150,7 +150,7 @@ export const edit = ({ attributes, setAttributes, clientId }) => {
                 <button
                     type="button"
                     className="wp-block-ssm-accordion__trigger"
-                    onMouseDown={() => { skipAutoOpen.current = true; }}
+                    onMouseDown={() => { skipAutoOpen.current = true }}
                     onClick={onClick}
                 >
                     <div className="min-h-0 flex items-center">
