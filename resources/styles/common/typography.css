@@ -45,8 +45,8 @@
         text-decoration: inherit;
     }
 
-    :where(p) a {
-        @apply hover:underline;
+    :where(main) a:where(:not([class]):not(:has(img, svg, picture, video)):not(.no-link-styles *)) {
+        @apply underline hover:no-underline;
     }
 
     :focus-visible {

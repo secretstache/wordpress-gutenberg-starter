@@ -1,4 +1,6 @@
 .wp-block-columns {
+    align-items: unset;
+
     @media (--md) {
         &.are-vertically-aligned-center {
             align-items: center !important;
