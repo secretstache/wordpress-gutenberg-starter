@@ -115,3 +115,29 @@ add_action( 'wp_footer', function() {
     }
 
 }, 99 );
+
+add_action('wp_head', function () {
+
+    if ( ( $schema_html_script = get_field('schema_html_script', get_the_ID())) && !empty( $schema_html_script ) ) {
+        
+        $json = trim( str_replace( ['<script type="application/ld+json">', '</script>'], '', $schema_html_script ) );
+
+        echo '<script type="application/ld+json">' . wp_json_encode( json_decode( $json, true ) ) . '</script>';
+        
+    }
+
+}, 99);
+
+add_filter( 'wpseo_json_ld_output', function( $data ) {
+
+    if (is_admin() || !is_singular()) {
+        return $data;
+    }
+
+    if ( ( $schema_html_script = get_field('schema_html_script', get_the_ID())) && !empty( $schema_html_script ) ) {
+        return false;   
+    }
+    
+    return $data;
+    
+} );

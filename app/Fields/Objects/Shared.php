@@ -58,6 +58,30 @@ class Shared {
 			acf_add_local_field_group($inlineScripts->build());
 		});
 
+		/**
+		 * Schema Markup
+		 */
+		$schemaMarkup = new FieldsBuilder('schema_markup', [
+			'title'			=> 'Schema Markup',
+			'menu_order'	=>	12
+		]);
+
+		$schemaMarkup
+
+			->addField('schema_html_script', 'acfe_code_editor', [
+				'label' 	=> false,
+				'rows'		=> 4
+			])
+
+			->setLocation('post_type', '==', 'page')
+				->and('page_template', '!=', 'template-dummy-page.blade.php')
+				->or('post_type', '==', 'post');
+
+		// Register Schema Markup
+		add_action('acf/init', function() use ($schemaMarkup) {
+			acf_add_local_field_group($schemaMarkup->build());
+		});
+
 	}
 
 }
